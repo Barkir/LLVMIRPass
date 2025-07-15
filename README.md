@@ -64,6 +64,11 @@ This is the code and CFG LLVM IR generates for `div_intV1`.
 
 ![img](./img/pass.png)
 
+Pass would go from the top of the tree, i realized that it is not a scalable strategy.
+That's why in commit `5289d18` pass starts from the block with `sdiv` instructions and then goes through the rest of the blocks.
+
+
+
 ### Additional info
 
 ```c++
@@ -80,6 +85,7 @@ int mul_intV1(int a, int b, int c)
 }
 
 ```
+
 
 LLVM- IR also can't generate this code correctly. Here is the result we get, using -O2 generation.
 
