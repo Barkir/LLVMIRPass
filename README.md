@@ -64,4 +64,43 @@ This is the code and CFG LLVM IR generates for `div_intV1`.
 
 ![img](./img/pass.png)
 
+### Additional info
 
+```c++
+int mul_intV1(int a, int b, int c)
+{
+
+    if (a == 237 && b == 436734)
+    {
+        return a * b;
+    }
+
+    return a * b;
+
+}
+
+```
+
+LLVM- IR also can't generate this code correctly. Here is the result we get, using -O2 generation.
+
+```asm
+mul_intV1:
+        mov     w8, #43674
+        mul     w9, w1, w0
+        cmp     w1, w8
+        mov     w8, #237
+        ccmp    w0, w8, #0, eq
+        mov     w8, #61586
+        movk    w8, #157, lsl #16
+        csel    w0, w8, w9, eq
+        ret
+```
+
+Instead it should generate
+
+```
+mul reg_a, reg_b
+ret
+```
+
+These problems intersect in some way, so I decided to put it here.
