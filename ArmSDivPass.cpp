@@ -20,6 +20,7 @@
 using namespace llvm;
 
 // TODO: LLVM_DEBUG
+// TODO: test-suite, bootstrap build
 // opt -debug-only=DEBUG_TYPE <- macro
 
 
@@ -31,12 +32,12 @@ Value* CheckMinusOneOperands(Instruction *I)
 {
     auto *firstCI  = dyn_cast<ConstantInt>(I->getOperand(0));
     if (firstCI  && firstCI->isMinusOne())
-        return I->getOperand(1);                                                                            errs() << "Found -1 in icmp" <<                                                  "\n";
+        return I->getOperand(1);                                                                            errs() << "Found -1 in icmp" << "\n";
 
     auto *secondCI = dyn_cast<ConstantInt>(I->getOperand(1));
     if (secondCI && secondCI->isMinusOne())
         return I->getOperand(0);
-                                                                                                            errs() << "-1 not found in icmp" <<                                              "\n";
+                                                                                                            errs() << "-1 not found in icmp" << "\n";
     return nullptr;
 }
 
@@ -48,19 +49,18 @@ Value* CheckMinusOneOperands(Instruction *I)
 //          nullpt if pattern is not found in block
 Instruction* FindSubZeroPattern(BasicBlock *BB, Instruction *SDivInstr)
 {
-                                                                                                            errs() << "Starting FindSubZeroPattern with basic block" <<                     "\n";
+                                                                                                            errs() << "Starting FindSubZeroPattern with basic block" << "\n";
     for (auto &I : *BB) {
         if (auto *BinOp = dyn_cast<BinaryOperator>(&I)) {
-            if (BinOp->getOpcode() == Instruction::Sub) {                                                   errs() << "Got sub instruction in true branch" <<                               "\n";
-                if (auto *firstOp = dyn_cast<ConstantInt>(BinOp->getOperand(0))) {                          errs() << "First operand " << *firstOp <<                                       "\n";
-                    if (firstOp->isZero() && BinOp->getOperand(1) == SDivInstr->getOperand(0)) {            errs() << "Found sub 0, %{smth} pattern!" <<                                    "\n";
+            if (BinOp->getOpcode() == Instruction::Sub) {                                                   errs() << "Got sub instruction in true branch" << "\n";
+                if (BinOp->getOperand(1) == SDivInstr->getOperand(0)) {                                     errs() << "Found sub %{smth}, %{smth} pattern!" << "\n";
                            return &I;
                     }
-                }
+
             }
         }
     }
-    return nullptr;                                                                                         errs() << "Pattern not found" <<                                                "\n";
+    return nullptr;                                                                                         errs() << "Pattern not found" << "\n";
 }
 
 // Function for finding sub %0, %1 pattern
@@ -75,7 +75,7 @@ Instruction* FindSDiv(BasicBlock *BB)
 {
     for (auto &I : *BB) {
         if (auto *BinOp = dyn_cast<BinaryOperator>(&I)) {
-            if (BinOp->getOpcode() == Instruction::SDiv) {                                                  errs() << "Found SDivInstruction!" <<                                           "\n";
+            if (BinOp->getOpcode() == Instruction::SDiv) {                                                  errs() << "Found SDivInstruction!" << "\n";
                     return &I;
             }
         }
@@ -83,46 +83,121 @@ Instruction* FindSDiv(BasicBlock *BB)
     return nullptr;
 }
 
-bool isPhiPatternValid(PHINode *Phi, Instruction *fNode, Instruction *sNode)
+bool isPhiPatternValid(PHINode *Phi, Instruction *SubZero, Instruction *SDiv)
 {
-    return (Phi->getIncomingValue(0) == fNode && Phi->getIncomingValue(1) == sNode) ||
-           (Phi->getIncomingValue(1) == fNode && Phi->getIncomingValue(0) == sNode);
+    int numVal = Phi->getNumIncomingValues();
+    errs() << "Got " << numVal << " values in phi-node" << "\n";
+
+    bool isSubZero = false;
+    bool isSDiv = false;
+
+    for (int i = 0; i < numVal; i++) {
+        auto *income = Phi->getIncomingValue(i);
+        errs() << "incoming value: " << *income << "\n";
+        if (income == SubZero) {
+            isSubZero = true;
+            errs() << "isSubZero is true!" << "\n";
+        }
+        else if (income == SDiv) {
+            errs() << "isSDiv is true!" << "\n";
+            isSDiv = true;
+        }
+        else {
+            for (auto *User : SDiv->users()) {
+                errs() << "user: " << *User << "\n";
+                if (User == income) {
+                    errs() << "isSDiv is true as a user!" << "\n";
+                    isSDiv = true;
+                    break;
+                }
+            }
+        }
+    }
+    return isSubZero && isSDiv;
 }
 
-// Function for finding pattern:
+// Function for finding and transforming pattern:
 //      %{smth} = phi [%{SDivPattern}, %br1], [%{SubZeroPattern}, %br2]
 //      ret i32 %{smth}
+//      it deletes the SubZeroPattern
 // Input
 //      True and False Branch successors, SDiv and SubZero Pattern
 // Returns
 //      true if pattern is found
 //      false if pattern is not found
-BasicBlock* FindPhiPattern(BasicBlock *firstBranch, BasicBlock *SecondBranch, Instruction *SDivPattern, Instruction *SubZeroPattern)
+BasicBlock* FindAndTransformPhiPattern(BasicBlock *SubZeroBranch, BasicBlock *SDivBranch, Instruction *SDivPattern, Instruction *SubZeroPattern)
 {
     int current = 0;
-    PHINode *FinalBlockPhi = nullptr;
+    PHINode *FinalInstrPhi = nullptr;
     ReturnInst *FinalBlockRet = nullptr;
 
     // Checking if false and true successors have the same successor
-    if (!(SecondBranch->getSingleSuccessor() == firstBranch->getSingleSuccessor()))
+    if (!(SDivBranch->getSingleSuccessor() == SubZeroBranch->getSingleSuccessor()))
         return nullptr;
-                                                                                                            errs() << "Branches have the same successor!" <<                            "\n";
-    auto *FinalBlock = SecondBranch->getSingleSuccessor();
+                                                                                                            errs() << "Branches have the same successor!" << "\n";
+    auto *FinalBlock = SDivBranch->getSingleSuccessor();
     // Checking if final block contains phi and ret instructions
     for (Instruction &I : *FinalBlock) {
-        if (I.getOpcode() == Instruction::PHI) {                                                            errs() << "Phi instruction found in final block" <<                         "\n";
-                FinalBlockPhi = cast<PHINode>(&I);
-                FinalBlockPhi->replaceAllUsesWith(SDivPattern);
+        if (I.getOpcode() == Instruction::PHI) {
+                FinalInstrPhi = cast<PHINode>(&I);
                 break;
         }
     }
 
-    if (FinalBlockPhi) {
-        if (isPhiPatternValid(FinalBlockPhi, SubZeroPattern, SDivPattern)) {                                errs() << "Phi node pattern is valid!" <<                                   "\n";
+    if (FinalInstrPhi) {                                                                                    errs() << "Phi instruction found in final block" << *FinalInstrPhi << "\n";
+        if (isPhiPatternValid(FinalInstrPhi, SubZeroPattern, SDivPattern)) {                                errs() << "Phi node pattern is valid!" << "\n";
+                const uint32_t numValues = FinalInstrPhi->getNumIncomingValues();
+                for (int i = 0; i < numValues; i++) {
+                    if (FinalInstrPhi->getIncomingValue(i) == SubZeroPattern) {                             errs() << "Incoming value with number: " << i << *SubZeroPattern << "\n";
+                        FinalInstrPhi->removeIncomingValue(i);                                              errs() << "removed " << *SubZeroPattern << " from phinode, it is now -> " << *FinalInstrPhi << "\n";
+                        break;
+                    }
+                }
                 return FinalBlock;
             }
         }
     return nullptr;
+}
+
+// Function checks if branch instruction contains two blocks in conditions
+bool isBranchPatternValid(BranchInst *BI, BasicBlock *SubZeroBlock, BasicBlock *SDivBlock)
+{
+    errs() << "Checking branch pattern..." << "\n";
+    errs() << "instr: " << *BI << "\n";
+    errs() << "first op" << *(BI->getOperand(1)) << BI->getOperand(0) << "\n";
+    errs() << "second op" << *(BI->getOperand(2)) << BI->getOperand(1) << "\n";
+
+    return (BI->getOperand(1) == SubZeroBlock && BI->getOperand(2) == SDivBlock) ||
+           (BI->getOperand(2) == SubZeroBlock && BI->getOperand(1) == SDivBlock);
+}
+
+// Function for transforming and removing icmp instruction, including it's users
+// Input
+//      instruction, basic block with sdiv, basic block with sub
+bool TransformICmpAndUsers(Instruction *ICmp, BasicBlock *SDivBlock, BasicBlock *SubZeroBlock)
+{
+    errs() << "Got instruciton " << *ICmp << "\n";
+
+    errs() << "Getting it's users" << "\n";
+
+    for (auto *User : ICmp->users()) {
+        errs() << ">> " << *User << "\n";
+        if (auto *BI = dyn_cast<BranchInst>(User)) {
+            auto * BranchBlock = BI->getParent(); errs() << "Instruction is located in basic block " << *BranchBlock << "\n";
+            if (isBranchPatternValid(BI, SubZeroBlock, SDivBlock)){
+                errs() << "SubZeroBlock and SDivBlock is in condition!" << "\n";
+                BranchInst::Create(SDivBlock, BranchBlock->end());
+                BI->eraseFromParent();
+                errs() << "Removed old branch instruction" << "\n";
+                errs() << "Now block looks like:" << *BranchBlock << "\n";
+                SubZeroBlock->dropAllReferences();
+                SubZeroBlock->eraseFromParent();
+                errs() << "Erased SubZeroBlock..." << "\n";
+                return true;
+            }
+        }
+    }
+    return false;
 }
 
 void clearBasicBlock(BasicBlock *BB)
@@ -139,17 +214,17 @@ PreservedAnalyses llvm::DivToIntrinsicPass::run(Function &F,
     Value *ICmpOp = nullptr;
 
     Module *M = F.getParent();
-    if (!M) {                                                                                               errs() << "Function is not a part of a module!" <<                              "\n";
+    if (!M) {                                                                                               errs() << "Function is not a part of a module!" << "\n";
         return PreservedAnalyses::none();
     }
 
     // Here we get current architecture.
     // This pass is specialized for arm architecture.
     // if the architectures don't match, the pass won't go further
-    StringRef TargetTriple = M->getTargetTriple().str();                                                    errs() << "TargetTriple:  " << TargetTriple <<                                  "\n";
+    StringRef TargetTriple = M->getTargetTriple().str();                                                    errs() << "TargetTriple:  " << TargetTriple << "\n";
     bool isARM = TargetTriple.contains("arm") || TargetTriple.contains("aarch64");
 
-    if (!isARM) {                                                                                           errs() << "Architecture doesт't match the pass" <<                              "\n";
+    if (!isARM) {                                                                                           errs() << "Architecture doesт't match the pass" << "\n";
         return PreservedAnalyses::none();
     }
 
@@ -168,11 +243,11 @@ PreservedAnalyses llvm::DivToIntrinsicPass::run(Function &F,
             if (!BI || !BI->isConditional()) {
                 return PreservedAnalyses::none();
             }
-                                                                                                                errs() << "SDiv's parent block is conditional!" <<                              "\n";
-            Value *Cond = BI->getCondition();
+                                                                                                                errs() << "SDiv's parent block is conditional!" << "\n";
+            Value *Cond = BI->getCondition();                                                                   errs() << "ICmp is " << *Cond << "\n";
 
             auto * ICmp = dyn_cast<ICmpInst>(Cond);
-            if (!ICmp) {                                                                                        errs() << "Conditional instruction is not icmp" <<                              "\n";
+            if (!ICmp) {                                                                                        errs() << "Conditional instruction is not icmp" << "\n";
                 return PreservedAnalyses::none();
             }
 
@@ -186,15 +261,21 @@ PreservedAnalyses llvm::DivToIntrinsicPass::run(Function &F,
             // Getting other branch of the diamond
             if (BI->getNumSuccessors() != 2)
                 return PreservedAnalyses::none();
-            auto *OtherBranch = BI->getSuccessor(1) == &BB ? BI->getSuccessor(0) : BI->getSuccessor(1);
-            auto *SubZeroInstr = FindSubZeroPattern(OtherBranch, SDivInstr);
+            auto *SubZeroBlock = BI->getSuccessor(1) == &BB ? BI->getSuccessor(0) : BI->getSuccessor(1);
+            auto *SubZeroInstr = FindSubZeroPattern(SubZeroBlock, SDivInstr);
             if (!SubZeroInstr)
                 return PreservedAnalyses::none();
 
             // Finding phi node pattern
-            if (FindPhiPattern(OtherBranch, &BB, SDivInstr, SubZeroInstr))
+            if (FindAndTransformPhiPattern(SubZeroBlock, &BB, SDivInstr, SubZeroInstr))
+            {
+                errs() << "Now we need to find all ICmp users in our function and transform them" << "\n";
+                TransformICmpAndUsers(ICmp, &BB, SubZeroBlock);
                 return PreservedAnalyses::all();
+            }
         } // end of basic block's predecessors cycle
     } // end of basic blocks cycle
+
+    return PreservedAnalyses::none();
 }
 
