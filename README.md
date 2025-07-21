@@ -67,6 +67,14 @@ This is the code and CFG LLVM IR generates for `div_intV1`.
 Pass would go from the top of the tree, i realized that it is not a scalable strategy.
 That's why in commit `5289d18` pass starts from the block with `sdiv` instructions and then goes through the rest of the blocks.
 
+---
+
+### Tests
+
+- Tests for this pass are located [here](./tests/div.cpp)
+
+Send issues if you have some ideas on new tests, cuz now I got only 3 :(
+
 
 
 ### Additional info
