@@ -49,7 +49,7 @@ This is the code and CFG LLVM IR generates for `div_intV1`.
 ```
 
 
-![img](./img//nopass.png)
+![img](./img//nopass_default.png)
 
 ### Research
 - First idea is to write a transforming pass and insert it at the end of the pass builder pipeline. Pass recognizes this pattern and changes it to the correct one.
@@ -62,10 +62,33 @@ This is the code and CFG LLVM IR generates for `div_intV1`.
   ret i32 %3
 ```
 
-![img](./img/pass.png)
+![img](./img/pass_default.png)
 
 Pass would go from the top of the tree, i realized that it is not a scalable strategy.
 That's why in commit `5289d18` pass starts from the block with `sdiv` instructions and then goes through the rest of the blocks.
+
+### UPD 1.1
+
+Now the pass can simplify cycles like this:
+
+```cpp
+    int sum = 0;
+
+    for (int i = 0; i < 1000; i++)
+    {
+      if (b == -1)
+        sum += -i;
+      else
+          sum += i/b;
+    }
+    return sum;
+```
+
+## Optimization Comparison
+
+Without pass       | With pass
+---------------------------------- | ----------------------------------
+![No pass](./img/nopass_cycle.png) | ![With pass](./img/pass_cycle.png)
 
 ---
 
