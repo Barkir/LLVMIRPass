@@ -4,7 +4,7 @@
 #include <limits.h>
 #include <stdio.h>
 
-int div_intV1(int a, int b, int c)
+extern "C" int div_intV1(int a, int b, int c)
 {
     int sum = 0;
 
@@ -21,7 +21,7 @@ int div_intV1(int a, int b, int c)
     return sum;
 }
 
-int div_intV2(int a, int b)
+extern "C" int div_intV2(int a, int b)
 {
     if (a == -INT_MAX && b == -1)
     {
@@ -31,7 +31,7 @@ int div_intV2(int a, int b)
     return a/b;
 }
 
-int div_intV3(int a, int b)
+extern "C" int div_intV3(int a, int b, int c)
 {
     if (b == 10 && a == 3367 && c == 777)
     {
@@ -39,5 +39,14 @@ int div_intV3(int a, int b)
     }
 
     return a / b * c;
+}
+
+extern "C" int div_intV4(int a, int b)
+{
+    if (b == -1) {
+        return -a;
+    }
+
+    return a/b;
 }
 

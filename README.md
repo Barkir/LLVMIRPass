@@ -70,7 +70,7 @@ Without pass       | With pass
 Pass would go from the top of the tree, i realized that it is not a scalable strategy.
 That's why in commit `5289d18` pass starts from the block with `sdiv` instructions and then goes through the rest of the blocks.
 
-### UPD 1.1
+# UPD 1.1
 
 Now the pass can simplify cycles like this:
 
@@ -92,6 +92,29 @@ Now the pass can simplify cycles like this:
 Without pass       | With pass
 ---------------------------------- | ----------------------------------
 ![No pass](./img/nopass_cycle.png) | ![With pass](./img/pass_cycle.png)
+
+---
+
+# UPD 1.2
+
+The pass can also simplify a pattern with `INT_MIN`
+
+```cpp
+extern "C" int div_intV2(int a, int b)
+{
+    if (a == -INT_MAX && b == -1)
+    {
+        return a;
+    }
+
+    return a/b;
+}
+
+```
+
+Without pass       | With pass
+---------------------------------- | ----------------------------------
+![No pass](./img/nopass_int_min.png) | ![With pass](./img/pass_int_min.png)
 
 ---
 
