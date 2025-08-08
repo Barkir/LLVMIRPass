@@ -118,6 +118,108 @@ Without pass       | With pass
 
 ---
 
+
+# UPD 1.3
+
+Now I have two branches in research.
+
+1. Check if the pass works correctly with [ark](https://gitee.com/openharmony/arkcompiler_runtime_core/tree/OpenHarmony_feature_20250702/static_core)
+2. Try to find out what is going on when sdiv block has two successors.
+
+
+## First branch
+We checked it and noticed wrong code-generation in `CreateSignDivMod` function.
+
+```cpp
+llvm::Value *LLVMIrConstructor::CreateSignDivMod(Inst *inst, llvm::Instruction::BinaryOps opcode)
+{
+    ASSERT(opcode == llvm::Instruction::SDiv || opcode == llvm::Instruction::SRem);
+    llvm::Value *x = GetInputValue(inst, 0);
+    llvm::Value *y = GetInputValue(inst, 1);
+    auto &ctx = func_->getContext();
+    auto eqM1 = builder_.CreateICmpEQ(y, llvm::ConstantInt::get(y->getType(), -1));
+    auto m1Result = opcode == llvm::Instruction::SDiv ? builder_.CreateNeg(x) : llvm::ConstantInt::get(y->getType(), 0); // <---- IT IS HERE
+
+    auto currBb = GetCurrentBasicBlock();
+    auto notM1Bb = llvm::BasicBlock::Create(ctx, CreateBasicBlockName(inst, "divmod_normal"), func_);
+    auto contBb = llvm::BasicBlock::Create(ctx, CreateBasicBlockName(inst, "divmod_cont"), func_);
+    builder_.CreateCondBr(eqM1, contBb, notM1Bb);
+
+    SetCurrentBasicBlock(notM1Bb);
+    auto result = builder_.CreateBinOp(opcode, x, y);
+    builder_.CreateBr(contBb);
+
+    SetCurrentBasicBlock(contBb);
+    auto resultPhi = builder_.CreatePHI(y->getType(), 2U);
+    resultPhi->addIncoming(m1Result, currBb);
+    resultPhi->addIncoming(result, notM1Bb);
+    return resultPhi;
+}
+```
+
+This code generates this IR, where we always have the `sub` instruction at the start of the entry block, what is actually wrong.
+
+
+![ye](./img/wrong_codegen.png)
+
+
+It is not effective because we won't need sub in most of the cases, and the `sdiv` branch is more likely to be jumped to.
+Although LLVM IR Machine passes somehow handle this codegen and the assembler of this code looks like that:
+
+```asm
+ETSGLOBAL::div_two_int(i32, i32)+0x34>
+    90c4:       1ac20c20        sdiv    w0, w1, w2
+    90c8:       910003bf        mov     sp, x29
+    90cc:       a8c17bfd        ldp     x29, x30, [sp], #16
+    90d0:       d65f03c0        ret
+    90d4:       f9404f88        ldr     x8, [x28, #152]
+    90d8:       d63f0100        blr     x8
+    90dc:       00000000        udf     #0
+    90e0:       2013d000        .inst   0x2013d000 ; undefined
+    90e4:       00001510        udf     #5392
+    90e8:       4470c320        .inst   0x4470c320 ; undefined
+    90ec:       00000000        udf     #0
+```
+
+
+I decided to change this codegen to the one we have [here](./img/nopass_default.png.png) and the result is below.
+
+
+```
+bb0:                                              ; preds = %bb1
+  %0 = icmp eq i32 %a1, 0
+  br i1 %0, label %bb0_i4..deopt.., label %bb0_i4..cont.., !prof !6
+
+bb0_i4..cont..:                                   ; preds = %bb0
+  %1 = icmp eq i32 %a1, -1
+  br i1 %1, label %bb0_i5..divmod_sub.., label %bb0_i5..divmod_normal..
+
+bb0_i4..deopt..:                                  ; preds = %bb0
+  %2 = zext i32 %a0 to i64
+  %3 = zext i32 %a1 to i64
+  %4 = call i32 (...) @llvm.experimental.deoptimize.i32(i32 10) [ "deopt"(ptr @"i32 ets_ceil.ETSGLOBAL::div_two_int(i32, i32)_id_12607520088137088826", i32 212794, i32 0, i32 2, i32 3, i32 0, i32 2, i64 %2, i32 1, i32 2, i64 %3) ], !dbg !19
+  ret i32 %4
+
+bb0_i5..divmod_normal..:                          ; preds = %bb0_i4..cont..
+  %5 = sdiv i32 %a0, %a1
+  br label %bb0_i5..divmod_cont..
+
+bb0_i5..divmod_sub..:                             ; preds = %bb0_i4..cont..
+  %6 = sub i32 0, %a0
+  br label %bb0_i5..divmod_cont..
+
+bb0_i5..divmod_cont..:                            ; preds = %bb0_i5..divmod_sub.., %bb0_i5..divmod_normal..
+  %v5 = phi i32 [ %6, %bb0_i5..divmod_sub.. ], [ %5, %bb0_i5..divmod_normal.. ]
+  ret i32 %v5
+```
+
+After all the changes we decided to compile `ark stdlib` with this command:
+
+`ninja ets-compile-stdlib-llvm-arm64`
+
+It optimized **23** patterns. Maybe it can be a good result!
+
+
 ### Tests
 
 - Tests for this pass are located [here](./tests/div.cpp)
