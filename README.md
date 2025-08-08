@@ -164,22 +164,7 @@ This code generates this IR, where we always have the `sub` instruction at the s
 
 
 It is not effective because we won't need sub in most of the cases, and the `sdiv` branch is more likely to be jumped to.
-Although LLVM IR Machine passes somehow handle this codegen and the assembler of this code looks like that:
-
-```asm
-ETSGLOBAL::div_two_int(i32, i32)+0x34>
-    90c4:       1ac20c20        sdiv    w0, w1, w2
-    90c8:       910003bf        mov     sp, x29
-    90cc:       a8c17bfd        ldp     x29, x30, [sp], #16
-    90d0:       d65f03c0        ret
-    90d4:       f9404f88        ldr     x8, [x28, #152]
-    90d8:       d63f0100        blr     x8
-    90dc:       00000000        udf     #0
-    90e0:       2013d000        .inst   0x2013d000 ; undefined
-    90e4:       00001510        udf     #5392
-    90e8:       4470c320        .inst   0x4470c320 ; undefined
-    90ec:       00000000        udf     #0
-```
+Although LLVM IR Machine passes somehow handle this codegen and move sub instruction to other branch.
 
 
 I decided to change this codegen to the one we have [here](./img/nopass_default.png.png) and the result is below.
