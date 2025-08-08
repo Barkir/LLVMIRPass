@@ -202,7 +202,7 @@ After all the changes we decided to compile `ark stdlib` with this command:
 
 `ninja ets-compile-stdlib-llvm-arm64`
 
-It optimized **23** patterns. Maybe it can be a good result!
+Our pass optimized **23** patterns. Maybe it can be a good result!
 
 
 ### Tests
