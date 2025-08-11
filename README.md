@@ -198,11 +198,49 @@ bb0_i5..divmod_cont..:                            ; preds = %bb0_i5..divmod_sub.
   ret i32 %v5
 ```
 
+To see the objdump of generated elf-file use this command:
+
+`aarch64-linux-gnu-objdump -d test.an`
+
+```asm
+00000000000090a0 <i32 ets_div.ETSGLOBAL::div_two_int(i32, i32)>:
+    90a0:	a9bf7bfd 	stp	x29, x30, [sp, #-16]!
+    90a4:	910003fd 	mov	x29, sp
+    90a8:	a93f03bf 	stp	xzr, x0, [x29, #-16]
+    90ac:	d280003e 	mov	x30, #0x1                   	// #1
+    90b0:	b900439e 	str	w30, [x28, #64]
+    90b4:	d108c3bf 	sub	sp, x29, #0x230
+    90b8:	d14043fe 	sub	x30, sp, #0x10, lsl #12
+    90bc:	f94003de 	ldr	x30, [x30]
+    90c0:	340000a2 	cbz	w2, 90d4 <i32 ets_div.ETSGLOBAL::div_two_int(i32, i32)+0x34>
+    90c4:	1ac20c20 	sdiv	w0, w1, w2
+    90c8:	910003bf 	mov	sp, x29
+    90cc:	a8c17bfd 	ldp	x29, x30, [sp], #16
+    90d0:	d65f03c0 	ret
+    90d4:	f9404f88 	ldr	x8, [x28, #152]
+    90d8:	d63f0100 	blr	x8
+    90dc:	00000000 	udf	#0
+    90e0:	2013d000 	.inst	0x2013d000 ; undefined
+    90e4:	00001510 	udf	#5392
+    90e8:	4470c320 	.inst	0x4470c320 ; undefined
+    90ec:	00000000 	udf	#0
+```
+
 After all the changes we decided to compile `ark stdlib` with this command:
 
 `ninja ets-compile-stdlib-llvm-arm64`
 
 Our pass optimized **23** patterns. Maybe it can be a good result!
+
+### UPD 1.4
+Now I decided to check which functions are optimized using our pass and check if it actually work correct.
+
+When I compiled ark library I had `391` calls of `CreateSignDivMod` function. If we don't include the repetitions caused by `discard_inline_module` pass, then we have `91` clear calls.
+
+After some analysis we have `10` functions in total where `sdiv` instruction used. `4` functions are optimized by our pass and `6` are not.
+
+The correct list of the functions is written here in Russian [Passed functions](./md/passed.md) and [Skipped functions](./md/skipped.md)
+
 
 
 ### Tests
