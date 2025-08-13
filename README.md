@@ -271,6 +271,8 @@ There are two spots in stdlib where IR is optimized differently, depending on `s
 
 The reason of such behaviour is `DivRemPairs` pass from llvm-project library, which can't see intrinsics.
 
+![img](./img/DivRemPass%20misalignment.png)
+
 [source file](https://github.com/llvm/llvm-project/blob/main/llvm/lib/Transforms/Scalar/DivRemPairs.cpp)
 
 this is an example of the line where we check it incorrect.
