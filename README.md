@@ -246,7 +246,9 @@ Replaced `sdiv` instruction to `aarch64_sdiv`.
 In LLVM IR our pass leads to `UB` what is written [here](https://llvm.org/docs/LangRef.html#sdiv-instruction)
 
 ```
-Division by zero is undefined behavior. For vectors, if any element of the divisor is zero, the operation has undefined behavior. Overflow also leads to undefined behavior; this is a rare case, but can occur, for example, by doing a 32-bit division of -2147483648 by -1.
+Division by zero is undefined behavior.
+For vectors, if any element of the divisor is zero, the operation has undefined behavior.
+Overflow also leads to undefined behavior; this is a rare case, but can occur, for example, by doing a 32-bit division of -2147483648 by -1.
 ```
 
 So it was replaced to `aarch64_sdiv` with this code
@@ -256,6 +258,16 @@ So it was replaced to `aarch64_sdiv` with this code
     auto SDivIntrinsicInstr = llvm::CallInst::Create(SDivIntrinsicFunc, {SDivInstr->getOperand(0), SDivInstr->getOperand(1)}, llvm::None);
     llvm::ReplaceInstWithInst(SDivInstr, SDivIntrinsicInstr);
 ```
+
+As a result of compiling ark stdlib with sdiv replacement and without it there are two large files of LLVM IR dump.
+
+### vimdiff
+| | |
+|-|-|
+|![img](./img/llvm_ir_dump/not_optimized1.png) |
+|![img](./img/llvm_ir_dump/not_optimized2.png) |
+
+There are two spots in stdlib where IR is optimized differently, depending on `sdiv`.
 
 
 

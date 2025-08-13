@@ -34,6 +34,19 @@ namespace ark::llvmbackend::passes {
 
 SDivConvolution::SDivConvolution() = default;
 
+// Function for replacing sdiv to aarch64_sdiv intrinsic
+bool ReplaceAArch64SDiv(Instruction *SDivInstr, Function *F) {
+    if (!SDivInstr)
+        return false;
+
+    auto SDivIntrinsicOpcode = llvm::Intrinsic::AARCH64Intrinsics::aarch64_sdiv;                                                             //errs() << "Got aarch64_sdiv intrinsic opcode -> " << SDivIntrinsicOpcode << "\n";
+    auto SDivIntrinsicFunc = llvm::Intrinsic::getDeclaration(F->getParent(), SDivIntrinsicOpcode, {SDivInstr->getOperand(0)->getType()});    //errs() << "Got declaration of it -> " << *SDivIntrinsicFunc << "\n";
+    auto SDivIntrinsicInstr = llvm::CallInst::Create(SDivIntrinsicFunc, {SDivInstr->getOperand(0), SDivInstr->getOperand(1)}, llvm::None);   //errs() << "Created instruction -> " << SDivIntrinsicInstr << "\n";
+    llvm::ReplaceInstWithInst(SDivInstr, SDivIntrinsicInstr);
+
+    return true;
+}
+
 void printArgumentTypes(llvm::Function *F) {
     for (llvm::Argument& Arg : F->args()) {
         llvm::Type* ArgType = Arg.getType();
@@ -318,12 +331,8 @@ llvm::PreservedAnalyses SDivConvolution::run(Function &F,
                     TransformICmpAndUsers(TermInstr, &BB, SubZeroBlock);
 
                     // Replacing sdiv with aarch64_sdiv
-                    auto SDivIntrinsicOpcode = llvm::Intrinsic::AARCH64Intrinsics::aarch64_sdiv; errs() << "Got aarch64_sdiv intrinsic opcode -> " << SDivIntrinsicOpcode << "\n";
-                    auto SDivIntrinsicFunc = llvm::Intrinsic::getDeclaration(F.getParent(), SDivIntrinsicOpcode, {SDivInstr->getOperand(0)->getType()}); errs() << "Got declaration of it -> " << *SDivIntrinsicFunc << "\n";
-                    auto SDivIntrinsicInstr = llvm::CallInst::Create(SDivIntrinsicFunc, {SDivInstr->getOperand(0), SDivInstr->getOperand(1)}, llvm::None); errs() << "Created instruction -> " << SDivIntrinsicInstr << "\n";
-                    llvm::ReplaceInstWithInst(SDivInstr, SDivIntrinsicInstr);
-                    errs() << "Replaced instruction! Now the block is " << BB << "\n";
-                    errs() << "SDivConvolution PASSED! >__< :: function -> " << F.getName() << "\n";
+                    ReplaceAArch64SDiv(SDivInstr, &F);
+                    BARK_DEBUG(errs() << "Replaced instruction! Now the block is " << BB << "\n");
                     return PreservedAnalyses::all();
                 }
             } // end of condition with ICmp instruction
@@ -356,14 +365,9 @@ llvm::PreservedAnalyses SDivConvolution::run(Function &F,
                                             BARK_DEBUG(errs() << "Removed it... Now phi instruction is looking like that" << *FinalInstrPhi << "\n");
                                             BP->dropAllReferences();
                                             BP->eraseFromParent();
-
-                                            auto SDivIntrinsicOpcode = llvm::Intrinsic::AARCH64Intrinsics::aarch64_sdiv; errs() << "Got aarch64_sdiv intrinsic opcode -> " << SDivIntrinsicOpcode << "\n";
-                                            auto SDivIntrinsicFunc = llvm::Intrinsic::getDeclaration(F.getParent(), SDivIntrinsicOpcode, {SDivInstr->getOperand(0)->getType()}); errs() << "Got declaration of it -> " << *SDivIntrinsicFunc << "\n";
-                                            auto SDivIntrinsicInstr = llvm::CallInst::Create(SDivIntrinsicFunc, {SDivInstr->getOperand(0), SDivInstr->getOperand(1)}, llvm::None); errs() << "Created instruction -> " << SDivIntrinsicInstr << "\n";
-                                            llvm::ReplaceInstWithInst(SDivInstr, SDivIntrinsicInstr);
-                                            errs() << "Replaced instruction! Now the block is " << BB << "\n";
-
-                                            errs() << "SDivConvolution PASSED! >__< :: function -> " << F.getName() << "\n";
+                                            ReplaceAArch64SDiv(SDivInstr, &F);
+                                            BARK_DEBUG(errs() << "Replaced instruction! Now the block is " << BB << "\n");
+                                            BARK_DEBUG(errs() << "SDivConvolution PASSED! >__< :: function -> " << F.getName() << "\n");
                                         }
                                     }
 
