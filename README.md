@@ -269,6 +269,15 @@ As a result of compiling ark stdlib with sdiv replacement and without it there a
 
 There are two spots in stdlib where IR is optimized differently, depending on `sdiv`.
 
+The reason of such behaviour is `DivRemPairs` pass from llvm-project library, which can't see intrinsics.
+
+[source file](https://github.com/llvm/llvm-project/blob/main/llvm/lib/Transforms/Scalar/DivRemPairs.cpp)
+
+this is an example of the line where we check it incorrect.
+```cpp
+bool isSigned() const { return DivInst->getOpcode() == Instruction::SDiv; }
+```
+How to unify `sdiv` check?
 
 
 ### Tests
