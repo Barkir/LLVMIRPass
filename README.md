@@ -241,6 +241,22 @@ After some analysis we have `10` functions in total where `sdiv` instruction use
 
 The correct list of the functions is written here in Russian [Passed functions](./md/passed.md) and [Skipped functions](./md/skipped.md)
 
+### UPD 1.5
+Replaced `sdiv` instruction to `aarch64_sdiv`.
+In LLVM IR our pass leads to `UB` what is written [here](https://llvm.org/docs/LangRef.html#sdiv-instruction)
+
+```
+Division by zero is undefined behavior. For vectors, if any element of the divisor is zero, the operation has undefined behavior. Overflow also leads to undefined behavior; this is a rare case, but can occur, for example, by doing a 32-bit division of -2147483648 by -1.
+```
+
+So it was replaced to `aarch64_sdiv` with this code
+```cpp
+    auto SDivIntrinsicOpcode = llvm::Intrinsic::AARCH64Intrinsics::aarch64_sdiv;
+    auto SDivIntrinsicFunc = llvm::Intrinsic::getDeclaration(F.getParent(), SDivIntrinsicOpcode, {SDivInstr->getOperand(0)->getType()});
+    auto SDivIntrinsicInstr = llvm::CallInst::Create(SDivIntrinsicFunc, {SDivInstr->getOperand(0), SDivInstr->getOperand(1)}, llvm::None);
+    llvm::ReplaceInstWithInst(SDivInstr, SDivIntrinsicInstr);
+```
+
 
 
 ### Tests
