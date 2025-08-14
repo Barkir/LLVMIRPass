@@ -281,6 +281,28 @@ bool isSigned() const { return DivInst->getOpcode() == Instruction::SDiv; }
 ```
 How to unify `sdiv` check?
 
+# UPD 1.6
+The simplest solution is to write a new function which includes `aarch64_sdiv` when checking for `sdiv` instruction and insert it into llvm.
+
+```cpp
+bool isSignedDivAARCH64(Instruction * Div) {
+
+if (auto *div_call = dyn_cast<CallBase>(Div)) {
+
+Function *div_called_func = div_call->getCalledFunction();
+
+return (div_called_func && div_called_func->isIntrinsic() && div_called_func->getIntrinsicID() == llvm::Intrinsic::AARCH64Intrinsics::aarch64_sdiv);
+
+}
+
+return (Div->getOpcode() == Instruction::SDiv);
+
+}
+```
+
+![img](./img/llvm_ir_dump/fixing%20divrempairs.png)
+
+
 
 ### Tests
 
