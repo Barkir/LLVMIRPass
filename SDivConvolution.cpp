@@ -293,95 +293,96 @@ llvm::PreservedAnalyses SDivConvolution::run(Function &F,
         // auto *firstOperand  = SDivInstr->getOperand(0);
                                                                                                                                                                         BARK_DEBUG(errs() << "Found SDiv! " << *SDivInstr << "\n");
         auto *secondOperand = SDivInstr->getOperand(1);
+        auto *BP = BB.getSinglePredecessor();
+        if (!BP)
+            return PreservedAnalyses::none();
+                                                                                                                                                                        BARK_DEBUG(errs() << "SDiv got predecessor " << *BP << "\n");
+        auto *Term = BP->getTerminator();
+        auto *BI = dyn_cast<BranchInst>(Term);
+        if (!BI || !BI->isConditional()) {
+            return PreservedAnalyses::none();
+        }
+                                                                                                                                                                        BARK_DEBUG(errs() << "SDiv's parent block is conditional!" << "\n");
+        Value *Cond = BI->getCondition();                                                                                                                               BARK_DEBUG(errs() << "ICmp is " << *Cond << "\n");
 
-        for (auto *BP : predecessors(&BB))
-        {                                                                                                                                                               BARK_DEBUG(errs() << "SDiv got predecessor " << *BP << "\n");
-            auto *Term = BP->getTerminator();
-            auto *BI = dyn_cast<BranchInst>(Term);
-            if (!BI || !BI->isConditional()) {
+        auto * TermInstr = dyn_cast<Instruction>(Cond);
+        if (TermInstr && TermInstr->getOpcode() == Instruction::ICmp) {
+
+            // Here we check if there is -1 in comparsion and
+            // register in icmp equals to divisor in sdiv instruction
+            ICmpOp = CheckMinusOneOperands(TermInstr);
+            if (!ICmpOp || (ICmpOp != secondOperand)) {
                 return PreservedAnalyses::none();
             }
-                                                                                                                                                                        BARK_DEBUG(errs() << "SDiv's parent block is conditional!" << "\n");
-            Value *Cond = BI->getCondition();                                                                                                                           BARK_DEBUG(errs() << "ICmp is " << *Cond << "\n");
 
-            auto * TermInstr = dyn_cast<Instruction>(Cond);
-            if (TermInstr && TermInstr->getOpcode() == Instruction::ICmp) {
+            // Getting other branch of the diamond
+            if (BI->getNumSuccessors() != 2)
+                return PreservedAnalyses::none();
 
-                // Here we check if there is -1 in comparsion and
-                // register in icmp equals to divisor in sdiv instruction
-                ICmpOp = CheckMinusOneOperands(TermInstr);
-                if (!ICmpOp || (ICmpOp != secondOperand)) {
-                    return PreservedAnalyses::none();
-                }
+            // Here we need to get branch without sdiv instruction
+            auto *SubZeroBlock = BI->getSuccessor(1) == &BB ? BI->getSuccessor(0) : BI->getSuccessor(1);
+            auto *SubZeroInstr = FindSubZeroPattern(SubZeroBlock, SDivInstr);
+            if (!SubZeroInstr)
+                return PreservedAnalyses::none();
 
-                // Getting other branch of the diamond
-                if (BI->getNumSuccessors() != 2)
-                    return PreservedAnalyses::none();
-
-                // Here we need to get branch without sdiv instruction
-                auto *SubZeroBlock = BI->getSuccessor(1) == &BB ? BI->getSuccessor(0) : BI->getSuccessor(1);
-                auto *SubZeroInstr = FindSubZeroPattern(SubZeroBlock, SDivInstr);
-                if (!SubZeroInstr)
-                    return PreservedAnalyses::none();
-
-                // Finding phi node pattern
-                if (FindAndTransformPhiPattern(SubZeroBlock, &BB, SDivInstr, SubZeroInstr))
-                {
+            // Finding phi node pattern
+            if (FindAndTransformPhiPattern(SubZeroBlock, &BB, SDivInstr, SubZeroInstr))
+            {
                                                                                                                                                                         BARK_DEBUG(errs() << "Now we need to find all ICmp users in our function and transform them" << "\n");
-                    TransformICmpAndUsers(TermInstr, &BB, SubZeroBlock);
+                TransformICmpAndUsers(TermInstr, &BB, SubZeroBlock);
 
-                    // Replacing sdiv with aarch64_sdiv
-                    ReplaceAArch64SDiv(SDivInstr, &F);
-                    BARK_DEBUG(errs() << "Replaced instruction! Now the block is " << BB << "\n");
-                    return PreservedAnalyses::all();
-                }
-            } // end of condition with ICmp instruction
+                // Replacing sdiv with aarch64_sdiv
+                ReplaceAArch64SDiv(SDivInstr, &F);
+                BARK_DEBUG(errs() << "Replaced instruction! Now the block is " << BB << "\n");
+                errs() << "SDivConvolution PASSED! >__< :: function -> " << F.getName() << "\n";
+                return PreservedAnalyses::all();
+            }
+        } // end of condition with ICmp instruction
 
-            else if (TermInstr && TermInstr->getOpcode() == Instruction::And) {
-                BARK_DEBUG(errs() << "Got and instruction!" << "\n");
-                auto *firstCI =  dyn_cast<ICmpInst>(TermInstr->getOperand(0));                                                                                          BARK_DEBUG(errs() << "first operand is"  << *firstCI  << "\n");
-                auto *secondCI = dyn_cast<ICmpInst>(TermInstr->getOperand(1));                                                                                          BARK_DEBUG(errs() << "second operand is" << *secondCI  << "\n");
+        else if (TermInstr && TermInstr->getOpcode() == Instruction::And) {
+            BARK_DEBUG(errs() << "Got and instruction!" << "\n");
+            auto *firstCI =  dyn_cast<ICmpInst>(TermInstr->getOperand(0));                                                                                          BARK_DEBUG(errs() << "first operand is"  << *firstCI  << "\n");
+            auto *secondCI = dyn_cast<ICmpInst>(TermInstr->getOperand(1));                                                                                          BARK_DEBUG(errs() << "second operand is" << *secondCI  << "\n");
 
-                if (firstCI && secondCI) {
-                    if ((ContainsInOperand(firstCI, -1) && ContainsInOperand(secondCI, INT_MIN)) || (ContainsInOperand(firstCI, INT_MIN) && ContainsInOperand(secondCI, -1))) {
-                        BARK_DEBUG(errs() << "Found pattern with -1 and INT_MIN" << "\n");
-                        // Next we need to check if sdiv block and entry block have the same successor
-                        // Next we check if there is a phi-node and delete the INT_MIN value from it
-                        BARK_DEBUG(errs() << "BB successor is " << *BB.getSingleSuccessor() << "\n");
-                        BARK_DEBUG(errs() << "BI successor is " << *BI->getSuccessor(0) << "\n");
-                        if (BB.getSingleSuccessor() == BI->getSuccessor(0)) {
-                            BARK_DEBUG(errs() << "sdiv block and entry block have the same successor" << "\n");
-                            auto *Succ = BB.getSingleSuccessor();
-                            for (auto &I : *Succ) {
-                                if (I.getOpcode() == Instruction::PHI) {
-                                    BARK_DEBUG(errs() << "Got phi node in successor " << I << "\n");
-                                    auto *FinalInstrPhi = cast<PHINode>(&I);
-                                    const uint32_t numValues = FinalInstrPhi->getNumIncomingValues();
-                                    for (uint32_t i = 0; i < numValues; i++) {
-                                        BARK_DEBUG(errs() << *FinalInstrPhi->getIncomingBlock(i) << "\n");
-                                        if (FinalInstrPhi->getIncomingBlock(i) == BP) {
-                                            BARK_DEBUG(errs() << "EntryBlock in phi node (need to erase it from here)" << "\n");
-                                            FinalInstrPhi->removeIncomingValue(i);
-                                            BARK_DEBUG(errs() << "Removed it... Now phi instruction is looking like that" << *FinalInstrPhi << "\n");
-                                            BP->dropAllReferences();
-                                            BP->eraseFromParent();
-                                            ReplaceAArch64SDiv(SDivInstr, &F);
-                                            BARK_DEBUG(errs() << "Replaced instruction! Now the block is " << BB << "\n");
-                                            BARK_DEBUG(errs() << "SDivConvolution PASSED! >__< :: function -> " << F.getName() << "\n");
-                                        }
+            if (firstCI && secondCI) {
+                if ((ContainsInOperand(firstCI, -1) && ContainsInOperand(secondCI, INT_MIN)) || (ContainsInOperand(firstCI, INT_MIN) && ContainsInOperand(secondCI, -1))) {
+                    BARK_DEBUG(errs() << "Found pattern with -1 and INT_MIN" << "\n");
+                    // Next we need to check if sdiv block and entry block have the same successor
+                    // Next we check if there is a phi-node and delete the INT_MIN value from it
+                    BARK_DEBUG(errs() << "BB successor is " << *BB.getSingleSuccessor() << "\n");
+                    BARK_DEBUG(errs() << "BI successor is " << *BI->getSuccessor(0) << "\n");
+                    if (BB.getSingleSuccessor() == BI->getSuccessor(0)) {
+                        BARK_DEBUG(errs() << "sdiv block and entry block have the same successor" << "\n");
+                        auto *Succ = BB.getSingleSuccessor();
+                        for (auto &I : *Succ) {
+                            if (I.getOpcode() == Instruction::PHI) {
+                                BARK_DEBUG(errs() << "Got phi node in successor " << I << "\n");
+                                auto *FinalInstrPhi = cast<PHINode>(&I);
+                                const uint32_t numValues = FinalInstrPhi->getNumIncomingValues();
+                                for (uint32_t i = 0; i < numValues; i++) {
+                                    BARK_DEBUG(errs() << *FinalInstrPhi->getIncomingBlock(i) << "\n");
+                                    if (FinalInstrPhi->getIncomingBlock(i) == BP) {
+                                        BARK_DEBUG(errs() << "EntryBlock in phi node (need to erase it from here)" << "\n");
+                                        FinalInstrPhi->removeIncomingValue(i);
+                                        BARK_DEBUG(errs() << "Removed it... Now phi instruction is looking like that" << *FinalInstrPhi << "\n");
+                                        BP->dropAllReferences();
+                                        BP->eraseFromParent();
+                                        ReplaceAArch64SDiv(SDivInstr, &F);
+                                        BARK_DEBUG(errs() << "Replaced instruction! Now the block is " << BB << "\n");
+                                        errs() << "SDivConvolution PASSED! >__< :: function -> " << F.getName() << "\n";
                                     }
-
                                 }
+
                             }
                         }
-
-                        return PreservedAnalyses::none();
-
                     }
-                }
 
-            }  // end of condition with And instruction
-        } // end of basic block's predecessors cycle
+                    return PreservedAnalyses::none();
+
+                }
+            }
+
+        }  // end of condition with And instruction
     } // end of basic blocks cycle
 
     return PreservedAnalyses::none();
