@@ -260,6 +260,36 @@ void clearBasicBlock(BasicBlock *BB)
     }
 }
 
+Instruction* FindPhiInSuccessor(BasicBlock *BB) {
+    if (auto *Succ = BB->getSingleSuccessor())
+    {
+        for (auto &I : *Succ) {
+            if (I.getOpcode() == Instruction::PHI)
+                return &I;
+        }
+    }
+
+    return nullptr;
+}
+
+Instruction *GetSubInstrFromPhi(Instruction *PhiInstr) {
+    PHINode *PhiInstrCasted = dyn_cast<PHINode>(PhiInstr);
+    uint64_t numVal = PhiInstrCasted->getNumIncomingValues();
+
+    for (uint64_t i = 0; i < numVal; i++) {
+        auto *PotSub = PhiInstrCasted->getIncomingValue(i);
+        auto *PotSubCasted = dyn_cast<Instruction>(PotSub);
+        if (PotSubCasted && PotSubCasted->getOpcode() == Instruction::Sub)
+            return PotSubCasted;
+    }
+
+    return nullptr;
+}
+
+bool SubInstrAppropriate(Instruction *SubInstr, Instruction *SDivInstr) {
+    return (SubInstr->getOperand(1) == SDivInstr->getOperand(0) || SubInstr->getOperand(1) == SDivInstr->getOperand(1));
+}
+
 llvm::PreservedAnalyses SDivConvolution::run(Function &F,
                                           FunctionAnalysisManager &AM)
 {
@@ -315,27 +345,26 @@ llvm::PreservedAnalyses SDivConvolution::run(Function &F,
                 return PreservedAnalyses::none();
             }
 
-            // Getting other branch of the diamond
-            if (BI->getNumSuccessors() != 2)
-                return PreservedAnalyses::none();
+            // algorithm
+            // 1. find phi instruction of a successor
+            // 2. get the sub value
+            // 3. check if sub value is the one in sdiv
+            // 4. drop this value <3
 
-            // Here we need to get branch without sdiv instruction
-            auto *SubZeroBlock = BI->getSuccessor(1) == &BB ? BI->getSuccessor(0) : BI->getSuccessor(1);
-            auto *SubZeroInstr = FindSubZeroPattern(SubZeroBlock, SDivInstr);
-            if (!SubZeroInstr)
-                return PreservedAnalyses::none();
-
-            // Finding phi node pattern
-            if (FindAndTransformPhiPattern(SubZeroBlock, &BB, SDivInstr, SubZeroInstr))
-            {
-                                                                                                                                                                        BARK_DEBUG(errs() << "Now we need to find all ICmp users in our function and transform them" << "\n");
-                TransformICmpAndUsers(TermInstr, &BB, SubZeroBlock);
-
-                // Replacing sdiv with aarch64_sdiv
-                ReplaceAArch64SDiv(SDivInstr, &F);
-                BARK_DEBUG(errs() << "Replaced instruction! Now the block is " << BB << "\n");
-                errs() << "SDivConvolution PASSED! >__< :: function -> " << F.getName() << "\n";
-                return PreservedAnalyses::all();
+            auto *PhiInstr = FindPhiInSuccessor(&BB);
+            BARK_DEBUG(errs() << "Found Phi in Successor " << *PhiInstr << "\n");
+            if (PhiInstr) {
+                auto *SubInstr = GetSubInstrFromPhi(PhiInstr);
+                BARK_DEBUG(errs() << "Got Sub instr from phi " << *SubInstr << "\n");
+                if (SubInstrAppropriate(SubInstr, SDivInstr)) {
+                    BARK_DEBUG(errs() << "SubInstruction is appropriate!" << "\n");
+                    auto *clonedSDiv = SDivInstr->clone();
+                    ReplaceInstWithInst(PhiInstr, clonedSDiv);
+                    BARK_DEBUG(errs() << "replaced phi instruction with sdiv" << *(BB.getSingleSuccessor()) << "\n");
+                    ReplaceAArch64SDiv(SDivInstr, &F);
+                    errs() << "SDivConvolution PASSED! >__< :: function -> " << F.getName() << "\n";
+                    return PreservedAnalyses::all();
+                }
             }
         } // end of condition with ICmp instruction
 
