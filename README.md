@@ -325,7 +325,7 @@ This way of recognizing is logically better because `sub` is not obliged to be i
 it will always have `icmp` block as a pred.
 
 Instead, we choose a path where we always know about `sub` because we can get it from `phi`.
-And, as a result we have **2** more functions in stdlib where our pass was recognized!
+And, as a result we have **1** more function in stdlib where our pass was recognized!
 
 ### Tests
 

@@ -5,7 +5,7 @@
 | normMilliSecond   | Деление неизвестных компилятору переменных | [normMilliSecond](#normMilliSecond)   |     |
 | getDuration       | Деление неизвестных компилятору переменных | [getDuration](#getDuration)       |     |
 | div               | Деление неизвестных компилятору переменных | [div](#div)               |     |
-|                   |                                            |                                                                        |     |
+| defaultCompatatorInts | Неизвестна (требуется ресерч)                                       | [defaultComparatorInts](#defaultcomparatorints)                                                                       |     |
 |                   |                                            |                                                                        |     |
 |                   |                                            |                                                                        |     |
 
@@ -126,3 +126,42 @@ internal getDuration(): int {
 # куда вносит изменение пасс
 - очев
 - деление неизвестных компилятору переменных
+
+# defaultComparatorInts
+```
+private static defaultComparatorInts(a: int, b: int): number {
+        if (a < 0) {
+            if (b >= 0) {
+                return -1
+            }
+            a *= -1
+            b *= -1
+        } else if (b < 0) {
+            return 1
+        }
+        let aDigs = 1
+        while (10 * aDigs <= a) {
+            aDigs *= 10
+        }
+        let bDigs = 1
+        while (10 * bDigs <= b) {
+            bDigs *= 10
+        }
+
+        while (aDigs > 0 && bDigs > 0) {
+            let r = (a / aDigs) - (b / bDigs)
+            if (r != 0) {
+                return r
+            }
+            aDigs /= 10
+            bDigs /= 10
+        }
+        return (aDigs - bDigs)
+    }
+
+    private static defaultComparatorStr(a: String, b: String) {
+        return a.compareTo(b)
+    }
+```
+# куда вносит изменение
+- в делении на константу (что?)
