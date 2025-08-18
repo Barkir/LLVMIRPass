@@ -302,7 +302,30 @@ return (Div->getOpcode() == Instruction::SDiv);
 
 ![img](./img/llvm_ir_dump/fixing%20divrempairs.png)
 
+# UPD 1.7
+It was decided to change pattern recognition algorithm.
+Here is the comparsion between them
 
+| Old Algo | New Algo |
+|----------|----------|
+| 1. Find block with `sdiv`                                                             | 1. Find block with `sdiv`                                               |
+| 2. Check if block's pred is conditional and uses `icmp` as a condition                | 2. Check if block's pred is conditional and uses `icmp` as a condition  |
+| 3. Check if `icmp` block has a successor with `sub`                                   | 3. Check if `sdiv` has a successor with `phi` instruction               |
+| 4. Check if `sub` and `sdiv` instructions use same registers                          | 4. Check if `phi` instruction has `sub` value in it                     |
+| 5. Check if `sub` and `sdiv` block have the same successor                            | 5. Check if `sub` and `sdiv` instructions have the same register        |
+| 6. Check if the succesor has `phi` instruction in it and has `sub` and `sdiv` values  | 6. Replace `phi` with `sdiv`                                            |
+| 7. Delete the value with `sub` and drop references from the block with `sub`          |
+
+### Explained in pictures
+| Old | New |
+|-----|-----|
+|![img](./img/picture_explanation_old.png) | ![img](./img/picture_explanation_new.png)
+
+This way of recognizing is logically better because `sub` is not obliged to be in a single block and we can't be sure that
+it will always have `icmp` block as a pred.
+
+Instead, we choose a path where we always know about `sub` because we can get it from `phi`.
+And, as a result we have **2** more functions in stdlib where our pass was recognized!
 
 ### Tests
 
