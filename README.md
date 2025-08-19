@@ -327,11 +327,17 @@ it will always have `icmp` block as a pred.
 Instead, we choose a path where we always know about `sub` because we can get it from `phi`.
 And, as a result we have **1** more function in stdlib where our pass was recognized!
 
+# UPD 1.8
+Passed _URunner full test-suite_. Info about running urunner is [here](https://gitee.com/openharmony/arkcompiler_runtime_core/blob/OpenHarmony_feature_20250702/static_core/tests/tests-u-runner/readme.md)
+Passed _ninja tests_ on build-host.
+Passing _ninja tests_ on build-cross (qemu is really slow :( ).
+
 ### Tests
 
 - Tests for this pass are located [here](./tests/div.cpp)
 
 Send issues if you have some ideas on new tests, cuz now I got only 3 :(
+
 
 
 
