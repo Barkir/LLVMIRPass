@@ -49,7 +49,7 @@ bool ReplaceAArch64SDiv(Instruction *SDivInstr, Function *F) {
 
 void printArgumentTypes(llvm::Function *F) {
     for (llvm::Argument& Arg : F->args()) {
-        llvm::Type* ArgType = Arg.getType();
+        llvm::Type *ArgType = Arg.getType();
         errs() << Arg << " type is: " << *ArgType << "\n";
     }
 }
@@ -58,22 +58,26 @@ void printArgumentTypes(llvm::Function *F) {
 // Returns
 //          nullptr           if false
 //          comparing operand if true
-bool ContainsInOperand(Instruction * I, const int value)
+bool ContainsInOperand(Instruction *I, Value *variable, const int value)
 {
     int numOper = I->getNumOperands();
+    bool res = false;
     for (int i = 0; i < numOper; i++) {
-        auto *oper = dyn_cast<ConstantInt>(I->getOperand(i));
-        if (oper) {
+        auto *oper  = I->getOperand(i);
+        auto *oper2int = dyn_cast<ConstantInt>(oper);
+        if (oper2int && oper2int->getSExtValue() == value) {
             BARK_DEBUG(errs() << "oper #" << i << ": " << *oper << " ");
             BARK_DEBUG(errs() << "comaped to value " << value << ":" << (oper->getSExtValue() == value) << "\n");
+            res = true;
         }
-        if (oper && oper->getSExtValue() == value) {
-            BARK_DEBUG(errs() << "returning true" << "\n");
-            return true;
+        else if (oper == variable){
+            BARK_DEBUG(errs() << "oper equals to 1st arg" << *variable << "\n");
+            res = true
         }
+
     }
 
-    return false;
+    return res;
 }
 
 Value* CheckMinusOneOperands(Instruction *I)
@@ -234,7 +238,7 @@ bool TransformICmpAndUsers(Instruction *ICmp, BasicBlock *SDivBlock, BasicBlock 
     for (auto *User : ICmp->users()) {
                                                                                                                                                                                 BARK_DEBUG(errs() << ">> " << *User << "\n");
         if (auto *BI = dyn_cast<BranchInst>(User)) {
-            auto * BranchBlock = BI->getParent();                                                                                                                               BARK_DEBUG(errs() << "Instruction is located in basic block " << *BranchBlock << "\n");
+            auto *BranchBlock = BI->getParent();                                                                                                                               BARK_DEBUG(errs() << "Instruction is located in basic block " << *BranchBlock << "\n");
             if (isBranchPatternValid(BI, SubZeroBlock, SDivBlock)){
 
                                                                                                                                                                                 BARK_DEBUG(errs() << "SubZeroBlock and SDivBlock is in condition!" << "\n");
@@ -383,7 +387,9 @@ llvm::PreservedAnalyses SDivConvolution::run(Function &F,
             auto *secondCI = dyn_cast<ICmpInst>(TermInstr->getOperand(1));                                                                                          BARK_DEBUG(errs() << "second operand is" << *secondCI  << "\n");
 
             if (firstCI && secondCI) {
-                if ((ContainsInOperand(firstCI, -1) && ContainsInOperand(secondCI, INT_MIN)) || (ContainsInOperand(firstCI, INT_MIN) && ContainsInOperand(secondCI, -1))) {
+                if ((ContainsInOperand(firstCI, SDivInstr->getOperand(1), -1) && ContainsInOperand(secondCI, SDivInstr->getOperand(0), INT_MIN)) ||
+                (ContainsInOperand(firstCI, SDivInstr->getOperand(0), INT_MIN) && ContainsInOperand(secondCI, SDivInstr->getOperand(1), -1))) {
+
                     BARK_DEBUG(errs() << "Found pattern with -1 and INT_MIN" << "\n");
                     // Next we need to check if sdiv block and entry block have the same successor
                     // Next we check if there is a phi-node and delete the INT_MIN value from it
