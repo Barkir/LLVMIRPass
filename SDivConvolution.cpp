@@ -20,7 +20,7 @@
 #include "llvm_ark_interface.h"
 #include "transforms/transform_utils.h"
 
-// #define DEBUG_BARKIR
+#define DEBUG_BARKIR
 
 #ifdef DEBUG_BARKIR
 #define BARK_DEBUG(code) code
@@ -272,7 +272,17 @@ Instruction* FindPhiInSuccessor(BasicBlock *BB) {
     return nullptr;
 }
 
-Instruction *GetSubInstrFromPhi(Instruction *PhiInstr) {
+Instruction* FindPhiInUses(Instruction *Instr) {
+
+    for (auto *User : Instr->users()) {
+        auto *PhiInstr = dyn_cast<Instruction>(User);
+        if (PhiInstr && PhiInstr->getOpcode() == Instruction::PHI)
+            return PhiInstr;
+    }
+    return nullptr;
+}
+
+Instruction* GetSubInstrFromPhi(Instruction *PhiInstr) {
     PHINode *PhiInstrCasted = dyn_cast<PHINode>(PhiInstr);
     uint64_t numVal = PhiInstrCasted->getNumIncomingValues();
 
@@ -351,8 +361,8 @@ llvm::PreservedAnalyses SDivConvolution::run(Function &F,
             // 3. check if sub value is the one in sdiv
             // 4. drop this value <3
 
-            auto *PhiInstr = FindPhiInSuccessor(&BB);
-            BARK_DEBUG(errs() << "Found Phi in Successor " << *PhiInstr << "\n");
+            auto *PhiInstr = FindPhiInUses(SDivInstr);
+            BARK_DEBUG(errs() << "Found Phi in uses aof sdiv " << *PhiInstr << "\n");
             if (PhiInstr) {
                 auto *SubInstr = GetSubInstrFromPhi(PhiInstr);
                 BARK_DEBUG(errs() << "Got Sub instr from phi " << *SubInstr << "\n");
@@ -362,13 +372,12 @@ llvm::PreservedAnalyses SDivConvolution::run(Function &F,
                     ReplaceInstWithInst(PhiInstr, clonedSDiv);
                     BARK_DEBUG(errs() << "replaced phi instruction with sdiv" << *(BB.getSingleSuccessor()) << "\n");
                     ReplaceAArch64SDiv(SDivInstr, &F);
+                    BARK_DEBUG(errs() << "replaced sdiv with aarch64_sdiv" << BB << "\n");
                     errs() << "SDivConvolution PASSED! >__< :: function -> " << F.getName() << "\n";
                     return PreservedAnalyses::all();
                 }
             }
-        } // end of condition with ICmp instruction
-
-        else if (TermInstr && TermInstr->getOpcode() == Instruction::And) {
+        } else if (TermInstr && TermInstr->getOpcode() == Instruction::And) {
             BARK_DEBUG(errs() << "Got and instruction!" << "\n");
             auto *firstCI =  dyn_cast<ICmpInst>(TermInstr->getOperand(0));                                                                                          BARK_DEBUG(errs() << "first operand is"  << *firstCI  << "\n");
             auto *secondCI = dyn_cast<ICmpInst>(TermInstr->getOperand(1));                                                                                          BARK_DEBUG(errs() << "second operand is" << *secondCI  << "\n");
