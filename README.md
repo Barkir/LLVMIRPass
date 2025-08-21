@@ -329,8 +329,19 @@ And, as a result we have **1** more function in stdlib where our pass was recogn
 
 # UPD 1.8
 Passed _URunner full test-suite_. Info about running urunner is [here](https://gitee.com/openharmony/arkcompiler_runtime_core/blob/OpenHarmony_feature_20250702/static_core/tests/tests-u-runner/readme.md)
+
 Passed _ninja tests_ on build-host.
-Passing _ninja tests_ on build-cross (qemu is really slow :( ).
+
+Passed _ninja tests_ on build-cross (QEMU).
+
+# UPD 1.9
+There's an idea to generalize the whole algorithm of finding an appropriate pattern using recursion.
+It is shown in the picture below:
+![img](./img/GeneralizingAlgo.png)
+
+
+We can have any number of `and` and `icmp` instructions but generally we need to tick only some of them that we actually need to proof that this is the pattern we want.
+
 
 ### Tests
 
