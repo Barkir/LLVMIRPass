@@ -63,23 +63,25 @@ void printArgumentTypes(llvm::Function *F) {
 ///     false otherwise
 bool ContainsInOperand(Instruction *I, Value *variable, const int value) {
     int numOper = I->getNumOperands();
-    bool res = false;
+    bool valueCond = false;
+    bool operCond = false;
+
     for (int i = 0; i < numOper; i++) {
         auto *oper  = I->getOperand(i);
         auto *oper2int = dyn_cast<ConstantInt>(oper);
         if (oper2int && oper2int->getSExtValue() == value) {
             BARK_DEBUG(errs() << "oper #" << i << ": " << *oper << " ");
             BARK_DEBUG(errs() << "compared to value " << value << ":" << oper2int->getSExtValue() << "\n");
-            res = true;
+            operCond = true;
         }
         else if (variable && oper == variable){
             BARK_DEBUG(errs() << "oper equals to 1st arg" << *variable << "\n");
-            res = true;
+            valueCond = true;
         }
 
     }
 
-    return res;
+    return (!value && operCond) || (valueCond && operCond);
 }
 
 /// Function for checking if PHINode contains 'value'
@@ -125,11 +127,14 @@ void clearBasicBlock(BasicBlock *BB) {
 /// Function for finding PhiNode in users of the other instruction
 PHINode* FindPhiInUses(Instruction *Instr) {
 
-    for (auto *User : Instr->users()) {
-        auto *PhiInstr = dyn_cast<Instruction>(User);
-        if (PhiInstr && PhiInstr->getOpcode() == Instruction::PHI) {
-            auto *PhiInstrCasted = dyn_cast<PHINode>(PhiInstr);
-            return PhiInstrCasted;
+    if (Instr->getNumUses() == 1)
+    {
+        for (auto *User : Instr->users()) {
+            auto *PhiInstr = dyn_cast<Instruction>(User);
+            if (PhiInstr && PhiInstr->getOpcode() == Instruction::PHI) {
+                auto *PhiInstrCasted = dyn_cast<PHINode>(PhiInstr);
+                return PhiInstrCasted;
+            }
         }
     }
     return nullptr;
@@ -209,6 +214,7 @@ llvm::PreservedAnalyses SDivConvolution::run(Function &F,
             continue;
         BARK_DEBUG(errs() << "Found SDiv! " << *SDivInstr << "\n");
 
+        auto *firstOperand = SDivInstr->getOperand(0);
         auto *secondOperand = SDivInstr->getOperand(1);
         auto *BP = BB.getSinglePredecessor();
         if (!BP)
@@ -247,8 +253,8 @@ llvm::PreservedAnalyses SDivConvolution::run(Function &F,
                 BARK_DEBUG(errs() << "first operand is"  << *firstCI  << "\n");
                 BARK_DEBUG(errs() << "second operand is" << *secondCI  << "\n");
 
-                if ((ContainsInOperand(firstCI, SDivInstr->getOperand(1), -1) && ContainsInOperand(secondCI, SDivInstr->getOperand(0), INT_MIN)) ||
-                (ContainsInOperand(firstCI, SDivInstr->getOperand(0), INT_MIN) && ContainsInOperand(secondCI, SDivInstr->getOperand(1), -1))) {
+                if ((ContainsInOperand(firstCI, secondOperand, -1) && ContainsInOperand(secondCI, firstOperand, INT_MIN)) ||
+                (ContainsInOperand(firstCI, firstOperand, INT_MIN) && ContainsInOperand(secondCI, secondOperand, -1))) {
                     if (FinalTransform(SDivInstr, &F, &BB))
                         return PreservedAnalyses::all();
                 }
