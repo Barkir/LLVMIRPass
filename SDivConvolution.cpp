@@ -311,6 +311,23 @@ bool SubInstrAppropriate(Instruction *SubInstr, Instruction *SDivInstr) {
     return (SubInstr->getOperand(1) == SDivInstr->getOperand(0) || SubInstr->getOperand(1) == SDivInstr->getOperand(1));
 }
 
+bool FinalTransform(Instruction *SDivInstr, Function *F, BasicBlock *BB) {
+    auto *PhiInstr = FindPhiInUses(SDivInstr);
+    if (PhiInstr) {
+        BARK_DEBUG(errs() << "Found Phi in uses of sdiv " << *PhiInstr << "\n");
+        if (ContainsInPhi(PhiInstr, INT_MIN)) {
+            auto *clonedSDiv = SDivInstr->clone();
+            ReplaceInstWithInst(PhiInstr, clonedSDiv);
+            BARK_DEBUG(errs() << "replaced phi instruction with sdiv" << *(BB.getSingleSuccessor()) << "\n");
+            ReplaceAArch64SDiv(SDivInstr, &F);
+            BARK_DEBUG(errs() << "replaced sdiv with aarch64_sdiv" << BB << "\n");
+            errs() << "SDivConvolution PASSED! >__< :: function -> " << F.getName() << "\n";
+            return true;
+        }
+    }
+    return false;
+}
+
 llvm::PreservedAnalyses SDivConvolution::run(Function &F,
                                           FunctionAnalysisManager &AM) {
     // Handling -disable-divtointrinsic cl flag
@@ -365,55 +382,23 @@ llvm::PreservedAnalyses SDivConvolution::run(Function &F,
                 return PreservedAnalyses::none();
             }
 
-            // algorithm
-            // 1. find phi instruction of a successor
-            // 2. get the sub value
-            // 3. check if sub value is the one in sdiv
-            // 4. drop this value <3
+            if (FinalTransform(SDivInstr, &F, BB))
+                return PreservedAnalyses::all();
 
-            auto *PhiInstr = FindPhiInUses(SDivInstr);
-            if (PhiInstr) {
-                BARK_DEBUG(errs() << "Found Phi in uses aof sdiv " << *PhiInstr << "\n");
-                auto *SubInstr = GetSubInstrFromPhi(PhiInstr);
-                BARK_DEBUG(errs() << "Got Sub instr from phi " << *SubInstr << "\n");
-                if (SubInstrAppropriate(SubInstr, SDivInstr)) {
-                    BARK_DEBUG(errs() << "SubInstruction is appropriate!" << "\n");
-                    auto *clonedSDiv = SDivInstr->clone();
-                    ReplaceInstWithInst(PhiInstr, clonedSDiv);
-                    BARK_DEBUG(errs() << "replaced phi instruction with sdiv" << *(BB.getSingleSuccessor()) << "\n");
-                    ReplaceAArch64SDiv(SDivInstr, &F);
-                    BARK_DEBUG(errs() << "replaced sdiv with aarch64_sdiv" << BB << "\n");
-                    errs() << "SDivConvolution PASSED! >__< :: function -> " << F.getName() << "\n";
-                    return PreservedAnalyses::all();
-                }
-            }
         } else if (TermInstr && TermInstr->getOpcode() == Instruction::And) {
             BARK_DEBUG(errs() << "Got and instruction!" << "\n");
-            auto *firstCI =  dyn_cast<ICmpInst>(TermInstr->getOperand(0));                                                                                          BARK_DEBUG(errs() << "first operand is"  << *firstCI  << "\n");
-            auto *secondCI = dyn_cast<ICmpInst>(TermInstr->getOperand(1));                                                                                          BARK_DEBUG(errs() << "second operand is" << *secondCI  << "\n");
+            auto *firstCI =  dyn_cast<ICmpInst>(TermInstr->getOperand(0));
+            auto *secondCI = dyn_cast<ICmpInst>(TermInstr->getOperand(1));
 
             if (firstCI && secondCI) {
+
+                BARK_DEBUG(errs() << "first operand is"  << *firstCI  << "\n");
+                BARK_DEBUG(errs() << "second operand is" << *secondCI  << "\n");
+
                 if ((ContainsInOperand(firstCI, SDivInstr->getOperand(1), -1) && ContainsInOperand(secondCI, SDivInstr->getOperand(0), INT_MIN)) ||
                 (ContainsInOperand(firstCI, SDivInstr->getOperand(0), INT_MIN) && ContainsInOperand(secondCI, SDivInstr->getOperand(1), -1))) {
-
-                    // algorithm
-                    // 1. Find phi instruction form uses
-                    // 2. find int min there
-                    // 3. replace phi instruction with sDiv
-
-                    auto *PhiInstr = FindPhiInUses(SDivInstr);
-                    if (PhiInstr) {
-                        BARK_DEBUG(errs() << "Found Phi in uses of sdiv " << *PhiInstr << "\n");
-                        if (ContainsInPhi(PhiInstr, INT_MIN)) {
-                            auto *clonedSDiv = SDivInstr->clone();
-                            ReplaceInstWithInst(PhiInstr, clonedSDiv);
-                            BARK_DEBUG(errs() << "replaced phi instruction with sdiv" << *(BB.getSingleSuccessor()) << "\n");
-                            ReplaceAArch64SDiv(SDivInstr, &F);
-                            BARK_DEBUG(errs() << "replaced sdiv with aarch64_sdiv" << BB << "\n");
-                            errs() << "SDivConvolution PASSED! >__< :: function -> " << F.getName() << "\n";
-                            return PreservedAnalyses::all();
-                        }
-                    }
+                    if (FinalTransform(SDivInstr, &F, BB))
+                        return PreservedAnalyses::all();
                 }
             }
         }  // end of condition with And instruction
