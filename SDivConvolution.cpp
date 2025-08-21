@@ -69,7 +69,7 @@ bool ContainsInOperand(Instruction *I, Value *variable, const int value) {
             BARK_DEBUG(errs() << "compared to value " << value << ":" << oper2int->getSExtValue() << "\n");
             res = true;
         }
-        else if (oper == variable){
+        else if (variable && oper == variable){
             BARK_DEBUG(errs() << "oper equals to 1st arg" << *variable << "\n");
             res = true;
         }
@@ -315,13 +315,15 @@ bool FinalTransform(Instruction *SDivInstr, Function *F, BasicBlock *BB) {
     auto *PhiInstr = FindPhiInUses(SDivInstr);
     if (PhiInstr) {
         BARK_DEBUG(errs() << "Found Phi in uses of sdiv " << *PhiInstr << "\n");
-        if (ContainsInPhi(PhiInstr, INT_MIN)) {
+        auto *SubInstr = GetSubInstrFromPhi(PhiInstr);
+        if ((!SubInstr && ContainsInPhi(PhiInstr, INT_MIN)) ||
+        (SubInstr && SubInstrAppropriate(SubInstr, SDivInstr))) {
             auto *clonedSDiv = SDivInstr->clone();
             ReplaceInstWithInst(PhiInstr, clonedSDiv);
-            BARK_DEBUG(errs() << "replaced phi instruction with sdiv" << *(BB.getSingleSuccessor()) << "\n");
-            ReplaceAArch64SDiv(SDivInstr, &F);
+            BARK_DEBUG(errs() << "replaced phi instruction with sdiv" << *(BB->getSingleSuccessor()) << "\n");
+            ReplaceAArch64SDiv(SDivInstr, F);
             BARK_DEBUG(errs() << "replaced sdiv with aarch64_sdiv" << BB << "\n");
-            errs() << "SDivConvolution PASSED! >__< :: function -> " << F.getName() << "\n";
+            errs() << "SDivConvolution PASSED! >__< :: function -> " << F->getName() << "\n";
             return true;
         }
     }
@@ -330,63 +332,60 @@ bool FinalTransform(Instruction *SDivInstr, Function *F, BasicBlock *BB) {
 
 llvm::PreservedAnalyses SDivConvolution::run(Function &F,
                                           FunctionAnalysisManager &AM) {
-    // Handling -disable-divtointrinsic cl flag
-    // if (DisableDivToIntrinsicPass) {
-    //     errs() << "DivToIntrinsicPass disabled" << "\n";
-    //     return PreservedAnalyses::all();
-    // }
-    // errs() << "Starting pass..." << "\n";
-    Value *ICmpOp = nullptr;
 
     Module *M = F.getParent();
-    if (!M) {                                                                                                                                                           BARK_DEBUG(errs() << "Function is not a part of a module!" << "\n");
+    if (!M) {
+        BARK_DEBUG(errs() << "Function is not a part of a module!" << "\n");
         return PreservedAnalyses::none();
     }
 
-    // Here we get current architecture.
-    // This pass is specialized for arm architecture.
-    // if the architectures don't match, the pass won't go further
+    /// This pass is specialized for arm architecture.
+    /// if the architectures don't match, the pass won't go further
     StringRef TargetTriple = M->getTargetTriple();
     bool isARM = TargetTriple.contains("arm") || TargetTriple.contains("aarch64");
-
-    if (!isARM) {                                                                                                                                                       BARK_DEBUG(errs() << "Architecture doesт't match the pass" << "\n");
+    if (!isARM) {
+        BARK_DEBUG(errs() << "Architecture doesn't match the pass" << "\n");
         return PreservedAnalyses::none();
     }
 
-    for (auto &BB : F) {                                                                                                                                                BARK_DEBUG(errs() << "Running cycle... now block is -> -> ->" << BB << "\n");
+    for (auto &BB : F) {
+        BARK_DEBUG(errs() << "Running cycle... the block is -> -> ->" << BB << "\n");
+
         auto *SDivInstr = FindSDiv(&BB);
         if (!SDivInstr)
             continue;
-        // auto *firstOperand  = SDivInstr->getOperand(0);
-                                                                                                                                                                        BARK_DEBUG(errs() << "Found SDiv! " << *SDivInstr << "\n");
+        BARK_DEBUG(errs() << "Found SDiv! " << *SDivInstr << "\n");
+
         auto *secondOperand = SDivInstr->getOperand(1);
         auto *BP = BB.getSinglePredecessor();
         if (!BP)
             return PreservedAnalyses::none();
-                                                                                                                                                                        BARK_DEBUG(errs() << "SDiv got predecessor " << *BP << "\n");
+        BARK_DEBUG(errs() << "SDiv got predecessor " << *BP << "\n");
+
         auto *Term = BP->getTerminator();
         auto *BI = dyn_cast<BranchInst>(Term);
         if (!BI || !BI->isConditional()) {
             return PreservedAnalyses::none();
         }
-                                                                                                                                                                        BARK_DEBUG(errs() << "SDiv's parent block is conditional!" << "\n");
-        Value *Cond = BI->getCondition();                                                                                                                               BARK_DEBUG(errs() << "ICmp is " << *Cond << "\n");
+        BARK_DEBUG(errs() << "SDiv's parent block is conditional!" << "\n");
+
+        Value *Cond = BI->getCondition();
+        BARK_DEBUG(errs() << "Condition is " << *Cond << "\n");
 
         auto * TermInstr = dyn_cast<Instruction>(Cond);
         if (TermInstr && TermInstr->getOpcode() == Instruction::ICmp) {
-
-            // Here we check if there is -1 in comparsion and
+            // Check if there is -1 in comparsion and
             // register in icmp equals to divisor in sdiv instruction
-            ICmpOp = CheckMinusOneOperands(TermInstr);
-            if (!ICmpOp || (ICmpOp != secondOperand)) {
-                return PreservedAnalyses::none();
+            if (ContainsInOperand(TermInstr, secondOperand, -1))
+            {
+                BARK_DEBUG(errs() << "-1 and " << *secondOperand << "containing in " << *TermInstr << "\n");
+                if (FinalTransform(SDivInstr, &F, &BB))
+                    return PreservedAnalyses::all();
             }
-
-            if (FinalTransform(SDivInstr, &F, BB))
-                return PreservedAnalyses::all();
 
         } else if (TermInstr && TermInstr->getOpcode() == Instruction::And) {
             BARK_DEBUG(errs() << "Got and instruction!" << "\n");
+
             auto *firstCI =  dyn_cast<ICmpInst>(TermInstr->getOperand(0));
             auto *secondCI = dyn_cast<ICmpInst>(TermInstr->getOperand(1));
 
@@ -397,7 +396,7 @@ llvm::PreservedAnalyses SDivConvolution::run(Function &F,
 
                 if ((ContainsInOperand(firstCI, SDivInstr->getOperand(1), -1) && ContainsInOperand(secondCI, SDivInstr->getOperand(0), INT_MIN)) ||
                 (ContainsInOperand(firstCI, SDivInstr->getOperand(0), INT_MIN) && ContainsInOperand(secondCI, SDivInstr->getOperand(1), -1))) {
-                    if (FinalTransform(SDivInstr, &F, BB))
+                    if (FinalTransform(SDivInstr, &F, &BB))
                         return PreservedAnalyses::all();
                 }
             }
