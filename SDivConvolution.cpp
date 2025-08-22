@@ -20,7 +20,7 @@
 #include "llvm_ark_interface.h"
 #include "transforms/transform_utils.h"
 
-#define DEBUG_BARKIR
+// #define DEBUG_BARKIR
 
 #ifdef DEBUG_BARKIR
 #define BARK_DEBUG(code) code
@@ -188,6 +188,76 @@ bool FinalTransform(Instruction *SDivInstr, Function *F, BasicBlock *BB) {
     return false;
 }
 
+void PrintRecursively(const char *word, uint32_t level) {
+        for (uint32_t i = 0; i < level; i++)
+            errs() << "\t";
+        errs() << word << "\n";
+}
+
+Instruction *getSingleUser(Value *val) {
+    int numUses = val->getNumUses();
+    if (numUses == 1) {
+        for (auto *User : val->users()) {
+            auto *castedUser = dyn_cast<Instruction>(User);
+            return castedUser;
+        }
+    }
+
+    return nullptr;
+}
+
+Instruction *getUserByNumber(Value *val, uint32_t num) {
+    if (!val)
+        return nullptr;
+
+    uint32_t numUses = val->getNumUses();
+    errs() << "\t\t" << "value: " << *val << "|" << "users: " << numUses << "\n";
+    if (numUses < num)
+        return nullptr;
+
+    uint32_t cnt = 0;
+    for (auto *User : val->users()) {
+        if (cnt == num) {
+            auto *castedUser = dyn_cast<Instruction>(User);
+            return castedUser;
+        }
+        cnt++;
+    }
+
+    return nullptr;
+}
+
+/// This a function for recursive searching of icmp
+/// It goes from the top of the tree (can be `and` instruction or `icmp` as well)
+///
+///    here's how it looks like
+///
+///           and
+///          /    \
+///        and     and
+///       /  \    /  \
+///     icmp and icmp icmp
+///
+/// if `and` -> go deeper
+/// else if `icmp` -> stop and search for correct pattern
+/// else -> do nothing
+bool RecursiveICmpSearch(Instruction *StartOp, uint32_t level) {
+    if (!StartOp)
+        return false;
+
+    if (StartOp->getOpcode() == Instruction::And) {
+        PrintRecursively("and", level);
+        RecursiveICmpSearch(getSingleUser(StartOp->getOperand(0)), level+1);
+        RecursiveICmpSearch(getSingleUser(StartOp->getOperand(1)), level+1);
+    }
+
+    else if (StartOp->getOpcode() == Instruction::ICmp) {
+        PrintRecursively("icmp", level);
+        return true;
+    }
+    return true;
+}
+
 llvm::PreservedAnalyses SDivConvolution::run(Function &F,
                                           FunctionAnalysisManager &AM) {
 
@@ -209,10 +279,21 @@ llvm::PreservedAnalyses SDivConvolution::run(Function &F,
     for (auto &BB : F) {
         BARK_DEBUG(errs() << "Running cycle... the block is -> -> ->" << BB << "\n");
 
+        for (auto &I : BB) {
+            RecursiveICmpSearch(&I, 0);
+        }
+
         auto *SDivInstr = FindSDiv(&BB);
         if (!SDivInstr)
             continue;
         BARK_DEBUG(errs() << "Found SDiv! " << *SDivInstr << "\n");
+
+        /// brief-plan on rewwriting this code.
+        /// after finding SDivInstr we call RecursiveICmpSearch.
+        /// for the -1 branch we check if icmp has this pattern
+        /// icmp %sdiv_second_operand, -1
+        /// for the INT_MIN branch we check if those patterns
+        /// icmp %sdiv_second_operand, -1 && icmp %sdiv_first_operand, INT_MIN
 
         auto *firstOperand = SDivInstr->getOperand(0);
         auto *secondOperand = SDivInstr->getOperand(1);
@@ -264,6 +345,5 @@ llvm::PreservedAnalyses SDivConvolution::run(Function &F,
 
     return PreservedAnalyses::none();
 }
-
 
 }
