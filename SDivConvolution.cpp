@@ -20,7 +20,7 @@
 #include "llvm_ark_interface.h"
 #include "transforms/transform_utils.h"
 
-// #define DEBUG_BARKIR
+#define DEBUG_BARKIR
 
 #ifdef DEBUG_BARKIR
 #define BARK_DEBUG(code) code
@@ -196,6 +196,7 @@ void PrintRecursively(const char *word, uint32_t level) {
 
 Instruction *getSingleUser(Value *val) {
     int numUses = val->getNumUses();
+    errs() << "Value : " << *val << " got " << numUses << " uses." << "\n";
     if (numUses == 1) {
         for (auto *User : val->users()) {
             auto *castedUser = dyn_cast<Instruction>(User);
@@ -206,20 +207,18 @@ Instruction *getSingleUser(Value *val) {
     return nullptr;
 }
 
-Instruction *getUserByNumber(Value *val, uint32_t num) {
+Instruction *getUserByNumber(Instruction *StartOp, Value *val, uint32_t num, uint32_t numUses) {
     if (!val)
         return nullptr;
 
-    uint32_t numUses = val->getNumUses();
     errs() << "\t\t" << "value: " << *val << "|" << "users: " << numUses << "\n";
-    if (numUses < num)
-        return nullptr;
-
     uint32_t cnt = 0;
     for (auto *User : val->users()) {
+        errs() << "user " << cnt << " : " << *User << "\n";
         if (cnt == num) {
             auto *castedUser = dyn_cast<Instruction>(User);
-            return castedUser;
+            if (castedUser != StartOp)
+                return castedUser;
         }
         cnt++;
     }
@@ -241,21 +240,37 @@ Instruction *getUserByNumber(Value *val, uint32_t num) {
 /// if `and` -> go deeper
 /// else if `icmp` -> stop and search for correct pattern
 /// else -> do nothing
-bool RecursiveICmpSearch(Instruction *StartOp, uint32_t level) {
+bool funcRecursiveICmpSearch(Instruction *StartOp, Value *val, const int32_t num, uint32_t level) {
     if (!StartOp)
         return false;
 
-    if (StartOp->getOpcode() == Instruction::And) {
-        PrintRecursively("and", level);
-        RecursiveICmpSearch(getSingleUser(StartOp->getOperand(0)), level+1);
-        RecursiveICmpSearch(getSingleUser(StartOp->getOperand(1)), level+1);
-    }
+    if (StartOp->getOpcode() == Instruction::ICmp) {
+        // PrintRecursively("icmp", level);
+        errs() << "Got icmp in recursion -> " << *StartOp << "\n";
+        return ContainsInOperand(StartOp, val, num);
+    } else if (StartOp->getOpcode() == Instruction::And || StartOp->getOpcode() == Instruction::SDiv) {
+        // PrintRecursively("and", level);
+        uint32_t numUses1 = StartOp->getOperand(0)->getNumUses();
+        for (uint32_t cntUses = 0; cntUses < numUses1; cntUses++) {
+            if (funcRecursiveICmpSearch(getUserByNumber(StartOp, StartOp->getOperand(0), cntUses, numUses1), val, num, level+1))
+                return true;
+        }
 
-    else if (StartOp->getOpcode() == Instruction::ICmp) {
-        PrintRecursively("icmp", level);
-        return true;
+        uint32_t numUses2 = StartOp->getOperand(1)->getNumUses();
+        for (uint32_t cntUses = 0; cntUses < numUses2; cntUses++) {
+            if (funcRecursiveICmpSearch(getUserByNumber(StartOp, StartOp->getOperand(1), cntUses, numUses2), val, num, level+1))
+                return true;
+        }
     }
-    return true;
+    return false;
+}
+
+bool RecursiveICmpSearch(Instruction *StartOp, Value *val, const int32_t num) {
+    errs() << "Starting recursive icmp search!" << "\n";
+    errs() << "StartOp = " << *StartOp << " : Value = " << *val << " : Num = " << num << "\n";
+
+    return funcRecursiveICmpSearch(StartOp, val, num, 0);
+
 }
 
 llvm::PreservedAnalyses SDivConvolution::run(Function &F,
@@ -279,14 +294,13 @@ llvm::PreservedAnalyses SDivConvolution::run(Function &F,
     for (auto &BB : F) {
         BARK_DEBUG(errs() << "Running cycle... the block is -> -> ->" << BB << "\n");
 
-        for (auto &I : BB) {
-            RecursiveICmpSearch(&I, 0);
-        }
-
         auto *SDivInstr = FindSDiv(&BB);
         if (!SDivInstr)
             continue;
         BARK_DEBUG(errs() << "Found SDiv! " << *SDivInstr << "\n");
+
+        auto *firstOperand = SDivInstr->getOperand(0);
+        auto *secondOperand = SDivInstr->getOperand(1);
 
         /// brief-plan on rewwriting this code.
         /// after finding SDivInstr we call RecursiveICmpSearch.
@@ -295,52 +309,13 @@ llvm::PreservedAnalyses SDivConvolution::run(Function &F,
         /// for the INT_MIN branch we check if those patterns
         /// icmp %sdiv_second_operand, -1 && icmp %sdiv_first_operand, INT_MIN
 
-        auto *firstOperand = SDivInstr->getOperand(0);
-        auto *secondOperand = SDivInstr->getOperand(1);
-        auto *BP = BB.getSinglePredecessor();
-        if (!BP)
-            return PreservedAnalyses::none();
-        BARK_DEBUG(errs() << "SDiv got predecessor " << *BP << "\n");
-
-        auto *Term = BP->getTerminator();
-        auto *BI = dyn_cast<BranchInst>(Term);
-        if (!BI || !BI->isConditional()) {
-            return PreservedAnalyses::none();
+        if (RecursiveICmpSearch(SDivInstr, secondOperand, -1)) {
+            if (FinalTransform(SDivInstr, &F, &BB))
+                return PreservedAnalyses::all();
+        } else if (RecursiveICmpSearch(SDivInstr, firstOperand, INT_MIN) && RecursiveICmpSearch(SDivInstr, secondOperand, -1)) {
+            if (FinalTransform(SDivInstr, &F, &BB))
+                return PreservedAnalyses::all();
         }
-        BARK_DEBUG(errs() << "SDiv's parent block is conditional!" << "\n");
-
-        Value *Cond = BI->getCondition();
-        BARK_DEBUG(errs() << "Condition is " << *Cond << "\n");
-
-        auto * TermInstr = dyn_cast<Instruction>(Cond);
-        if (TermInstr && TermInstr->getOpcode() == Instruction::ICmp) {
-            // Check if there is -1 in comparsion and
-            // register in icmp equals to divisor in sdiv instruction
-            if (ContainsInOperand(TermInstr, secondOperand, -1))
-            {
-                BARK_DEBUG(errs() << "-1 and " << *secondOperand << "containing in " << *TermInstr << "\n");
-                if (FinalTransform(SDivInstr, &F, &BB))
-                    return PreservedAnalyses::all();
-            }
-
-        } else if (TermInstr && TermInstr->getOpcode() == Instruction::And) {
-            BARK_DEBUG(errs() << "Got and instruction!" << "\n");
-
-            auto *firstCI =  dyn_cast<ICmpInst>(TermInstr->getOperand(0));
-            auto *secondCI = dyn_cast<ICmpInst>(TermInstr->getOperand(1));
-
-            if (firstCI && secondCI) {
-
-                BARK_DEBUG(errs() << "first operand is"  << *firstCI  << "\n");
-                BARK_DEBUG(errs() << "second operand is" << *secondCI  << "\n");
-
-                if ((ContainsInOperand(firstCI, secondOperand, -1) && ContainsInOperand(secondCI, firstOperand, INT_MIN)) ||
-                (ContainsInOperand(firstCI, firstOperand, INT_MIN) && ContainsInOperand(secondCI, secondOperand, -1))) {
-                    if (FinalTransform(SDivInstr, &F, &BB))
-                        return PreservedAnalyses::all();
-                }
-            }
-        }  // end of condition with And instruction
     } // end of basic blocks cycle
 
     return PreservedAnalyses::none();
