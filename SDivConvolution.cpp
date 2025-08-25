@@ -302,7 +302,7 @@ llvm::PreservedAnalyses SDivConvolution::run(Function &F,
         auto *firstOperand = SDivInstr->getOperand(0);
         auto *secondOperand = SDivInstr->getOperand(1);
 
-        /// brief-plan on rewwriting this code.
+        /// brief-plan on rewriting this code.
         /// after finding SDivInstr we call RecursiveICmpSearch.
         /// for the -1 branch we check if icmp has this pattern
         /// icmp %sdiv_second_operand, -1
