@@ -20,7 +20,7 @@
 #include "llvm_ark_interface.h"
 #include "transforms/transform_utils.h"
 
-#define DEBUG_BARKIR
+// #define DEBUG_BARKIR
 
 #ifdef DEBUG_BARKIR
 #define BARK_DEBUG(code) code
@@ -45,13 +45,6 @@ bool ReplaceAArch64SDiv(Instruction *SDivInstr, Function *F) {
     ReplaceInstWithInst(SDivInstr, SDivIntrinsicInstr);
 
     return true;
-}
-
-void printArgumentTypes(llvm::Function *F) {
-    for (llvm::Argument& Arg : F->args()) {
-        llvm::Type *ArgType = Arg.getType();
-        errs() << Arg << " type is: " << *ArgType << "\n";
-    }
 }
 
 /// Function for checking operands of the instruction
@@ -181,7 +174,7 @@ bool FinalTransform(Instruction *SDivInstr, Function *F, BasicBlock *BB) {
             ReplaceAArch64SDiv(SDivInstr, F);
             BARK_DEBUG(errs() << "replaced sdiv with aarch64_sdiv" << BB << "\n");
 
-            errs() << "SDivConvolution PASSED! >__< :: function -> " << F->getName() << "\n";
+            BARK_DEBUG(errs() << "SDivConvolution PASSED! >__< :: function -> " << F->getName() << "\n");
             return true;
         }
     }
@@ -191,12 +184,12 @@ bool FinalTransform(Instruction *SDivInstr, Function *F, BasicBlock *BB) {
 void PrintRecursively(const char *word, uint32_t level) {
         for (uint32_t i = 0; i < level; i++)
             errs() << "\t";
-        errs() << word << "\n";
+        errs() << word;
 }
 
 Instruction *getSingleUser(Value *val) {
     int numUses = val->getNumUses();
-    errs() << "Value : " << *val << " got " << numUses << " uses." << "\n";
+    BARK_DEBUG(errs() << "Value : " << *val << " got " << numUses << " uses." << "\n");
     if (numUses == 1) {
         for (auto *User : val->users()) {
             auto *castedUser = dyn_cast<Instruction>(User);
@@ -210,16 +203,18 @@ Instruction *getSingleUser(Value *val) {
 Instruction *getUserByNumber(Instruction *StartOp, Value *val, uint32_t num, uint32_t numUses) {
     if (!val)
         return nullptr;
-
-    errs() << "\t\t" << "value: " << *val << "|" << "users: " << numUses << "\n";
+    BARK_DEBUG(errs() << "==================================================================" << "\n");
+    BARK_DEBUG(errs() << "\t\t" << "value : " << *val << "\n");
     uint32_t cnt = 0;
     for (auto *User : val->users()) {
-        errs() << "user " << cnt << " : " << *User << "\n";
         if (cnt == num) {
+            BARK_DEBUG(errs() << "\t\tuser " << cnt << " : " << *User << "\n");
             auto *castedUser = dyn_cast<Instruction>(User);
             if (castedUser != StartOp)
                 return castedUser;
-        }
+        } else if (cnt > num)
+            break;
+
         cnt++;
     }
 
@@ -246,19 +241,25 @@ bool funcRecursiveICmpSearch(Instruction *StartOp, Value *val, const int32_t num
 
     if (StartOp->getOpcode() == Instruction::ICmp) {
         // PrintRecursively("icmp", level);
-        errs() << "Got icmp in recursion -> " << *StartOp << "\n";
+        PrintRecursively("", level);
+        BARK_DEBUG(errs() << "Got icmp in recursion -> " << *StartOp << "\n");
         return ContainsInOperand(StartOp, val, num);
     } else if (StartOp->getOpcode() == Instruction::And || StartOp->getOpcode() == Instruction::SDiv) {
         // PrintRecursively("and", level);
+        PrintRecursively(" ", level);
+        BARK_DEBUG(errs() << "Got" << *StartOp << " in recursion" << " ::");
         uint32_t numUses1 = StartOp->getOperand(0)->getNumUses();
+        BARK_DEBUG(errs() << *(StartOp->getOperand(0)) << " got " << numUses1 << "     uses" << "\n");
         for (uint32_t cntUses = 0; cntUses < numUses1; cntUses++) {
-            if (funcRecursiveICmpSearch(getUserByNumber(StartOp, StartOp->getOperand(0), cntUses, numUses1), val, num, level+1))
+            auto *userLeft = getUserByNumber(StartOp, StartOp->getOperand(0), cntUses, numUses1);
+            if (funcRecursiveICmpSearch(userLeft, val, num, level+1))
                 return true;
         }
 
         uint32_t numUses2 = StartOp->getOperand(1)->getNumUses();
         for (uint32_t cntUses = 0; cntUses < numUses2; cntUses++) {
-            if (funcRecursiveICmpSearch(getUserByNumber(StartOp, StartOp->getOperand(1), cntUses, numUses2), val, num, level+1))
+            auto *userRight = getUserByNumber(StartOp, StartOp->getOperand(1), cntUses, numUses1);
+            if (funcRecursiveICmpSearch(userRight, val, num, level+1))
                 return true;
         }
     }
@@ -266,8 +267,8 @@ bool funcRecursiveICmpSearch(Instruction *StartOp, Value *val, const int32_t num
 }
 
 bool RecursiveICmpSearch(Instruction *StartOp, Value *val, const int32_t num) {
-    errs() << "Starting recursive icmp search!" << "\n";
-    errs() << "StartOp = " << *StartOp << " : Value = " << *val << " : Num = " << num << "\n";
+    BARK_DEBUG(errs() << "Starting recursive icmp search!" << "\n");
+    BARK_DEBUG(errs() << "StartOp = " << *StartOp << " : Value = " << *val << " : Num = " << num << "\n");
 
     return funcRecursiveICmpSearch(StartOp, val, num, 0);
 
@@ -281,6 +282,8 @@ llvm::PreservedAnalyses SDivConvolution::run(Function &F,
         BARK_DEBUG(errs() << "Function is not a part of a module!" << "\n");
         return PreservedAnalyses::none();
     }
+
+    BARK_DEBUG(errs() << F << "\n");
 
     /// This pass is specialized for arm architecture.
     /// if the architectures don't match, the pass won't go further
@@ -302,7 +305,7 @@ llvm::PreservedAnalyses SDivConvolution::run(Function &F,
         auto *firstOperand = SDivInstr->getOperand(0);
         auto *secondOperand = SDivInstr->getOperand(1);
 
-        /// brief-plan on rewriting this code.
+        /// brief-plan on rewwriting this code.
         /// after finding SDivInstr we call RecursiveICmpSearch.
         /// for the -1 branch we check if icmp has this pattern
         /// icmp %sdiv_second_operand, -1
@@ -318,6 +321,9 @@ llvm::PreservedAnalyses SDivConvolution::run(Function &F,
         }
     } // end of basic blocks cycle
 
+    BARK_DEBUG(errs() << "==================================" << "\n");
+    BARK_DEBUG(errs() << F << "\n");
+    BARK_DEBUG(errs() << "==================================" << "\n");
     return PreservedAnalyses::none();
 }
 
