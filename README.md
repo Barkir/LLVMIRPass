@@ -343,7 +343,8 @@ It is shown in the picture below:
 We can have any number of `and` and `icmp` instructions but generally we need to tick only some of them that we actually need to proof that this is the pattern we want.
 
 # UPD 1.10
-Started writing tests on `ets`. Not all of the tests are passed yet :(
+There are 13 tests in [ets_div.ets](./tests/ets_div.ets). All of them are passed now.
+Tests helped to find `endless recursion case`, it was fixed in previous commits.
 
 
 ### Tests
