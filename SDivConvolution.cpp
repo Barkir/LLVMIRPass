@@ -248,7 +248,6 @@ Instruction *getUserByNumber(Instruction *StartOp, Value *val, uint32_t num, uin
 
 /// WARNING!!!
 /// AND INFINITE RECURSION CASE NOT HANDLED
-/// THIS IS THE CAS
 // WARNING!!!
 
 /// This a function for recursive searching of icmp
