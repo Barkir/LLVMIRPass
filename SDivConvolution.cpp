@@ -95,7 +95,7 @@ bool ContainsInPhi(PHINode *Phi, const int value) {
     }
     return false;
 }
-
+/// Finds only first sdiv !!!
 /// Function for finding SDiv in a basicblock
 Instruction* FindSDiv(BasicBlock *BB) {
     for (auto &I : *BB) {
@@ -133,7 +133,7 @@ PHINode* FindPhiInUses(Instruction *Instr) {
     return nullptr;
 }
 
-/// Function for getting sub instructionf from phi instruction
+/// Function for getting sub instruction from phi instruction
 Instruction* GetSubInstrFromPhi(Instruction *PhiInstr) {
     PHINode *PhiInstrCasted = dyn_cast<PHINode>(PhiInstr);
     uint64_t numVal = PhiInstrCasted->getNumIncomingValues();
@@ -172,6 +172,7 @@ bool FinalTransform(Instruction *SDivInstr, Function *F, BasicBlock *BB) {
             BARK_DEBUG(errs() << "replaced phi instruction with sdiv" << *(BB->getSingleSuccessor()) << "\n");
 
             ReplaceAArch64SDiv(SDivInstr, F);
+            ReplaceAArch64SDiv(clonedSDiv, F);
             BARK_DEBUG(errs() << "replaced sdiv with aarch64_sdiv" << BB << "\n");
 
             BARK_DEBUG(errs() << "SDivConvolution PASSED! >__< :: function -> " << F->getName() << "\n");
@@ -221,6 +222,35 @@ Instruction *getUserByNumber(Instruction *StartOp, Value *val, uint32_t num, uin
     return nullptr;
 }
 
+// std::vector<Value*> findCommonOperands(Instruction *I1, Instruction *I2) {
+//     std::vector<Value*> commonOperands;
+//
+//     std::vector<Value*> operands1;
+//     for (uint32_t i = 0; i < I1->getNumOperands(); i++) {
+//         operands1.push_back(I1->getOperand(i));
+//     }
+//
+//     std::vector<Value*> operands2;
+//     for (uint32_t i = 0; i < I2->getNumOperands(); i++) {
+//         operands1.push_back(I2->getOperand(i));
+//     }
+//
+//     std::sort(operands1.begin(), operands1.end());
+//     std::sort(operands2.begin(), operands2.end());
+//
+//     std::set_intersection(operands1.begin(). operands1.end(),
+//                           operands2.begin(), operands2.end().
+//                           std::back_inserter(commonOperands));
+//
+//     return commonOperands;
+// }
+
+
+/// WARNING!!!
+/// AND INFINITE RECURSION CASE NOT HANDLED
+/// THIS IS THE CAS
+// WARNING!!!
+
 /// This a function for recursive searching of icmp
 /// It goes from the top of the tree (can be `and` instruction or `icmp` as well)
 ///
@@ -244,7 +274,7 @@ bool funcRecursiveICmpSearch(Instruction *StartOp, Value *val, const int32_t num
         PrintRecursively("", level);
         BARK_DEBUG(errs() << "Got icmp in recursion -> " << *StartOp << "\n");
         return ContainsInOperand(StartOp, val, num);
-    } else if (StartOp->getOpcode() == Instruction::And || StartOp->getOpcode() == Instruction::SDiv) {
+    } else if (StartOp->getOpcode() == Instruction::And || (StartOp->getOpcode() == Instruction::SDiv && level == 0)) {
         // PrintRecursively("and", level);
         PrintRecursively(" ", level);
         BARK_DEBUG(errs() << "Got" << *StartOp << " in recursion" << " ::");
@@ -277,6 +307,7 @@ bool RecursiveICmpSearch(Instruction *StartOp, Value *val, const int32_t num) {
 llvm::PreservedAnalyses SDivConvolution::run(Function &F,
                                           FunctionAnalysisManager &AM) {
 
+    bool changed = false;
     Module *M = F.getParent();
     if (!M) {
         BARK_DEBUG(errs() << "Function is not a part of a module!" << "\n");
@@ -305,26 +336,24 @@ llvm::PreservedAnalyses SDivConvolution::run(Function &F,
         auto *firstOperand = SDivInstr->getOperand(0);
         auto *secondOperand = SDivInstr->getOperand(1);
 
-        /// brief-plan on rewwriting this code.
-        /// after finding SDivInstr we call RecursiveICmpSearch.
-        /// for the -1 branch we check if icmp has this pattern
-        /// icmp %sdiv_second_operand, -1
-        /// for the INT_MIN branch we check if those patterns
-        /// icmp %sdiv_second_operand, -1 && icmp %sdiv_first_operand, INT_MIN
-
         if (RecursiveICmpSearch(SDivInstr, secondOperand, -1)) {
-            if (FinalTransform(SDivInstr, &F, &BB))
-                return PreservedAnalyses::all();
+            if (FinalTransform(SDivInstr, &F, &BB)) {
+                changed = true;
+                continue;
+            }
         } else if (RecursiveICmpSearch(SDivInstr, firstOperand, INT_MIN) && RecursiveICmpSearch(SDivInstr, secondOperand, -1)) {
-            if (FinalTransform(SDivInstr, &F, &BB))
-                return PreservedAnalyses::all();
+            if (FinalTransform(SDivInstr, &F, &BB)) {
+                changed = true;
+                continue;
+            }
         }
     } // end of basic blocks cycle
 
     BARK_DEBUG(errs() << "==================================" << "\n");
     BARK_DEBUG(errs() << F << "\n");
     BARK_DEBUG(errs() << "==================================" << "\n");
-    return PreservedAnalyses::none();
+
+    return changed ? llvm::PreservedAnalyses::none() : llvm::PreservedAnalyses::all();
 }
 
 }
