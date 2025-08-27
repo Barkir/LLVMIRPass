@@ -1,0 +1,1445 @@
+From 4795b644618266ebb8236bcb473fb957a8fc18b7 Mon Sep 17 00:00:00 2001
+From: Barkir <r.barinov2006@gmail.com>
+Date: Wed, 27 Aug 2025 14:45:20 +0300
+Subject: [PATCH] aarch64_sdiv_convolution patch
+
+---
+ static_core/ark_patch.patch                   | 232 ++++++++++
+ static_core/libllvmbackend/BUILD.gn           |   1 +
+ static_core/libllvmbackend/CMakeLists.txt     |   1 +
+ .../lowering/llvm_ir_constructor.cpp          |  44 +-
+ .../transforms/llvm_optimizer.cpp             |   1 +
+ .../passes/aarch64_sdiv_convolution.cpp       | 359 +++++++++++++++
+ .../passes/aarch64_sdiv_convolution.h         |  54 +++
+ .../transforms/passes/passes.yaml             |   6 +
+ .../libllvmbackend/transforms/pipeline.cfg    |   4 +
+ .../plugins/ets/tests/checked/CMakeLists.txt  |   3 +
+ .../plugins/ets/tests/checked/ets_ceil.ets    |  52 +--
+ .../plugins/ets/tests/checked/ets_div.ets     | 428 ++++++++++++++++++
+ .../ets/tests/checked/ets_pi_divider.ets      |  29 ++
+ .../ets/tests/checked/ets_relative_error.ets  |  31 ++
+ .../tests/tests-u-runner/bash_script.sh       |   4 +
+ static_core/tests/tests-u-runner/readme.md    |   2 +-
+ 16 files changed, 1199 insertions(+), 52 deletions(-)
+ create mode 100644 static_core/ark_patch.patch
+ create mode 100644 static_core/libllvmbackend/transforms/passes/aarch64_sdiv_convolution.cpp
+ create mode 100644 static_core/libllvmbackend/transforms/passes/aarch64_sdiv_convolution.h
+ create mode 100644 static_core/plugins/ets/tests/checked/ets_div.ets
+ create mode 100644 static_core/plugins/ets/tests/checked/ets_pi_divider.ets
+ create mode 100644 static_core/plugins/ets/tests/checked/ets_relative_error.ets
+ create mode 100755 static_core/tests/tests-u-runner/bash_script.sh
+
+diff --git a/static_core/ark_patch.patch b/static_core/ark_patch.patch
+new file mode 100644
+index 000000000..7e53f188e
+--- /dev/null
++++ b/static_core/ark_patch.patch
+@@ -0,0 +1,232 @@
++diff --git a/static_core/libllvmbackend/BUILD.gn b/static_core/libllvmbackend/BUILD.gn
++index 3d1a619d4..e4c65bc2a 100644
++--- a/static_core/libllvmbackend/BUILD.gn
+++++ b/static_core/libllvmbackend/BUILD.gn
++@@ -79,6 +79,7 @@ if (is_llvmbackend) {
++     "transforms/passes/check_tail_calls.cpp",
++     "transforms/passes/devirt.cpp",
++     "transforms/passes/expand_atomics.cpp",
+++    "transforms/passes/aarch64_sdiv_convolution.cpp",
++     "transforms/passes/fixup_poisons.cpp",
++     "transforms/passes/gc_intrusion.cpp",
++     "transforms/passes/gc_intrusion_check.cpp",
++diff --git a/static_core/libllvmbackend/CMakeLists.txt b/static_core/libllvmbackend/CMakeLists.txt
++index 23dc9bed1..c1d7a593c 100644
++--- a/static_core/libllvmbackend/CMakeLists.txt
+++++ b/static_core/libllvmbackend/CMakeLists.txt
++@@ -54,6 +54,7 @@ set(SOURCES
++         transforms/passes/check_tail_calls.cpp
++         transforms/passes/devirt.cpp
++         transforms/passes/expand_atomics.cpp
+++        transforms/passes/aarch64_sdiv_convolution.cpp
++         transforms/passes/fixup_poisons.cpp
++         transforms/passes/gc_intrusion.cpp
++         transforms/passes/gc_intrusion_check.cpp
++diff --git a/static_core/libllvmbackend/lowering/llvm_ir_constructor.cpp b/static_core/libllvmbackend/lowering/llvm_ir_constructor.cpp
++index 52d22b98b..9fc0efad1 100644
++--- a/static_core/libllvmbackend/lowering/llvm_ir_constructor.cpp
+++++ b/static_core/libllvmbackend/lowering/llvm_ir_constructor.cpp
++@@ -1947,39 +1947,51 @@ llvm::Value *LLVMIrConstructor::CreateShiftOp(Inst *inst, llvm::Instruction::Bin
++ 
++ llvm::Value *LLVMIrConstructor::CreateSignDivMod(Inst *inst, llvm::Instruction::BinaryOps opcode)
++ {
+++
++     ASSERT(opcode == llvm::Instruction::SDiv || opcode == llvm::Instruction::SRem);
++     llvm::Value *x = GetInputValue(inst, 0);
++     llvm::Value *y = GetInputValue(inst, 1);
++     auto &ctx = func_->getContext();
++     auto eqM1 = builder_.CreateICmpEQ(y, llvm::ConstantInt::get(y->getType(), -1));
++-    auto m1Result = opcode == llvm::Instruction::SDiv ? builder_.CreateNeg(x) : llvm::ConstantInt::get(y->getType(), 0);
++-
++-    // Select for AArch64, as 'sdiv' correctly handles the INT_MIN / -1 case
++-    if (GetGraph()->GetArch() == Arch::AARCH64) {
++-        auto result = builder_.CreateBinOp(opcode, x, y);
++-        auto selectVal = builder_.CreateSelect(eqM1, m1Result, result);
++-        if (auto selectInst = llvm::dyn_cast<llvm::SelectInst>(selectVal)) {
++-            auto *metadata = llvm::MDNode::get(ctx, {});
++-            auto sdiv = ark::llvmbackend::LLVMArkInterface::AARCH64_SDIV_INST;
++-            selectInst->setMetadata(sdiv, metadata);
++-        }
++-        return selectVal;
++-    }
+++    // auto m1Result = opcode == llvm::Instruction::SDiv ? builder_.CreateNeg(x) : llvm::ConstantInt::get(y->getType(), 0);
+++
+++    // // Select for AArch64, as 'sdiv' correctly handles the INT_MIN / -1 case
+++    // if (GetGraph()->GetArch() == Arch::AARCH64) {
+++    //     auto result = builder_.CreateBinOp(opcode, x, y);
+++    //     auto selectVal = builder_.CreateSelect(eqM1, m1Result, result);
+++    //     if (auto selectInst = llvm::dyn_cast<llvm::SelectInst>(selectVal)) {
+++    //         auto *metadata = llvm::MDNode::get(ctx, {});
+++    //         auto sdiv = ark::llvmbackend::LLVMArkInterface::AARCH64_SDIV_INST;
+++    //         selectInst->setMetadata(sdiv, metadata);
+++    //     }
+++    //     return selectVal;
+++    // }
++ 
++     // X86_64 solution with control flow
++-    auto currBb = GetCurrentBasicBlock();
+++
+++    // auto currBb = GetCurrentBasicBlock();
++     auto notM1Bb = llvm::BasicBlock::Create(ctx, CreateBasicBlockName(inst, "divmod_normal"), func_);
+++    auto subBb = llvm::BasicBlock::Create(ctx, CreateBasicBlockName(inst, "divmod_sub"), func_);
+++    builder_.CreateCondBr(eqM1, subBb, notM1Bb);
+++
++     auto contBb = llvm::BasicBlock::Create(ctx, CreateBasicBlockName(inst, "divmod_cont"), func_);
++-    builder_.CreateCondBr(eqM1, contBb, notM1Bb);
++ 
++     SetCurrentBasicBlock(notM1Bb);
++     auto result = builder_.CreateBinOp(opcode, x, y);
++     builder_.CreateBr(contBb);
++ 
+++    SetCurrentBasicBlock(subBb);
+++    auto m1Result = opcode == llvm::Instruction::SDiv ? builder_.CreateNeg(x) : llvm::ConstantInt::get(y->getType(), 0);
+++    builder_.CreateBr(contBb);
+++
++     SetCurrentBasicBlock(contBb);
++     auto resultPhi = builder_.CreatePHI(y->getType(), 2U);
++-    resultPhi->addIncoming(m1Result, currBb);
+++    resultPhi->addIncoming(m1Result, subBb);
++     resultPhi->addIncoming(result, notM1Bb);
+++
+++    // if (!func_->hasMetadata(LLVMArkInterface::FUNCTION_MD_INLINE_MODULE))
+++        // llvm::errs() << "CreateSignDivMod called successfully! " << func_->getName() << "\n";
+++
++     return resultPhi;
++ }
++ 
++diff --git a/static_core/libllvmbackend/transforms/llvm_optimizer.cpp b/static_core/libllvmbackend/transforms/llvm_optimizer.cpp
++index 65ca727f2..a87f36e56 100644
++--- a/static_core/libllvmbackend/transforms/llvm_optimizer.cpp
+++++ b/static_core/libllvmbackend/transforms/llvm_optimizer.cpp
++@@ -29,6 +29,7 @@
++ #include "passes/prune_deopt.h"
++ #include "passes/fixup_poisons.h"
++ #include "passes/expand_atomics.h"
+++#include "passes/aarch64_sdiv_convolution.h"
++ #include "passes/devirt.h"
++ #include "passes/infer_flags.h"
++ #include "passes/inline_devirt.h"
++diff --git a/static_core/libllvmbackend/transforms/passes/passes.yaml b/static_core/libllvmbackend/transforms/passes/passes.yaml
++index 5a1c5f684..dd8874516 100644
++--- a/static_core/libllvmbackend/transforms/passes/passes.yaml
+++++ b/static_core/libllvmbackend/transforms/passes/passes.yaml
++@@ -178,3 +178,9 @@ llvm_passes:
++     Replace builtin for LenArray with size
++   type: [function]
++   setup: default
+++
+++- name: SDivConvolution
+++  description: >
+++    Deleting unnecessary instructions and blocks when sdiv used
+++  type: [function]
+++  setup: default
++diff --git a/static_core/libllvmbackend/transforms/pipeline.cfg b/static_core/libllvmbackend/transforms/pipeline.cfg
++index 7503bc6ab..2ba37f5c9 100644
++--- a/static_core/libllvmbackend/transforms/pipeline.cfg
+++++ b/static_core/libllvmbackend/transforms/pipeline.cfg
++@@ -15,10 +15,14 @@ module(
++     function(
++         lower-expect,               # Lower expect intrinsic
++         # Optimistically try to unswitch early before simplifycfg makes a lot of Selects out of branches
+++
++         loop-mssa(
++             licm,
++             simple-loop-unswitch<nontrivial>
++         ),
+++        aarch64-sdiv-convolution,   # ARK SDiv Convolution Pass
+++                                    # (placed here because simplifycfg generates switch instruction instead of icmp)
+++
++         simplifycfg,                # Simplify the CFG
++ #       sroa,                       # SROA
++         early-cse                   # Early CSE
++diff --git a/static_core/plugins/ets/tests/checked/CMakeLists.txt b/static_core/plugins/ets/tests/checked/CMakeLists.txt
++index 1c51731ef..f7e5df71e 100644
++--- a/static_core/plugins/ets/tests/checked/CMakeLists.txt
+++++ b/static_core/plugins/ets/tests/checked/CMakeLists.txt
++@@ -328,6 +328,9 @@ if (PANDA_TARGET_AMD64 OR NOT PANDA_ARM64_TESTS_WITH_SANITIZER)
++         panda_add_checked_test_ets(FILE ${CMAKE_CURRENT_SOURCE_DIR}/ets_string_builder_append_merge_part4.ets)
++         panda_add_checked_test_ets(FILE ${CMAKE_CURRENT_SOURCE_DIR}/escompat_array_join.ets)
++         panda_add_checked_test_ets(FILE ${CMAKE_CURRENT_SOURCE_DIR}/ets_ceil.ets)
+++        panda_add_checked_test_ets(FILE ${CMAKE_CURRENT_SOURCE_DIR}/ets_div.ets)
+++        panda_add_checked_test_ets(FILE ${CMAKE_CURRENT_SOURCE_DIR}/ets_relative_error.ets)
+++        panda_add_checked_test_ets(FILE ${CMAKE_CURRENT_SOURCE_DIR}/ets_pi_divider.ets)
++         panda_add_checked_test_ets(FILE ${CMAKE_CURRENT_SOURCE_DIR}/typedarray_get_length_loadobject.ets)
++         panda_add_checked_test_ets(FILE ${CMAKE_CURRENT_SOURCE_DIR}/escompat_array_get_set.ets)
++         panda_add_checked_test_ets(FILE ${CMAKE_CURRENT_SOURCE_DIR}/escompat_array_fill.ets)
++diff --git a/static_core/plugins/ets/tests/checked/ets_ceil.ets b/static_core/plugins/ets/tests/checked/ets_ceil.ets
++index 4a3c981cd..d1aae6523 100644
++--- a/static_core/plugins/ets/tests/checked/ets_ceil.ets
+++++ b/static_core/plugins/ets/tests/checked/ets_ceil.ets
++@@ -13,42 +13,24 @@
++  * limitations under the License.
++  */
++ 
++-//! CHECKER       Math.ceil JIT
++-//! RUN           force_jit: true, options: "--compiler-regex='.*main.*'", entry: "ets_ceil.ETSGLOBAL::main"
++-//! METHOD        "ets_ceil.ETSGLOBAL::main"
++-//! PASS_AFTER    "Codegen"
++-//! INST_COUNT    /Intrinsic.StdMathCeil/, 12
++-//! ASM_METHOD    "ets_ceil.ETSGLOBAL::main"
++-//! ASM_INST      "Intrinsic.StdMathCeil"
++-//! ASM           x64: /roundsd.*2,/, arm64: "frintp", arm32: "vrintp"
++-
++-//! CHECKER       Math.ceil AOT
++-//! SKIP_IF       @architecture == "arm32"
++-//! RUN_PAOC      options: "--compiler-regex='.*main.*'"
++-//! METHOD        "ets_ceil.ETSGLOBAL::main"
++-//! PASS_AFTER    "Codegen"
++-//! INST_COUNT    /Intrinsic.StdMathCeil/, 12
++-//! ASM_METHOD    "ets_ceil.ETSGLOBAL::main"
++-//! ASM_INST      "Intrinsic.StdMathCeil"
++-//! ASM           x64: /roundsd.*2,/, arm64: "frintp"
++-
++ //! CHECKER       Math.ceil LLVM AOT
++ //! SKIP_IF       @architecture == "arm32"
++-//! RUN_LLVM      options: "--compiler-regex='.*main.*'"
+++//! RUN_LLVM      options: "--compiler-cross-arch=arm64"
+++
+++function div_two_int(a:int, b:int): int {
+++    // if (ceil(Double.POSITIVE_INFINITY) != Double.POSITIVE_INFINITY) return 1;
+++    // if (ceil(Double.NEGATIVE_INFINITY) != Double.NEGATIVE_INFINITY) return 2;
+++    // if (Double.toString(ceil(Double.NaN)) != Double.toString(Double.NaN)) return 3;
+++    // if (ceil(0.) != 0.) return 4;
+++    // if (ceil(1.) != 1.) return 5;
+++    // if (ceil(-1.) != -1.) return 6;
+++    // if (ceil(1.5) != 2.) return 7;
+++    // if (ceil(1.6) != 2.) return 8;
+++    // if (ceil(1.4) != 2.) return 9;
+++    // if (ceil(-1.5) != -1.) return 10;
+++    // if (ceil(-1.6) != -1.) return 11;
+++    // if (ceil(-1.4) != -1.) return 12;
+++
++ 
++-function main(): int {
++-    if (ceil(Double.POSITIVE_INFINITY) != Double.POSITIVE_INFINITY) return 1;
++-    if (ceil(Double.NEGATIVE_INFINITY) != Double.NEGATIVE_INFINITY) return 2;
++-    if (Double.toString(ceil(Double.NaN)) != Double.toString(Double.NaN)) return 3;
++-    if (ceil(0.) != 0.) return 4;
++-    if (ceil(1.) != 1.) return 5;
++-    if (ceil(-1.) != -1.) return 6;
++-    if (ceil(1.5) != 2.) return 7;
++-    if (ceil(1.6) != 2.) return 8;
++-    if (ceil(1.4) != 2.) return 9;
++-    if (ceil(-1.5) != -1.) return 10;
++-    if (ceil(-1.6) != -1.) return 11;
++-    if (ceil(-1.4) != -1.) return 12;
++-    
++-    return 0;
+++    return a / b;
++ }
++diff --git a/static_core/tests/tests-u-runner/readme.md b/static_core/tests/tests-u-runner/readme.md
++index f40565fb0..190996aae 100644
++--- a/static_core/tests/tests-u-runner/readme.md
+++++ b/static_core/tests/tests-u-runner/readme.md
++@@ -2,7 +2,7 @@
++ 
++ ## Prerequisites
++ -   Panda build
++--   Python3 with required libs (`tqdm`, `dataclasses`, `python-dotenv`, etc). Make sure that `scripts/install-deps-ubuntu` has run with option `-i=test`
+++-   Python3 with required libs (`tqdm`, `dataclasses`, `python-dotenv`, etc). Make sure that `scripts/install-deps-ubuntu` has run with option `-i=test``
++ -   Suite `ets-es-checked` requires [node and some packages](#ets-es-checked-dependencies)
++ 
++ ## Quick run
+diff --git a/static_core/libllvmbackend/BUILD.gn b/static_core/libllvmbackend/BUILD.gn
+index 3d1a619d4..e4c65bc2a 100644
+--- a/static_core/libllvmbackend/BUILD.gn
++++ b/static_core/libllvmbackend/BUILD.gn
+@@ -79,6 +79,7 @@ if (is_llvmbackend) {
+     "transforms/passes/check_tail_calls.cpp",
+     "transforms/passes/devirt.cpp",
+     "transforms/passes/expand_atomics.cpp",
++    "transforms/passes/aarch64_sdiv_convolution.cpp",
+     "transforms/passes/fixup_poisons.cpp",
+     "transforms/passes/gc_intrusion.cpp",
+     "transforms/passes/gc_intrusion_check.cpp",
+diff --git a/static_core/libllvmbackend/CMakeLists.txt b/static_core/libllvmbackend/CMakeLists.txt
+index 23dc9bed1..c1d7a593c 100644
+--- a/static_core/libllvmbackend/CMakeLists.txt
++++ b/static_core/libllvmbackend/CMakeLists.txt
+@@ -54,6 +54,7 @@ set(SOURCES
+         transforms/passes/check_tail_calls.cpp
+         transforms/passes/devirt.cpp
+         transforms/passes/expand_atomics.cpp
++        transforms/passes/aarch64_sdiv_convolution.cpp
+         transforms/passes/fixup_poisons.cpp
+         transforms/passes/gc_intrusion.cpp
+         transforms/passes/gc_intrusion_check.cpp
+diff --git a/static_core/libllvmbackend/lowering/llvm_ir_constructor.cpp b/static_core/libllvmbackend/lowering/llvm_ir_constructor.cpp
+index 52d22b98b..9fc0efad1 100644
+--- a/static_core/libllvmbackend/lowering/llvm_ir_constructor.cpp
++++ b/static_core/libllvmbackend/lowering/llvm_ir_constructor.cpp
+@@ -1947,39 +1947,51 @@ llvm::Value *LLVMIrConstructor::CreateShiftOp(Inst *inst, llvm::Instruction::Bin
+ 
+ llvm::Value *LLVMIrConstructor::CreateSignDivMod(Inst *inst, llvm::Instruction::BinaryOps opcode)
+ {
++
+     ASSERT(opcode == llvm::Instruction::SDiv || opcode == llvm::Instruction::SRem);
+     llvm::Value *x = GetInputValue(inst, 0);
+     llvm::Value *y = GetInputValue(inst, 1);
+     auto &ctx = func_->getContext();
+     auto eqM1 = builder_.CreateICmpEQ(y, llvm::ConstantInt::get(y->getType(), -1));
+-    auto m1Result = opcode == llvm::Instruction::SDiv ? builder_.CreateNeg(x) : llvm::ConstantInt::get(y->getType(), 0);
+-
+-    // Select for AArch64, as 'sdiv' correctly handles the INT_MIN / -1 case
+-    if (GetGraph()->GetArch() == Arch::AARCH64) {
+-        auto result = builder_.CreateBinOp(opcode, x, y);
+-        auto selectVal = builder_.CreateSelect(eqM1, m1Result, result);
+-        if (auto selectInst = llvm::dyn_cast<llvm::SelectInst>(selectVal)) {
+-            auto *metadata = llvm::MDNode::get(ctx, {});
+-            auto sdiv = ark::llvmbackend::LLVMArkInterface::AARCH64_SDIV_INST;
+-            selectInst->setMetadata(sdiv, metadata);
+-        }
+-        return selectVal;
+-    }
++    // auto m1Result = opcode == llvm::Instruction::SDiv ? builder_.CreateNeg(x) : llvm::ConstantInt::get(y->getType(), 0);
++
++    // // Select for AArch64, as 'sdiv' correctly handles the INT_MIN / -1 case
++    // if (GetGraph()->GetArch() == Arch::AARCH64) {
++    //     auto result = builder_.CreateBinOp(opcode, x, y);
++    //     auto selectVal = builder_.CreateSelect(eqM1, m1Result, result);
++    //     if (auto selectInst = llvm::dyn_cast<llvm::SelectInst>(selectVal)) {
++    //         auto *metadata = llvm::MDNode::get(ctx, {});
++    //         auto sdiv = ark::llvmbackend::LLVMArkInterface::AARCH64_SDIV_INST;
++    //         selectInst->setMetadata(sdiv, metadata);
++    //     }
++    //     return selectVal;
++    // }
+ 
+     // X86_64 solution with control flow
+-    auto currBb = GetCurrentBasicBlock();
++
++    // auto currBb = GetCurrentBasicBlock();
+     auto notM1Bb = llvm::BasicBlock::Create(ctx, CreateBasicBlockName(inst, "divmod_normal"), func_);
++    auto subBb = llvm::BasicBlock::Create(ctx, CreateBasicBlockName(inst, "divmod_sub"), func_);
++    builder_.CreateCondBr(eqM1, subBb, notM1Bb);
++
+     auto contBb = llvm::BasicBlock::Create(ctx, CreateBasicBlockName(inst, "divmod_cont"), func_);
+-    builder_.CreateCondBr(eqM1, contBb, notM1Bb);
+ 
+     SetCurrentBasicBlock(notM1Bb);
+     auto result = builder_.CreateBinOp(opcode, x, y);
+     builder_.CreateBr(contBb);
+ 
++    SetCurrentBasicBlock(subBb);
++    auto m1Result = opcode == llvm::Instruction::SDiv ? builder_.CreateNeg(x) : llvm::ConstantInt::get(y->getType(), 0);
++    builder_.CreateBr(contBb);
++
+     SetCurrentBasicBlock(contBb);
+     auto resultPhi = builder_.CreatePHI(y->getType(), 2U);
+-    resultPhi->addIncoming(m1Result, currBb);
++    resultPhi->addIncoming(m1Result, subBb);
+     resultPhi->addIncoming(result, notM1Bb);
++
++    // if (!func_->hasMetadata(LLVMArkInterface::FUNCTION_MD_INLINE_MODULE))
++        // llvm::errs() << "CreateSignDivMod called successfully! " << func_->getName() << "\n";
++
+     return resultPhi;
+ }
+ 
+diff --git a/static_core/libllvmbackend/transforms/llvm_optimizer.cpp b/static_core/libllvmbackend/transforms/llvm_optimizer.cpp
+index 65ca727f2..a87f36e56 100644
+--- a/static_core/libllvmbackend/transforms/llvm_optimizer.cpp
++++ b/static_core/libllvmbackend/transforms/llvm_optimizer.cpp
+@@ -29,6 +29,7 @@
+ #include "passes/prune_deopt.h"
+ #include "passes/fixup_poisons.h"
+ #include "passes/expand_atomics.h"
++#include "passes/aarch64_sdiv_convolution.h"
+ #include "passes/devirt.h"
+ #include "passes/infer_flags.h"
+ #include "passes/inline_devirt.h"
+diff --git a/static_core/libllvmbackend/transforms/passes/aarch64_sdiv_convolution.cpp b/static_core/libllvmbackend/transforms/passes/aarch64_sdiv_convolution.cpp
+new file mode 100644
+index 000000000..1118c8c63
+--- /dev/null
++++ b/static_core/libllvmbackend/transforms/passes/aarch64_sdiv_convolution.cpp
+@@ -0,0 +1,359 @@
++    // #include "llvm/Transforms/Utils/DivToIntrinsic.h"
++
++
++    #include "llvm/Passes/PassBuilder.h"
++    #include "llvm/IR/IRBuilder.h"
++    #include "llvm/Transforms/Utils/BasicBlockUtils.h"
++    #include "llvm/Support/CommandLine.h"
++    #include "llvm/Passes/PassPlugin.h"
++    #include "llvm/IR/Function.h"
++    #include "llvm/IR/Instructions.h"
++    #include "llvm/ADT/StringRef.h"
++    #include "llvm/IR/CFG.h"
++    #include "llvm/Support/raw_ostream.h"
++    #include "llvm/IR/Intrinsics.h"
++    #include "llvm/IR/IntrinsicsAArch64.h"
++    #include "limits.h"
++
++
++    #include "aarch64_sdiv_convolution.h"
++    #include "llvm_ark_interface.h"
++    #include "transforms/transform_utils.h"
++
++    // #define DEBUG_BARKIR
++
++    #ifdef DEBUG_BARKIR
++    #define BARK_DEBUG(code) code
++    #else
++    #define BARK_DEBUG(code)
++    #endif
++
++    using namespace llvm;
++
++    namespace ark::llvmbackend::passes {
++
++    SDivConvolution::SDivConvolution() = default;
++
++    /// Function for replacing sdiv to aarch64_sdiv intrinsic
++    bool ReplaceAArch64SDiv(Instruction *SDivInstr, Function *F) {
++        if (!SDivInstr || !F)
++            return false;
++
++        auto SDivIntrinsicOpcode = llvm::Intrinsic::AARCH64Intrinsics::aarch64_sdiv;
++        auto SDivIntrinsicFunc = Intrinsic::getDeclaration(F->getParent(), SDivIntrinsicOpcode, {SDivInstr->getOperand(0)->getType()});
++        auto SDivIntrinsicInstr = CallInst::Create(SDivIntrinsicFunc, {SDivInstr->getOperand(0), SDivInstr->getOperand(1)}, llvm::None);
++        ReplaceInstWithInst(SDivInstr, SDivIntrinsicInstr);
++
++        return true;
++    }
++
++    /// Function for checking operands of the instruction
++    /// Has two modes: checking only integer or checking both integer and value
++    /// Mode one is turned on when variable == nullptr (be careful!)
++    ///
++    /// Returns
++    ///     true if all args contain in instruction
++    ///     false otherwise
++    bool ContainsInOperand(Instruction *I, Value *variable, const int value) {
++        int numOper = I->getNumOperands();
++        bool valueCond = false;
++        bool operCond = false;
++
++        for (int i = 0; i < numOper; i++) {
++            auto *oper  = I->getOperand(i);
++            auto *oper2int = dyn_cast<ConstantInt>(oper);
++            if (oper2int && oper2int->getSExtValue() == value) {
++                BARK_DEBUG(errs() << "oper #" << i << ": " << *oper << " ");
++                BARK_DEBUG(errs() << "compared to value " << value << ":" << oper2int->getSExtValue() << "\n");
++                operCond = true;
++            }
++            else if (variable && oper == variable){
++                BARK_DEBUG(errs() << "oper equals to 1st arg" << *variable << "\n");
++                valueCond = true;
++            }
++
++        }
++
++        return (!value && operCond) || (valueCond && operCond);
++    }
++
++    /// Function for checking if PHINode contains 'value'
++    ///
++    /// Returns
++    ///     true if value contains in phi
++    ///     false otherwise
++    bool ContainsInPhi(PHINode *Phi, const int value) {
++        int numValues = Phi->getNumIncomingValues();
++        for (int i = 0; i < numValues; i++) {
++            auto *phi_value = Phi->getIncomingValue(i);
++            auto *phi_value2int = dyn_cast<ConstantInt>(phi_value);
++            if (phi_value2int && phi_value2int->getSExtValue() == value) {
++                BARK_DEBUG(errs() << "value #" << i << ": " << *phi_value << " ");
++                BARK_DEBUG(errs() << "compared to value " << value << ":" << phi_value2int->getSExtValue() << "\n");
++                return true;
++            }
++        }
++        return false;
++    }
++    /// Finds only first sdiv !!!
++    /// Function for finding SDiv in a basicblock
++    Instruction* FindSDiv(BasicBlock *BB) {
++        for (auto &I : *BB) {
++            if (auto *BinOp = dyn_cast<BinaryOperator>(&I)) {
++                if (BinOp->getOpcode() == Instruction::SDiv) {
++                    BARK_DEBUG(errs() << "Found SDivInstruction!" << "\n");
++                    return &I;
++                }
++            }
++        }
++        return nullptr;
++    }
++
++    /// Help function for clearingBasicBlock
++    void clearBasicBlock(BasicBlock *BB) {
++        while (!BB->empty()) {
++            Instruction *I = &(BB->back());
++            I->eraseFromParent();
++        }
++    }
++
++    /// Function for finding PhiNode in users of the other instruction
++    PHINode* FindPhiInUses(Instruction *Instr) {
++
++        if (Instr->getNumUses() == 1)
++        {
++            for (auto *User : Instr->users()) {
++                auto *PhiInstr = dyn_cast<Instruction>(User);
++                if (PhiInstr && PhiInstr->getOpcode() == Instruction::PHI) {
++                    auto *PhiInstrCasted = dyn_cast<PHINode>(PhiInstr);
++                    return PhiInstrCasted;
++                }
++            }
++        }
++        return nullptr;
++    }
++
++    /// Function for getting sub instruction from phi instruction
++    Instruction* GetSubInstrFromPhi(Instruction *PhiInstr) {
++        PHINode *PhiInstrCasted = dyn_cast<PHINode>(PhiInstr);
++        uint64_t numVal = PhiInstrCasted->getNumIncomingValues();
++
++        for (uint64_t i = 0; i < numVal; i++) {
++            auto *PotSub = PhiInstrCasted->getIncomingValue(i);
++            auto *PotSubCasted = dyn_cast<Instruction>(PotSub);
++            if (PotSubCasted && PotSubCasted->getOpcode() == Instruction::Sub)
++                return PotSubCasted;
++        }
++
++        return nullptr;
++    }
++
++    /// Function for checking correct operands in sub and sdiv instruction
++    bool SubInstrAppropriate(Instruction *SubInstr, Instruction *SDivInstr) {
++        return (SubInstr->getOperand(1) == SDivInstr->getOperand(0) || SubInstr->getOperand(1) == SDivInstr->getOperand(1));
++    }
++
++    /// Function for transforming our pattern
++    /// Pipeline:
++    ///     find phi as a user of sdiv ->
++    ///         -> get sub or int_min from it ->
++    ///             -> replace phi with sdiv
++    ///                 -> replace sdiv to aarch64
++    bool FinalTransform(Instruction *SDivInstr, Function *F, BasicBlock *BB) {
++        auto *PhiInstr = FindPhiInUses(SDivInstr);
++        if (PhiInstr) {
++            BARK_DEBUG(errs() << "Found Phi in uses of sdiv " << *PhiInstr << "\n");
++
++            auto *SubInstr = GetSubInstrFromPhi(PhiInstr);
++            if ((!SubInstr && ContainsInPhi(PhiInstr, INT_MIN)) ||
++            (SubInstr && SubInstrAppropriate(SubInstr, SDivInstr))) {
++                auto *clonedSDiv = SDivInstr->clone();
++                ReplaceInstWithInst(PhiInstr, clonedSDiv);
++                BARK_DEBUG(errs() << "replaced phi instruction with sdiv" << *(BB->getSingleSuccessor()) << "\n");
++
++                ReplaceAArch64SDiv(SDivInstr, F);
++                ReplaceAArch64SDiv(clonedSDiv, F);
++                BARK_DEBUG(errs() << "replaced sdiv with aarch64_sdiv" << BB << "\n");
++
++                BARK_DEBUG(errs() << "SDivConvolution PASSED! >__< :: function -> " << F->getName() << "\n");
++                return true;
++            }
++        }
++        return false;
++    }
++
++    void PrintRecursively(const char *word, uint32_t level) {
++            for (uint32_t i = 0; i < level; i++)
++                errs() << "\t";
++            errs() << word;
++    }
++
++    Instruction *getSingleUser(Value *val) {
++        int numUses = val->getNumUses();
++        BARK_DEBUG(errs() << "Value : " << *val << " got " << numUses << " uses." << "\n");
++        if (numUses == 1) {
++            for (auto *User : val->users()) {
++                auto *castedUser = dyn_cast<Instruction>(User);
++                return castedUser;
++            }
++        }
++
++        return nullptr;
++    }
++
++    Instruction *getUserByNumber(Instruction *StartOp, Value *val, uint32_t num, uint32_t numUses) {
++        if (!val)
++            return nullptr;
++        BARK_DEBUG(errs() << "==================================================================" << "\n");
++        BARK_DEBUG(errs() << "\t\t" << "value : " << *val << "\n");
++        uint32_t cnt = 0;
++        for (auto *User : val->users()) {
++            if (cnt == num) {
++                BARK_DEBUG(errs() << "\t\tuser " << cnt << " : " << *User << "\n");
++                auto *castedUser = dyn_cast<Instruction>(User);
++                if (castedUser != StartOp)
++                    return castedUser;
++            } else if (cnt > num)
++                break;
++
++            cnt++;
++        }
++
++        return nullptr;
++    }
++
++    // std::vector<Value*> findCommonOperands(Instruction *I1, Instruction *I2) {
++    //     std::vector<Value*> commonOperands;
++    //
++    //     std::vector<Value*> operands1;
++    //     for (uint32_t i = 0; i < I1->getNumOperands(); i++) {
++    //         operands1.push_back(I1->getOperand(i));
++    //     }
++    //
++    //     std::vector<Value*> operands2;
++    //     for (uint32_t i = 0; i < I2->getNumOperands(); i++) {
++    //         operands1.push_back(I2->getOperand(i));
++    //     }
++    //
++    //     std::sort(operands1.begin(), operands1.end());
++    //     std::sort(operands2.begin(), operands2.end());
++    //
++    //     std::set_intersection(operands1.begin(). operands1.end(),
++    //                           operands2.begin(), operands2.end().
++    //                           std::back_inserter(commonOperands));
++    //
++    //     return commonOperands;
++    // }
++
++
++    /// WARNING!!!
++    /// AND INFINITE RECURSION CASE NOT HANDLED
++    /// THIS IS THE CAS
++    // WARNING!!!
++
++    /// This a function for recursive searching of icmp
++    /// It goes from the top of the tree (can be `and` instruction or `icmp` as well)
++    ///
++    ///    here's how it looks like
++    ///
++    ///           and
++    ///          /    \
++    ///        and     and
++    ///       /  \    /  \
++    ///     icmp and icmp icmp
++    ///
++    /// if `and` -> go deeper
++    /// else if `icmp` -> stop and search for correct pattern
++    /// else -> do nothing
++    bool funcRecursiveICmpSearch(Instruction *StartOp, Value *val, const int32_t num, uint32_t level) {
++        if (!StartOp)
++            return false;
++
++        if (StartOp->getOpcode() == Instruction::ICmp) {
++            // PrintRecursively("icmp", level);
++            PrintRecursively("", level);
++            BARK_DEBUG(errs() << "Got icmp in recursion -> " << *StartOp << "\n");
++            return ContainsInOperand(StartOp, val, num);
++        } else if (StartOp->getOpcode() == Instruction::And || (StartOp->getOpcode() == Instruction::SDiv && level == 0)) {
++            // PrintRecursively("and", level);
++            PrintRecursively(" ", level);
++            BARK_DEBUG(errs() << "Got" << *StartOp << " in recursion" << " ::");
++            uint32_t numUses1 = StartOp->getOperand(0)->getNumUses();
++            BARK_DEBUG(errs() << *(StartOp->getOperand(0)) << " got " << numUses1 << "     uses" << "\n");
++            for (uint32_t cntUses = 0; cntUses < numUses1; cntUses++) {
++                auto *userLeft = getUserByNumber(StartOp, StartOp->getOperand(0), cntUses, numUses1);
++                if (funcRecursiveICmpSearch(userLeft, val, num, level+1))
++                    return true;
++            }
++
++            uint32_t numUses2 = StartOp->getOperand(1)->getNumUses();
++            for (uint32_t cntUses = 0; cntUses < numUses2; cntUses++) {
++                auto *userRight = getUserByNumber(StartOp, StartOp->getOperand(1), cntUses, numUses1);
++                if (funcRecursiveICmpSearch(userRight, val, num, level+1))
++                    return true;
++            }
++        }
++        return false;
++    }
++
++    bool RecursiveICmpSearch(Instruction *StartOp, Value *val, const int32_t num) {
++        BARK_DEBUG(errs() << "Starting recursive icmp search!" << "\n");
++        BARK_DEBUG(errs() << "StartOp = " << *StartOp << " : Value = " << *val << " : Num = " << num << "\n");
++
++        return funcRecursiveICmpSearch(StartOp, val, num, 0);
++
++    }
++
++    llvm::PreservedAnalyses SDivConvolution::run(Function &F,
++                                            FunctionAnalysisManager &AM) {
++
++        bool changed = false;
++        Module *M = F.getParent();
++        if (!M) {
++            BARK_DEBUG(errs() << "Function is not a part of a module!" << "\n");
++            return PreservedAnalyses::none();
++        }
++
++        BARK_DEBUG(errs() << F << "\n");
++
++        /// This pass is specialized for arm architecture.
++        /// if the architectures don't match, the pass won't go further
++        StringRef TargetTriple = M->getTargetTriple();
++        bool isARM = TargetTriple.contains("arm") || TargetTriple.contains("aarch64");
++        if (!isARM) {
++            BARK_DEBUG(errs() << "Architecture doesn't match the pass" << "\n");
++            return PreservedAnalyses::none();
++        }
++
++        for (auto &BB : F) {
++            BARK_DEBUG(errs() << "Running cycle... the block is -> -> ->" << BB << "\n");
++
++            auto *SDivInstr = FindSDiv(&BB);
++            if (!SDivInstr)
++                continue;
++            BARK_DEBUG(errs() << "Found SDiv! " << *SDivInstr << "\n");
++
++            auto *firstOperand = SDivInstr->getOperand(0);
++            auto *secondOperand = SDivInstr->getOperand(1);
++
++            if (RecursiveICmpSearch(SDivInstr, secondOperand, -1)) {
++                if (FinalTransform(SDivInstr, &F, &BB)) {
++                    changed = true;
++                    continue;
++                }
++            } else if (RecursiveICmpSearch(SDivInstr, firstOperand, INT_MIN) && RecursiveICmpSearch(SDivInstr, secondOperand, -1)) {
++                if (FinalTransform(SDivInstr, &F, &BB)) {
++                    changed = true;
++                    continue;
++                }
++            }
++        } // end of basic blocks cycle
++
++        BARK_DEBUG(errs() << "==================================" << "\n");
++        BARK_DEBUG(errs() << F << "\n");
++        BARK_DEBUG(errs() << "==================================" << "\n");
++
++        return changed ? llvm::PreservedAnalyses::none() : llvm::PreservedAnalyses::all();
++    }
++
++    }
+diff --git a/static_core/libllvmbackend/transforms/passes/aarch64_sdiv_convolution.h b/static_core/libllvmbackend/transforms/passes/aarch64_sdiv_convolution.h
+new file mode 100644
+index 000000000..62037ee74
+--- /dev/null
++++ b/static_core/libllvmbackend/transforms/passes/aarch64_sdiv_convolution.h
+@@ -0,0 +1,54 @@
++/*
++ * Copyright (c) 2023-2024 Huawei Device Co., Ltd.
++ * Licensed under the Apache License, Version 2.0 (the "License");
++ * you may not use this file except in compliance with the License.
++ * You may obtain a copy of the License at
++ *
++ * http://www.apache.org/licenses/LICENSE-2.0
++ *
++ * Unless required by applicable law or agreed to in writing, software
++ * distributed under the License is distributed on an "AS IS" BASIS,
++ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
++ * See the License for the specific language governing permissions and
++ * limitations under the License.
++ */
++
++#ifndef LIBLLVMBACKEND_TRANSFORMS_PASSES_AARCH64_SDIV_CONVOLUTION_H
++#define LIBLLVMBACKEND_TRANSFORMS_PASSES_AARCH64_SDIV_CONVOLUTION_H
++
++#include <llvm/IR/PassManager.h>
++
++enum SDivConvolutionTransformModes {
++    SDIVCONV_TRANSFORM_MINUS_ONE,
++    SDIVCONV_TRANSFORM_INT_MIN
++};
++
++const uint32_t DUMMY_NUM_USES = 5;
++
++namespace ark::llvmbackend {
++struct LLVMCompilerOptions;
++}  // namespace ark::llvmbackend
++
++namespace ark::llvmbackend::passes {
++
++class SDivConvolution : public llvm::PassInfoMixin<SDivConvolution> {
++public:
++    static constexpr llvm::StringRef ARG_NAME = "aarch64-sdiv-convolution";
++
++    explicit SDivConvolution();
++
++    static bool ShouldInsert([[maybe_unused]] const ark::llvmbackend::LLVMCompilerOptions *options)
++    {
++        return true;
++    }
++
++    // NOLINTNEXTLINE(readability-identifier-naming)
++    llvm::PreservedAnalyses run(llvm::Function &function, llvm::FunctionAnalysisManager &analysisManager);
++
++private:
++    bool InsertAddrSpaceCast(llvm::Instruction *atomicInstruction);
++};
++
++}  // namespace ark::llvmbackend::passes
++
++#endif  // LIBLLVMBACKEND_TRANSFORMS_PASSES_EXPAND_ATOMICS_H
+diff --git a/static_core/libllvmbackend/transforms/passes/passes.yaml b/static_core/libllvmbackend/transforms/passes/passes.yaml
+index 5a1c5f684..dd8874516 100644
+--- a/static_core/libllvmbackend/transforms/passes/passes.yaml
++++ b/static_core/libllvmbackend/transforms/passes/passes.yaml
+@@ -178,3 +178,9 @@ llvm_passes:
+     Replace builtin for LenArray with size
+   type: [function]
+   setup: default
++
++- name: SDivConvolution
++  description: >
++    Deleting unnecessary instructions and blocks when sdiv used
++  type: [function]
++  setup: default
+diff --git a/static_core/libllvmbackend/transforms/pipeline.cfg b/static_core/libllvmbackend/transforms/pipeline.cfg
+index 7503bc6ab..2ba37f5c9 100644
+--- a/static_core/libllvmbackend/transforms/pipeline.cfg
++++ b/static_core/libllvmbackend/transforms/pipeline.cfg
+@@ -15,10 +15,14 @@ module(
+     function(
+         lower-expect,               # Lower expect intrinsic
+         # Optimistically try to unswitch early before simplifycfg makes a lot of Selects out of branches
++
+         loop-mssa(
+             licm,
+             simple-loop-unswitch<nontrivial>
+         ),
++        aarch64-sdiv-convolution,   # ARK SDiv Convolution Pass
++                                    # (placed here because simplifycfg generates switch instruction instead of icmp)
++
+         simplifycfg,                # Simplify the CFG
+ #       sroa,                       # SROA
+         early-cse                   # Early CSE
+diff --git a/static_core/plugins/ets/tests/checked/CMakeLists.txt b/static_core/plugins/ets/tests/checked/CMakeLists.txt
+index 1c51731ef..f7e5df71e 100644
+--- a/static_core/plugins/ets/tests/checked/CMakeLists.txt
++++ b/static_core/plugins/ets/tests/checked/CMakeLists.txt
+@@ -328,6 +328,9 @@ if (PANDA_TARGET_AMD64 OR NOT PANDA_ARM64_TESTS_WITH_SANITIZER)
+         panda_add_checked_test_ets(FILE ${CMAKE_CURRENT_SOURCE_DIR}/ets_string_builder_append_merge_part4.ets)
+         panda_add_checked_test_ets(FILE ${CMAKE_CURRENT_SOURCE_DIR}/escompat_array_join.ets)
+         panda_add_checked_test_ets(FILE ${CMAKE_CURRENT_SOURCE_DIR}/ets_ceil.ets)
++        panda_add_checked_test_ets(FILE ${CMAKE_CURRENT_SOURCE_DIR}/ets_div.ets)
++        panda_add_checked_test_ets(FILE ${CMAKE_CURRENT_SOURCE_DIR}/ets_relative_error.ets)
++        panda_add_checked_test_ets(FILE ${CMAKE_CURRENT_SOURCE_DIR}/ets_pi_divider.ets)
+         panda_add_checked_test_ets(FILE ${CMAKE_CURRENT_SOURCE_DIR}/typedarray_get_length_loadobject.ets)
+         panda_add_checked_test_ets(FILE ${CMAKE_CURRENT_SOURCE_DIR}/escompat_array_get_set.ets)
+         panda_add_checked_test_ets(FILE ${CMAKE_CURRENT_SOURCE_DIR}/escompat_array_fill.ets)
+diff --git a/static_core/plugins/ets/tests/checked/ets_ceil.ets b/static_core/plugins/ets/tests/checked/ets_ceil.ets
+index 4a3c981cd..d1aae6523 100644
+--- a/static_core/plugins/ets/tests/checked/ets_ceil.ets
++++ b/static_core/plugins/ets/tests/checked/ets_ceil.ets
+@@ -13,42 +13,24 @@
+  * limitations under the License.
+  */
+ 
+-//! CHECKER       Math.ceil JIT
+-//! RUN           force_jit: true, options: "--compiler-regex='.*main.*'", entry: "ets_ceil.ETSGLOBAL::main"
+-//! METHOD        "ets_ceil.ETSGLOBAL::main"
+-//! PASS_AFTER    "Codegen"
+-//! INST_COUNT    /Intrinsic.StdMathCeil/, 12
+-//! ASM_METHOD    "ets_ceil.ETSGLOBAL::main"
+-//! ASM_INST      "Intrinsic.StdMathCeil"
+-//! ASM           x64: /roundsd.*2,/, arm64: "frintp", arm32: "vrintp"
+-
+-//! CHECKER       Math.ceil AOT
+-//! SKIP_IF       @architecture == "arm32"
+-//! RUN_PAOC      options: "--compiler-regex='.*main.*'"
+-//! METHOD        "ets_ceil.ETSGLOBAL::main"
+-//! PASS_AFTER    "Codegen"
+-//! INST_COUNT    /Intrinsic.StdMathCeil/, 12
+-//! ASM_METHOD    "ets_ceil.ETSGLOBAL::main"
+-//! ASM_INST      "Intrinsic.StdMathCeil"
+-//! ASM           x64: /roundsd.*2,/, arm64: "frintp"
+-
+ //! CHECKER       Math.ceil LLVM AOT
+ //! SKIP_IF       @architecture == "arm32"
+-//! RUN_LLVM      options: "--compiler-regex='.*main.*'"
++//! RUN_LLVM      options: "--compiler-cross-arch=arm64"
++
++function div_two_int(a:int, b:int): int {
++    // if (ceil(Double.POSITIVE_INFINITY) != Double.POSITIVE_INFINITY) return 1;
++    // if (ceil(Double.NEGATIVE_INFINITY) != Double.NEGATIVE_INFINITY) return 2;
++    // if (Double.toString(ceil(Double.NaN)) != Double.toString(Double.NaN)) return 3;
++    // if (ceil(0.) != 0.) return 4;
++    // if (ceil(1.) != 1.) return 5;
++    // if (ceil(-1.) != -1.) return 6;
++    // if (ceil(1.5) != 2.) return 7;
++    // if (ceil(1.6) != 2.) return 8;
++    // if (ceil(1.4) != 2.) return 9;
++    // if (ceil(-1.5) != -1.) return 10;
++    // if (ceil(-1.6) != -1.) return 11;
++    // if (ceil(-1.4) != -1.) return 12;
++
+ 
+-function main(): int {
+-    if (ceil(Double.POSITIVE_INFINITY) != Double.POSITIVE_INFINITY) return 1;
+-    if (ceil(Double.NEGATIVE_INFINITY) != Double.NEGATIVE_INFINITY) return 2;
+-    if (Double.toString(ceil(Double.NaN)) != Double.toString(Double.NaN)) return 3;
+-    if (ceil(0.) != 0.) return 4;
+-    if (ceil(1.) != 1.) return 5;
+-    if (ceil(-1.) != -1.) return 6;
+-    if (ceil(1.5) != 2.) return 7;
+-    if (ceil(1.6) != 2.) return 8;
+-    if (ceil(1.4) != 2.) return 9;
+-    if (ceil(-1.5) != -1.) return 10;
+-    if (ceil(-1.6) != -1.) return 11;
+-    if (ceil(-1.4) != -1.) return 12;
+-    
+-    return 0;
++    return a / b;
+ }
+diff --git a/static_core/plugins/ets/tests/checked/ets_div.ets b/static_core/plugins/ets/tests/checked/ets_div.ets
+new file mode 100644
+index 000000000..ecfb1727f
+--- /dev/null
++++ b/static_core/plugins/ets/tests/checked/ets_div.ets
+@@ -0,0 +1,428 @@
++/*
++ * Copyright (c) 2023-2025 Huawei Device Co., Ltd.
++ * Licensed under the Apache License, Version 2.0 (the "License");
++ * you may not use this file except in compliance with the License.
++ * You may obtain a copy of the License at
++ *
++ * http://www.apache.org/licenses/LICENSE-2.0
++ *
++ * Unless required by applicable law or agreed to in writing, software
++ * distributed under the License is distributed on an "AS IS" BASIS,
++ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
++ * See the License for the specific language governing permissions and
++ * limitations under the License.
++ */
++
++
++//! CHECKER       aarch64_sdiv_convolution must change IR in div_two_int and delete 'divmod_sub'
++//! SKIP_IF       @architecture == "arm32"
++//! RUN_LLVM      options: "--compiler-cross-arch=arm64 --llvm-dump-after --compiler-regex='.*__noinline__div_two_int'"
++//! READ_FILE     "console.out"
++//! LLVM_METHOD   /.*__noinline__div_two_int.*/
++//! INST_NOT      /.*divmod_sub.*/
++// no inlining
++
++function __noinline__div_two_int(a:int, b:int): int {
++    return a / b;
++}
++
++//! CHECKER       aarch64_sdiv_convolution must change IR in operations1 and delete 'divmod_sub'
++//! SKIP_IF       @architecture == "arm32"
++//! RUN_LLVM      options: "--compiler-cross-arch=arm64 --llvm-dump-after --compiler-regex='.*__noinline__operations1.*'"
++//! READ_FILE     "console.out"
++//! LLVM_METHOD   /.*__noinline__operations1.*/
++//! INST_NOT          /.*divmod_sub.*/
++// no inlining
++
++
++function __noinline__operations1(a:int, b:int, c:int, d:int): int {
++    return (a + b) * (a + b) / (c - d) - ((a * d * d) / b);
++
++}
++
++//! CHECKER       aarch64_sdiv_convolution must change IR in operations2 and delete 'divmod_sub'
++//! SKIP_IF       @architecture == "arm32"
++//! RUN_LLVM      options: "--compiler-cross-arch=arm64 --llvm-dump-after --compiler-regex='.*__noinline__operations2.*'"
++//! READ_FILE     "console.out"
++//! LLVM_METHOD   /.*__noinline__operations2.*/
++//! INST_NOT      /.*divmod_sub.*/
++
++function __noinline__operations2(a:int, b:int, c:int, d:int): int {
++    return ((a + b) / (a - b)) / ((a * 10) - ((a * d / c) / b));
++}
++
++//! CHECKER       aarch64_sdiv_convolution must change IR in test1 and delete 'divmod_sub'
++//! SKIP_IF       @architecture == "arm32"
++//! RUN_LLVM      options: "--compiler-cross-arch=arm64 --llvm-dump-after --compiler-regex='.*__noinline__test1.*'"
++//! READ_FILE     "console.out"
++//! LLVM_METHOD   /.*__noinline__test1.*/
++//! INST_NOT      /.*divmod_sub.*/
++
++function __noinline__test1(a:int, b:int, c:int, d:int): int {
++    return (a * b) / (c * d) + (a / c) - (b / d);
++}
++
++//! CHECKER       aarch64_sdiv_convolution must change IR in test2 and delete 'divmod_sub'
++//! SKIP_IF       @architecture == "arm32"
++//! RUN_LLVM      options: "--compiler-cross-arch=arm64 --llvm-dump-after --compiler-regex='.*__noinline__test2.*'"
++//! READ_FILE     "console.out"
++//! LLVM_METHOD   /.*__noinline__test2.*/
++//! INST_NOT      /.*divmod_sub.*/
++
++function __noinline__test2(a:int, b:int, c:int, d:int): int {
++    return ((a + c) / (b - d)) * ((a * d) / (b * c));
++}
++
++//! CHECKER       aarch64_sdiv_convolution must change IR in test3 and delete 'divmod_sub'
++//! SKIP_IF       @architecture == "arm32"
++//! RUN_LLVM      options: "--compiler-cross-arch=arm64 --llvm-dump-after --compiler-regex='.*__noinline__test3.*'"
++//! READ_FILE     "console.out"
++//! LLVM_METHOD   /.*__noinline__test3.*/
++//! INST_NOT      /.*divmod_sub.*/
++
++function __noinline__test3(a:int, b:int, c:int, d:int): int {
++    return (a / b) + (c / d) + ((a + c) / (b + d));
++}
++
++//! CHECKER       aarch64_sdiv_convolution must change IR in test4 and delete 'divmod_sub'
++//! SKIP_IF       @architecture == "arm32"
++//! RUN_LLVM      options: "--compiler-cross-arch=arm64 --llvm-dump-after --compiler-regex='.*__noinline__test4.*'"
++//! READ_FILE     "console.out"
++//! LLVM_METHOD   /.*__noinline__test4.*/
++//! INST_NOT      /.*divmod_sub.*/
++
++function __noinline__test4(a:int, b:int, c:int, d:int): int {
++    return ((a * b * c) / d) / ((a + b + c) / d);
++}
++
++//! CHECKER       aarch64_sdiv_convolution must change IR in test5 and delete 'divmod_sub'
++//! SKIP_IF       @architecture == "arm32"
++//! RUN_LLVM      options: "--compiler-cross-arch=arm64 --llvm-dump-after --compiler-regex='.*__noinline__test5.*'"
++//! READ_FILE     "console.out"
++//! LLVM_METHOD   /.*__noinline__test5.*/
++//! INST_NOT      /.*divmod_sub.*/
++
++function __noinline__test5(a:int, b:int, c:int, d:int): int {
++    return (a / (b + 1)) + (c / (d - 1)) + ((a + c) / (b + d));
++}
++
++//! CHECKER       aarch64_sdiv_convolution must change IR in test6 and delete 'divmod_sub'
++//! SKIP_IF       @architecture == "arm32"
++//! RUN_LLVM      options: "--compiler-cross-arch=arm64 --llvm-dump-after --compiler-regex='.*__noinline__test6.*'"
++//! READ_FILE     "console.out"
++//! LLVM_METHOD   /.*__noinline__test6.*/
++//! INST_NOT      /.*divmod_sub.*/
++
++function __noinline__test6(a:int, b:int, c:int, d:int): int {
++    return ((a << 2) / b) + ((c * 3) / d) - ((a + c) / (b * d));
++}
++
++//! CHECKER       aarch64_sdiv_convolution must change IR in test7 and delete 'divmod_sub'
++//! SKIP_IF       @architecture == "arm32"
++//! RUN_LLVM      options: "--compiler-cross-arch=arm64 --llvm-dump-after --compiler-regex='.*__noinline__test7.*'"
++//! READ_FILE     "console.out"
++//! LLVM_METHOD   /.*__noinline__test7.*/
++//! INST_NOT      /.*divmod_sub.*/
++
++function __noinline__test7(a:int, b:int, c:int, d:int): int {
++    return (a / b) * (c / d) + ((a % b) / (c % d));
++}
++
++//! CHECKER       aarch64_sdiv_convolution must change IR in test8 and delete 'divmod_sub'
++//! SKIP_IF       @architecture == "arm32"
++//! RUN_LLVM      options: "--compiler-cross-arch=arm64 --llvm-dump-after --compiler-regex='.*__noinline__test8.*'"
++//! READ_FILE     "console.out"
++//! LLVM_METHOD   /.*__noinline__test8.*/
++//! INST_NOT      /.*divmod_sub.*/
++
++function __noinline__test8(a:int, b:int, c:int, d:int): int {
++    return ((a + b) / c) + ((c + d) / a) - ((b + d) / (a * c));
++}
++
++//! CHECKER       aarch64_sdiv_convolution must change IR in test9 and delete 'divmod_sub'
++//! SKIP_IF       @architecture == "arm32"
++//! RUN_LLVM      options: "--compiler-cross-arch=arm64 --llvm-dump-after --compiler-regex='.*__noinline__test9.*'"
++//! READ_FILE     "console.out"
++//! LLVM_METHOD   /.*__noinline__test9.*/
++//! INST_NOT      /.*divmod_sub.*/
++
++function __noinline__test9(a:int, b:int, c:int, d:int): int {
++    return (a * c / b) + (b * d / a) - (c * d / (a + b));
++}
++
++//! CHECKER       aarch64_sdiv_convolution must change IR in test10 and delete 'divmod_sub'
++//! SKIP_IF       @architecture == "arm32"
++//! RUN_LLVM      options: "--compiler-cross-arch=arm64 --llvm-dump-after --compiler-regex='.*__noinline__test10.*'"
++//! READ_FILE     "console.out"
++//! LLVM_METHOD   /.*__noinline__test10.*/
++//! INST_NOT      /.*divmod_sub.*/
++
++function __noinline__test10(a:int, b:int, c:int, d:int): int {
++    return ((a / b) << 1) + ((c / d) >> 1) + ((a + c) / (b + d));
++}
++
++//! CHECKER       aarch64_sdiv_convolution must change IR in complex_div1 and delete 'divmod_sub'
++//! SKIP_IF       @architecture == "arm32"
++//! RUN_LLVM      options: "--compiler-cross-arch=arm64 --llvm-dump-after --compiler-regex='.*__noinline__complex_div1.*'"
++//! READ_FILE     "console.out"
++//! LLVM_METHOD   /.*__noinline__complex_div1.*/
++//! INST_NOT          /.*divmod_sub.*/
++
++function __noinline__complex_div1(a:int, b:int, c:int, d:int, e:int, f:int): int {
++    return ((a * b * c) / (d + e + f)) + ((a + b + c) / (d * e * f)) -
++           ((a * d) / (b * e)) + ((c * f) / (a * b)) / ((d + e) / (f + 1));
++}
++
++//! CHECKER       aarch64_sdiv_convolution must change IR in complex_div2 and delete 'divmod_sub'
++//! SKIP_IF       @architecture == "arm32"
++//! RUN_LLVM      options: "--compiler-cross-arch=arm64 --llvm-dump-after --compiler-regex='.*__noinline__complex_div2.*'"
++//! READ_FILE     "console.out"
++//! LLVM_METHOD   /.*__noinline__complex_div2.*/
++//! INST_NOT          /.*divmod_sub.*/
++
++function __noinline__complex_div2(a:int, b:int, c:int, d:int, e:int, f:int, g:int): int {
++    return (a / b) * (c / d) * (e / f) + (g / a) - (b / c) +
++           ((a + b + c) / (d + e + f)) / ((g * 2) / (a + 1));
++}
++
++//! CHECKER       aarch64_sdiv_convolution must change IR in nested_divs and delete 'divmod_sub'
++//! SKIP_IF       @architecture == "arm32"
++//! RUN_LLVM      options: "--compiler-cross-arch=arm64 --llvm-dump-after --compiler-regex='.*__noinline__nested_divs.*'"
++//! READ_FILE     "console.out"
++//! LLVM_METHOD   /.*__noinline__nested_divs.*/
++//! INST_NOT          /.*divmod_sub.*/
++
++function __noinline__nested_divs(a:int, b:int, c:int, d:int, e:int): int {
++    return (((a / b) / c) / d) / e + ((b / c) / (d / e)) +
++           ((a * b) / (c * d)) / ((e * 2) / (a / 3));
++}
++
++//! CHECKER       aarch64_sdiv_convolution must change IR in mixed_arithmetic and delete 'divmod_sub'
++//! SKIP_IF       @architecture == "arm32"
++//! RUN_LLVM      options: "--compiler-cross-arch=arm64 --llvm-dump-after --compiler-regex='.*__noinline__mixed_arithmetic.*'"
++//! READ_FILE     "console.out"
++//! LLVM_METHOD   /.*__noinline__mixed_arithmetic.*/
++//! INST_NOT          /.*divmod_sub.*/
++
++function __noinline__mixed_arithmetic(a:int, b:int, c:int, d:int, e:int, f:int): int {
++    return (a + b * c) / (d - e + f) + (a * b - c) / (d + e * f) -
++           (a / b + c) / (d / e - f) + (a % b * c) / (d % e + f);
++}
++
++//! CHECKER       aarch64_sdiv_convolution must change IR in division_chain and delete 'divmod_sub'
++//! SKIP_IF       @architecture == "arm32"
++//! RUN_LLVM      options: "--compiler-cross-arch=arm64 --llvm-dump-after --compiler-regex='.*__noinline__division_chain.*'"
++//! READ_FILE     "console.out"
++//! LLVM_METHOD   /.*__noinline__division_chain.*/
++//! INST_NOT          /.*divmod_sub.*/
++
++function __noinline__division_chain(a:int, b:int, c:int, d:int, e:int, f:int, g:int, h:int): int {
++    return a / b / c / d / e / f / g / h +
++           (a * b) / (c * d) / (e * f) / (g * h) +
++           ((a + b) / (c + d)) / ((e + f) / (g + h));
++}
++
++//! CHECKER       aarch64_sdiv_convolution must change IR in complex_expression1 and delete 'divmod_sub'
++//! SKIP_IF       @architecture == "arm32"
++//! RUN_LLVM      options: "--compiler-cross-arch=arm64 --llvm-dump-after --compiler-regex='.*__noinline__complex_expression1.*'"
++//! READ_FILE     "console.out"
++//! LLVM_METHOD   /.*__noinline__complex_expression1.*/
++//! INST_NOT          /.*divmod_sub.*/
++
++function __noinline__complex_expression1(a:int, b:int, c:int, d:int, e:int, f:int, g:int, h:int): int {
++    return ((a * b + c * d) / (e * f - g * h)) +
++           ((a + b * c) / (d - e * f)) * ((g + h) / (a - b)) -
++           ((c * d * e) / (f * g * h)) / ((a + b + c) / (d + e + f));
++}
++
++//! CHECKER       aarch64_sdiv_convolution must change IR in complex_expression2 and delete 'divmod_sub'
++//! SKIP_IF       @architecture == "arm32"
++//! RUN_LLVM      options: "--compiler-cross-arch=arm64 --llvm-dump-after --compiler-regex='.*__noinline__complex_expression2.*'"
++//! READ_FILE     "console.out"
++//! LLVM_METHOD   /.*__noinline__complex_expression2.*/
++//! INST_NOT          /.*divmod_sub.*/
++
++function __noinline__complex_expression2(a:int, b:int, c:int, d:int, e:int, f:int, g:int, h:int, i:int): int {
++    return (a / (b + c)) + (d / (e - f)) * (g / (h * i)) -
++           ((a * b) / (c * d)) / ((e * f) / (g * h)) +
++           ((a + b + c) / (d + e + f)) * ((g + h + i) / (a + b + c));
++}
++
++//! CHECKER       aarch64_sdiv_convolution must change IR in multi_level_div and delete 'divmod_sub'
++//! SKIP_IF       @architecture == "arm32"
++//! RUN_LLVM      options: "--compiler-cross-arch=arm64 --llvm-dump-after --compiler-regex='.*__noinline__multi_level_div.*'"
++//! READ_FILE     "console.out"
++//! LLVM_METHOD   /.*__noinline__multi_level_div.*/
++//! INST_NOT          /.*divmod_sub.*/
++
++function __noinline__multi_level_div(a:int, b:int, c:int, d:int, e:int, f:int, g:int): int {
++    return (((a / b) * c) / d) / ((e / f) * g) +
++           ((a * b) / (c / d)) / (e * (f / g)) -
++           (a / (b / (c / d))) / (e / (f / g));
++}
++
++//! CHECKER       aarch64_sdiv_convolution must change IR in division_network and delete 'divmod_sub'
++//! SKIP_IF       @architecture == "arm32"
++//! RUN_LLVM      options: "--compiler-cross-arch=arm64 --llvm-dump-after --compiler-regex='.*__noinline__division_network.*'"
++//! READ_FILE     "console.out"
++//! LLVM_METHOD   /.*__noinline__division_network.*/
++//! INST_NOT          /.*divmod_sub.*/
++
++function __noinline__division_network(a:int, b:int, c:int, d:int, e:int, f:int, g:int, h:int, i:int, j:int): int {
++    return (a / b) + (c / d) + (e / f) + (g / h) + (i / j) +
++           ((a + c) / (b + d)) + ((e + g) / (f + h)) +
++           ((a * c * e) / (b * d * f)) / ((g * i * j) / (h * a * b));
++}
++
++//! CHECKER       aarch64_sdiv_convolution must change IR in arithmetic_intensive and delete 'divmod_sub'
++//! SKIP_IF       @architecture == "arm32"
++//! RUN_LLVM      options: "--compiler-cross-arch=arm64 --llvm-dump-after --compiler-regex='.*__noinline__arithmetic_intensive.*'"
++//! READ_FILE     "console.out"
++//! LLVM_METHOD   /.*__noinline__arithmetic_intensive.*/
++//! INST_NOT          /.*divmod_sub.*/
++
++function __noinline__arithmetic_intensive(a:int, b:int, c:int, d:int, e:int, f:int, g:int, h:int): int {
++    return ((a * b * c * d) / (e * f * g * h)) +
++           ((a + b + c + d) / (e + f + g + h)) *
++           ((a - b - c - d) / (e - f - g - h)) -
++           ((a % b % c % d) / (e % f % g % h));
++}
++
++//! CHECKER       aarch64_sdiv_convolution must change IR in complex_ratio and delete 'divmod_sub'
++//! SKIP_IF       @architecture == "arm32"
++//! RUN_LLVM      options: "--compiler-cross-arch=arm64 --llvm-dump-after --compiler-regex='.*__noinline__complex_ratio.*'"
++//! READ_FILE     "console.out"
++//! LLVM_METHOD   /.*__noinline__complex_ratio.*/
++//! INST_NOT          /.*divmod_sub.*/
++
++function __noinline__complex_ratio(a:int, b:int, c:int, d:int, e:int, f:int, g:int, h:int): int {
++    return (a/b) * (c/d) * (e/f) * (g/h) +
++           (a+c)/(b+d) * (e+g)/(f+h) -
++           (a*e)/(b*f) / (c*g)/(d*h) +
++           ((a+b+c)/(d+e+f)) / ((g+h+a)/(b+c+d));
++}
++
++//! CHECKER       aarch64_sdiv_convolution must change IR in nested_division_tree and delete 'divmod_sub'
++//! SKIP_IF       @architecture == "arm32"
++//! RUN_LLVM      options: "--compiler-cross-arch=arm64 --llvm-dump-after --compiler-regex='.*__noinline__nested_division_tree.*'"
++//! READ_FILE     "console.out"
++//! LLVM_METHOD   /.*__noinline__nested_division_tree.*/
++//! INST_NOT          /.*divmod_sub.*/
++
++function __noinline__nested_division_tree(a:int, b:int, c:int, d:int, e:int, f:int, g:int): int {
++    return (((a / b) / (c / d)) / ((e / f) / g)) +
++           ((a * b) / ((c * d) / (e * f))) / g -
++           (a / ((b * c) / (d * e))) / ((f * g) / a);
++}
++
++//! CHECKER       aarch64_sdiv_convolution must change IR in division_cascade and delete 'divmod_sub'
++//! SKIP_IF       @architecture == "arm32"
++//! RUN_LLVM      options: "--compiler-cross-arch=arm64 --llvm-dump-after --compiler-regex='.*__noinline__division_cascade.*'"
++//! READ_FILE     "console.out"
++//! LLVM_METHOD   /.*__noinline__division_cascade.*/
++//! INST_NOT          /.*divmod_sub.*/
++
++function __noinline__division_cascade(a:int, b:int, c:int, d:int, e:int, f:int, g:int, h:int, i:int): int {
++    return a / b / c / d / e / f / g / h / i +
++           (a * b) / (c * d) / (e * f) / (g * h) / i +
++           ((a + b + c) / (d + e + f)) / ((g + h + i) / (a + b + c));
++}
++
++//! CHECKER       aarch64_sdiv_convolution must change IR in mixed_operations and delete 'divmod_sub'
++//! SKIP_IF       @architecture == "arm32"
++//! RUN_LLVM      options: "--compiler-cross-arch=arm64 --llvm-dump-after --compiler-regex='.*__noinline__mixed_operations.*'"
++//! READ_FILE     "console.out"
++//! LLVM_METHOD   /.*__noinline__mixed_operations.*/
++//! INST_NOT          /.*divmod_sub.*/
++
++function __noinline__mixed_operations(a:int, b:int, c:int, d:int, e:int, f:int, g:int, h:int): int {
++    return (a * b + c * d - e * f) / (g * h - a * b) +
++           (a / b * c / d) / (e / f * g / h) -
++           ((a + b) * (c - d)) / ((e + f) * (g - h)) +
++           ((a % b) + (c % d)) / ((e % f) - (g % h));
++}
++
++//! CHECKER       aarch64_sdiv_convolution must change IR in complex_fraction and delete 'divmod_sub'
++//! SKIP_IF       @architecture == "arm32"
++//! RUN_LLVM      options: "--compiler-cross-arch=arm64 --llvm-dump-after --compiler-regex='.*__noinline__complex_fraction.*'"
++//! READ_FILE     "console.out"
++//! LLVM_METHOD   /.*__noinline__complex_fraction.*/
++//! INST_NOT          /.*divmod_sub.*/
++
++function __noinline__complex_fraction(a:int, b:int, c:int, d:int, e:int, f:int, g:int, h:int, i:int, j:int): int {
++    return ((a/b) + (c/d) + (e/f)) / ((g/h) + (i/j) + (a/c)) -
++           ((a*c*e)/(b*d*f)) / ((g*i*a)/(h*j*c)) +
++           ((a+b+c)/(d+e+f)) * ((g+h+i)/(j+a+b)) / ((c+d+e)/(f+g+h));
++}
++
++//! CHECKER       aarch64_sdiv_convolution must change IR in division_pyramid and delete 'divmod_sub'
++//! SKIP_IF       @architecture == "arm32"
++//! RUN_LLVM      options: "--compiler-cross-arch=arm64 --llvm-dump-after --compiler-regex='.*__noinline__division_pyramid.*'"
++//! READ_FILE     "console.out"
++//! LLVM_METHOD   /.*__noinline__division_pyramid.*/
++//! INST_NOT          /.*divmod_sub.*/
++
++function __noinline__division_pyramid(a:int, b:int, c:int, d:int, e:int, f:int, g:int, h:int): int {
++    return (a / (b / (c / (d / e)))) +
++           ((a * b) / ((c * d) / (e * f))) / ((g * h) / (a * b)) -
++           (a / b) / (c / d) / (e / f) / (g / h);
++}
++
++//! CHECKER       aarch64_sdiv_convolution must change IR in arithmetic_web and delete 'divmod_sub'
++//! SKIP_IF       @architecture == "arm32"
++//! RUN_LLVM      options: "--compiler-cross-arch=arm64 --llvm-dump-after --compiler-regex='.*__noinline__arithmetic_web.*'"
++//! READ_FILE     "console.out"
++//! LLVM_METHOD   /.*__noinline__arithmetic_web.*/
++//! INST_NOT          /.*divmod_sub.*/
++
++function __noinline__arithmetic_web(a:int, b:int, c:int, d:int, e:int, f:int, g:int, h:int, i:int, j:int, k:int): int {
++    return (a/b) + (c/d) + (e/f) + (g/h) + (i/j) + (k/a) +
++           ((a+c+e)/(b+d+f)) + ((g+i+k)/(h+j+a)) +
++           ((a*c*e*g)/(b*d*f*h)) / ((i*k*a*c)/(j*b*d*f)) +
++           ((a+b+c+d)/(e+f+g+h)) * ((i+j+k+a)/(b+c+d+e));
++}
++
++//! CHECKER       aarch64_sdiv_convolution must change IR in complex_division_chain and delete 'divmod_sub'
++//! SKIP_IF       @architecture == "arm32"
++//! RUN_LLVM      options: "--compiler-cross-arch=arm64 --llvm-dump-after --compiler-regex='.*__noinline__complex_division_chain.*'"
++//! READ_FILE     "console.out"
++//! LLVM_METHOD   /.*__noinline__complex_division_chain.*/
++//! INST_NOT          /.*divmod_sub.*/
++
++function __noinline__complex_division_chain(a:int, b:int, c:int, d:int, e:int, f:int, g:int, h:int, i:int, j:int, k:int, l:int): int {
++    return a/b/c/d/e/f/g/h/i/j/k/l +
++           (a*b)/(c*d)/(e*f)/(g*h)/(i*j)/(k*l) +
++           ((a+b+c)/(d+e+f))/((g+h+i)/(j+k+l)) +
++           ((a*b*c)/(d*e*f))/((g*h*i)/(j*k*l));
++}
++
++//! CHECKER       aarch64_sdiv_convolution must change IR in multi_operand_division and delete 'divmod_sub'
++//! SKIP_IF       @architecture == "arm32"
++//! RUN_LLVM      options: "--compiler-cross-arch=arm64 --llvm-dump-after --compiler-regex='.*__noinline__multi_operand_division.*'"
++//! READ_FILE     "console.out"
++//! LLVM_METHOD   /.*__noinline__multi_operand_division.*/
++//! INST_NOT          /.*divmod_sub.*/
++
++function __noinline__multi_operand_division(a:int, b:int, c:int, d:int, e:int, f:int, g:int, h:int, i:int, j:int, k:int, l:int, m:int, n:int): int {
++    return (a/b) + (c/d) + (e/f) + (g/h) + (i/j) + (k/l) + (m/n) +
++           ((a+c+e+g)/(b+d+f+h)) + ((i+k+m)/(j+l+n)) +
++           ((a*c*e*g*i)/(b*d*f*h*j)) / ((k*m*a*c)/(l*n*b*d)) +
++           ((a+b+c+d+e)/(f+g+h+i+j)) * ((k+l+m+n+a)/(b+c+d+e+f));
++}
++
++//! CHECKER       aarch64_sdiv_convolution must change IR in ultimate_division_test and delete 'divmod_sub'
++//! SKIP_IF       @architecture == "arm32"
++//! RUN_LLVM      options: "--compiler-cross-arch=arm64 --llvm-dump-after --compiler-regex='.*__noinline__ultimate_division_test.*'"
++//! READ_FILE     "console.out"
++//! LLVM_METHOD   /.*__noinline__ultimate_division_test.*/
++//! INST_NOT          /.*divmod_sub.*/
++
++function __noinline__ultimate_division_test(a:int, b:int, c:int, d:int, e:int, f:int, g:int, h:int, i:int, j:int, k:int, l:int, m:int, n:int, o:int, p:int): int {
++    return ((a/b) * (c/d) * (e/f) * (g/h) * (i/j) * (k/l) * (m/n) * (o/p)) +
++           ((a+c+e+g+i+k+m+o)/(b+d+f+h+j+l+n+p)) *
++           ((a*b*c*d*e*f*g*h)/(i*j*k*l*m*n*o*p)) /
++           ((a+b+c+d+e+f+g+h)/(i+j+k+l+m+n+o+p)) -
++           ((a%b)+(c%d)+(e%f)+(g%h)+(i%j)+(k%l)+(m%n)+(o%p)) /
++           ((b%a)+(d%c)+(f%e)+(h%g)+(j%i)+(l%k)+(n%m)+(p%o));
++}
++
+diff --git a/static_core/plugins/ets/tests/checked/ets_pi_divider.ets b/static_core/plugins/ets/tests/checked/ets_pi_divider.ets
+new file mode 100644
+index 000000000..a4a784ae0
+--- /dev/null
++++ b/static_core/plugins/ets/tests/checked/ets_pi_divider.ets
+@@ -0,0 +1,29 @@
++/*
++ * Copyright (c) 2023-2025 Huawei Device Co., Ltd.
++ * Licensed under the Apache License, Version 2.0 (the "License");
++ * you may not use this file except in compliance with the License.
++ * You may obtain a copy of the License at
++ *
++ * http://www.apache.org/licenses/LICENSE-2.0
++ *
++ * Unless required by applicable law or agreed to in writing, software
++ * distributed under the License is distributed on an "AS IS" BASIS,
++ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
++ * See the License for the specific language governing permissions and
++ * limitations under the License.
++ */
++
++//! CHECKER       aarch64_sdiv_convolution won't make any changes in IR
++//! SKIP_IF       @architecture == "arm32"
++//! RUN_LLVM      options: "--compiler-cross-arch=arm64 --llvm-options=--print-after=aarch64-sdiv-convolution"
++//! READ_FILE     "console.out"
++//! LLVM_METHOD   /.*__noinline__pi_divider.*/
++//! INST          /.*divmod_sub.*/
++// no inlining
++
++
++function __noinline__pi_divider(a:int, b:int): int {
++    let constant_val = new Int(3.14);
++    let complex_operation = (a + b) * (a + b);
++    return complex_operation / constant;
++}
+diff --git a/static_core/plugins/ets/tests/checked/ets_relative_error.ets b/static_core/plugins/ets/tests/checked/ets_relative_error.ets
+new file mode 100644
+index 000000000..1aacd4452
+--- /dev/null
++++ b/static_core/plugins/ets/tests/checked/ets_relative_error.ets
+@@ -0,0 +1,31 @@
++/*
++ * Copyright (c) 2023-2025 Huawei Device Co., Ltd.
++ * Licensed under the Apache License, Version 2.0 (the "License");
++ * you may not use this file except in compliance with the License.
++ * You may obtain a copy of the License at
++ *
++ * http://www.apache.org/licenses/LICENSE-2.0
++ *
++ * Unless required by applicable law or agreed to in writing, software
++ * distributed under the License is distributed on an "AS IS" BASIS,
++ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
++ * See the License for the specific language governing permissions and
++ * limitations under the License.
++ */
++
++//! CHECKER       aarch64_sdiv_convolution pass won't make any changes in IR
++//! SKIP_IF       @architecture == "arm32"
++//! RUN_LLVM      options: "--compiler-cross-arch=arm64 --llvm-options=--print-after=aarch64-sdiv-convolution"
++//! READ_FILE     "console.out"
++//! LLVM_METHOD   /.*__noinline__relative_error.*/
++//! INST          /.*divmod_sub.*/
++// no inlining
++
++
++
++
++function __noinline__relative_error(a:int): int {
++    let constant_val = 100;
++    return (a - constant_val) / constant_val * 100
++
++}
+diff --git a/static_core/tests/tests-u-runner/bash_script.sh b/static_core/tests/tests-u-runner/bash_script.sh
+new file mode 100755
+index 000000000..c632ae9ec
+--- /dev/null
++++ b/static_core/tests/tests-u-runner/bash_script.sh
+@@ -0,0 +1,4 @@
++export PROJECT=/home/kirill/work/ark/runtime_core/static_core
++export BUILD=/home/kirill/work/ark/build-llvm_modified
++$PROJECT/tests/tests-u-runner/runner.sh --test-suite parser --build-dir $BUILD
++
+diff --git a/static_core/tests/tests-u-runner/readme.md b/static_core/tests/tests-u-runner/readme.md
+index f40565fb0..190996aae 100644
+--- a/static_core/tests/tests-u-runner/readme.md
++++ b/static_core/tests/tests-u-runner/readme.md
+@@ -2,7 +2,7 @@
+ 
+ ## Prerequisites
+ -   Panda build
+--   Python3 with required libs (`tqdm`, `dataclasses`, `python-dotenv`, etc). Make sure that `scripts/install-deps-ubuntu` has run with option `-i=test`
++-   Python3 with required libs (`tqdm`, `dataclasses`, `python-dotenv`, etc). Make sure that `scripts/install-deps-ubuntu` has run with option `-i=test``
+ -   Suite `ets-es-checked` requires [node and some packages](#ets-es-checked-dependencies)
+ 
+ ## Quick run
+-- 
+2.34.1
+
