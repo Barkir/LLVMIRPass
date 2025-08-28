@@ -37,8 +37,8 @@ SDivConvolution::SDivConvolution() = default;
 
 /// Function for replacing sdiv to aarch64_sdiv intrinsic
 bool ReplaceAArch64SDiv(Instruction *SDivInstr, Function *F) {
-    if (!SDivInstr || !F)
-        return false;
+    assert(SDivInstr != nullptr);
+    assert(F != nullptr);
 
     auto SDivIntrinsicOpcode = llvm::Intrinsic::AARCH64Intrinsics::aarch64_sdiv;
     auto SDivIntrinsicFunc = Intrinsic::getDeclaration(F->getParent(), SDivIntrinsicOpcode, {SDivInstr->getOperand(0)->getType()});
@@ -56,6 +56,9 @@ bool ReplaceAArch64SDiv(Instruction *SDivInstr, Function *F) {
 ///     true if all args contain in instruction
 ///     false otherwise
 bool ContainsInOperand(Instruction *I, Value *variable, const int value) {
+    assert(I != nullptr);
+    assert(variable != nullptr);
+
     int numOper = I->getNumOperands();
     bool valueCond = false;
     bool operCond = false;
@@ -84,6 +87,8 @@ bool ContainsInOperand(Instruction *I, Value *variable, const int value) {
 ///     true if value contains in phi
 ///     false otherwise
 bool ContainsInPhi(PHINode *Phi, const int value) {
+    assert(Phi != nullptr);
+
     int numValues = Phi->getNumIncomingValues();
     for (int i = 0; i < numValues; i++) {
         auto *phi_value = Phi->getIncomingValue(i);
@@ -99,6 +104,8 @@ bool ContainsInPhi(PHINode *Phi, const int value) {
 /// Finds only first sdiv !!!
 /// Function for finding SDiv in a basicblock
 std::vector<Instruction*> FindSDiv(BasicBlock *BB) {
+    assert(BB != nullptr);
+
     std::vector<Instruction*> sdiv_vec;
     for (auto &I : *BB) {
         if (auto *BinOp = dyn_cast<BinaryOperator>(&I)) {
@@ -113,6 +120,8 @@ std::vector<Instruction*> FindSDiv(BasicBlock *BB) {
 
 /// Help function for clearingBasicBlock
 void clearBasicBlock(BasicBlock *BB) {
+    assert(BB != nullptr);
+
     while (!BB->empty()) {
         Instruction *I = &(BB->back());
         I->eraseFromParent();
@@ -121,6 +130,8 @@ void clearBasicBlock(BasicBlock *BB) {
 
 /// Function for finding PhiNode in users of the other instruction
 PHINode* FindPhiInUses(Instruction *Instr) {
+    assert(Instr != nullptr);
+
     if (Instr->getNumUses() == 1)
     {
         for (auto *User : Instr->users()) {
@@ -136,6 +147,8 @@ PHINode* FindPhiInUses(Instruction *Instr) {
 
 /// Function for getting sub instruction from phi instruction
 Instruction* GetSubInstrFromPhi(Instruction *PhiInstr) {
+    assert(PhiInstr != nullptr);
+
     PHINode *PhiInstrCasted = dyn_cast<PHINode>(PhiInstr);
     uint64_t numVal = PhiInstrCasted->getNumIncomingValues();
 
@@ -151,6 +164,9 @@ Instruction* GetSubInstrFromPhi(Instruction *PhiInstr) {
 
 /// Function for checking correct operands in sub and sdiv instruction
 bool SubInstrAppropriate(Instruction *SubInstr, Instruction *SDivInstr) {
+    assert(SubInstr != nullptr);
+    assert(SDivInstr != nullptr);
+
     return (SubInstr->getOperand(1) == SDivInstr->getOperand(0) || SubInstr->getOperand(1) == SDivInstr->getOperand(1));
 }
 
@@ -161,6 +177,10 @@ bool SubInstrAppropriate(Instruction *SubInstr, Instruction *SDivInstr) {
 ///             -> replace phi with sdiv
 ///                 -> replace sdiv to aarch64
 bool FinalTransform(Instruction *SDivInstr, Function *F, BasicBlock *BB) {
+    assert(SDivInstr != nullptr);
+    assert(F != nullptr);
+    assert(BB != nullptr);
+
     auto *PhiInstr = FindPhiInUses(SDivInstr);
     if (PhiInstr) {
         BARK_DEBUG(errs() << "Found Phi in uses of sdiv " << *PhiInstr << "\n");
@@ -184,12 +204,16 @@ bool FinalTransform(Instruction *SDivInstr, Function *F, BasicBlock *BB) {
 }
 
 void PrintRecursively(const char *word, uint32_t level) {
+    assert(word != nullptr);
+
         for (uint32_t i = 0; i < level; i++)
             errs() << "\t";
         errs() << word;
 }
 
 Instruction *getSingleUser(Value *val) {
+    assert(val != nullptr);
+
     int numUses = val->getNumUses();
     BARK_DEBUG(errs() << "Value : " << *val << " got " << numUses << " uses." << "\n");
     if (numUses == 1) {
@@ -203,8 +227,9 @@ Instruction *getSingleUser(Value *val) {
 
 
 Instruction *getUserByNumber(Instruction *StartOp, Value *val, uint32_t num, uint32_t numUses) {
-    if (!val)
-        return nullptr;
+    assert(StartOp != nullptr);
+    assert(val != nullptr);
+
     BARK_DEBUG(errs() << "==================================================================" << "\n");
     BARK_DEBUG(errs() << "\t\t" << "value : " << *val << "\n");
     uint32_t cnt = 0;
@@ -268,11 +293,15 @@ Instruction *getUserByNumber(Instruction *StartOp, Value *val, uint32_t num, uin
 /// else -> do nothing
 bool funcRecursiveICmpSearch(Instruction *StartOp, Value *val, const int32_t num, uint32_t level) {
     assert(StartOp != nullptr);
+    assert(val != nullptr);
 
     if (StartOp->getOpcode() == Instruction::ICmp) { // CHECK IF ICMP IN EQ MODE !!!!!!!!
+        auto *castStartOp = dyn_cast<ICmpInst>(StartOp);
+        if (castStartOp->getPredicate() != CmpInst::ICMP_EQ)
+            return false;
         // PrintRecursively("icmp", level);
         PrintRecursively("", level);
-        BARK_DEBUG(errs() << "Got icmp in recursion -> " << *StartOp << "\n");
+        BARK_DEBUG(errs() << "Got icmp in recursion with eq predicate -> " << *StartOp << "\n");
         return ContainsInOperand(StartOp, val, num);
     } else if (StartOp->getOpcode() == Instruction::And || (StartOp->getOpcode() == Instruction::SDiv && level == 0)) {
         // PrintRecursively("and", level);
@@ -298,6 +327,9 @@ bool funcRecursiveICmpSearch(Instruction *StartOp, Value *val, const int32_t num
 // bool -> contains
 // pointer
 bool RecursiveICmpSearch(Instruction *StartOp, Value *val, const int32_t num) {
+    assert(StartOp != nullptr);
+    assert(val != nullptr);
+
     BARK_DEBUG(errs() << "Starting recursive icmp search!" << "\n");
     BARK_DEBUG(errs() << "StartOp = " << *StartOp << " : Value = " << *val << " : Num = " << num << "\n");
 
