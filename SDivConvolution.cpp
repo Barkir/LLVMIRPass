@@ -30,7 +30,8 @@
 
 using namespace llvm;
 
-namespace ark::llvmbackend::passes {
+namespace ark::llvmbackend::passes
+{
 
 SDivConvolution::SDivConvolution() = default;
 
@@ -97,16 +98,17 @@ bool ContainsInPhi(PHINode *Phi, const int value) {
 }
 /// Finds only first sdiv !!!
 /// Function for finding SDiv in a basicblock
-Instruction* FindSDiv(BasicBlock *BB) {
+std::vector<Instruction*> FindSDiv(BasicBlock *BB) {
+    std::vector<Instruction*> sdiv_vec;
     for (auto &I : *BB) {
         if (auto *BinOp = dyn_cast<BinaryOperator>(&I)) {
             if (BinOp->getOpcode() == Instruction::SDiv) {
                 BARK_DEBUG(errs() << "Found SDivInstruction!" << "\n");
-                return &I;
+                sdiv_vec.push_back(BinOp);
             }
         }
     }
-    return nullptr;
+    return sdiv_vec;
 }
 
 /// Help function for clearingBasicBlock
@@ -119,7 +121,6 @@ void clearBasicBlock(BasicBlock *BB) {
 
 /// Function for finding PhiNode in users of the other instruction
 PHINode* FindPhiInUses(Instruction *Instr) {
-
     if (Instr->getNumUses() == 1)
     {
         for (auto *User : Instr->users()) {
@@ -197,9 +198,9 @@ Instruction *getSingleUser(Value *val) {
             return castedUser;
         }
     }
-
-    return nullptr;
+        return nullptr;
 }
+
 
 Instruction *getUserByNumber(Instruction *StartOp, Value *val, uint32_t num, uint32_t numUses) {
     if (!val)
@@ -248,6 +249,7 @@ Instruction *getUserByNumber(Instruction *StartOp, Value *val, uint32_t num, uin
 
 /// WARNING!!!
 /// AND INFINITE RECURSION CASE NOT HANDLED
+/// THIS IS THE CAS
 // WARNING!!!
 
 /// This a function for recursive searching of icmp
@@ -265,10 +267,9 @@ Instruction *getUserByNumber(Instruction *StartOp, Value *val, uint32_t num, uin
 /// else if `icmp` -> stop and search for correct pattern
 /// else -> do nothing
 bool funcRecursiveICmpSearch(Instruction *StartOp, Value *val, const int32_t num, uint32_t level) {
-    if (!StartOp)
-        return false;
+    assert(StartOp != nullptr);
 
-    if (StartOp->getOpcode() == Instruction::ICmp) {
+    if (StartOp->getOpcode() == Instruction::ICmp) { // CHECK IF ICMP IN EQ MODE !!!!!!!!
         // PrintRecursively("icmp", level);
         PrintRecursively("", level);
         BARK_DEBUG(errs() << "Got icmp in recursion -> " << *StartOp << "\n");
@@ -281,20 +282,21 @@ bool funcRecursiveICmpSearch(Instruction *StartOp, Value *val, const int32_t num
         BARK_DEBUG(errs() << *(StartOp->getOperand(0)) << " got " << numUses1 << "     uses" << "\n");
         for (uint32_t cntUses = 0; cntUses < numUses1; cntUses++) {
             auto *userLeft = getUserByNumber(StartOp, StartOp->getOperand(0), cntUses, numUses1);
-            if (funcRecursiveICmpSearch(userLeft, val, num, level+1))
+            if (userLeft && funcRecursiveICmpSearch(userLeft, val, num, level+1))
                 return true;
         }
 
         uint32_t numUses2 = StartOp->getOperand(1)->getNumUses();
         for (uint32_t cntUses = 0; cntUses < numUses2; cntUses++) {
             auto *userRight = getUserByNumber(StartOp, StartOp->getOperand(1), cntUses, numUses1);
-            if (funcRecursiveICmpSearch(userRight, val, num, level+1))
+            if (userRight && funcRecursiveICmpSearch(userRight, val, num, level+1))
                 return true;
         }
     }
     return false;
 }
-
+// bool -> contains
+// pointer
 bool RecursiveICmpSearch(Instruction *StartOp, Value *val, const int32_t num) {
     BARK_DEBUG(errs() << "Starting recursive icmp search!" << "\n");
     BARK_DEBUG(errs() << "StartOp = " << *StartOp << " : Value = " << *val << " : Num = " << num << "\n");
@@ -304,7 +306,7 @@ bool RecursiveICmpSearch(Instruction *StartOp, Value *val, const int32_t num) {
 }
 
 llvm::PreservedAnalyses SDivConvolution::run(Function &F,
-                                          FunctionAnalysisManager &AM) {
+                                        FunctionAnalysisManager &AM) {
 
     bool changed = false;
     Module *M = F.getParent();
@@ -318,6 +320,9 @@ llvm::PreservedAnalyses SDivConvolution::run(Function &F,
     /// This pass is specialized for arm architecture.
     /// if the architectures don't match, the pass won't go further
     StringRef TargetTriple = M->getTargetTriple();
+
+    // simplify arm check
+    // (llvm_ark_interface (LLVMArchToArkArch))
     bool isARM = TargetTriple.contains("arm") || TargetTriple.contains("aarch64");
     if (!isARM) {
         BARK_DEBUG(errs() << "Architecture doesn't match the pass" << "\n");
@@ -327,25 +332,25 @@ llvm::PreservedAnalyses SDivConvolution::run(Function &F,
     for (auto &BB : F) {
         BARK_DEBUG(errs() << "Running cycle... the block is -> -> ->" << BB << "\n");
 
-        auto *SDivInstr = FindSDiv(&BB);
-        if (!SDivInstr)
-            continue;
-        BARK_DEBUG(errs() << "Found SDiv! " << *SDivInstr << "\n");
+        auto SDivInstrVec = FindSDiv(&BB);
+        BARK_DEBUG(errs() << "Found SDivVector with size " << SDivInstrVec.size() << SDivInstrVec << "\n");
 
-        auto *firstOperand = SDivInstr->getOperand(0);
-        auto *secondOperand = SDivInstr->getOperand(1);
+        for (auto *SDivInstr : SDivInstrVec) {
+            auto *firstOperand = SDivInstr->getOperand(0);
+            auto *secondOperand = SDivInstr->getOperand(1);
 
-        if (RecursiveICmpSearch(SDivInstr, secondOperand, -1)) {
-            if (FinalTransform(SDivInstr, &F, &BB)) {
-                changed = true;
-                continue;
+            if (RecursiveICmpSearch(SDivInstr, secondOperand, -1)) {
+                if (FinalTransform(SDivInstr, &F, &BB)) {
+                    changed = true;
+                    continue;
+                }
+            } else if (RecursiveICmpSearch(SDivInstr, firstOperand, INT_MIN) && RecursiveICmpSearch(SDivInstr, secondOperand, -1)) {
+                if (FinalTransform(SDivInstr, &F, &BB)) {
+                    changed = true;
+                    continue;
+                }
             }
-        } else if (RecursiveICmpSearch(SDivInstr, firstOperand, INT_MIN) && RecursiveICmpSearch(SDivInstr, secondOperand, -1)) {
-            if (FinalTransform(SDivInstr, &F, &BB)) {
-                changed = true;
-                continue;
-            }
-        }
+        } // end of SDivInstrVec cycle
     } // end of basic blocks cycle
 
     BARK_DEBUG(errs() << "==================================" << "\n");
@@ -356,3 +361,5 @@ llvm::PreservedAnalyses SDivConvolution::run(Function &F,
 }
 
 }
+
+
