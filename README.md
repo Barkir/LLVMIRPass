@@ -1,4 +1,4 @@
-This is a research about this example ([previous part of the research](./md/README_old.md))
+This is a research about this example ([previous part of the research](./README_old.md))
 
 ## Source code
 ```cpp
