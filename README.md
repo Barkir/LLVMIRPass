@@ -56,3 +56,34 @@ define dso_local noundef i32 @_Z5test1iii(i32 noundef %a, i32 noundef %b, i32 no
 }
 
 ```
+
+## Got first results!
+- If we slightly change the start of `-O2` pipeline.
+
+### How it was 
+```cpp
+EarlyFPM.addPass(LowerExpectIntrinsicPass());
+EarlyFPM.addPass(SimplifyCFGPass());
+EarlyFPM.addPass(SROAPass(SROAOptions::ModifyCFG));
+EarlyFPM.addPass(EarlyCSEPass());
+```
+
+### How it is now
+```cpp
+EarlyFPM.addPass(LowerExpectIntrinsicPass());
+EarlyFPM.addPass(SimplifyCFGPass());
+EarlyFPM.addPass(SROAPass(SROAOptions::ModifyCFG));
+EarlyFPM.addPass(SimplifyCFGPass());
+EarlyFPM.addPass(EarlyCSEPass());
+EarlyFPM.addPass(InstCombinePass());
+EarlyFPM.addPass(SimplifyCFGPass());
+```
+
+| Test number | Test            |
+| ----------- | --------------- |
+| 1           | [[Тест 1\|tap]] |
+| 2           | [[Тест 2\|tap]] |
+| 3           | [[Тест 3\|tap]] |
+|             |                 |
+~                                                                                                             
+~                                      
