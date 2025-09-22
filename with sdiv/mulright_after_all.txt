@@ -1,0 +1,2173 @@
+; *** IR Dump After Annotation2MetadataPass on [module] ***
+; ModuleID = 'mul_right.ll'
+source_filename = "mul_right.ll"
+
+define dso_local noundef i32 @_Z5test1iii(i32 noundef %a, i32 noundef %b, i32 noundef %c) {
+entry:
+  %cmp = icmp eq i32 %a, 46346
+  %cmp1 = icmp eq i32 %b, 5745
+  %or.cond = select i1 %cmp, i1 %cmp1, i1 false
+  %cmp3 = icmp eq i32 %c, 5
+  %or.cond1 = select i1 %or.cond, i1 %cmp3, i1 false
+  br i1 %or.cond1, label %if.then, label %if.end
+
+if.then:                                          ; preds = %entry
+  %mul = sdiv i32 %a, %b
+  %add = add nsw i32 %c, %mul
+  br label %return
+
+if.end:                                           ; preds = %entry
+  %mul4 = sdiv i32 %a, %b
+  %add4 = add nsw i32 %c, %mul4
+  br label %return
+
+return:                                           ; preds = %if.end, %if.then
+  %retval.0 = phi i32 [ %add, %if.then ], [ %add4, %if.end ]
+  ret i32 %retval.0
+}
+; *** IR Dump After ForceFunctionAttrsPass on [module] ***
+; ModuleID = 'mul_right.ll'
+source_filename = "mul_right.ll"
+
+define dso_local noundef i32 @_Z5test1iii(i32 noundef %a, i32 noundef %b, i32 noundef %c) {
+entry:
+  %cmp = icmp eq i32 %a, 46346
+  %cmp1 = icmp eq i32 %b, 5745
+  %or.cond = select i1 %cmp, i1 %cmp1, i1 false
+  %cmp3 = icmp eq i32 %c, 5
+  %or.cond1 = select i1 %or.cond, i1 %cmp3, i1 false
+  br i1 %or.cond1, label %if.then, label %if.end
+
+if.then:                                          ; preds = %entry
+  %mul = sdiv i32 %a, %b
+  %add = add nsw i32 %c, %mul
+  br label %return
+
+if.end:                                           ; preds = %entry
+  %mul4 = sdiv i32 %a, %b
+  %add4 = add nsw i32 %c, %mul4
+  br label %return
+
+return:                                           ; preds = %if.end, %if.then
+  %retval.0 = phi i32 [ %add, %if.then ], [ %add4, %if.end ]
+  ret i32 %retval.0
+}
+; *** IR Dump After InferFunctionAttrsPass on [module] ***
+; ModuleID = 'mul_right.ll'
+source_filename = "mul_right.ll"
+
+define dso_local noundef i32 @_Z5test1iii(i32 noundef %a, i32 noundef %b, i32 noundef %c) {
+entry:
+  %cmp = icmp eq i32 %a, 46346
+  %cmp1 = icmp eq i32 %b, 5745
+  %or.cond = select i1 %cmp, i1 %cmp1, i1 false
+  %cmp3 = icmp eq i32 %c, 5
+  %or.cond1 = select i1 %or.cond, i1 %cmp3, i1 false
+  br i1 %or.cond1, label %if.then, label %if.end
+
+if.then:                                          ; preds = %entry
+  %mul = sdiv i32 %a, %b
+  %add = add nsw i32 %c, %mul
+  br label %return
+
+if.end:                                           ; preds = %entry
+  %mul4 = sdiv i32 %a, %b
+  %add4 = add nsw i32 %c, %mul4
+  br label %return
+
+return:                                           ; preds = %if.end, %if.then
+  %retval.0 = phi i32 [ %add, %if.then ], [ %add4, %if.end ]
+  ret i32 %retval.0
+}
+; *** IR Dump After CoroEarlyPass on [module] ***
+; ModuleID = 'mul_right.ll'
+source_filename = "mul_right.ll"
+
+define dso_local noundef i32 @_Z5test1iii(i32 noundef %a, i32 noundef %b, i32 noundef %c) {
+entry:
+  %cmp = icmp eq i32 %a, 46346
+  %cmp1 = icmp eq i32 %b, 5745
+  %or.cond = select i1 %cmp, i1 %cmp1, i1 false
+  %cmp3 = icmp eq i32 %c, 5
+  %or.cond1 = select i1 %or.cond, i1 %cmp3, i1 false
+  br i1 %or.cond1, label %if.then, label %if.end
+
+if.then:                                          ; preds = %entry
+  %mul = sdiv i32 %a, %b
+  %add = add nsw i32 %c, %mul
+  br label %return
+
+if.end:                                           ; preds = %entry
+  %mul4 = sdiv i32 %a, %b
+  %add4 = add nsw i32 %c, %mul4
+  br label %return
+
+return:                                           ; preds = %if.end, %if.then
+  %retval.0 = phi i32 [ %add, %if.then ], [ %add4, %if.end ]
+  ret i32 %retval.0
+}
+; *** IR Dump After EntryExitInstrumenterPass on _Z5test1iii ***
+define dso_local noundef i32 @_Z5test1iii(i32 noundef %a, i32 noundef %b, i32 noundef %c) {
+entry:
+  %cmp = icmp eq i32 %a, 46346
+  %cmp1 = icmp eq i32 %b, 5745
+  %or.cond = select i1 %cmp, i1 %cmp1, i1 false
+  %cmp3 = icmp eq i32 %c, 5
+  %or.cond1 = select i1 %or.cond, i1 %cmp3, i1 false
+  br i1 %or.cond1, label %if.then, label %if.end
+
+if.then:                                          ; preds = %entry
+  %mul = sdiv i32 %a, %b
+  %add = add nsw i32 %c, %mul
+  br label %return
+
+if.end:                                           ; preds = %entry
+  %mul4 = sdiv i32 %a, %b
+  %add4 = add nsw i32 %c, %mul4
+  br label %return
+
+return:                                           ; preds = %if.end, %if.then
+  %retval.0 = phi i32 [ %add, %if.then ], [ %add4, %if.end ]
+  ret i32 %retval.0
+}
+; *** IR Dump After LowerExpectIntrinsicPass on _Z5test1iii ***
+define dso_local noundef i32 @_Z5test1iii(i32 noundef %a, i32 noundef %b, i32 noundef %c) {
+entry:
+  %cmp = icmp eq i32 %a, 46346
+  %cmp1 = icmp eq i32 %b, 5745
+  %or.cond = select i1 %cmp, i1 %cmp1, i1 false
+  %cmp3 = icmp eq i32 %c, 5
+  %or.cond1 = select i1 %or.cond, i1 %cmp3, i1 false
+  br i1 %or.cond1, label %if.then, label %if.end
+
+if.then:                                          ; preds = %entry
+  %mul = sdiv i32 %a, %b
+  %add = add nsw i32 %c, %mul
+  br label %return
+
+if.end:                                           ; preds = %entry
+  %mul4 = sdiv i32 %a, %b
+  %add4 = add nsw i32 %c, %mul4
+  br label %return
+
+return:                                           ; preds = %if.end, %if.then
+  %retval.0 = phi i32 [ %add, %if.then ], [ %add4, %if.end ]
+  ret i32 %retval.0
+}
+; *** IR Dump After SimplifyCFGPass on _Z5test1iii ***
+define dso_local noundef i32 @_Z5test1iii(i32 noundef %a, i32 noundef %b, i32 noundef %c) {
+entry:
+  %cmp = icmp eq i32 %a, 46346
+  %cmp1 = icmp eq i32 %b, 5745
+  %or.cond = select i1 %cmp, i1 %cmp1, i1 false
+  %cmp3 = icmp eq i32 %c, 5
+  %or.cond1 = select i1 %or.cond, i1 %cmp3, i1 false
+  br i1 %or.cond1, label %if.then, label %if.end
+
+if.then:                                          ; preds = %entry
+  %mul = sdiv i32 %a, %b
+  %add = add nsw i32 %c, %mul
+  br label %return
+
+if.end:                                           ; preds = %entry
+  %mul4 = sdiv i32 %a, %b
+  %add4 = add nsw i32 %c, %mul4
+  br label %return
+
+return:                                           ; preds = %if.end, %if.then
+  %retval.0 = phi i32 [ %add, %if.then ], [ %add4, %if.end ]
+  ret i32 %retval.0
+}
+; *** IR Dump After SROAPass on _Z5test1iii ***
+define dso_local noundef i32 @_Z5test1iii(i32 noundef %a, i32 noundef %b, i32 noundef %c) {
+entry:
+  %cmp = icmp eq i32 %a, 46346
+  %cmp1 = icmp eq i32 %b, 5745
+  %or.cond = select i1 %cmp, i1 %cmp1, i1 false
+  %cmp3 = icmp eq i32 %c, 5
+  %or.cond1 = select i1 %or.cond, i1 %cmp3, i1 false
+  br i1 %or.cond1, label %if.then, label %if.end
+
+if.then:                                          ; preds = %entry
+  %mul = sdiv i32 %a, %b
+  %add = add nsw i32 %c, %mul
+  br label %return
+
+if.end:                                           ; preds = %entry
+  %mul4 = sdiv i32 %a, %b
+  %add4 = add nsw i32 %c, %mul4
+  br label %return
+
+return:                                           ; preds = %if.end, %if.then
+  %retval.0 = phi i32 [ %add, %if.then ], [ %add4, %if.end ]
+  ret i32 %retval.0
+}
+; *** IR Dump After EarlyCSEPass on _Z5test1iii ***
+define dso_local noundef i32 @_Z5test1iii(i32 noundef %a, i32 noundef %b, i32 noundef %c) {
+entry:
+  %cmp = icmp eq i32 %a, 46346
+  %cmp1 = icmp eq i32 %b, 5745
+  %or.cond = select i1 %cmp, i1 %cmp1, i1 false
+  %cmp3 = icmp eq i32 %c, 5
+  %or.cond1 = select i1 %or.cond, i1 %cmp3, i1 false
+  br i1 %or.cond1, label %if.then, label %if.end
+
+if.then:                                          ; preds = %entry
+  %mul = sdiv i32 %a, %b
+  %add = add nsw i32 %c, %mul
+  br label %return
+
+if.end:                                           ; preds = %entry
+  %mul4 = sdiv i32 %a, %b
+  %add4 = add nsw i32 %c, %mul4
+  br label %return
+
+return:                                           ; preds = %if.end, %if.then
+  %retval.0 = phi i32 [ %add, %if.then ], [ %add4, %if.end ]
+  ret i32 %retval.0
+}
+; *** IR Dump After OpenMPOptPass on [module] ***
+; ModuleID = 'mul_right.ll'
+source_filename = "mul_right.ll"
+
+define dso_local noundef i32 @_Z5test1iii(i32 noundef %a, i32 noundef %b, i32 noundef %c) {
+entry:
+  %cmp = icmp eq i32 %a, 46346
+  %cmp1 = icmp eq i32 %b, 5745
+  %or.cond = select i1 %cmp, i1 %cmp1, i1 false
+  %cmp3 = icmp eq i32 %c, 5
+  %or.cond1 = select i1 %or.cond, i1 %cmp3, i1 false
+  br i1 %or.cond1, label %if.then, label %if.end
+
+if.then:                                          ; preds = %entry
+  %mul = sdiv i32 %a, %b
+  %add = add nsw i32 %c, %mul
+  br label %return
+
+if.end:                                           ; preds = %entry
+  %mul4 = sdiv i32 %a, %b
+  %add4 = add nsw i32 %c, %mul4
+  br label %return
+
+return:                                           ; preds = %if.end, %if.then
+  %retval.0 = phi i32 [ %add, %if.then ], [ %add4, %if.end ]
+  ret i32 %retval.0
+}
+; *** IR Dump After IPSCCPPass on [module] ***
+; ModuleID = 'mul_right.ll'
+source_filename = "mul_right.ll"
+
+define dso_local noundef i32 @_Z5test1iii(i32 noundef %a, i32 noundef %b, i32 noundef %c) {
+entry:
+  %cmp = icmp eq i32 %a, 46346
+  %cmp1 = icmp eq i32 %b, 5745
+  %or.cond = select i1 %cmp, i1 %cmp1, i1 false
+  %cmp3 = icmp eq i32 %c, 5
+  %or.cond1 = select i1 %or.cond, i1 %cmp3, i1 false
+  br i1 %or.cond1, label %if.then, label %if.end
+
+if.then:                                          ; preds = %entry
+  br label %return
+
+if.end:                                           ; preds = %entry
+  %mul4 = sdiv i32 %a, %b
+  %add4 = add nsw i32 %c, %mul4
+  br label %return
+
+return:                                           ; preds = %if.end, %if.then
+  %retval.0 = phi i32 [ 13, %if.then ], [ %add4, %if.end ]
+  ret i32 %retval.0
+}
+; *** IR Dump After CalledValuePropagationPass on [module] ***
+; ModuleID = 'mul_right.ll'
+source_filename = "mul_right.ll"
+
+define dso_local noundef i32 @_Z5test1iii(i32 noundef %a, i32 noundef %b, i32 noundef %c) {
+entry:
+  %cmp = icmp eq i32 %a, 46346
+  %cmp1 = icmp eq i32 %b, 5745
+  %or.cond = select i1 %cmp, i1 %cmp1, i1 false
+  %cmp3 = icmp eq i32 %c, 5
+  %or.cond1 = select i1 %or.cond, i1 %cmp3, i1 false
+  br i1 %or.cond1, label %if.then, label %if.end
+
+if.then:                                          ; preds = %entry
+  br label %return
+
+if.end:                                           ; preds = %entry
+  %mul4 = sdiv i32 %a, %b
+  %add4 = add nsw i32 %c, %mul4
+  br label %return
+
+return:                                           ; preds = %if.end, %if.then
+  %retval.0 = phi i32 [ 13, %if.then ], [ %add4, %if.end ]
+  ret i32 %retval.0
+}
+; *** IR Dump After GlobalOptPass on [module] ***
+; ModuleID = 'mul_right.ll'
+source_filename = "mul_right.ll"
+
+define dso_local noundef i32 @_Z5test1iii(i32 noundef %a, i32 noundef %b, i32 noundef %c) local_unnamed_addr {
+entry:
+  %cmp = icmp eq i32 %a, 46346
+  %cmp1 = icmp eq i32 %b, 5745
+  %or.cond = select i1 %cmp, i1 %cmp1, i1 false
+  %cmp3 = icmp eq i32 %c, 5
+  %or.cond1 = select i1 %or.cond, i1 %cmp3, i1 false
+  br i1 %or.cond1, label %if.then, label %if.end
+
+if.then:                                          ; preds = %entry
+  br label %return
+
+if.end:                                           ; preds = %entry
+  %mul4 = sdiv i32 %a, %b
+  %add4 = add nsw i32 %c, %mul4
+  br label %return
+
+return:                                           ; preds = %if.end, %if.then
+  %retval.0 = phi i32 [ 13, %if.then ], [ %add4, %if.end ]
+  ret i32 %retval.0
+}
+; *** IR Dump After PromotePass on _Z5test1iii ***
+define dso_local noundef i32 @_Z5test1iii(i32 noundef %a, i32 noundef %b, i32 noundef %c) local_unnamed_addr {
+entry:
+  %cmp = icmp eq i32 %a, 46346
+  %cmp1 = icmp eq i32 %b, 5745
+  %or.cond = select i1 %cmp, i1 %cmp1, i1 false
+  %cmp3 = icmp eq i32 %c, 5
+  %or.cond1 = select i1 %or.cond, i1 %cmp3, i1 false
+  br i1 %or.cond1, label %if.then, label %if.end
+
+if.then:                                          ; preds = %entry
+  br label %return
+
+if.end:                                           ; preds = %entry
+  %mul4 = sdiv i32 %a, %b
+  %add4 = add nsw i32 %c, %mul4
+  br label %return
+
+return:                                           ; preds = %if.end, %if.then
+  %retval.0 = phi i32 [ 13, %if.then ], [ %add4, %if.end ]
+  ret i32 %retval.0
+}
+; *** IR Dump After InstCombinePass on _Z5test1iii ***
+define dso_local noundef i32 @_Z5test1iii(i32 noundef %a, i32 noundef %b, i32 noundef %c) local_unnamed_addr {
+entry:
+  %cmp = icmp eq i32 %a, 46346
+  %cmp1 = icmp eq i32 %b, 5745
+  %or.cond = and i1 %cmp, %cmp1
+  %cmp3 = icmp eq i32 %c, 5
+  %or.cond1 = and i1 %or.cond, %cmp3
+  br i1 %or.cond1, label %if.then, label %if.end
+
+if.then:                                          ; preds = %entry
+  br label %return
+
+if.end:                                           ; preds = %entry
+  %mul4 = sdiv i32 %a, %b
+  %add4 = add nsw i32 %c, %mul4
+  br label %return
+
+return:                                           ; preds = %if.end, %if.then
+  %retval.0 = phi i32 [ 13, %if.then ], [ %add4, %if.end ]
+  ret i32 %retval.0
+}
+; *** IR Dump After SimplifyCFGPass on _Z5test1iii ***
+define dso_local noundef i32 @_Z5test1iii(i32 noundef %a, i32 noundef %b, i32 noundef %c) local_unnamed_addr {
+entry:
+  %cmp = icmp eq i32 %a, 46346
+  %cmp1 = icmp eq i32 %b, 5745
+  %or.cond = and i1 %cmp, %cmp1
+  %cmp3 = icmp eq i32 %c, 5
+  %or.cond1 = and i1 %or.cond, %cmp3
+  br i1 %or.cond1, label %return, label %if.end
+
+if.end:                                           ; preds = %entry
+  %mul4 = sdiv i32 %a, %b
+  %add4 = add nsw i32 %c, %mul4
+  br label %return
+
+return:                                           ; preds = %entry, %if.end
+  %retval.0 = phi i32 [ %add4, %if.end ], [ 13, %entry ]
+  ret i32 %retval.0
+}
+; *** IR Dump After AlwaysInlinerPass on [module] ***
+; ModuleID = 'mul_right.ll'
+source_filename = "mul_right.ll"
+
+define dso_local noundef i32 @_Z5test1iii(i32 noundef %a, i32 noundef %b, i32 noundef %c) local_unnamed_addr {
+entry:
+  %cmp = icmp eq i32 %a, 46346
+  %cmp1 = icmp eq i32 %b, 5745
+  %or.cond = and i1 %cmp, %cmp1
+  %cmp3 = icmp eq i32 %c, 5
+  %or.cond1 = and i1 %or.cond, %cmp3
+  br i1 %or.cond1, label %return, label %if.end
+
+if.end:                                           ; preds = %entry
+  %mul4 = sdiv i32 %a, %b
+  %add4 = add nsw i32 %c, %mul4
+  br label %return
+
+return:                                           ; preds = %entry, %if.end
+  %retval.0 = phi i32 [ %add4, %if.end ], [ 13, %entry ]
+  ret i32 %retval.0
+}
+; *** IR Dump After RequireAnalysisPass<llvm::GlobalsAA, llvm::Module> on [module] ***
+; ModuleID = 'mul_right.ll'
+source_filename = "mul_right.ll"
+
+define dso_local noundef i32 @_Z5test1iii(i32 noundef %a, i32 noundef %b, i32 noundef %c) local_unnamed_addr {
+entry:
+  %cmp = icmp eq i32 %a, 46346
+  %cmp1 = icmp eq i32 %b, 5745
+  %or.cond = and i1 %cmp, %cmp1
+  %cmp3 = icmp eq i32 %c, 5
+  %or.cond1 = and i1 %or.cond, %cmp3
+  br i1 %or.cond1, label %return, label %if.end
+
+if.end:                                           ; preds = %entry
+  %mul4 = sdiv i32 %a, %b
+  %add4 = add nsw i32 %c, %mul4
+  br label %return
+
+return:                                           ; preds = %entry, %if.end
+  %retval.0 = phi i32 [ %add4, %if.end ], [ 13, %entry ]
+  ret i32 %retval.0
+}
+; *** IR Dump After InvalidateAnalysisPass<llvm::AAManager> on _Z5test1iii ***
+define dso_local noundef i32 @_Z5test1iii(i32 noundef %a, i32 noundef %b, i32 noundef %c) local_unnamed_addr {
+entry:
+  %cmp = icmp eq i32 %a, 46346
+  %cmp1 = icmp eq i32 %b, 5745
+  %or.cond = and i1 %cmp, %cmp1
+  %cmp3 = icmp eq i32 %c, 5
+  %or.cond1 = and i1 %or.cond, %cmp3
+  br i1 %or.cond1, label %return, label %if.end
+
+if.end:                                           ; preds = %entry
+  %mul4 = sdiv i32 %a, %b
+  %add4 = add nsw i32 %c, %mul4
+  br label %return
+
+return:                                           ; preds = %entry, %if.end
+  %retval.0 = phi i32 [ %add4, %if.end ], [ 13, %entry ]
+  ret i32 %retval.0
+}
+; *** IR Dump After RequireAnalysisPass<llvm::ProfileSummaryAnalysis, llvm::Module> on [module] ***
+; ModuleID = 'mul_right.ll'
+source_filename = "mul_right.ll"
+
+define dso_local noundef i32 @_Z5test1iii(i32 noundef %a, i32 noundef %b, i32 noundef %c) local_unnamed_addr {
+entry:
+  %cmp = icmp eq i32 %a, 46346
+  %cmp1 = icmp eq i32 %b, 5745
+  %or.cond = and i1 %cmp, %cmp1
+  %cmp3 = icmp eq i32 %c, 5
+  %or.cond1 = and i1 %or.cond, %cmp3
+  br i1 %or.cond1, label %return, label %if.end
+
+if.end:                                           ; preds = %entry
+  %mul4 = sdiv i32 %a, %b
+  %add4 = add nsw i32 %c, %mul4
+  br label %return
+
+return:                                           ; preds = %entry, %if.end
+  %retval.0 = phi i32 [ %add4, %if.end ], [ 13, %entry ]
+  ret i32 %retval.0
+}
+; *** IR Dump After InlinerPass on (_Z5test1iii) ***
+define dso_local noundef i32 @_Z5test1iii(i32 noundef %a, i32 noundef %b, i32 noundef %c) local_unnamed_addr {
+entry:
+  %cmp = icmp eq i32 %a, 46346
+  %cmp1 = icmp eq i32 %b, 5745
+  %or.cond = and i1 %cmp, %cmp1
+  %cmp3 = icmp eq i32 %c, 5
+  %or.cond1 = and i1 %or.cond, %cmp3
+  br i1 %or.cond1, label %return, label %if.end
+
+if.end:                                           ; preds = %entry
+  %mul4 = sdiv i32 %a, %b
+  %add4 = add nsw i32 %c, %mul4
+  br label %return
+
+return:                                           ; preds = %entry, %if.end
+  %retval.0 = phi i32 [ %add4, %if.end ], [ 13, %entry ]
+  ret i32 %retval.0
+}
+; *** IR Dump After PostOrderFunctionAttrsPass on (_Z5test1iii) ***
+define dso_local noundef i32 @_Z5test1iii(i32 noundef %a, i32 noundef %b, i32 noundef %c) local_unnamed_addr {
+entry:
+  %cmp = icmp eq i32 %a, 46346
+  %cmp1 = icmp eq i32 %b, 5745
+  %or.cond = and i1 %cmp, %cmp1
+  %cmp3 = icmp eq i32 %c, 5
+  %or.cond1 = and i1 %or.cond, %cmp3
+  br i1 %or.cond1, label %return, label %if.end
+
+if.end:                                           ; preds = %entry
+  %mul4 = sdiv i32 %a, %b
+  %add4 = add nsw i32 %c, %mul4
+  br label %return
+
+return:                                           ; preds = %entry, %if.end
+  %retval.0 = phi i32 [ %add4, %if.end ], [ 13, %entry ]
+  ret i32 %retval.0
+}
+; *** IR Dump After OpenMPOptCGSCCPass on (_Z5test1iii) ***
+define dso_local noundef i32 @_Z5test1iii(i32 noundef %a, i32 noundef %b, i32 noundef %c) local_unnamed_addr {
+entry:
+  %cmp = icmp eq i32 %a, 46346
+  %cmp1 = icmp eq i32 %b, 5745
+  %or.cond = and i1 %cmp, %cmp1
+  %cmp3 = icmp eq i32 %c, 5
+  %or.cond1 = and i1 %or.cond, %cmp3
+  br i1 %or.cond1, label %return, label %if.end
+
+if.end:                                           ; preds = %entry
+  %mul4 = sdiv i32 %a, %b
+  %add4 = add nsw i32 %c, %mul4
+  br label %return
+
+return:                                           ; preds = %entry, %if.end
+  %retval.0 = phi i32 [ %add4, %if.end ], [ 13, %entry ]
+  ret i32 %retval.0
+}
+; *** IR Dump After SROAPass on _Z5test1iii ***
+define dso_local noundef i32 @_Z5test1iii(i32 noundef %a, i32 noundef %b, i32 noundef %c) local_unnamed_addr {
+entry:
+  %cmp = icmp eq i32 %a, 46346
+  %cmp1 = icmp eq i32 %b, 5745
+  %or.cond = and i1 %cmp, %cmp1
+  %cmp3 = icmp eq i32 %c, 5
+  %or.cond1 = and i1 %or.cond, %cmp3
+  br i1 %or.cond1, label %return, label %if.end
+
+if.end:                                           ; preds = %entry
+  %mul4 = sdiv i32 %a, %b
+  %add4 = add nsw i32 %c, %mul4
+  br label %return
+
+return:                                           ; preds = %entry, %if.end
+  %retval.0 = phi i32 [ %add4, %if.end ], [ 13, %entry ]
+  ret i32 %retval.0
+}
+; *** IR Dump After EarlyCSEPass on _Z5test1iii ***
+define dso_local noundef i32 @_Z5test1iii(i32 noundef %a, i32 noundef %b, i32 noundef %c) local_unnamed_addr {
+entry:
+  %cmp = icmp eq i32 %a, 46346
+  %cmp1 = icmp eq i32 %b, 5745
+  %or.cond = and i1 %cmp, %cmp1
+  %cmp3 = icmp eq i32 %c, 5
+  %or.cond1 = and i1 %or.cond, %cmp3
+  br i1 %or.cond1, label %return, label %if.end
+
+if.end:                                           ; preds = %entry
+  %mul4 = sdiv i32 %a, %b
+  %add4 = add nsw i32 %c, %mul4
+  br label %return
+
+return:                                           ; preds = %entry, %if.end
+  %retval.0 = phi i32 [ %add4, %if.end ], [ 13, %entry ]
+  ret i32 %retval.0
+}
+; *** IR Dump After SpeculativeExecutionPass on _Z5test1iii ***
+define dso_local noundef i32 @_Z5test1iii(i32 noundef %a, i32 noundef %b, i32 noundef %c) local_unnamed_addr {
+entry:
+  %cmp = icmp eq i32 %a, 46346
+  %cmp1 = icmp eq i32 %b, 5745
+  %or.cond = and i1 %cmp, %cmp1
+  %cmp3 = icmp eq i32 %c, 5
+  %or.cond1 = and i1 %or.cond, %cmp3
+  br i1 %or.cond1, label %return, label %if.end
+
+if.end:                                           ; preds = %entry
+  %mul4 = sdiv i32 %a, %b
+  %add4 = add nsw i32 %c, %mul4
+  br label %return
+
+return:                                           ; preds = %entry, %if.end
+  %retval.0 = phi i32 [ %add4, %if.end ], [ 13, %entry ]
+  ret i32 %retval.0
+}
+; *** IR Dump After JumpThreadingPass on _Z5test1iii ***
+define dso_local noundef i32 @_Z5test1iii(i32 noundef %a, i32 noundef %b, i32 noundef %c) local_unnamed_addr {
+entry:
+  %cmp = icmp eq i32 %a, 46346
+  %cmp1 = icmp eq i32 %b, 5745
+  %or.cond = and i1 %cmp, %cmp1
+  %cmp3 = icmp eq i32 %c, 5
+  %or.cond1 = and i1 %or.cond, %cmp3
+  br i1 %or.cond1, label %return, label %if.end
+
+if.end:                                           ; preds = %entry
+  %mul4 = sdiv i32 %a, %b
+  %add4 = add nsw i32 %c, %mul4
+  br label %return
+
+return:                                           ; preds = %entry, %if.end
+  %retval.0 = phi i32 [ %add4, %if.end ], [ 13, %entry ]
+  ret i32 %retval.0
+}
+; *** IR Dump After CorrelatedValuePropagationPass on _Z5test1iii ***
+define dso_local noundef i32 @_Z5test1iii(i32 noundef %a, i32 noundef %b, i32 noundef %c) local_unnamed_addr {
+entry:
+  %cmp = icmp eq i32 %a, 46346
+  %cmp1 = icmp eq i32 %b, 5745
+  %or.cond = and i1 %cmp, %cmp1
+  %cmp3 = icmp eq i32 %c, 5
+  %or.cond1 = and i1 %or.cond, %cmp3
+  br i1 %or.cond1, label %return, label %if.end
+
+if.end:                                           ; preds = %entry
+  %mul4 = sdiv i32 %a, %b
+  %add4 = add nsw i32 %c, %mul4
+  br label %return
+
+return:                                           ; preds = %entry, %if.end
+  %retval.0 = phi i32 [ %add4, %if.end ], [ 13, %entry ]
+  ret i32 %retval.0
+}
+; *** IR Dump After SimplifyCFGPass on _Z5test1iii ***
+define dso_local noundef i32 @_Z5test1iii(i32 noundef %a, i32 noundef %b, i32 noundef %c) local_unnamed_addr {
+entry:
+  %cmp = icmp eq i32 %a, 46346
+  %cmp1 = icmp eq i32 %b, 5745
+  %or.cond = and i1 %cmp, %cmp1
+  %cmp3 = icmp eq i32 %c, 5
+  %or.cond1 = and i1 %or.cond, %cmp3
+  br i1 %or.cond1, label %return, label %if.end
+
+if.end:                                           ; preds = %entry
+  %mul4 = sdiv i32 %a, %b
+  %add4 = add nsw i32 %c, %mul4
+  br label %return
+
+return:                                           ; preds = %entry, %if.end
+  %retval.0 = phi i32 [ %add4, %if.end ], [ 13, %entry ]
+  ret i32 %retval.0
+}
+; *** IR Dump After InstCombinePass on _Z5test1iii ***
+define dso_local noundef i32 @_Z5test1iii(i32 noundef %a, i32 noundef %b, i32 noundef %c) local_unnamed_addr {
+entry:
+  %cmp = icmp eq i32 %a, 46346
+  %cmp1 = icmp eq i32 %b, 5745
+  %or.cond = and i1 %cmp, %cmp1
+  %cmp3 = icmp eq i32 %c, 5
+  %or.cond1 = and i1 %or.cond, %cmp3
+  br i1 %or.cond1, label %return, label %if.end
+
+if.end:                                           ; preds = %entry
+  %mul4 = sdiv i32 %a, %b
+  %add4 = add nsw i32 %c, %mul4
+  br label %return
+
+return:                                           ; preds = %entry, %if.end
+  %retval.0 = phi i32 [ %add4, %if.end ], [ 13, %entry ]
+  ret i32 %retval.0
+}
+; *** IR Dump After AggressiveInstCombinePass on _Z5test1iii ***
+define dso_local noundef i32 @_Z5test1iii(i32 noundef %a, i32 noundef %b, i32 noundef %c) local_unnamed_addr {
+entry:
+  %cmp = icmp eq i32 %a, 46346
+  %cmp1 = icmp eq i32 %b, 5745
+  %or.cond = and i1 %cmp, %cmp1
+  %cmp3 = icmp eq i32 %c, 5
+  %or.cond1 = and i1 %or.cond, %cmp3
+  br i1 %or.cond1, label %return, label %if.end
+
+if.end:                                           ; preds = %entry
+  %mul4 = sdiv i32 %a, %b
+  %add4 = add nsw i32 %c, %mul4
+  br label %return
+
+return:                                           ; preds = %entry, %if.end
+  %retval.0 = phi i32 [ %add4, %if.end ], [ 13, %entry ]
+  ret i32 %retval.0
+}
+; *** IR Dump After LibCallsShrinkWrapPass on _Z5test1iii ***
+define dso_local noundef i32 @_Z5test1iii(i32 noundef %a, i32 noundef %b, i32 noundef %c) local_unnamed_addr {
+entry:
+  %cmp = icmp eq i32 %a, 46346
+  %cmp1 = icmp eq i32 %b, 5745
+  %or.cond = and i1 %cmp, %cmp1
+  %cmp3 = icmp eq i32 %c, 5
+  %or.cond1 = and i1 %or.cond, %cmp3
+  br i1 %or.cond1, label %return, label %if.end
+
+if.end:                                           ; preds = %entry
+  %mul4 = sdiv i32 %a, %b
+  %add4 = add nsw i32 %c, %mul4
+  br label %return
+
+return:                                           ; preds = %entry, %if.end
+  %retval.0 = phi i32 [ %add4, %if.end ], [ 13, %entry ]
+  ret i32 %retval.0
+}
+; *** IR Dump After TailCallElimPass on _Z5test1iii ***
+define dso_local noundef i32 @_Z5test1iii(i32 noundef %a, i32 noundef %b, i32 noundef %c) local_unnamed_addr {
+entry:
+  %cmp = icmp eq i32 %a, 46346
+  %cmp1 = icmp eq i32 %b, 5745
+  %or.cond = and i1 %cmp, %cmp1
+  %cmp3 = icmp eq i32 %c, 5
+  %or.cond1 = and i1 %or.cond, %cmp3
+  br i1 %or.cond1, label %return, label %if.end
+
+if.end:                                           ; preds = %entry
+  %mul4 = sdiv i32 %a, %b
+  %add4 = add nsw i32 %c, %mul4
+  br label %return
+
+return:                                           ; preds = %entry, %if.end
+  %retval.0 = phi i32 [ %add4, %if.end ], [ 13, %entry ]
+  ret i32 %retval.0
+}
+; *** IR Dump After SimplifyCFGPass on _Z5test1iii ***
+define dso_local noundef i32 @_Z5test1iii(i32 noundef %a, i32 noundef %b, i32 noundef %c) local_unnamed_addr {
+entry:
+  %cmp = icmp eq i32 %a, 46346
+  %cmp1 = icmp eq i32 %b, 5745
+  %or.cond = and i1 %cmp, %cmp1
+  %cmp3 = icmp eq i32 %c, 5
+  %or.cond1 = and i1 %or.cond, %cmp3
+  br i1 %or.cond1, label %return, label %if.end
+
+if.end:                                           ; preds = %entry
+  %mul4 = sdiv i32 %a, %b
+  %add4 = add nsw i32 %c, %mul4
+  br label %return
+
+return:                                           ; preds = %entry, %if.end
+  %retval.0 = phi i32 [ %add4, %if.end ], [ 13, %entry ]
+  ret i32 %retval.0
+}
+; *** IR Dump After ReassociatePass on _Z5test1iii ***
+define dso_local noundef i32 @_Z5test1iii(i32 noundef %a, i32 noundef %b, i32 noundef %c) local_unnamed_addr {
+entry:
+  %cmp = icmp eq i32 %a, 46346
+  %cmp1 = icmp eq i32 %b, 5745
+  %or.cond = and i1 %cmp, %cmp1
+  %cmp3 = icmp eq i32 %c, 5
+  %or.cond1 = and i1 %or.cond, %cmp3
+  br i1 %or.cond1, label %return, label %if.end
+
+if.end:                                           ; preds = %entry
+  %mul4 = sdiv i32 %a, %b
+  %add4 = add nsw i32 %mul4, %c
+  br label %return
+
+return:                                           ; preds = %entry, %if.end
+  %retval.0 = phi i32 [ %add4, %if.end ], [ 13, %entry ]
+  ret i32 %retval.0
+}
+; *** IR Dump After ConstraintEliminationPass on _Z5test1iii ***
+define dso_local noundef i32 @_Z5test1iii(i32 noundef %a, i32 noundef %b, i32 noundef %c) local_unnamed_addr {
+entry:
+  %cmp = icmp eq i32 %a, 46346
+  %cmp1 = icmp eq i32 %b, 5745
+  %or.cond = and i1 %cmp, %cmp1
+  %cmp3 = icmp eq i32 %c, 5
+  %or.cond1 = and i1 %or.cond, %cmp3
+  br i1 %or.cond1, label %return, label %if.end
+
+if.end:                                           ; preds = %entry
+  %mul4 = sdiv i32 %a, %b
+  %add4 = add nsw i32 %mul4, %c
+  br label %return
+
+return:                                           ; preds = %entry, %if.end
+  %retval.0 = phi i32 [ %add4, %if.end ], [ 13, %entry ]
+  ret i32 %retval.0
+}
+; *** IR Dump After LoopSimplifyPass on _Z5test1iii ***
+define dso_local noundef i32 @_Z5test1iii(i32 noundef %a, i32 noundef %b, i32 noundef %c) local_unnamed_addr {
+entry:
+  %cmp = icmp eq i32 %a, 46346
+  %cmp1 = icmp eq i32 %b, 5745
+  %or.cond = and i1 %cmp, %cmp1
+  %cmp3 = icmp eq i32 %c, 5
+  %or.cond1 = and i1 %or.cond, %cmp3
+  br i1 %or.cond1, label %return, label %if.end
+
+if.end:                                           ; preds = %entry
+  %mul4 = sdiv i32 %a, %b
+  %add4 = add nsw i32 %mul4, %c
+  br label %return
+
+return:                                           ; preds = %entry, %if.end
+  %retval.0 = phi i32 [ %add4, %if.end ], [ 13, %entry ]
+  ret i32 %retval.0
+}
+; *** IR Dump After LCSSAPass on _Z5test1iii ***
+define dso_local noundef i32 @_Z5test1iii(i32 noundef %a, i32 noundef %b, i32 noundef %c) local_unnamed_addr {
+entry:
+  %cmp = icmp eq i32 %a, 46346
+  %cmp1 = icmp eq i32 %b, 5745
+  %or.cond = and i1 %cmp, %cmp1
+  %cmp3 = icmp eq i32 %c, 5
+  %or.cond1 = and i1 %or.cond, %cmp3
+  br i1 %or.cond1, label %return, label %if.end
+
+if.end:                                           ; preds = %entry
+  %mul4 = sdiv i32 %a, %b
+  %add4 = add nsw i32 %mul4, %c
+  br label %return
+
+return:                                           ; preds = %entry, %if.end
+  %retval.0 = phi i32 [ %add4, %if.end ], [ 13, %entry ]
+  ret i32 %retval.0
+}
+; *** IR Dump After SimplifyCFGPass on _Z5test1iii ***
+define dso_local noundef i32 @_Z5test1iii(i32 noundef %a, i32 noundef %b, i32 noundef %c) local_unnamed_addr {
+entry:
+  %cmp = icmp eq i32 %a, 46346
+  %cmp1 = icmp eq i32 %b, 5745
+  %or.cond = and i1 %cmp, %cmp1
+  %cmp3 = icmp eq i32 %c, 5
+  %or.cond1 = and i1 %or.cond, %cmp3
+  br i1 %or.cond1, label %return, label %if.end
+
+if.end:                                           ; preds = %entry
+  %mul4 = sdiv i32 %a, %b
+  %add4 = add nsw i32 %mul4, %c
+  br label %return
+
+return:                                           ; preds = %entry, %if.end
+  %retval.0 = phi i32 [ %add4, %if.end ], [ 13, %entry ]
+  ret i32 %retval.0
+}
+; *** IR Dump After InstCombinePass on _Z5test1iii ***
+define dso_local noundef i32 @_Z5test1iii(i32 noundef %a, i32 noundef %b, i32 noundef %c) local_unnamed_addr {
+entry:
+  %cmp = icmp eq i32 %a, 46346
+  %cmp1 = icmp eq i32 %b, 5745
+  %or.cond = and i1 %cmp, %cmp1
+  %cmp3 = icmp eq i32 %c, 5
+  %or.cond1 = and i1 %or.cond, %cmp3
+  br i1 %or.cond1, label %return, label %if.end
+
+if.end:                                           ; preds = %entry
+  %mul4 = sdiv i32 %a, %b
+  %add4 = add nsw i32 %mul4, %c
+  br label %return
+
+return:                                           ; preds = %entry, %if.end
+  %retval.0 = phi i32 [ %add4, %if.end ], [ 13, %entry ]
+  ret i32 %retval.0
+}
+; *** IR Dump After LoopSimplifyPass on _Z5test1iii ***
+define dso_local noundef i32 @_Z5test1iii(i32 noundef %a, i32 noundef %b, i32 noundef %c) local_unnamed_addr {
+entry:
+  %cmp = icmp eq i32 %a, 46346
+  %cmp1 = icmp eq i32 %b, 5745
+  %or.cond = and i1 %cmp, %cmp1
+  %cmp3 = icmp eq i32 %c, 5
+  %or.cond1 = and i1 %or.cond, %cmp3
+  br i1 %or.cond1, label %return, label %if.end
+
+if.end:                                           ; preds = %entry
+  %mul4 = sdiv i32 %a, %b
+  %add4 = add nsw i32 %mul4, %c
+  br label %return
+
+return:                                           ; preds = %entry, %if.end
+  %retval.0 = phi i32 [ %add4, %if.end ], [ 13, %entry ]
+  ret i32 %retval.0
+}
+; *** IR Dump After LCSSAPass on _Z5test1iii ***
+define dso_local noundef i32 @_Z5test1iii(i32 noundef %a, i32 noundef %b, i32 noundef %c) local_unnamed_addr {
+entry:
+  %cmp = icmp eq i32 %a, 46346
+  %cmp1 = icmp eq i32 %b, 5745
+  %or.cond = and i1 %cmp, %cmp1
+  %cmp3 = icmp eq i32 %c, 5
+  %or.cond1 = and i1 %or.cond, %cmp3
+  br i1 %or.cond1, label %return, label %if.end
+
+if.end:                                           ; preds = %entry
+  %mul4 = sdiv i32 %a, %b
+  %add4 = add nsw i32 %mul4, %c
+  br label %return
+
+return:                                           ; preds = %entry, %if.end
+  %retval.0 = phi i32 [ %add4, %if.end ], [ 13, %entry ]
+  ret i32 %retval.0
+}
+; *** IR Dump After SROAPass on _Z5test1iii ***
+define dso_local noundef i32 @_Z5test1iii(i32 noundef %a, i32 noundef %b, i32 noundef %c) local_unnamed_addr {
+entry:
+  %cmp = icmp eq i32 %a, 46346
+  %cmp1 = icmp eq i32 %b, 5745
+  %or.cond = and i1 %cmp, %cmp1
+  %cmp3 = icmp eq i32 %c, 5
+  %or.cond1 = and i1 %or.cond, %cmp3
+  br i1 %or.cond1, label %return, label %if.end
+
+if.end:                                           ; preds = %entry
+  %mul4 = sdiv i32 %a, %b
+  %add4 = add nsw i32 %mul4, %c
+  br label %return
+
+return:                                           ; preds = %entry, %if.end
+  %retval.0 = phi i32 [ %add4, %if.end ], [ 13, %entry ]
+  ret i32 %retval.0
+}
+; *** IR Dump After VectorCombinePass on _Z5test1iii ***
+define dso_local noundef i32 @_Z5test1iii(i32 noundef %a, i32 noundef %b, i32 noundef %c) local_unnamed_addr {
+entry:
+  %cmp = icmp eq i32 %a, 46346
+  %cmp1 = icmp eq i32 %b, 5745
+  %or.cond = and i1 %cmp, %cmp1
+  %cmp3 = icmp eq i32 %c, 5
+  %or.cond1 = and i1 %or.cond, %cmp3
+  br i1 %or.cond1, label %return, label %if.end
+
+if.end:                                           ; preds = %entry
+  %mul4 = sdiv i32 %a, %b
+  %add4 = add nsw i32 %mul4, %c
+  br label %return
+
+return:                                           ; preds = %entry, %if.end
+  %retval.0 = phi i32 [ %add4, %if.end ], [ 13, %entry ]
+  ret i32 %retval.0
+}
+; *** IR Dump After MergedLoadStoreMotionPass on _Z5test1iii ***
+define dso_local noundef i32 @_Z5test1iii(i32 noundef %a, i32 noundef %b, i32 noundef %c) local_unnamed_addr {
+entry:
+  %cmp = icmp eq i32 %a, 46346
+  %cmp1 = icmp eq i32 %b, 5745
+  %or.cond = and i1 %cmp, %cmp1
+  %cmp3 = icmp eq i32 %c, 5
+  %or.cond1 = and i1 %or.cond, %cmp3
+  br i1 %or.cond1, label %return, label %if.end
+
+if.end:                                           ; preds = %entry
+  %mul4 = sdiv i32 %a, %b
+  %add4 = add nsw i32 %mul4, %c
+  br label %return
+
+return:                                           ; preds = %entry, %if.end
+  %retval.0 = phi i32 [ %add4, %if.end ], [ 13, %entry ]
+  ret i32 %retval.0
+}
+; *** IR Dump After GVNPass on _Z5test1iii ***
+define dso_local noundef i32 @_Z5test1iii(i32 noundef %a, i32 noundef %b, i32 noundef %c) local_unnamed_addr {
+entry:
+  %cmp = icmp eq i32 %a, 46346
+  %cmp1 = icmp eq i32 %b, 5745
+  %or.cond = and i1 %cmp, %cmp1
+  %cmp3 = icmp eq i32 %c, 5
+  %or.cond1 = and i1 %or.cond, %cmp3
+  br i1 %or.cond1, label %return, label %if.end
+
+if.end:                                           ; preds = %entry
+  %mul4 = sdiv i32 %a, %b
+  %add4 = add nsw i32 %mul4, %c
+  br label %return
+
+return:                                           ; preds = %entry, %if.end
+  %retval.0 = phi i32 [ %add4, %if.end ], [ 13, %entry ]
+  ret i32 %retval.0
+}
+; *** IR Dump After SCCPPass on _Z5test1iii ***
+define dso_local noundef i32 @_Z5test1iii(i32 noundef %a, i32 noundef %b, i32 noundef %c) local_unnamed_addr {
+entry:
+  %cmp = icmp eq i32 %a, 46346
+  %cmp1 = icmp eq i32 %b, 5745
+  %or.cond = and i1 %cmp, %cmp1
+  %cmp3 = icmp eq i32 %c, 5
+  %or.cond1 = and i1 %or.cond, %cmp3
+  br i1 %or.cond1, label %return, label %if.end
+
+if.end:                                           ; preds = %entry
+  %mul4 = sdiv i32 %a, %b
+  %add4 = add nsw i32 %mul4, %c
+  br label %return
+
+return:                                           ; preds = %entry, %if.end
+  %retval.0 = phi i32 [ %add4, %if.end ], [ 13, %entry ]
+  ret i32 %retval.0
+}
+; *** IR Dump After BDCEPass on _Z5test1iii ***
+define dso_local noundef i32 @_Z5test1iii(i32 noundef %a, i32 noundef %b, i32 noundef %c) local_unnamed_addr {
+entry:
+  %cmp = icmp eq i32 %a, 46346
+  %cmp1 = icmp eq i32 %b, 5745
+  %or.cond = and i1 %cmp, %cmp1
+  %cmp3 = icmp eq i32 %c, 5
+  %or.cond1 = and i1 %or.cond, %cmp3
+  br i1 %or.cond1, label %return, label %if.end
+
+if.end:                                           ; preds = %entry
+  %mul4 = sdiv i32 %a, %b
+  %add4 = add nsw i32 %mul4, %c
+  br label %return
+
+return:                                           ; preds = %entry, %if.end
+  %retval.0 = phi i32 [ %add4, %if.end ], [ 13, %entry ]
+  ret i32 %retval.0
+}
+; *** IR Dump After InstCombinePass on _Z5test1iii ***
+define dso_local noundef i32 @_Z5test1iii(i32 noundef %a, i32 noundef %b, i32 noundef %c) local_unnamed_addr {
+entry:
+  %cmp = icmp eq i32 %a, 46346
+  %cmp1 = icmp eq i32 %b, 5745
+  %or.cond = and i1 %cmp, %cmp1
+  %cmp3 = icmp eq i32 %c, 5
+  %or.cond1 = and i1 %or.cond, %cmp3
+  br i1 %or.cond1, label %return, label %if.end
+
+if.end:                                           ; preds = %entry
+  %mul4 = sdiv i32 %a, %b
+  %add4 = add nsw i32 %mul4, %c
+  br label %return
+
+return:                                           ; preds = %entry, %if.end
+  %retval.0 = phi i32 [ %add4, %if.end ], [ 13, %entry ]
+  ret i32 %retval.0
+}
+; *** IR Dump After JumpThreadingPass on _Z5test1iii ***
+define dso_local noundef i32 @_Z5test1iii(i32 noundef %a, i32 noundef %b, i32 noundef %c) local_unnamed_addr {
+entry:
+  %cmp = icmp eq i32 %a, 46346
+  %cmp1 = icmp eq i32 %b, 5745
+  %or.cond = and i1 %cmp, %cmp1
+  %cmp3 = icmp eq i32 %c, 5
+  %or.cond1 = and i1 %or.cond, %cmp3
+  br i1 %or.cond1, label %return, label %if.end
+
+if.end:                                           ; preds = %entry
+  %mul4 = sdiv i32 %a, %b
+  %add4 = add nsw i32 %mul4, %c
+  br label %return
+
+return:                                           ; preds = %entry, %if.end
+  %retval.0 = phi i32 [ %add4, %if.end ], [ 13, %entry ]
+  ret i32 %retval.0
+}
+; *** IR Dump After CorrelatedValuePropagationPass on _Z5test1iii ***
+define dso_local noundef i32 @_Z5test1iii(i32 noundef %a, i32 noundef %b, i32 noundef %c) local_unnamed_addr {
+entry:
+  %cmp = icmp eq i32 %a, 46346
+  %cmp1 = icmp eq i32 %b, 5745
+  %or.cond = and i1 %cmp, %cmp1
+  %cmp3 = icmp eq i32 %c, 5
+  %or.cond1 = and i1 %or.cond, %cmp3
+  br i1 %or.cond1, label %return, label %if.end
+
+if.end:                                           ; preds = %entry
+  %mul4 = sdiv i32 %a, %b
+  %add4 = add nsw i32 %mul4, %c
+  br label %return
+
+return:                                           ; preds = %entry, %if.end
+  %retval.0 = phi i32 [ %add4, %if.end ], [ 13, %entry ]
+  ret i32 %retval.0
+}
+; *** IR Dump After ADCEPass on _Z5test1iii ***
+define dso_local noundef i32 @_Z5test1iii(i32 noundef %a, i32 noundef %b, i32 noundef %c) local_unnamed_addr {
+entry:
+  %cmp = icmp eq i32 %a, 46346
+  %cmp1 = icmp eq i32 %b, 5745
+  %or.cond = and i1 %cmp, %cmp1
+  %cmp3 = icmp eq i32 %c, 5
+  %or.cond1 = and i1 %or.cond, %cmp3
+  br i1 %or.cond1, label %return, label %if.end
+
+if.end:                                           ; preds = %entry
+  %mul4 = sdiv i32 %a, %b
+  %add4 = add nsw i32 %mul4, %c
+  br label %return
+
+return:                                           ; preds = %entry, %if.end
+  %retval.0 = phi i32 [ %add4, %if.end ], [ 13, %entry ]
+  ret i32 %retval.0
+}
+; *** IR Dump After MemCpyOptPass on _Z5test1iii ***
+define dso_local noundef i32 @_Z5test1iii(i32 noundef %a, i32 noundef %b, i32 noundef %c) local_unnamed_addr {
+entry:
+  %cmp = icmp eq i32 %a, 46346
+  %cmp1 = icmp eq i32 %b, 5745
+  %or.cond = and i1 %cmp, %cmp1
+  %cmp3 = icmp eq i32 %c, 5
+  %or.cond1 = and i1 %or.cond, %cmp3
+  br i1 %or.cond1, label %return, label %if.end
+
+if.end:                                           ; preds = %entry
+  %mul4 = sdiv i32 %a, %b
+  %add4 = add nsw i32 %mul4, %c
+  br label %return
+
+return:                                           ; preds = %entry, %if.end
+  %retval.0 = phi i32 [ %add4, %if.end ], [ 13, %entry ]
+  ret i32 %retval.0
+}
+; *** IR Dump After DSEPass on _Z5test1iii ***
+define dso_local noundef i32 @_Z5test1iii(i32 noundef %a, i32 noundef %b, i32 noundef %c) local_unnamed_addr {
+entry:
+  %cmp = icmp eq i32 %a, 46346
+  %cmp1 = icmp eq i32 %b, 5745
+  %or.cond = and i1 %cmp, %cmp1
+  %cmp3 = icmp eq i32 %c, 5
+  %or.cond1 = and i1 %or.cond, %cmp3
+  br i1 %or.cond1, label %return, label %if.end
+
+if.end:                                           ; preds = %entry
+  %mul4 = sdiv i32 %a, %b
+  %add4 = add nsw i32 %mul4, %c
+  br label %return
+
+return:                                           ; preds = %entry, %if.end
+  %retval.0 = phi i32 [ %add4, %if.end ], [ 13, %entry ]
+  ret i32 %retval.0
+}
+; *** IR Dump After MoveAutoInitPass on _Z5test1iii ***
+define dso_local noundef i32 @_Z5test1iii(i32 noundef %a, i32 noundef %b, i32 noundef %c) local_unnamed_addr {
+entry:
+  %cmp = icmp eq i32 %a, 46346
+  %cmp1 = icmp eq i32 %b, 5745
+  %or.cond = and i1 %cmp, %cmp1
+  %cmp3 = icmp eq i32 %c, 5
+  %or.cond1 = and i1 %or.cond, %cmp3
+  br i1 %or.cond1, label %return, label %if.end
+
+if.end:                                           ; preds = %entry
+  %mul4 = sdiv i32 %a, %b
+  %add4 = add nsw i32 %mul4, %c
+  br label %return
+
+return:                                           ; preds = %entry, %if.end
+  %retval.0 = phi i32 [ %add4, %if.end ], [ 13, %entry ]
+  ret i32 %retval.0
+}
+; *** IR Dump After LoopSimplifyPass on _Z5test1iii ***
+define dso_local noundef i32 @_Z5test1iii(i32 noundef %a, i32 noundef %b, i32 noundef %c) local_unnamed_addr {
+entry:
+  %cmp = icmp eq i32 %a, 46346
+  %cmp1 = icmp eq i32 %b, 5745
+  %or.cond = and i1 %cmp, %cmp1
+  %cmp3 = icmp eq i32 %c, 5
+  %or.cond1 = and i1 %or.cond, %cmp3
+  br i1 %or.cond1, label %return, label %if.end
+
+if.end:                                           ; preds = %entry
+  %mul4 = sdiv i32 %a, %b
+  %add4 = add nsw i32 %mul4, %c
+  br label %return
+
+return:                                           ; preds = %entry, %if.end
+  %retval.0 = phi i32 [ %add4, %if.end ], [ 13, %entry ]
+  ret i32 %retval.0
+}
+; *** IR Dump After LCSSAPass on _Z5test1iii ***
+define dso_local noundef i32 @_Z5test1iii(i32 noundef %a, i32 noundef %b, i32 noundef %c) local_unnamed_addr {
+entry:
+  %cmp = icmp eq i32 %a, 46346
+  %cmp1 = icmp eq i32 %b, 5745
+  %or.cond = and i1 %cmp, %cmp1
+  %cmp3 = icmp eq i32 %c, 5
+  %or.cond1 = and i1 %or.cond, %cmp3
+  br i1 %or.cond1, label %return, label %if.end
+
+if.end:                                           ; preds = %entry
+  %mul4 = sdiv i32 %a, %b
+  %add4 = add nsw i32 %mul4, %c
+  br label %return
+
+return:                                           ; preds = %entry, %if.end
+  %retval.0 = phi i32 [ %add4, %if.end ], [ 13, %entry ]
+  ret i32 %retval.0
+}
+; *** IR Dump After CoroElidePass on _Z5test1iii ***
+define dso_local noundef i32 @_Z5test1iii(i32 noundef %a, i32 noundef %b, i32 noundef %c) local_unnamed_addr {
+entry:
+  %cmp = icmp eq i32 %a, 46346
+  %cmp1 = icmp eq i32 %b, 5745
+  %or.cond = and i1 %cmp, %cmp1
+  %cmp3 = icmp eq i32 %c, 5
+  %or.cond1 = and i1 %or.cond, %cmp3
+  br i1 %or.cond1, label %return, label %if.end
+
+if.end:                                           ; preds = %entry
+  %mul4 = sdiv i32 %a, %b
+  %add4 = add nsw i32 %mul4, %c
+  br label %return
+
+return:                                           ; preds = %entry, %if.end
+  %retval.0 = phi i32 [ %add4, %if.end ], [ 13, %entry ]
+  ret i32 %retval.0
+}
+; *** IR Dump After SimplifyCFGPass on _Z5test1iii ***
+define dso_local noundef i32 @_Z5test1iii(i32 noundef %a, i32 noundef %b, i32 noundef %c) local_unnamed_addr {
+entry:
+  %cmp = icmp eq i32 %a, 46346
+  %cmp1 = icmp eq i32 %b, 5745
+  %or.cond = and i1 %cmp, %cmp1
+  %cmp3 = icmp eq i32 %c, 5
+  %or.cond1 = and i1 %or.cond, %cmp3
+  br i1 %or.cond1, label %return, label %if.end
+
+if.end:                                           ; preds = %entry
+  %mul4 = sdiv i32 %a, %b
+  %add4 = add nsw i32 %mul4, %c
+  br label %return
+
+return:                                           ; preds = %entry, %if.end
+  %retval.0 = phi i32 [ %add4, %if.end ], [ 13, %entry ]
+  ret i32 %retval.0
+}
+; *** IR Dump After InstCombinePass on _Z5test1iii ***
+define dso_local noundef i32 @_Z5test1iii(i32 noundef %a, i32 noundef %b, i32 noundef %c) local_unnamed_addr {
+entry:
+  %cmp = icmp eq i32 %a, 46346
+  %cmp1 = icmp eq i32 %b, 5745
+  %or.cond = and i1 %cmp, %cmp1
+  %cmp3 = icmp eq i32 %c, 5
+  %or.cond1 = and i1 %or.cond, %cmp3
+  br i1 %or.cond1, label %return, label %if.end
+
+if.end:                                           ; preds = %entry
+  %mul4 = sdiv i32 %a, %b
+  %add4 = add nsw i32 %mul4, %c
+  br label %return
+
+return:                                           ; preds = %entry, %if.end
+  %retval.0 = phi i32 [ %add4, %if.end ], [ 13, %entry ]
+  ret i32 %retval.0
+}
+; *** IR Dump After PostOrderFunctionAttrsPass on (_Z5test1iii) ***
+; Function Attrs: mustprogress nofree norecurse nosync nounwind willreturn memory(none)
+define dso_local noundef i32 @_Z5test1iii(i32 noundef %a, i32 noundef %b, i32 noundef %c) local_unnamed_addr #0 {
+entry:
+  %cmp = icmp eq i32 %a, 46346
+  %cmp1 = icmp eq i32 %b, 5745
+  %or.cond = and i1 %cmp, %cmp1
+  %cmp3 = icmp eq i32 %c, 5
+  %or.cond1 = and i1 %or.cond, %cmp3
+  br i1 %or.cond1, label %return, label %if.end
+
+if.end:                                           ; preds = %entry
+  %mul4 = sdiv i32 %a, %b
+  %add4 = add nsw i32 %mul4, %c
+  br label %return
+
+return:                                           ; preds = %entry, %if.end
+  %retval.0 = phi i32 [ %add4, %if.end ], [ 13, %entry ]
+  ret i32 %retval.0
+}
+; *** IR Dump After RequireAnalysisPass<llvm::ShouldNotRunFunctionPassesAnalysis, llvm::Function> on _Z5test1iii ***
+; Function Attrs: mustprogress nofree norecurse nosync nounwind willreturn memory(none)
+define dso_local noundef i32 @_Z5test1iii(i32 noundef %a, i32 noundef %b, i32 noundef %c) local_unnamed_addr #0 {
+entry:
+  %cmp = icmp eq i32 %a, 46346
+  %cmp1 = icmp eq i32 %b, 5745
+  %or.cond = and i1 %cmp, %cmp1
+  %cmp3 = icmp eq i32 %c, 5
+  %or.cond1 = and i1 %or.cond, %cmp3
+  br i1 %or.cond1, label %return, label %if.end
+
+if.end:                                           ; preds = %entry
+  %mul4 = sdiv i32 %a, %b
+  %add4 = add nsw i32 %mul4, %c
+  br label %return
+
+return:                                           ; preds = %entry, %if.end
+  %retval.0 = phi i32 [ %add4, %if.end ], [ 13, %entry ]
+  ret i32 %retval.0
+}
+; *** IR Dump After CoroSplitPass on (_Z5test1iii) ***
+; Function Attrs: mustprogress nofree norecurse nosync nounwind willreturn memory(none)
+define dso_local noundef i32 @_Z5test1iii(i32 noundef %a, i32 noundef %b, i32 noundef %c) local_unnamed_addr #0 {
+entry:
+  %cmp = icmp eq i32 %a, 46346
+  %cmp1 = icmp eq i32 %b, 5745
+  %or.cond = and i1 %cmp, %cmp1
+  %cmp3 = icmp eq i32 %c, 5
+  %or.cond1 = and i1 %or.cond, %cmp3
+  br i1 %or.cond1, label %return, label %if.end
+
+if.end:                                           ; preds = %entry
+  %mul4 = sdiv i32 %a, %b
+  %add4 = add nsw i32 %mul4, %c
+  br label %return
+
+return:                                           ; preds = %entry, %if.end
+  %retval.0 = phi i32 [ %add4, %if.end ], [ 13, %entry ]
+  ret i32 %retval.0
+}
+; *** IR Dump After CoroAnnotationElidePass on (_Z5test1iii) ***
+; Function Attrs: mustprogress nofree norecurse nosync nounwind willreturn memory(none)
+define dso_local noundef i32 @_Z5test1iii(i32 noundef %a, i32 noundef %b, i32 noundef %c) local_unnamed_addr #0 {
+entry:
+  %cmp = icmp eq i32 %a, 46346
+  %cmp1 = icmp eq i32 %b, 5745
+  %or.cond = and i1 %cmp, %cmp1
+  %cmp3 = icmp eq i32 %c, 5
+  %or.cond1 = and i1 %or.cond, %cmp3
+  br i1 %or.cond1, label %return, label %if.end
+
+if.end:                                           ; preds = %entry
+  %mul4 = sdiv i32 %a, %b
+  %add4 = add nsw i32 %mul4, %c
+  br label %return
+
+return:                                           ; preds = %entry, %if.end
+  %retval.0 = phi i32 [ %add4, %if.end ], [ 13, %entry ]
+  ret i32 %retval.0
+}
+; *** IR Dump After InvalidateAnalysisPass<llvm::ShouldNotRunFunctionPassesAnalysis> on _Z5test1iii ***
+; Function Attrs: mustprogress nofree norecurse nosync nounwind willreturn memory(none)
+define dso_local noundef i32 @_Z5test1iii(i32 noundef %a, i32 noundef %b, i32 noundef %c) local_unnamed_addr #0 {
+entry:
+  %cmp = icmp eq i32 %a, 46346
+  %cmp1 = icmp eq i32 %b, 5745
+  %or.cond = and i1 %cmp, %cmp1
+  %cmp3 = icmp eq i32 %c, 5
+  %or.cond1 = and i1 %or.cond, %cmp3
+  br i1 %or.cond1, label %return, label %if.end
+
+if.end:                                           ; preds = %entry
+  %mul4 = sdiv i32 %a, %b
+  %add4 = add nsw i32 %mul4, %c
+  br label %return
+
+return:                                           ; preds = %entry, %if.end
+  %retval.0 = phi i32 [ %add4, %if.end ], [ 13, %entry ]
+  ret i32 %retval.0
+}
+; *** IR Dump After DeadArgumentEliminationPass on [module] ***
+; ModuleID = 'mul_right.ll'
+source_filename = "mul_right.ll"
+
+; Function Attrs: mustprogress nofree norecurse nosync nounwind willreturn memory(none)
+define dso_local noundef i32 @_Z5test1iii(i32 noundef %a, i32 noundef %b, i32 noundef %c) local_unnamed_addr #0 {
+entry:
+  %cmp = icmp eq i32 %a, 46346
+  %cmp1 = icmp eq i32 %b, 5745
+  %or.cond = and i1 %cmp, %cmp1
+  %cmp3 = icmp eq i32 %c, 5
+  %or.cond1 = and i1 %or.cond, %cmp3
+  br i1 %or.cond1, label %return, label %if.end
+
+if.end:                                           ; preds = %entry
+  %mul4 = sdiv i32 %a, %b
+  %add4 = add nsw i32 %mul4, %c
+  br label %return
+
+return:                                           ; preds = %entry, %if.end
+  %retval.0 = phi i32 [ %add4, %if.end ], [ 13, %entry ]
+  ret i32 %retval.0
+}
+
+attributes #0 = { mustprogress nofree norecurse nosync nounwind willreturn memory(none) }
+; *** IR Dump After CoroCleanupPass on [module] ***
+; ModuleID = 'mul_right.ll'
+source_filename = "mul_right.ll"
+
+; Function Attrs: mustprogress nofree norecurse nosync nounwind willreturn memory(none)
+define dso_local noundef i32 @_Z5test1iii(i32 noundef %a, i32 noundef %b, i32 noundef %c) local_unnamed_addr #0 {
+entry:
+  %cmp = icmp eq i32 %a, 46346
+  %cmp1 = icmp eq i32 %b, 5745
+  %or.cond = and i1 %cmp, %cmp1
+  %cmp3 = icmp eq i32 %c, 5
+  %or.cond1 = and i1 %or.cond, %cmp3
+  br i1 %or.cond1, label %return, label %if.end
+
+if.end:                                           ; preds = %entry
+  %mul4 = sdiv i32 %a, %b
+  %add4 = add nsw i32 %mul4, %c
+  br label %return
+
+return:                                           ; preds = %entry, %if.end
+  %retval.0 = phi i32 [ %add4, %if.end ], [ 13, %entry ]
+  ret i32 %retval.0
+}
+
+attributes #0 = { mustprogress nofree norecurse nosync nounwind willreturn memory(none) }
+; *** IR Dump After GlobalOptPass on [module] ***
+; ModuleID = 'mul_right.ll'
+source_filename = "mul_right.ll"
+
+; Function Attrs: mustprogress nofree norecurse nosync nounwind willreturn memory(none)
+define dso_local noundef i32 @_Z5test1iii(i32 noundef %a, i32 noundef %b, i32 noundef %c) local_unnamed_addr #0 {
+entry:
+  %cmp = icmp eq i32 %a, 46346
+  %cmp1 = icmp eq i32 %b, 5745
+  %or.cond = and i1 %cmp, %cmp1
+  %cmp3 = icmp eq i32 %c, 5
+  %or.cond1 = and i1 %or.cond, %cmp3
+  br i1 %or.cond1, label %return, label %if.end
+
+if.end:                                           ; preds = %entry
+  %mul4 = sdiv i32 %a, %b
+  %add4 = add nsw i32 %mul4, %c
+  br label %return
+
+return:                                           ; preds = %entry, %if.end
+  %retval.0 = phi i32 [ %add4, %if.end ], [ 13, %entry ]
+  ret i32 %retval.0
+}
+
+attributes #0 = { mustprogress nofree norecurse nosync nounwind willreturn memory(none) }
+; *** IR Dump After GlobalDCEPass on [module] ***
+; ModuleID = 'mul_right.ll'
+source_filename = "mul_right.ll"
+
+; Function Attrs: mustprogress nofree norecurse nosync nounwind willreturn memory(none)
+define dso_local noundef i32 @_Z5test1iii(i32 noundef %a, i32 noundef %b, i32 noundef %c) local_unnamed_addr #0 {
+entry:
+  %cmp = icmp eq i32 %a, 46346
+  %cmp1 = icmp eq i32 %b, 5745
+  %or.cond = and i1 %cmp, %cmp1
+  %cmp3 = icmp eq i32 %c, 5
+  %or.cond1 = and i1 %or.cond, %cmp3
+  br i1 %or.cond1, label %return, label %if.end
+
+if.end:                                           ; preds = %entry
+  %mul4 = sdiv i32 %a, %b
+  %add4 = add nsw i32 %mul4, %c
+  br label %return
+
+return:                                           ; preds = %entry, %if.end
+  %retval.0 = phi i32 [ %add4, %if.end ], [ 13, %entry ]
+  ret i32 %retval.0
+}
+
+attributes #0 = { mustprogress nofree norecurse nosync nounwind willreturn memory(none) }
+; *** IR Dump After EliminateAvailableExternallyPass on [module] ***
+; ModuleID = 'mul_right.ll'
+source_filename = "mul_right.ll"
+
+; Function Attrs: mustprogress nofree norecurse nosync nounwind willreturn memory(none)
+define dso_local noundef i32 @_Z5test1iii(i32 noundef %a, i32 noundef %b, i32 noundef %c) local_unnamed_addr #0 {
+entry:
+  %cmp = icmp eq i32 %a, 46346
+  %cmp1 = icmp eq i32 %b, 5745
+  %or.cond = and i1 %cmp, %cmp1
+  %cmp3 = icmp eq i32 %c, 5
+  %or.cond1 = and i1 %or.cond, %cmp3
+  br i1 %or.cond1, label %return, label %if.end
+
+if.end:                                           ; preds = %entry
+  %mul4 = sdiv i32 %a, %b
+  %add4 = add nsw i32 %mul4, %c
+  br label %return
+
+return:                                           ; preds = %entry, %if.end
+  %retval.0 = phi i32 [ %add4, %if.end ], [ 13, %entry ]
+  ret i32 %retval.0
+}
+
+attributes #0 = { mustprogress nofree norecurse nosync nounwind willreturn memory(none) }
+; *** IR Dump After ReversePostOrderFunctionAttrsPass on [module] ***
+; ModuleID = 'mul_right.ll'
+source_filename = "mul_right.ll"
+
+; Function Attrs: mustprogress nofree norecurse nosync nounwind willreturn memory(none)
+define dso_local noundef i32 @_Z5test1iii(i32 noundef %a, i32 noundef %b, i32 noundef %c) local_unnamed_addr #0 {
+entry:
+  %cmp = icmp eq i32 %a, 46346
+  %cmp1 = icmp eq i32 %b, 5745
+  %or.cond = and i1 %cmp, %cmp1
+  %cmp3 = icmp eq i32 %c, 5
+  %or.cond1 = and i1 %or.cond, %cmp3
+  br i1 %or.cond1, label %return, label %if.end
+
+if.end:                                           ; preds = %entry
+  %mul4 = sdiv i32 %a, %b
+  %add4 = add nsw i32 %mul4, %c
+  br label %return
+
+return:                                           ; preds = %entry, %if.end
+  %retval.0 = phi i32 [ %add4, %if.end ], [ 13, %entry ]
+  ret i32 %retval.0
+}
+
+attributes #0 = { mustprogress nofree norecurse nosync nounwind willreturn memory(none) }
+; *** IR Dump After RecomputeGlobalsAAPass on [module] ***
+; ModuleID = 'mul_right.ll'
+source_filename = "mul_right.ll"
+
+; Function Attrs: mustprogress nofree norecurse nosync nounwind willreturn memory(none)
+define dso_local noundef i32 @_Z5test1iii(i32 noundef %a, i32 noundef %b, i32 noundef %c) local_unnamed_addr #0 {
+entry:
+  %cmp = icmp eq i32 %a, 46346
+  %cmp1 = icmp eq i32 %b, 5745
+  %or.cond = and i1 %cmp, %cmp1
+  %cmp3 = icmp eq i32 %c, 5
+  %or.cond1 = and i1 %or.cond, %cmp3
+  br i1 %or.cond1, label %return, label %if.end
+
+if.end:                                           ; preds = %entry
+  %mul4 = sdiv i32 %a, %b
+  %add4 = add nsw i32 %mul4, %c
+  br label %return
+
+return:                                           ; preds = %entry, %if.end
+  %retval.0 = phi i32 [ %add4, %if.end ], [ 13, %entry ]
+  ret i32 %retval.0
+}
+
+attributes #0 = { mustprogress nofree norecurse nosync nounwind willreturn memory(none) }
+; *** IR Dump After Float2IntPass on _Z5test1iii ***
+; Function Attrs: mustprogress nofree norecurse nosync nounwind willreturn memory(none)
+define dso_local noundef i32 @_Z5test1iii(i32 noundef %a, i32 noundef %b, i32 noundef %c) local_unnamed_addr #0 {
+entry:
+  %cmp = icmp eq i32 %a, 46346
+  %cmp1 = icmp eq i32 %b, 5745
+  %or.cond = and i1 %cmp, %cmp1
+  %cmp3 = icmp eq i32 %c, 5
+  %or.cond1 = and i1 %or.cond, %cmp3
+  br i1 %or.cond1, label %return, label %if.end
+
+if.end:                                           ; preds = %entry
+  %mul4 = sdiv i32 %a, %b
+  %add4 = add nsw i32 %mul4, %c
+  br label %return
+
+return:                                           ; preds = %entry, %if.end
+  %retval.0 = phi i32 [ %add4, %if.end ], [ 13, %entry ]
+  ret i32 %retval.0
+}
+; *** IR Dump After LowerConstantIntrinsicsPass on _Z5test1iii ***
+; Function Attrs: mustprogress nofree norecurse nosync nounwind willreturn memory(none)
+define dso_local noundef i32 @_Z5test1iii(i32 noundef %a, i32 noundef %b, i32 noundef %c) local_unnamed_addr #0 {
+entry:
+  %cmp = icmp eq i32 %a, 46346
+  %cmp1 = icmp eq i32 %b, 5745
+  %or.cond = and i1 %cmp, %cmp1
+  %cmp3 = icmp eq i32 %c, 5
+  %or.cond1 = and i1 %or.cond, %cmp3
+  br i1 %or.cond1, label %return, label %if.end
+
+if.end:                                           ; preds = %entry
+  %mul4 = sdiv i32 %a, %b
+  %add4 = add nsw i32 %mul4, %c
+  br label %return
+
+return:                                           ; preds = %entry, %if.end
+  %retval.0 = phi i32 [ %add4, %if.end ], [ 13, %entry ]
+  ret i32 %retval.0
+}
+; *** IR Dump After LoopSimplifyPass on _Z5test1iii ***
+; Function Attrs: mustprogress nofree norecurse nosync nounwind willreturn memory(none)
+define dso_local noundef i32 @_Z5test1iii(i32 noundef %a, i32 noundef %b, i32 noundef %c) local_unnamed_addr #0 {
+entry:
+  %cmp = icmp eq i32 %a, 46346
+  %cmp1 = icmp eq i32 %b, 5745
+  %or.cond = and i1 %cmp, %cmp1
+  %cmp3 = icmp eq i32 %c, 5
+  %or.cond1 = and i1 %or.cond, %cmp3
+  br i1 %or.cond1, label %return, label %if.end
+
+if.end:                                           ; preds = %entry
+  %mul4 = sdiv i32 %a, %b
+  %add4 = add nsw i32 %mul4, %c
+  br label %return
+
+return:                                           ; preds = %entry, %if.end
+  %retval.0 = phi i32 [ %add4, %if.end ], [ 13, %entry ]
+  ret i32 %retval.0
+}
+; *** IR Dump After LCSSAPass on _Z5test1iii ***
+; Function Attrs: mustprogress nofree norecurse nosync nounwind willreturn memory(none)
+define dso_local noundef i32 @_Z5test1iii(i32 noundef %a, i32 noundef %b, i32 noundef %c) local_unnamed_addr #0 {
+entry:
+  %cmp = icmp eq i32 %a, 46346
+  %cmp1 = icmp eq i32 %b, 5745
+  %or.cond = and i1 %cmp, %cmp1
+  %cmp3 = icmp eq i32 %c, 5
+  %or.cond1 = and i1 %or.cond, %cmp3
+  br i1 %or.cond1, label %return, label %if.end
+
+if.end:                                           ; preds = %entry
+  %mul4 = sdiv i32 %a, %b
+  %add4 = add nsw i32 %mul4, %c
+  br label %return
+
+return:                                           ; preds = %entry, %if.end
+  %retval.0 = phi i32 [ %add4, %if.end ], [ 13, %entry ]
+  ret i32 %retval.0
+}
+; *** IR Dump After LoopDistributePass on _Z5test1iii ***
+; Function Attrs: mustprogress nofree norecurse nosync nounwind willreturn memory(none)
+define dso_local noundef i32 @_Z5test1iii(i32 noundef %a, i32 noundef %b, i32 noundef %c) local_unnamed_addr #0 {
+entry:
+  %cmp = icmp eq i32 %a, 46346
+  %cmp1 = icmp eq i32 %b, 5745
+  %or.cond = and i1 %cmp, %cmp1
+  %cmp3 = icmp eq i32 %c, 5
+  %or.cond1 = and i1 %or.cond, %cmp3
+  br i1 %or.cond1, label %return, label %if.end
+
+if.end:                                           ; preds = %entry
+  %mul4 = sdiv i32 %a, %b
+  %add4 = add nsw i32 %mul4, %c
+  br label %return
+
+return:                                           ; preds = %entry, %if.end
+  %retval.0 = phi i32 [ %add4, %if.end ], [ 13, %entry ]
+  ret i32 %retval.0
+}
+; *** IR Dump After InjectTLIMappings on _Z5test1iii ***
+; Function Attrs: mustprogress nofree norecurse nosync nounwind willreturn memory(none)
+define dso_local noundef i32 @_Z5test1iii(i32 noundef %a, i32 noundef %b, i32 noundef %c) local_unnamed_addr #0 {
+entry:
+  %cmp = icmp eq i32 %a, 46346
+  %cmp1 = icmp eq i32 %b, 5745
+  %or.cond = and i1 %cmp, %cmp1
+  %cmp3 = icmp eq i32 %c, 5
+  %or.cond1 = and i1 %or.cond, %cmp3
+  br i1 %or.cond1, label %return, label %if.end
+
+if.end:                                           ; preds = %entry
+  %mul4 = sdiv i32 %a, %b
+  %add4 = add nsw i32 %mul4, %c
+  br label %return
+
+return:                                           ; preds = %entry, %if.end
+  %retval.0 = phi i32 [ %add4, %if.end ], [ 13, %entry ]
+  ret i32 %retval.0
+}
+; *** IR Dump After LoopVectorizePass on _Z5test1iii ***
+; Function Attrs: mustprogress nofree norecurse nosync nounwind willreturn memory(none)
+define dso_local noundef i32 @_Z5test1iii(i32 noundef %a, i32 noundef %b, i32 noundef %c) local_unnamed_addr #0 {
+entry:
+  %cmp = icmp eq i32 %a, 46346
+  %cmp1 = icmp eq i32 %b, 5745
+  %or.cond = and i1 %cmp, %cmp1
+  %cmp3 = icmp eq i32 %c, 5
+  %or.cond1 = and i1 %or.cond, %cmp3
+  br i1 %or.cond1, label %return, label %if.end
+
+if.end:                                           ; preds = %entry
+  %mul4 = sdiv i32 %a, %b
+  %add4 = add nsw i32 %mul4, %c
+  br label %return
+
+return:                                           ; preds = %entry, %if.end
+  %retval.0 = phi i32 [ %add4, %if.end ], [ 13, %entry ]
+  ret i32 %retval.0
+}
+; *** IR Dump After InferAlignmentPass on _Z5test1iii ***
+; Function Attrs: mustprogress nofree norecurse nosync nounwind willreturn memory(none)
+define dso_local noundef i32 @_Z5test1iii(i32 noundef %a, i32 noundef %b, i32 noundef %c) local_unnamed_addr #0 {
+entry:
+  %cmp = icmp eq i32 %a, 46346
+  %cmp1 = icmp eq i32 %b, 5745
+  %or.cond = and i1 %cmp, %cmp1
+  %cmp3 = icmp eq i32 %c, 5
+  %or.cond1 = and i1 %or.cond, %cmp3
+  br i1 %or.cond1, label %return, label %if.end
+
+if.end:                                           ; preds = %entry
+  %mul4 = sdiv i32 %a, %b
+  %add4 = add nsw i32 %mul4, %c
+  br label %return
+
+return:                                           ; preds = %entry, %if.end
+  %retval.0 = phi i32 [ %add4, %if.end ], [ 13, %entry ]
+  ret i32 %retval.0
+}
+; *** IR Dump After LoopLoadEliminationPass on _Z5test1iii ***
+; Function Attrs: mustprogress nofree norecurse nosync nounwind willreturn memory(none)
+define dso_local noundef i32 @_Z5test1iii(i32 noundef %a, i32 noundef %b, i32 noundef %c) local_unnamed_addr #0 {
+entry:
+  %cmp = icmp eq i32 %a, 46346
+  %cmp1 = icmp eq i32 %b, 5745
+  %or.cond = and i1 %cmp, %cmp1
+  %cmp3 = icmp eq i32 %c, 5
+  %or.cond1 = and i1 %or.cond, %cmp3
+  br i1 %or.cond1, label %return, label %if.end
+
+if.end:                                           ; preds = %entry
+  %mul4 = sdiv i32 %a, %b
+  %add4 = add nsw i32 %mul4, %c
+  br label %return
+
+return:                                           ; preds = %entry, %if.end
+  %retval.0 = phi i32 [ %add4, %if.end ], [ 13, %entry ]
+  ret i32 %retval.0
+}
+; *** IR Dump After InstCombinePass on _Z5test1iii ***
+; Function Attrs: mustprogress nofree norecurse nosync nounwind willreturn memory(none)
+define dso_local noundef i32 @_Z5test1iii(i32 noundef %a, i32 noundef %b, i32 noundef %c) local_unnamed_addr #0 {
+entry:
+  %cmp = icmp eq i32 %a, 46346
+  %cmp1 = icmp eq i32 %b, 5745
+  %or.cond = and i1 %cmp, %cmp1
+  %cmp3 = icmp eq i32 %c, 5
+  %or.cond1 = and i1 %or.cond, %cmp3
+  br i1 %or.cond1, label %return, label %if.end
+
+if.end:                                           ; preds = %entry
+  %mul4 = sdiv i32 %a, %b
+  %add4 = add nsw i32 %mul4, %c
+  br label %return
+
+return:                                           ; preds = %entry, %if.end
+  %retval.0 = phi i32 [ %add4, %if.end ], [ 13, %entry ]
+  ret i32 %retval.0
+}
+; *** IR Dump After SimplifyCFGPass on _Z5test1iii ***
+; Function Attrs: mustprogress nofree norecurse nosync nounwind willreturn memory(none)
+define dso_local noundef i32 @_Z5test1iii(i32 noundef %a, i32 noundef %b, i32 noundef %c) local_unnamed_addr #0 {
+entry:
+  %cmp = icmp eq i32 %a, 46346
+  %cmp1 = icmp eq i32 %b, 5745
+  %or.cond = and i1 %cmp, %cmp1
+  %cmp3 = icmp eq i32 %c, 5
+  %or.cond1 = and i1 %or.cond, %cmp3
+  br i1 %or.cond1, label %return, label %if.end
+
+if.end:                                           ; preds = %entry
+  %mul4 = sdiv i32 %a, %b
+  %add4 = add nsw i32 %mul4, %c
+  br label %return
+
+return:                                           ; preds = %entry, %if.end
+  %retval.0 = phi i32 [ %add4, %if.end ], [ 13, %entry ]
+  ret i32 %retval.0
+}
+; *** IR Dump After SLPVectorizerPass on _Z5test1iii ***
+; Function Attrs: mustprogress nofree norecurse nosync nounwind willreturn memory(none)
+define dso_local noundef i32 @_Z5test1iii(i32 noundef %a, i32 noundef %b, i32 noundef %c) local_unnamed_addr #0 {
+entry:
+  %cmp = icmp eq i32 %a, 46346
+  %cmp1 = icmp eq i32 %b, 5745
+  %or.cond = and i1 %cmp, %cmp1
+  %cmp3 = icmp eq i32 %c, 5
+  %or.cond1 = and i1 %or.cond, %cmp3
+  br i1 %or.cond1, label %return, label %if.end
+
+if.end:                                           ; preds = %entry
+  %mul4 = sdiv i32 %a, %b
+  %add4 = add nsw i32 %mul4, %c
+  br label %return
+
+return:                                           ; preds = %entry, %if.end
+  %retval.0 = phi i32 [ %add4, %if.end ], [ 13, %entry ]
+  ret i32 %retval.0
+}
+; *** IR Dump After VectorCombinePass on _Z5test1iii ***
+; Function Attrs: mustprogress nofree norecurse nosync nounwind willreturn memory(none)
+define dso_local noundef i32 @_Z5test1iii(i32 noundef %a, i32 noundef %b, i32 noundef %c) local_unnamed_addr #0 {
+entry:
+  %cmp = icmp eq i32 %a, 46346
+  %cmp1 = icmp eq i32 %b, 5745
+  %or.cond = and i1 %cmp, %cmp1
+  %cmp3 = icmp eq i32 %c, 5
+  %or.cond1 = and i1 %or.cond, %cmp3
+  br i1 %or.cond1, label %return, label %if.end
+
+if.end:                                           ; preds = %entry
+  %mul4 = sdiv i32 %a, %b
+  %add4 = add nsw i32 %mul4, %c
+  br label %return
+
+return:                                           ; preds = %entry, %if.end
+  %retval.0 = phi i32 [ %add4, %if.end ], [ 13, %entry ]
+  ret i32 %retval.0
+}
+; *** IR Dump After InstCombinePass on _Z5test1iii ***
+; Function Attrs: mustprogress nofree norecurse nosync nounwind willreturn memory(none)
+define dso_local noundef i32 @_Z5test1iii(i32 noundef %a, i32 noundef %b, i32 noundef %c) local_unnamed_addr #0 {
+entry:
+  %cmp = icmp eq i32 %a, 46346
+  %cmp1 = icmp eq i32 %b, 5745
+  %or.cond = and i1 %cmp, %cmp1
+  %cmp3 = icmp eq i32 %c, 5
+  %or.cond1 = and i1 %or.cond, %cmp3
+  br i1 %or.cond1, label %return, label %if.end
+
+if.end:                                           ; preds = %entry
+  %mul4 = sdiv i32 %a, %b
+  %add4 = add nsw i32 %mul4, %c
+  br label %return
+
+return:                                           ; preds = %entry, %if.end
+  %retval.0 = phi i32 [ %add4, %if.end ], [ 13, %entry ]
+  ret i32 %retval.0
+}
+; *** IR Dump After LoopUnrollPass on _Z5test1iii ***
+; Function Attrs: mustprogress nofree norecurse nosync nounwind willreturn memory(none)
+define dso_local noundef i32 @_Z5test1iii(i32 noundef %a, i32 noundef %b, i32 noundef %c) local_unnamed_addr #0 {
+entry:
+  %cmp = icmp eq i32 %a, 46346
+  %cmp1 = icmp eq i32 %b, 5745
+  %or.cond = and i1 %cmp, %cmp1
+  %cmp3 = icmp eq i32 %c, 5
+  %or.cond1 = and i1 %or.cond, %cmp3
+  br i1 %or.cond1, label %return, label %if.end
+
+if.end:                                           ; preds = %entry
+  %mul4 = sdiv i32 %a, %b
+  %add4 = add nsw i32 %mul4, %c
+  br label %return
+
+return:                                           ; preds = %entry, %if.end
+  %retval.0 = phi i32 [ %add4, %if.end ], [ 13, %entry ]
+  ret i32 %retval.0
+}
+; *** IR Dump After WarnMissedTransformationsPass on _Z5test1iii ***
+; Function Attrs: mustprogress nofree norecurse nosync nounwind willreturn memory(none)
+define dso_local noundef i32 @_Z5test1iii(i32 noundef %a, i32 noundef %b, i32 noundef %c) local_unnamed_addr #0 {
+entry:
+  %cmp = icmp eq i32 %a, 46346
+  %cmp1 = icmp eq i32 %b, 5745
+  %or.cond = and i1 %cmp, %cmp1
+  %cmp3 = icmp eq i32 %c, 5
+  %or.cond1 = and i1 %or.cond, %cmp3
+  br i1 %or.cond1, label %return, label %if.end
+
+if.end:                                           ; preds = %entry
+  %mul4 = sdiv i32 %a, %b
+  %add4 = add nsw i32 %mul4, %c
+  br label %return
+
+return:                                           ; preds = %entry, %if.end
+  %retval.0 = phi i32 [ %add4, %if.end ], [ 13, %entry ]
+  ret i32 %retval.0
+}
+; *** IR Dump After SROAPass on _Z5test1iii ***
+; Function Attrs: mustprogress nofree norecurse nosync nounwind willreturn memory(none)
+define dso_local noundef i32 @_Z5test1iii(i32 noundef %a, i32 noundef %b, i32 noundef %c) local_unnamed_addr #0 {
+entry:
+  %cmp = icmp eq i32 %a, 46346
+  %cmp1 = icmp eq i32 %b, 5745
+  %or.cond = and i1 %cmp, %cmp1
+  %cmp3 = icmp eq i32 %c, 5
+  %or.cond1 = and i1 %or.cond, %cmp3
+  br i1 %or.cond1, label %return, label %if.end
+
+if.end:                                           ; preds = %entry
+  %mul4 = sdiv i32 %a, %b
+  %add4 = add nsw i32 %mul4, %c
+  br label %return
+
+return:                                           ; preds = %entry, %if.end
+  %retval.0 = phi i32 [ %add4, %if.end ], [ 13, %entry ]
+  ret i32 %retval.0
+}
+; *** IR Dump After InferAlignmentPass on _Z5test1iii ***
+; Function Attrs: mustprogress nofree norecurse nosync nounwind willreturn memory(none)
+define dso_local noundef i32 @_Z5test1iii(i32 noundef %a, i32 noundef %b, i32 noundef %c) local_unnamed_addr #0 {
+entry:
+  %cmp = icmp eq i32 %a, 46346
+  %cmp1 = icmp eq i32 %b, 5745
+  %or.cond = and i1 %cmp, %cmp1
+  %cmp3 = icmp eq i32 %c, 5
+  %or.cond1 = and i1 %or.cond, %cmp3
+  br i1 %or.cond1, label %return, label %if.end
+
+if.end:                                           ; preds = %entry
+  %mul4 = sdiv i32 %a, %b
+  %add4 = add nsw i32 %mul4, %c
+  br label %return
+
+return:                                           ; preds = %entry, %if.end
+  %retval.0 = phi i32 [ %add4, %if.end ], [ 13, %entry ]
+  ret i32 %retval.0
+}
+; *** IR Dump After InstCombinePass on _Z5test1iii ***
+; Function Attrs: mustprogress nofree norecurse nosync nounwind willreturn memory(none)
+define dso_local noundef i32 @_Z5test1iii(i32 noundef %a, i32 noundef %b, i32 noundef %c) local_unnamed_addr #0 {
+entry:
+  %cmp = icmp eq i32 %a, 46346
+  %cmp1 = icmp eq i32 %b, 5745
+  %or.cond = and i1 %cmp, %cmp1
+  %cmp3 = icmp eq i32 %c, 5
+  %or.cond1 = and i1 %or.cond, %cmp3
+  br i1 %or.cond1, label %return, label %if.end
+
+if.end:                                           ; preds = %entry
+  %mul4 = sdiv i32 %a, %b
+  %add4 = add nsw i32 %mul4, %c
+  br label %return
+
+return:                                           ; preds = %entry, %if.end
+  %retval.0 = phi i32 [ %add4, %if.end ], [ 13, %entry ]
+  ret i32 %retval.0
+}
+; *** IR Dump After LoopSimplifyPass on _Z5test1iii ***
+; Function Attrs: mustprogress nofree norecurse nosync nounwind willreturn memory(none)
+define dso_local noundef i32 @_Z5test1iii(i32 noundef %a, i32 noundef %b, i32 noundef %c) local_unnamed_addr #0 {
+entry:
+  %cmp = icmp eq i32 %a, 46346
+  %cmp1 = icmp eq i32 %b, 5745
+  %or.cond = and i1 %cmp, %cmp1
+  %cmp3 = icmp eq i32 %c, 5
+  %or.cond1 = and i1 %or.cond, %cmp3
+  br i1 %or.cond1, label %return, label %if.end
+
+if.end:                                           ; preds = %entry
+  %mul4 = sdiv i32 %a, %b
+  %add4 = add nsw i32 %mul4, %c
+  br label %return
+
+return:                                           ; preds = %entry, %if.end
+  %retval.0 = phi i32 [ %add4, %if.end ], [ 13, %entry ]
+  ret i32 %retval.0
+}
+; *** IR Dump After LCSSAPass on _Z5test1iii ***
+; Function Attrs: mustprogress nofree norecurse nosync nounwind willreturn memory(none)
+define dso_local noundef i32 @_Z5test1iii(i32 noundef %a, i32 noundef %b, i32 noundef %c) local_unnamed_addr #0 {
+entry:
+  %cmp = icmp eq i32 %a, 46346
+  %cmp1 = icmp eq i32 %b, 5745
+  %or.cond = and i1 %cmp, %cmp1
+  %cmp3 = icmp eq i32 %c, 5
+  %or.cond1 = and i1 %or.cond, %cmp3
+  br i1 %or.cond1, label %return, label %if.end
+
+if.end:                                           ; preds = %entry
+  %mul4 = sdiv i32 %a, %b
+  %add4 = add nsw i32 %mul4, %c
+  br label %return
+
+return:                                           ; preds = %entry, %if.end
+  %retval.0 = phi i32 [ %add4, %if.end ], [ 13, %entry ]
+  ret i32 %retval.0
+}
+; *** IR Dump After AlignmentFromAssumptionsPass on _Z5test1iii ***
+; Function Attrs: mustprogress nofree norecurse nosync nounwind willreturn memory(none)
+define dso_local noundef i32 @_Z5test1iii(i32 noundef %a, i32 noundef %b, i32 noundef %c) local_unnamed_addr #0 {
+entry:
+  %cmp = icmp eq i32 %a, 46346
+  %cmp1 = icmp eq i32 %b, 5745
+  %or.cond = and i1 %cmp, %cmp1
+  %cmp3 = icmp eq i32 %c, 5
+  %or.cond1 = and i1 %or.cond, %cmp3
+  br i1 %or.cond1, label %return, label %if.end
+
+if.end:                                           ; preds = %entry
+  %mul4 = sdiv i32 %a, %b
+  %add4 = add nsw i32 %mul4, %c
+  br label %return
+
+return:                                           ; preds = %entry, %if.end
+  %retval.0 = phi i32 [ %add4, %if.end ], [ 13, %entry ]
+  ret i32 %retval.0
+}
+; *** IR Dump After LoopSinkPass on _Z5test1iii ***
+; Function Attrs: mustprogress nofree norecurse nosync nounwind willreturn memory(none)
+define dso_local noundef i32 @_Z5test1iii(i32 noundef %a, i32 noundef %b, i32 noundef %c) local_unnamed_addr #0 {
+entry:
+  %cmp = icmp eq i32 %a, 46346
+  %cmp1 = icmp eq i32 %b, 5745
+  %or.cond = and i1 %cmp, %cmp1
+  %cmp3 = icmp eq i32 %c, 5
+  %or.cond1 = and i1 %or.cond, %cmp3
+  br i1 %or.cond1, label %return, label %if.end
+
+if.end:                                           ; preds = %entry
+  %mul4 = sdiv i32 %a, %b
+  %add4 = add nsw i32 %mul4, %c
+  br label %return
+
+return:                                           ; preds = %entry, %if.end
+  %retval.0 = phi i32 [ %add4, %if.end ], [ 13, %entry ]
+  ret i32 %retval.0
+}
+; *** IR Dump After InstSimplifyPass on _Z5test1iii ***
+; Function Attrs: mustprogress nofree norecurse nosync nounwind willreturn memory(none)
+define dso_local noundef i32 @_Z5test1iii(i32 noundef %a, i32 noundef %b, i32 noundef %c) local_unnamed_addr #0 {
+entry:
+  %cmp = icmp eq i32 %a, 46346
+  %cmp1 = icmp eq i32 %b, 5745
+  %or.cond = and i1 %cmp, %cmp1
+  %cmp3 = icmp eq i32 %c, 5
+  %or.cond1 = and i1 %or.cond, %cmp3
+  br i1 %or.cond1, label %return, label %if.end
+
+if.end:                                           ; preds = %entry
+  %mul4 = sdiv i32 %a, %b
+  %add4 = add nsw i32 %mul4, %c
+  br label %return
+
+return:                                           ; preds = %entry, %if.end
+  %retval.0 = phi i32 [ %add4, %if.end ], [ 13, %entry ]
+  ret i32 %retval.0
+}
+; *** IR Dump After DivRemPairsPass on _Z5test1iii ***
+; Function Attrs: mustprogress nofree norecurse nosync nounwind willreturn memory(none)
+define dso_local noundef i32 @_Z5test1iii(i32 noundef %a, i32 noundef %b, i32 noundef %c) local_unnamed_addr #0 {
+entry:
+  %cmp = icmp eq i32 %a, 46346
+  %cmp1 = icmp eq i32 %b, 5745
+  %or.cond = and i1 %cmp, %cmp1
+  %cmp3 = icmp eq i32 %c, 5
+  %or.cond1 = and i1 %or.cond, %cmp3
+  br i1 %or.cond1, label %return, label %if.end
+
+if.end:                                           ; preds = %entry
+  %mul4 = sdiv i32 %a, %b
+  %add4 = add nsw i32 %mul4, %c
+  br label %return
+
+return:                                           ; preds = %entry, %if.end
+  %retval.0 = phi i32 [ %add4, %if.end ], [ 13, %entry ]
+  ret i32 %retval.0
+}
+; *** IR Dump After TailCallElimPass on _Z5test1iii ***
+; Function Attrs: mustprogress nofree norecurse nosync nounwind willreturn memory(none)
+define dso_local noundef i32 @_Z5test1iii(i32 noundef %a, i32 noundef %b, i32 noundef %c) local_unnamed_addr #0 {
+entry:
+  %cmp = icmp eq i32 %a, 46346
+  %cmp1 = icmp eq i32 %b, 5745
+  %or.cond = and i1 %cmp, %cmp1
+  %cmp3 = icmp eq i32 %c, 5
+  %or.cond1 = and i1 %or.cond, %cmp3
+  br i1 %or.cond1, label %return, label %if.end
+
+if.end:                                           ; preds = %entry
+  %mul4 = sdiv i32 %a, %b
+  %add4 = add nsw i32 %mul4, %c
+  br label %return
+
+return:                                           ; preds = %entry, %if.end
+  %retval.0 = phi i32 [ %add4, %if.end ], [ 13, %entry ]
+  ret i32 %retval.0
+}
+; *** IR Dump After SimplifyCFGPass on _Z5test1iii ***
+; Function Attrs: mustprogress nofree norecurse nosync nounwind willreturn memory(none)
+define dso_local noundef i32 @_Z5test1iii(i32 noundef %a, i32 noundef %b, i32 noundef %c) local_unnamed_addr #0 {
+entry:
+  %cmp = icmp eq i32 %a, 46346
+  %cmp1 = icmp eq i32 %b, 5745
+  %or.cond = and i1 %cmp, %cmp1
+  %cmp3 = icmp eq i32 %c, 5
+  %or.cond1 = and i1 %or.cond, %cmp3
+  br i1 %or.cond1, label %return, label %if.end
+
+if.end:                                           ; preds = %entry
+  %mul4 = sdiv i32 %a, %b
+  %add4 = add nsw i32 %mul4, %c
+  br label %return
+
+return:                                           ; preds = %entry, %if.end
+  %retval.0 = phi i32 [ %add4, %if.end ], [ 13, %entry ]
+  ret i32 %retval.0
+}
+; *** IR Dump After GlobalDCEPass on [module] ***
+; ModuleID = 'mul_right.ll'
+source_filename = "mul_right.ll"
+
+; Function Attrs: mustprogress nofree norecurse nosync nounwind willreturn memory(none)
+define dso_local noundef i32 @_Z5test1iii(i32 noundef %a, i32 noundef %b, i32 noundef %c) local_unnamed_addr #0 {
+entry:
+  %cmp = icmp eq i32 %a, 46346
+  %cmp1 = icmp eq i32 %b, 5745
+  %or.cond = and i1 %cmp, %cmp1
+  %cmp3 = icmp eq i32 %c, 5
+  %or.cond1 = and i1 %or.cond, %cmp3
+  br i1 %or.cond1, label %return, label %if.end
+
+if.end:                                           ; preds = %entry
+  %mul4 = sdiv i32 %a, %b
+  %add4 = add nsw i32 %mul4, %c
+  br label %return
+
+return:                                           ; preds = %entry, %if.end
+  %retval.0 = phi i32 [ %add4, %if.end ], [ 13, %entry ]
+  ret i32 %retval.0
+}
+
+attributes #0 = { mustprogress nofree norecurse nosync nounwind willreturn memory(none) }
+; *** IR Dump After ConstantMergePass on [module] ***
+; ModuleID = 'mul_right.ll'
+source_filename = "mul_right.ll"
+
+; Function Attrs: mustprogress nofree norecurse nosync nounwind willreturn memory(none)
+define dso_local noundef i32 @_Z5test1iii(i32 noundef %a, i32 noundef %b, i32 noundef %c) local_unnamed_addr #0 {
+entry:
+  %cmp = icmp eq i32 %a, 46346
+  %cmp1 = icmp eq i32 %b, 5745
+  %or.cond = and i1 %cmp, %cmp1
+  %cmp3 = icmp eq i32 %c, 5
+  %or.cond1 = and i1 %or.cond, %cmp3
+  br i1 %or.cond1, label %return, label %if.end
+
+if.end:                                           ; preds = %entry
+  %mul4 = sdiv i32 %a, %b
+  %add4 = add nsw i32 %mul4, %c
+  br label %return
+
+return:                                           ; preds = %entry, %if.end
+  %retval.0 = phi i32 [ %add4, %if.end ], [ 13, %entry ]
+  ret i32 %retval.0
+}
+
+attributes #0 = { mustprogress nofree norecurse nosync nounwind willreturn memory(none) }
+; *** IR Dump After CGProfilePass on [module] ***
+; ModuleID = 'mul_right.ll'
+source_filename = "mul_right.ll"
+
+; Function Attrs: mustprogress nofree norecurse nosync nounwind willreturn memory(none)
+define dso_local noundef i32 @_Z5test1iii(i32 noundef %a, i32 noundef %b, i32 noundef %c) local_unnamed_addr #0 {
+entry:
+  %cmp = icmp eq i32 %a, 46346
+  %cmp1 = icmp eq i32 %b, 5745
+  %or.cond = and i1 %cmp, %cmp1
+  %cmp3 = icmp eq i32 %c, 5
+  %or.cond1 = and i1 %or.cond, %cmp3
+  br i1 %or.cond1, label %return, label %if.end
+
+if.end:                                           ; preds = %entry
+  %mul4 = sdiv i32 %a, %b
+  %add4 = add nsw i32 %mul4, %c
+  br label %return
+
+return:                                           ; preds = %entry, %if.end
+  %retval.0 = phi i32 [ %add4, %if.end ], [ 13, %entry ]
+  ret i32 %retval.0
+}
+
+attributes #0 = { mustprogress nofree norecurse nosync nounwind willreturn memory(none) }
+; *** IR Dump After RelLookupTableConverterPass on [module] ***
+; ModuleID = 'mul_right.ll'
+source_filename = "mul_right.ll"
+
+; Function Attrs: mustprogress nofree norecurse nosync nounwind willreturn memory(none)
+define dso_local noundef i32 @_Z5test1iii(i32 noundef %a, i32 noundef %b, i32 noundef %c) local_unnamed_addr #0 {
+entry:
+  %cmp = icmp eq i32 %a, 46346
+  %cmp1 = icmp eq i32 %b, 5745
+  %or.cond = and i1 %cmp, %cmp1
+  %cmp3 = icmp eq i32 %c, 5
+  %or.cond1 = and i1 %or.cond, %cmp3
+  br i1 %or.cond1, label %return, label %if.end
+
+if.end:                                           ; preds = %entry
+  %mul4 = sdiv i32 %a, %b
+  %add4 = add nsw i32 %mul4, %c
+  br label %return
+
+return:                                           ; preds = %entry, %if.end
+  %retval.0 = phi i32 [ %add4, %if.end ], [ 13, %entry ]
+  ret i32 %retval.0
+}
+
+attributes #0 = { mustprogress nofree norecurse nosync nounwind willreturn memory(none) }
+; *** IR Dump After AnnotationRemarksPass on _Z5test1iii ***
+; Function Attrs: mustprogress nofree norecurse nosync nounwind willreturn memory(none)
+define dso_local noundef i32 @_Z5test1iii(i32 noundef %a, i32 noundef %b, i32 noundef %c) local_unnamed_addr #0 {
+entry:
+  %cmp = icmp eq i32 %a, 46346
+  %cmp1 = icmp eq i32 %b, 5745
+  %or.cond = and i1 %cmp, %cmp1
+  %cmp3 = icmp eq i32 %c, 5
+  %or.cond1 = and i1 %or.cond, %cmp3
+  br i1 %or.cond1, label %return, label %if.end
+
+if.end:                                           ; preds = %entry
+  %mul4 = sdiv i32 %a, %b
+  %add4 = add nsw i32 %mul4, %c
+  br label %return
+
+return:                                           ; preds = %entry, %if.end
+  %retval.0 = phi i32 [ %add4, %if.end ], [ 13, %entry ]
+  ret i32 %retval.0
+}

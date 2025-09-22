@@ -8,12 +8,12 @@ entry:
   br i1 %or.cond1, label %if.then, label %if.end
 
 if.then:                                          ; preds = %entry
-  %mul = mul i32 %a, %b
+  %mul = sdiv i32 %a, %b
   %add = add nsw i32 %c, %mul
   br label %return
 
 if.end:                                           ; preds = %entry
-  %mul4 = mul i32 %a, %b
+  %mul4 = sdiv i32 %a, %b
   %add4 = add nsw i32 %c, %mul4
   br label %return
 
