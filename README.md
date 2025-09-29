@@ -1,4 +1,4 @@
-This is a research about this example ([previous part of the research](./README_old.md))
+This is a research about this example ([previous part of the research](./SDivConvolution/README_old.md))
 
 ## Source code
 ```cpp
@@ -60,7 +60,7 @@ define dso_local noundef i32 @_Z5test1iii(i32 noundef %a, i32 noundef %b, i32 no
 ## Got first results!
 - If we slightly change the start of `-O2` pipeline.
 
-### How it was 
+### How it was
 ```cpp
 EarlyFPM.addPass(LowerExpectIntrinsicPass());
 EarlyFPM.addPass(SimplifyCFGPass());
@@ -85,5 +85,5 @@ EarlyFPM.addPass(SimplifyCFGPass());
 | 2           | [[Тест 2\|tap]] |
 | 3           | [[Тест 3\|tap]] |
 |             |                 |
-~                                                                                                             
-~                                      
+~
+~
