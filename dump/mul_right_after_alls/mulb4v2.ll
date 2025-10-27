@@ -1,59 +1,49 @@
-; ModuleID = './MixedConstantsTests/test1.cpp'
-source_filename = "./MixedConstantsTests/test1.cpp"
+; ModuleID = 'mul.cpp'
+source_filename = "mul.cpp"
 target datalayout = "e-m:e-p270:32:32-p271:32:32-p272:64:64-i64:64-i128:128-f80:128-n8:16:32:64-S128"
 target triple = "x86_64-unknown-linux-gnu"
 
 ; Function Attrs: mustprogress noinline nounwind uwtable
-define dso_local noundef i32 @_Z3muliiii(i32 noundef %a, i32 noundef %b, i32 noundef %c, i32 noundef %d) #0 {
+define dso_local noundef i32 @_Z5test1iii(i32 noundef %a, i32 noundef %b, i32 noundef %c) #0 {
 entry:
   %retval = alloca i32, align 4
   %a.addr = alloca i32, align 4
   %b.addr = alloca i32, align 4
   %c.addr = alloca i32, align 4
-  %d.addr = alloca i32, align 4
   store i32 %a, ptr %a.addr, align 4
   store i32 %b, ptr %b.addr, align 4
   store i32 %c, ptr %c.addr, align 4
-  store i32 %d, ptr %d.addr, align 4
   %0 = load i32, ptr %a.addr, align 4
-  %cmp = icmp eq i32 %0, 500
+  %cmp = icmp eq i32 %0, 46346
   br i1 %cmp, label %land.lhs.true, label %if.end
 
 land.lhs.true:                                    ; preds = %entry
-  %1 = load i32, ptr %d.addr, align 4
-  %cmp1 = icmp eq i32 %1, 700
+  %1 = load i32, ptr %b.addr, align 4
+  %cmp1 = icmp eq i32 %1, 5745
   br i1 %cmp1, label %land.lhs.true2, label %if.end
 
 land.lhs.true2:                                   ; preds = %land.lhs.true
   %2 = load i32, ptr %c.addr, align 4
-  %3 = load i32, ptr %a.addr, align 4
-  %add = add nsw i32 %3, 5
-  %cmp3 = icmp eq i32 %2, %add
+  %cmp3 = icmp eq i32 %2, 5
   br i1 %cmp3, label %if.then, label %if.end
 
 if.then:                                          ; preds = %land.lhs.true2
-  %4 = load i32, ptr %a.addr, align 4
-  %mul = mul nsw i32 2, %4
-  %5 = load i32, ptr %b.addr, align 4
-  %6 = load i32, ptr %c.addr, align 4
-  %mul4 = mul nsw i32 %5, %6
-  %add5 = add nsw i32 %mul, %mul4
-  store i32 %add5, ptr %retval, align 4
+  %3 = load i32, ptr %a.addr, align 4
+  %4 = load i32, ptr %b.addr, align 4
+  %mul = mul nsw i32 %3, %4
+  store i32 %mul, ptr %retval, align 4
   br label %return
 
 if.end:                                           ; preds = %land.lhs.true2, %land.lhs.true, %entry
-  %7 = load i32, ptr %a.addr, align 4
-  %mul6 = mul nsw i32 2, %7
-  %8 = load i32, ptr %b.addr, align 4
-  %9 = load i32, ptr %c.addr, align 4
-  %mul7 = mul nsw i32 %8, %9
-  %add8 = add nsw i32 %mul6, %mul7
-  store i32 %add8, ptr %retval, align 4
+  %5 = load i32, ptr %a.addr, align 4
+  %6 = load i32, ptr %b.addr, align 4
+  %mul4 = mul nsw i32 %5, %6
+  store i32 %mul4, ptr %retval, align 4
   br label %return
 
 return:                                           ; preds = %if.end, %if.then
-  %10 = load i32, ptr %retval, align 4
-  ret i32 %10
+  %7 = load i32, ptr %retval, align 4
+  ret i32 %7
 }
 
 attributes #0 = { mustprogress noinline nounwind uwtable "frame-pointer"="all" "min-legal-vector-width"="0" "no-trapping-math"="true" "stack-protector-buffer-size"="8" "target-cpu"="x86-64" "target-features"="+cmov,+cx8,+fxsr,+mmx,+sse,+sse2,+x87" "tune-cpu"="generic" }

@@ -1,0 +1,2418 @@
+; *** IR Dump After Annotation2MetadataPass on [module] ***
+; ModuleID = 'mul_smb.ll'
+source_filename = "mul_smb.ll"
+
+define dso_local noundef i32 @_Z3muliiii(i32 noundef %a, i32 noundef %b, i32 noundef %c, i32 noundef %d) {
+entry:
+  %cmp = icmp eq i32 %a, 500
+  %cmp1 = icmp eq i32 %d, 700
+  %or.cond = select i1 %cmp, i1 %cmp1, i1 false
+  %add = add nsw i32 %a, 5
+  %cmp3 = icmp eq i32 %c, %add
+  %or.cond7 = select i1 %or.cond, i1 %cmp3, i1 false
+  br i1 %or.cond7, label %if.then, label %if.end
+
+if.then:                                          ; preds = %entry
+  %mul = mul nsw i32 2, %a
+  %mul4 = mul nsw i32 %b, %c
+  %add5 = add nsw i32 %mul, %mul4
+  br label %return
+
+if.end:                                           ; preds = %entry
+  %mul6 = mul nsw i32 2, %a
+  %mul7 = mul nsw i32 %b, %c
+  %add8 = add nsw i32 %mul6, %mul7
+  br label %return
+
+return:                                           ; preds = %if.end, %if.then
+  %retval.0 = phi i32 [ %add5, %if.then ], [ %add8, %if.end ]
+  ret i32 %retval.0
+}
+; *** IR Dump After ForceFunctionAttrsPass on [module] ***
+; ModuleID = 'mul_smb.ll'
+source_filename = "mul_smb.ll"
+
+define dso_local noundef i32 @_Z3muliiii(i32 noundef %a, i32 noundef %b, i32 noundef %c, i32 noundef %d) {
+entry:
+  %cmp = icmp eq i32 %a, 500
+  %cmp1 = icmp eq i32 %d, 700
+  %or.cond = select i1 %cmp, i1 %cmp1, i1 false
+  %add = add nsw i32 %a, 5
+  %cmp3 = icmp eq i32 %c, %add
+  %or.cond7 = select i1 %or.cond, i1 %cmp3, i1 false
+  br i1 %or.cond7, label %if.then, label %if.end
+
+if.then:                                          ; preds = %entry
+  %mul = mul nsw i32 2, %a
+  %mul4 = mul nsw i32 %b, %c
+  %add5 = add nsw i32 %mul, %mul4
+  br label %return
+
+if.end:                                           ; preds = %entry
+  %mul6 = mul nsw i32 2, %a
+  %mul7 = mul nsw i32 %b, %c
+  %add8 = add nsw i32 %mul6, %mul7
+  br label %return
+
+return:                                           ; preds = %if.end, %if.then
+  %retval.0 = phi i32 [ %add5, %if.then ], [ %add8, %if.end ]
+  ret i32 %retval.0
+}
+; *** IR Dump After InferFunctionAttrsPass on [module] ***
+; ModuleID = 'mul_smb.ll'
+source_filename = "mul_smb.ll"
+
+define dso_local noundef i32 @_Z3muliiii(i32 noundef %a, i32 noundef %b, i32 noundef %c, i32 noundef %d) {
+entry:
+  %cmp = icmp eq i32 %a, 500
+  %cmp1 = icmp eq i32 %d, 700
+  %or.cond = select i1 %cmp, i1 %cmp1, i1 false
+  %add = add nsw i32 %a, 5
+  %cmp3 = icmp eq i32 %c, %add
+  %or.cond7 = select i1 %or.cond, i1 %cmp3, i1 false
+  br i1 %or.cond7, label %if.then, label %if.end
+
+if.then:                                          ; preds = %entry
+  %mul = mul nsw i32 2, %a
+  %mul4 = mul nsw i32 %b, %c
+  %add5 = add nsw i32 %mul, %mul4
+  br label %return
+
+if.end:                                           ; preds = %entry
+  %mul6 = mul nsw i32 2, %a
+  %mul7 = mul nsw i32 %b, %c
+  %add8 = add nsw i32 %mul6, %mul7
+  br label %return
+
+return:                                           ; preds = %if.end, %if.then
+  %retval.0 = phi i32 [ %add5, %if.then ], [ %add8, %if.end ]
+  ret i32 %retval.0
+}
+; *** IR Dump After CoroEarlyPass on [module] ***
+; ModuleID = 'mul_smb.ll'
+source_filename = "mul_smb.ll"
+
+define dso_local noundef i32 @_Z3muliiii(i32 noundef %a, i32 noundef %b, i32 noundef %c, i32 noundef %d) {
+entry:
+  %cmp = icmp eq i32 %a, 500
+  %cmp1 = icmp eq i32 %d, 700
+  %or.cond = select i1 %cmp, i1 %cmp1, i1 false
+  %add = add nsw i32 %a, 5
+  %cmp3 = icmp eq i32 %c, %add
+  %or.cond7 = select i1 %or.cond, i1 %cmp3, i1 false
+  br i1 %or.cond7, label %if.then, label %if.end
+
+if.then:                                          ; preds = %entry
+  %mul = mul nsw i32 2, %a
+  %mul4 = mul nsw i32 %b, %c
+  %add5 = add nsw i32 %mul, %mul4
+  br label %return
+
+if.end:                                           ; preds = %entry
+  %mul6 = mul nsw i32 2, %a
+  %mul7 = mul nsw i32 %b, %c
+  %add8 = add nsw i32 %mul6, %mul7
+  br label %return
+
+return:                                           ; preds = %if.end, %if.then
+  %retval.0 = phi i32 [ %add5, %if.then ], [ %add8, %if.end ]
+  ret i32 %retval.0
+}
+; *** IR Dump After EntryExitInstrumenterPass on _Z3muliiii ***
+define dso_local noundef i32 @_Z3muliiii(i32 noundef %a, i32 noundef %b, i32 noundef %c, i32 noundef %d) {
+entry:
+  %cmp = icmp eq i32 %a, 500
+  %cmp1 = icmp eq i32 %d, 700
+  %or.cond = select i1 %cmp, i1 %cmp1, i1 false
+  %add = add nsw i32 %a, 5
+  %cmp3 = icmp eq i32 %c, %add
+  %or.cond7 = select i1 %or.cond, i1 %cmp3, i1 false
+  br i1 %or.cond7, label %if.then, label %if.end
+
+if.then:                                          ; preds = %entry
+  %mul = mul nsw i32 2, %a
+  %mul4 = mul nsw i32 %b, %c
+  %add5 = add nsw i32 %mul, %mul4
+  br label %return
+
+if.end:                                           ; preds = %entry
+  %mul6 = mul nsw i32 2, %a
+  %mul7 = mul nsw i32 %b, %c
+  %add8 = add nsw i32 %mul6, %mul7
+  br label %return
+
+return:                                           ; preds = %if.end, %if.then
+  %retval.0 = phi i32 [ %add5, %if.then ], [ %add8, %if.end ]
+  ret i32 %retval.0
+}
+; *** IR Dump After LowerExpectIntrinsicPass on _Z3muliiii ***
+define dso_local noundef i32 @_Z3muliiii(i32 noundef %a, i32 noundef %b, i32 noundef %c, i32 noundef %d) {
+entry:
+  %cmp = icmp eq i32 %a, 500
+  %cmp1 = icmp eq i32 %d, 700
+  %or.cond = select i1 %cmp, i1 %cmp1, i1 false
+  %add = add nsw i32 %a, 5
+  %cmp3 = icmp eq i32 %c, %add
+  %or.cond7 = select i1 %or.cond, i1 %cmp3, i1 false
+  br i1 %or.cond7, label %if.then, label %if.end
+
+if.then:                                          ; preds = %entry
+  %mul = mul nsw i32 2, %a
+  %mul4 = mul nsw i32 %b, %c
+  %add5 = add nsw i32 %mul, %mul4
+  br label %return
+
+if.end:                                           ; preds = %entry
+  %mul6 = mul nsw i32 2, %a
+  %mul7 = mul nsw i32 %b, %c
+  %add8 = add nsw i32 %mul6, %mul7
+  br label %return
+
+return:                                           ; preds = %if.end, %if.then
+  %retval.0 = phi i32 [ %add5, %if.then ], [ %add8, %if.end ]
+  ret i32 %retval.0
+}
+; *** IR Dump After SimplifyCFGPass on _Z3muliiii ***
+define dso_local noundef i32 @_Z3muliiii(i32 noundef %a, i32 noundef %b, i32 noundef %c, i32 noundef %d) {
+entry:
+  %cmp = icmp eq i32 %a, 500
+  %cmp1 = icmp eq i32 %d, 700
+  %or.cond = select i1 %cmp, i1 %cmp1, i1 false
+  %add = add nsw i32 %a, 5
+  %cmp3 = icmp eq i32 %c, %add
+  %or.cond7 = select i1 %or.cond, i1 %cmp3, i1 false
+  br i1 %or.cond7, label %if.then, label %if.end
+
+if.then:                                          ; preds = %entry
+  %mul = mul nsw i32 2, %a
+  %mul4 = mul nsw i32 %b, %c
+  %add5 = add nsw i32 %mul, %mul4
+  br label %return
+
+if.end:                                           ; preds = %entry
+  %mul6 = mul nsw i32 2, %a
+  %mul7 = mul nsw i32 %b, %c
+  %add8 = add nsw i32 %mul6, %mul7
+  br label %return
+
+return:                                           ; preds = %if.end, %if.then
+  %retval.0 = phi i32 [ %add5, %if.then ], [ %add8, %if.end ]
+  ret i32 %retval.0
+}
+; *** IR Dump After SROAPass on _Z3muliiii ***
+define dso_local noundef i32 @_Z3muliiii(i32 noundef %a, i32 noundef %b, i32 noundef %c, i32 noundef %d) {
+entry:
+  %cmp = icmp eq i32 %a, 500
+  %cmp1 = icmp eq i32 %d, 700
+  %or.cond = select i1 %cmp, i1 %cmp1, i1 false
+  %add = add nsw i32 %a, 5
+  %cmp3 = icmp eq i32 %c, %add
+  %or.cond7 = select i1 %or.cond, i1 %cmp3, i1 false
+  br i1 %or.cond7, label %if.then, label %if.end
+
+if.then:                                          ; preds = %entry
+  %mul = mul nsw i32 2, %a
+  %mul4 = mul nsw i32 %b, %c
+  %add5 = add nsw i32 %mul, %mul4
+  br label %return
+
+if.end:                                           ; preds = %entry
+  %mul6 = mul nsw i32 2, %a
+  %mul7 = mul nsw i32 %b, %c
+  %add8 = add nsw i32 %mul6, %mul7
+  br label %return
+
+return:                                           ; preds = %if.end, %if.then
+  %retval.0 = phi i32 [ %add5, %if.then ], [ %add8, %if.end ]
+  ret i32 %retval.0
+}
+; *** IR Dump After SimplifyCFGPass on _Z3muliiii ***
+define dso_local noundef i32 @_Z3muliiii(i32 noundef %a, i32 noundef %b, i32 noundef %c, i32 noundef %d) {
+entry:
+  %cmp = icmp eq i32 %a, 500
+  %cmp1 = icmp eq i32 %d, 700
+  %or.cond = select i1 %cmp, i1 %cmp1, i1 false
+  %add = add nsw i32 %a, 5
+  %cmp3 = icmp eq i32 %c, %add
+  %or.cond7 = select i1 %or.cond, i1 %cmp3, i1 false
+  br i1 %or.cond7, label %if.then, label %if.end
+
+if.then:                                          ; preds = %entry
+  %mul = mul nsw i32 2, %a
+  %mul4 = mul nsw i32 %b, %c
+  %add5 = add nsw i32 %mul, %mul4
+  br label %return
+
+if.end:                                           ; preds = %entry
+  %mul6 = mul nsw i32 2, %a
+  %mul7 = mul nsw i32 %b, %c
+  %add8 = add nsw i32 %mul6, %mul7
+  br label %return
+
+return:                                           ; preds = %if.end, %if.then
+  %retval.0 = phi i32 [ %add5, %if.then ], [ %add8, %if.end ]
+  ret i32 %retval.0
+}
+; *** IR Dump After EarlyCSEPass on _Z3muliiii ***
+define dso_local noundef i32 @_Z3muliiii(i32 noundef %a, i32 noundef %b, i32 noundef %c, i32 noundef %d) {
+entry:
+  %cmp = icmp eq i32 %a, 500
+  %cmp1 = icmp eq i32 %d, 700
+  %or.cond = select i1 %cmp, i1 %cmp1, i1 false
+  %add = add nsw i32 %a, 5
+  %cmp3 = icmp eq i32 %c, %add
+  %or.cond7 = select i1 %or.cond, i1 %cmp3, i1 false
+  br i1 %or.cond7, label %if.then, label %if.end
+
+if.then:                                          ; preds = %entry
+  %mul = mul nsw i32 2, %a
+  %mul4 = mul nsw i32 %b, %c
+  %add5 = add nsw i32 %mul, %mul4
+  br label %return
+
+if.end:                                           ; preds = %entry
+  %mul6 = mul nsw i32 2, %a
+  %mul7 = mul nsw i32 %b, %c
+  %add8 = add nsw i32 %mul6, %mul7
+  br label %return
+
+return:                                           ; preds = %if.end, %if.then
+  %retval.0 = phi i32 [ %add5, %if.then ], [ %add8, %if.end ]
+  ret i32 %retval.0
+}
+; *** IR Dump After InstCombinePass on _Z3muliiii ***
+define dso_local noundef i32 @_Z3muliiii(i32 noundef %a, i32 noundef %b, i32 noundef %c, i32 noundef %d) {
+entry:
+  %cmp = icmp eq i32 %a, 500
+  %cmp1 = icmp eq i32 %d, 700
+  %or.cond = and i1 %cmp, %cmp1
+  %add = add nsw i32 %a, 5
+  %cmp3 = icmp eq i32 %c, %add
+  %or.cond7 = select i1 %or.cond, i1 %cmp3, i1 false
+  br i1 %or.cond7, label %if.then, label %if.end
+
+if.then:                                          ; preds = %entry
+  %mul4 = mul nsw i32 %b, %c
+  %add5 = add nsw i32 %mul4, 1000
+  br label %return
+
+if.end:                                           ; preds = %entry
+  %mul6 = shl nsw i32 %a, 1
+  %mul7 = mul nsw i32 %b, %c
+  %add8 = add nsw i32 %mul6, %mul7
+  br label %return
+
+return:                                           ; preds = %if.end, %if.then
+  %retval.0 = phi i32 [ %add5, %if.then ], [ %add8, %if.end ]
+  ret i32 %retval.0
+}
+; *** IR Dump After SimplifyCFGPass on _Z3muliiii ***
+define dso_local noundef i32 @_Z3muliiii(i32 noundef %a, i32 noundef %b, i32 noundef %c, i32 noundef %d) {
+entry:
+  %cmp = icmp eq i32 %a, 500
+  %cmp1 = icmp eq i32 %d, 700
+  %or.cond = and i1 %cmp, %cmp1
+  %add = add nsw i32 %a, 5
+  %cmp3 = icmp eq i32 %c, %add
+  %or.cond7 = select i1 %or.cond, i1 %cmp3, i1 false
+  br i1 %or.cond7, label %if.then, label %if.end
+
+if.then:                                          ; preds = %entry
+  %mul4 = mul nsw i32 %b, %c
+  %add5 = add nsw i32 %mul4, 1000
+  br label %return
+
+if.end:                                           ; preds = %entry
+  %mul6 = shl nsw i32 %a, 1
+  %mul7 = mul nsw i32 %b, %c
+  %add8 = add nsw i32 %mul6, %mul7
+  br label %return
+
+return:                                           ; preds = %if.end, %if.then
+  %retval.0 = phi i32 [ %add5, %if.then ], [ %add8, %if.end ]
+  ret i32 %retval.0
+}
+; *** IR Dump After OpenMPOptPass on [module] ***
+; ModuleID = 'mul_smb.ll'
+source_filename = "mul_smb.ll"
+
+define dso_local noundef i32 @_Z3muliiii(i32 noundef %a, i32 noundef %b, i32 noundef %c, i32 noundef %d) {
+entry:
+  %cmp = icmp eq i32 %a, 500
+  %cmp1 = icmp eq i32 %d, 700
+  %or.cond = and i1 %cmp, %cmp1
+  %add = add nsw i32 %a, 5
+  %cmp3 = icmp eq i32 %c, %add
+  %or.cond7 = select i1 %or.cond, i1 %cmp3, i1 false
+  br i1 %or.cond7, label %if.then, label %if.end
+
+if.then:                                          ; preds = %entry
+  %mul4 = mul nsw i32 %b, %c
+  %add5 = add nsw i32 %mul4, 1000
+  br label %return
+
+if.end:                                           ; preds = %entry
+  %mul6 = shl nsw i32 %a, 1
+  %mul7 = mul nsw i32 %b, %c
+  %add8 = add nsw i32 %mul6, %mul7
+  br label %return
+
+return:                                           ; preds = %if.end, %if.then
+  %retval.0 = phi i32 [ %add5, %if.then ], [ %add8, %if.end ]
+  ret i32 %retval.0
+}
+; *** IR Dump After IPSCCPPass on [module] ***
+; ModuleID = 'mul_smb.ll'
+source_filename = "mul_smb.ll"
+
+define dso_local noundef i32 @_Z3muliiii(i32 noundef %a, i32 noundef %b, i32 noundef %c, i32 noundef %d) {
+entry:
+  %cmp = icmp eq i32 %a, 500
+  %cmp1 = icmp eq i32 %d, 700
+  %or.cond = and i1 %cmp, %cmp1
+  %add = add nsw i32 %a, 5
+  %cmp3 = icmp eq i32 %c, %add
+  %or.cond7 = select i1 %or.cond, i1 %cmp3, i1 false
+  br i1 %or.cond7, label %if.then, label %if.end
+
+if.then:                                          ; preds = %entry
+  %mul4 = mul nsw i32 %b, %c
+  %add5 = add nsw i32 %mul4, 1000
+  br label %return
+
+if.end:                                           ; preds = %entry
+  %mul6 = shl nsw i32 %a, 1
+  %mul7 = mul nsw i32 %b, %c
+  %add8 = add nsw i32 %mul6, %mul7
+  br label %return
+
+return:                                           ; preds = %if.end, %if.then
+  %retval.0 = phi i32 [ %add5, %if.then ], [ %add8, %if.end ]
+  ret i32 %retval.0
+}
+; *** IR Dump After CalledValuePropagationPass on [module] ***
+; ModuleID = 'mul_smb.ll'
+source_filename = "mul_smb.ll"
+
+define dso_local noundef i32 @_Z3muliiii(i32 noundef %a, i32 noundef %b, i32 noundef %c, i32 noundef %d) {
+entry:
+  %cmp = icmp eq i32 %a, 500
+  %cmp1 = icmp eq i32 %d, 700
+  %or.cond = and i1 %cmp, %cmp1
+  %add = add nsw i32 %a, 5
+  %cmp3 = icmp eq i32 %c, %add
+  %or.cond7 = select i1 %or.cond, i1 %cmp3, i1 false
+  br i1 %or.cond7, label %if.then, label %if.end
+
+if.then:                                          ; preds = %entry
+  %mul4 = mul nsw i32 %b, %c
+  %add5 = add nsw i32 %mul4, 1000
+  br label %return
+
+if.end:                                           ; preds = %entry
+  %mul6 = shl nsw i32 %a, 1
+  %mul7 = mul nsw i32 %b, %c
+  %add8 = add nsw i32 %mul6, %mul7
+  br label %return
+
+return:                                           ; preds = %if.end, %if.then
+  %retval.0 = phi i32 [ %add5, %if.then ], [ %add8, %if.end ]
+  ret i32 %retval.0
+}
+; *** IR Dump After GlobalOptPass on [module] ***
+; ModuleID = 'mul_smb.ll'
+source_filename = "mul_smb.ll"
+
+define dso_local noundef i32 @_Z3muliiii(i32 noundef %a, i32 noundef %b, i32 noundef %c, i32 noundef %d) local_unnamed_addr {
+entry:
+  %cmp = icmp eq i32 %a, 500
+  %cmp1 = icmp eq i32 %d, 700
+  %or.cond = and i1 %cmp, %cmp1
+  %add = add nsw i32 %a, 5
+  %cmp3 = icmp eq i32 %c, %add
+  %or.cond7 = select i1 %or.cond, i1 %cmp3, i1 false
+  br i1 %or.cond7, label %if.then, label %if.end
+
+if.then:                                          ; preds = %entry
+  %mul4 = mul nsw i32 %b, %c
+  %add5 = add nsw i32 %mul4, 1000
+  br label %return
+
+if.end:                                           ; preds = %entry
+  %mul6 = shl nsw i32 %a, 1
+  %mul7 = mul nsw i32 %b, %c
+  %add8 = add nsw i32 %mul6, %mul7
+  br label %return
+
+return:                                           ; preds = %if.end, %if.then
+  %retval.0 = phi i32 [ %add5, %if.then ], [ %add8, %if.end ]
+  ret i32 %retval.0
+}
+; *** IR Dump After PromotePass on _Z3muliiii ***
+define dso_local noundef i32 @_Z3muliiii(i32 noundef %a, i32 noundef %b, i32 noundef %c, i32 noundef %d) local_unnamed_addr {
+entry:
+  %cmp = icmp eq i32 %a, 500
+  %cmp1 = icmp eq i32 %d, 700
+  %or.cond = and i1 %cmp, %cmp1
+  %add = add nsw i32 %a, 5
+  %cmp3 = icmp eq i32 %c, %add
+  %or.cond7 = select i1 %or.cond, i1 %cmp3, i1 false
+  br i1 %or.cond7, label %if.then, label %if.end
+
+if.then:                                          ; preds = %entry
+  %mul4 = mul nsw i32 %b, %c
+  %add5 = add nsw i32 %mul4, 1000
+  br label %return
+
+if.end:                                           ; preds = %entry
+  %mul6 = shl nsw i32 %a, 1
+  %mul7 = mul nsw i32 %b, %c
+  %add8 = add nsw i32 %mul6, %mul7
+  br label %return
+
+return:                                           ; preds = %if.end, %if.then
+  %retval.0 = phi i32 [ %add5, %if.then ], [ %add8, %if.end ]
+  ret i32 %retval.0
+}
+; *** IR Dump After InstCombinePass on _Z3muliiii ***
+define dso_local noundef i32 @_Z3muliiii(i32 noundef %a, i32 noundef %b, i32 noundef %c, i32 noundef %d) local_unnamed_addr {
+entry:
+  %cmp = icmp eq i32 %a, 500
+  %cmp1 = icmp eq i32 %d, 700
+  %or.cond = and i1 %cmp, %cmp1
+  %add = add nsw i32 %a, 5
+  %cmp3 = icmp eq i32 %c, %add
+  %or.cond7 = select i1 %or.cond, i1 %cmp3, i1 false
+  br i1 %or.cond7, label %if.then, label %if.end
+
+if.then:                                          ; preds = %entry
+  %mul4 = mul nsw i32 %b, %c
+  %add5 = add nsw i32 %mul4, 1000
+  br label %return
+
+if.end:                                           ; preds = %entry
+  %mul6 = shl nsw i32 %a, 1
+  %mul7 = mul nsw i32 %b, %c
+  %add8 = add nsw i32 %mul6, %mul7
+  br label %return
+
+return:                                           ; preds = %if.end, %if.then
+  %retval.0 = phi i32 [ %add5, %if.then ], [ %add8, %if.end ]
+  ret i32 %retval.0
+}
+; *** IR Dump After SimplifyCFGPass on _Z3muliiii ***
+define dso_local noundef i32 @_Z3muliiii(i32 noundef %a, i32 noundef %b, i32 noundef %c, i32 noundef %d) local_unnamed_addr {
+entry:
+  %cmp = icmp eq i32 %a, 500
+  %cmp1 = icmp eq i32 %d, 700
+  %or.cond = and i1 %cmp, %cmp1
+  %add = add nsw i32 %a, 5
+  %cmp3 = icmp eq i32 %c, %add
+  %or.cond7 = select i1 %or.cond, i1 %cmp3, i1 false
+  br i1 %or.cond7, label %if.then, label %if.end
+
+if.then:                                          ; preds = %entry
+  %mul4 = mul nsw i32 %b, %c
+  %add5 = add nsw i32 %mul4, 1000
+  br label %return
+
+if.end:                                           ; preds = %entry
+  %mul6 = shl nsw i32 %a, 1
+  %mul7 = mul nsw i32 %b, %c
+  %add8 = add nsw i32 %mul6, %mul7
+  br label %return
+
+return:                                           ; preds = %if.end, %if.then
+  %retval.0 = phi i32 [ %add5, %if.then ], [ %add8, %if.end ]
+  ret i32 %retval.0
+}
+; *** IR Dump After AlwaysInlinerPass on [module] ***
+; ModuleID = 'mul_smb.ll'
+source_filename = "mul_smb.ll"
+
+define dso_local noundef i32 @_Z3muliiii(i32 noundef %a, i32 noundef %b, i32 noundef %c, i32 noundef %d) local_unnamed_addr {
+entry:
+  %cmp = icmp eq i32 %a, 500
+  %cmp1 = icmp eq i32 %d, 700
+  %or.cond = and i1 %cmp, %cmp1
+  %add = add nsw i32 %a, 5
+  %cmp3 = icmp eq i32 %c, %add
+  %or.cond7 = select i1 %or.cond, i1 %cmp3, i1 false
+  br i1 %or.cond7, label %if.then, label %if.end
+
+if.then:                                          ; preds = %entry
+  %mul4 = mul nsw i32 %b, %c
+  %add5 = add nsw i32 %mul4, 1000
+  br label %return
+
+if.end:                                           ; preds = %entry
+  %mul6 = shl nsw i32 %a, 1
+  %mul7 = mul nsw i32 %b, %c
+  %add8 = add nsw i32 %mul6, %mul7
+  br label %return
+
+return:                                           ; preds = %if.end, %if.then
+  %retval.0 = phi i32 [ %add5, %if.then ], [ %add8, %if.end ]
+  ret i32 %retval.0
+}
+; *** IR Dump After RequireAnalysisPass<llvm::GlobalsAA, llvm::Module> on [module] ***
+; ModuleID = 'mul_smb.ll'
+source_filename = "mul_smb.ll"
+
+define dso_local noundef i32 @_Z3muliiii(i32 noundef %a, i32 noundef %b, i32 noundef %c, i32 noundef %d) local_unnamed_addr {
+entry:
+  %cmp = icmp eq i32 %a, 500
+  %cmp1 = icmp eq i32 %d, 700
+  %or.cond = and i1 %cmp, %cmp1
+  %add = add nsw i32 %a, 5
+  %cmp3 = icmp eq i32 %c, %add
+  %or.cond7 = select i1 %or.cond, i1 %cmp3, i1 false
+  br i1 %or.cond7, label %if.then, label %if.end
+
+if.then:                                          ; preds = %entry
+  %mul4 = mul nsw i32 %b, %c
+  %add5 = add nsw i32 %mul4, 1000
+  br label %return
+
+if.end:                                           ; preds = %entry
+  %mul6 = shl nsw i32 %a, 1
+  %mul7 = mul nsw i32 %b, %c
+  %add8 = add nsw i32 %mul6, %mul7
+  br label %return
+
+return:                                           ; preds = %if.end, %if.then
+  %retval.0 = phi i32 [ %add5, %if.then ], [ %add8, %if.end ]
+  ret i32 %retval.0
+}
+; *** IR Dump After InvalidateAnalysisPass<llvm::AAManager> on _Z3muliiii ***
+define dso_local noundef i32 @_Z3muliiii(i32 noundef %a, i32 noundef %b, i32 noundef %c, i32 noundef %d) local_unnamed_addr {
+entry:
+  %cmp = icmp eq i32 %a, 500
+  %cmp1 = icmp eq i32 %d, 700
+  %or.cond = and i1 %cmp, %cmp1
+  %add = add nsw i32 %a, 5
+  %cmp3 = icmp eq i32 %c, %add
+  %or.cond7 = select i1 %or.cond, i1 %cmp3, i1 false
+  br i1 %or.cond7, label %if.then, label %if.end
+
+if.then:                                          ; preds = %entry
+  %mul4 = mul nsw i32 %b, %c
+  %add5 = add nsw i32 %mul4, 1000
+  br label %return
+
+if.end:                                           ; preds = %entry
+  %mul6 = shl nsw i32 %a, 1
+  %mul7 = mul nsw i32 %b, %c
+  %add8 = add nsw i32 %mul6, %mul7
+  br label %return
+
+return:                                           ; preds = %if.end, %if.then
+  %retval.0 = phi i32 [ %add5, %if.then ], [ %add8, %if.end ]
+  ret i32 %retval.0
+}
+; *** IR Dump After RequireAnalysisPass<llvm::ProfileSummaryAnalysis, llvm::Module> on [module] ***
+; ModuleID = 'mul_smb.ll'
+source_filename = "mul_smb.ll"
+
+define dso_local noundef i32 @_Z3muliiii(i32 noundef %a, i32 noundef %b, i32 noundef %c, i32 noundef %d) local_unnamed_addr {
+entry:
+  %cmp = icmp eq i32 %a, 500
+  %cmp1 = icmp eq i32 %d, 700
+  %or.cond = and i1 %cmp, %cmp1
+  %add = add nsw i32 %a, 5
+  %cmp3 = icmp eq i32 %c, %add
+  %or.cond7 = select i1 %or.cond, i1 %cmp3, i1 false
+  br i1 %or.cond7, label %if.then, label %if.end
+
+if.then:                                          ; preds = %entry
+  %mul4 = mul nsw i32 %b, %c
+  %add5 = add nsw i32 %mul4, 1000
+  br label %return
+
+if.end:                                           ; preds = %entry
+  %mul6 = shl nsw i32 %a, 1
+  %mul7 = mul nsw i32 %b, %c
+  %add8 = add nsw i32 %mul6, %mul7
+  br label %return
+
+return:                                           ; preds = %if.end, %if.then
+  %retval.0 = phi i32 [ %add5, %if.then ], [ %add8, %if.end ]
+  ret i32 %retval.0
+}
+; *** IR Dump After InlinerPass on (_Z3muliiii) ***
+define dso_local noundef i32 @_Z3muliiii(i32 noundef %a, i32 noundef %b, i32 noundef %c, i32 noundef %d) local_unnamed_addr {
+entry:
+  %cmp = icmp eq i32 %a, 500
+  %cmp1 = icmp eq i32 %d, 700
+  %or.cond = and i1 %cmp, %cmp1
+  %add = add nsw i32 %a, 5
+  %cmp3 = icmp eq i32 %c, %add
+  %or.cond7 = select i1 %or.cond, i1 %cmp3, i1 false
+  br i1 %or.cond7, label %if.then, label %if.end
+
+if.then:                                          ; preds = %entry
+  %mul4 = mul nsw i32 %b, %c
+  %add5 = add nsw i32 %mul4, 1000
+  br label %return
+
+if.end:                                           ; preds = %entry
+  %mul6 = shl nsw i32 %a, 1
+  %mul7 = mul nsw i32 %b, %c
+  %add8 = add nsw i32 %mul6, %mul7
+  br label %return
+
+return:                                           ; preds = %if.end, %if.then
+  %retval.0 = phi i32 [ %add5, %if.then ], [ %add8, %if.end ]
+  ret i32 %retval.0
+}
+; *** IR Dump After PostOrderFunctionAttrsPass on (_Z3muliiii) ***
+define dso_local noundef i32 @_Z3muliiii(i32 noundef %a, i32 noundef %b, i32 noundef %c, i32 noundef %d) local_unnamed_addr {
+entry:
+  %cmp = icmp eq i32 %a, 500
+  %cmp1 = icmp eq i32 %d, 700
+  %or.cond = and i1 %cmp, %cmp1
+  %add = add nsw i32 %a, 5
+  %cmp3 = icmp eq i32 %c, %add
+  %or.cond7 = select i1 %or.cond, i1 %cmp3, i1 false
+  br i1 %or.cond7, label %if.then, label %if.end
+
+if.then:                                          ; preds = %entry
+  %mul4 = mul nsw i32 %b, %c
+  %add5 = add nsw i32 %mul4, 1000
+  br label %return
+
+if.end:                                           ; preds = %entry
+  %mul6 = shl nsw i32 %a, 1
+  %mul7 = mul nsw i32 %b, %c
+  %add8 = add nsw i32 %mul6, %mul7
+  br label %return
+
+return:                                           ; preds = %if.end, %if.then
+  %retval.0 = phi i32 [ %add5, %if.then ], [ %add8, %if.end ]
+  ret i32 %retval.0
+}
+; *** IR Dump After OpenMPOptCGSCCPass on (_Z3muliiii) ***
+define dso_local noundef i32 @_Z3muliiii(i32 noundef %a, i32 noundef %b, i32 noundef %c, i32 noundef %d) local_unnamed_addr {
+entry:
+  %cmp = icmp eq i32 %a, 500
+  %cmp1 = icmp eq i32 %d, 700
+  %or.cond = and i1 %cmp, %cmp1
+  %add = add nsw i32 %a, 5
+  %cmp3 = icmp eq i32 %c, %add
+  %or.cond7 = select i1 %or.cond, i1 %cmp3, i1 false
+  br i1 %or.cond7, label %if.then, label %if.end
+
+if.then:                                          ; preds = %entry
+  %mul4 = mul nsw i32 %b, %c
+  %add5 = add nsw i32 %mul4, 1000
+  br label %return
+
+if.end:                                           ; preds = %entry
+  %mul6 = shl nsw i32 %a, 1
+  %mul7 = mul nsw i32 %b, %c
+  %add8 = add nsw i32 %mul6, %mul7
+  br label %return
+
+return:                                           ; preds = %if.end, %if.then
+  %retval.0 = phi i32 [ %add5, %if.then ], [ %add8, %if.end ]
+  ret i32 %retval.0
+}
+; *** IR Dump After SROAPass on _Z3muliiii ***
+define dso_local noundef i32 @_Z3muliiii(i32 noundef %a, i32 noundef %b, i32 noundef %c, i32 noundef %d) local_unnamed_addr {
+entry:
+  %cmp = icmp eq i32 %a, 500
+  %cmp1 = icmp eq i32 %d, 700
+  %or.cond = and i1 %cmp, %cmp1
+  %add = add nsw i32 %a, 5
+  %cmp3 = icmp eq i32 %c, %add
+  %or.cond7 = select i1 %or.cond, i1 %cmp3, i1 false
+  br i1 %or.cond7, label %if.then, label %if.end
+
+if.then:                                          ; preds = %entry
+  %mul4 = mul nsw i32 %b, %c
+  %add5 = add nsw i32 %mul4, 1000
+  br label %return
+
+if.end:                                           ; preds = %entry
+  %mul6 = shl nsw i32 %a, 1
+  %mul7 = mul nsw i32 %b, %c
+  %add8 = add nsw i32 %mul6, %mul7
+  br label %return
+
+return:                                           ; preds = %if.end, %if.then
+  %retval.0 = phi i32 [ %add5, %if.then ], [ %add8, %if.end ]
+  ret i32 %retval.0
+}
+; *** IR Dump After EarlyCSEPass on _Z3muliiii ***
+define dso_local noundef i32 @_Z3muliiii(i32 noundef %a, i32 noundef %b, i32 noundef %c, i32 noundef %d) local_unnamed_addr {
+entry:
+  %cmp = icmp eq i32 %a, 500
+  %cmp1 = icmp eq i32 %d, 700
+  %or.cond = and i1 %cmp, %cmp1
+  %add = add nsw i32 %a, 5
+  %cmp3 = icmp eq i32 %c, %add
+  %or.cond7 = select i1 %or.cond, i1 %cmp3, i1 false
+  br i1 %or.cond7, label %if.then, label %if.end
+
+if.then:                                          ; preds = %entry
+  %mul4 = mul nsw i32 %b, %c
+  %add5 = add nsw i32 %mul4, 1000
+  br label %return
+
+if.end:                                           ; preds = %entry
+  %mul6 = shl nsw i32 %a, 1
+  %mul7 = mul nsw i32 %b, %c
+  %add8 = add nsw i32 %mul6, %mul7
+  br label %return
+
+return:                                           ; preds = %if.end, %if.then
+  %retval.0 = phi i32 [ %add5, %if.then ], [ %add8, %if.end ]
+  ret i32 %retval.0
+}
+; *** IR Dump After SpeculativeExecutionPass on _Z3muliiii ***
+define dso_local noundef i32 @_Z3muliiii(i32 noundef %a, i32 noundef %b, i32 noundef %c, i32 noundef %d) local_unnamed_addr {
+entry:
+  %cmp = icmp eq i32 %a, 500
+  %cmp1 = icmp eq i32 %d, 700
+  %or.cond = and i1 %cmp, %cmp1
+  %add = add nsw i32 %a, 5
+  %cmp3 = icmp eq i32 %c, %add
+  %or.cond7 = select i1 %or.cond, i1 %cmp3, i1 false
+  br i1 %or.cond7, label %if.then, label %if.end
+
+if.then:                                          ; preds = %entry
+  %mul4 = mul nsw i32 %b, %c
+  %add5 = add nsw i32 %mul4, 1000
+  br label %return
+
+if.end:                                           ; preds = %entry
+  %mul6 = shl nsw i32 %a, 1
+  %mul7 = mul nsw i32 %b, %c
+  %add8 = add nsw i32 %mul6, %mul7
+  br label %return
+
+return:                                           ; preds = %if.end, %if.then
+  %retval.0 = phi i32 [ %add5, %if.then ], [ %add8, %if.end ]
+  ret i32 %retval.0
+}
+; *** IR Dump After JumpThreadingPass on _Z3muliiii ***
+define dso_local noundef i32 @_Z3muliiii(i32 noundef %a, i32 noundef %b, i32 noundef %c, i32 noundef %d) local_unnamed_addr {
+entry:
+  %cmp = icmp eq i32 %a, 500
+  %cmp1 = icmp eq i32 %d, 700
+  %or.cond = and i1 %cmp, %cmp1
+  %add = add nsw i32 %a, 5
+  %cmp3 = icmp eq i32 %c, %add
+  %or.cond7 = select i1 %or.cond, i1 %cmp3, i1 false
+  br i1 %or.cond7, label %if.then, label %if.end
+
+if.then:                                          ; preds = %entry
+  %mul4 = mul nsw i32 %b, %c
+  %add5 = add nsw i32 %mul4, 1000
+  br label %return
+
+if.end:                                           ; preds = %entry
+  %mul6 = shl nsw i32 %a, 1
+  %mul7 = mul nsw i32 %b, %c
+  %add8 = add nsw i32 %mul6, %mul7
+  br label %return
+
+return:                                           ; preds = %if.end, %if.then
+  %retval.0 = phi i32 [ %add5, %if.then ], [ %add8, %if.end ]
+  ret i32 %retval.0
+}
+; *** IR Dump After CorrelatedValuePropagationPass on _Z3muliiii ***
+define dso_local noundef i32 @_Z3muliiii(i32 noundef %a, i32 noundef %b, i32 noundef %c, i32 noundef %d) local_unnamed_addr {
+entry:
+  %cmp = icmp eq i32 %a, 500
+  %cmp1 = icmp eq i32 %d, 700
+  %or.cond = and i1 %cmp, %cmp1
+  %add = add nuw nsw i32 %a, 5
+  %cmp3 = icmp eq i32 %c, %add
+  %or.cond7 = select i1 %or.cond, i1 %cmp3, i1 false
+  br i1 %or.cond7, label %if.then, label %if.end
+
+if.then:                                          ; preds = %entry
+  %mul4 = mul nsw i32 %b, %c
+  %add5 = add nsw i32 %mul4, 1000
+  br label %return
+
+if.end:                                           ; preds = %entry
+  %mul6 = shl nsw i32 %a, 1
+  %mul7 = mul nsw i32 %b, %c
+  %add8 = add nsw i32 %mul6, %mul7
+  br label %return
+
+return:                                           ; preds = %if.end, %if.then
+  %retval.0 = phi i32 [ %add5, %if.then ], [ %add8, %if.end ]
+  ret i32 %retval.0
+}
+; *** IR Dump After SimplifyCFGPass on _Z3muliiii ***
+define dso_local noundef i32 @_Z3muliiii(i32 noundef %a, i32 noundef %b, i32 noundef %c, i32 noundef %d) local_unnamed_addr {
+entry:
+  %cmp = icmp eq i32 %a, 500
+  %cmp1 = icmp eq i32 %d, 700
+  %or.cond = and i1 %cmp, %cmp1
+  %add = add nuw nsw i32 %a, 5
+  %cmp3 = icmp eq i32 %c, %add
+  %or.cond7 = select i1 %or.cond, i1 %cmp3, i1 false
+  br i1 %or.cond7, label %if.then, label %if.end
+
+if.then:                                          ; preds = %entry
+  %mul4 = mul nsw i32 %b, %c
+  %add5 = add nsw i32 %mul4, 1000
+  br label %return
+
+if.end:                                           ; preds = %entry
+  %mul6 = shl nsw i32 %a, 1
+  %mul7 = mul nsw i32 %b, %c
+  %add8 = add nsw i32 %mul6, %mul7
+  br label %return
+
+return:                                           ; preds = %if.end, %if.then
+  %retval.0 = phi i32 [ %add5, %if.then ], [ %add8, %if.end ]
+  ret i32 %retval.0
+}
+; *** IR Dump After InstCombinePass on _Z3muliiii ***
+define dso_local noundef i32 @_Z3muliiii(i32 noundef %a, i32 noundef %b, i32 noundef %c, i32 noundef %d) local_unnamed_addr {
+entry:
+  %cmp = icmp eq i32 %a, 500
+  %cmp1 = icmp eq i32 %d, 700
+  %or.cond = and i1 %cmp, %cmp1
+  %add = add nuw nsw i32 %a, 5
+  %cmp3 = icmp eq i32 %c, %add
+  %or.cond7 = select i1 %or.cond, i1 %cmp3, i1 false
+  br i1 %or.cond7, label %if.then, label %if.end
+
+if.then:                                          ; preds = %entry
+  %mul4 = mul nsw i32 %b, %c
+  %add5 = add nsw i32 %mul4, 1000
+  br label %return
+
+if.end:                                           ; preds = %entry
+  %mul6 = shl nsw i32 %a, 1
+  %mul7 = mul nsw i32 %b, %c
+  %add8 = add nsw i32 %mul6, %mul7
+  br label %return
+
+return:                                           ; preds = %if.end, %if.then
+  %retval.0 = phi i32 [ %add5, %if.then ], [ %add8, %if.end ]
+  ret i32 %retval.0
+}
+; *** IR Dump After AggressiveInstCombinePass on _Z3muliiii ***
+define dso_local noundef i32 @_Z3muliiii(i32 noundef %a, i32 noundef %b, i32 noundef %c, i32 noundef %d) local_unnamed_addr {
+entry:
+  %cmp = icmp eq i32 %a, 500
+  %cmp1 = icmp eq i32 %d, 700
+  %or.cond = and i1 %cmp, %cmp1
+  %add = add nuw nsw i32 %a, 5
+  %cmp3 = icmp eq i32 %c, %add
+  %or.cond7 = select i1 %or.cond, i1 %cmp3, i1 false
+  br i1 %or.cond7, label %if.then, label %if.end
+
+if.then:                                          ; preds = %entry
+  %mul4 = mul nsw i32 %b, %c
+  %add5 = add nsw i32 %mul4, 1000
+  br label %return
+
+if.end:                                           ; preds = %entry
+  %mul6 = shl nsw i32 %a, 1
+  %mul7 = mul nsw i32 %b, %c
+  %add8 = add nsw i32 %mul6, %mul7
+  br label %return
+
+return:                                           ; preds = %if.end, %if.then
+  %retval.0 = phi i32 [ %add5, %if.then ], [ %add8, %if.end ]
+  ret i32 %retval.0
+}
+; *** IR Dump After LibCallsShrinkWrapPass on _Z3muliiii ***
+define dso_local noundef i32 @_Z3muliiii(i32 noundef %a, i32 noundef %b, i32 noundef %c, i32 noundef %d) local_unnamed_addr {
+entry:
+  %cmp = icmp eq i32 %a, 500
+  %cmp1 = icmp eq i32 %d, 700
+  %or.cond = and i1 %cmp, %cmp1
+  %add = add nuw nsw i32 %a, 5
+  %cmp3 = icmp eq i32 %c, %add
+  %or.cond7 = select i1 %or.cond, i1 %cmp3, i1 false
+  br i1 %or.cond7, label %if.then, label %if.end
+
+if.then:                                          ; preds = %entry
+  %mul4 = mul nsw i32 %b, %c
+  %add5 = add nsw i32 %mul4, 1000
+  br label %return
+
+if.end:                                           ; preds = %entry
+  %mul6 = shl nsw i32 %a, 1
+  %mul7 = mul nsw i32 %b, %c
+  %add8 = add nsw i32 %mul6, %mul7
+  br label %return
+
+return:                                           ; preds = %if.end, %if.then
+  %retval.0 = phi i32 [ %add5, %if.then ], [ %add8, %if.end ]
+  ret i32 %retval.0
+}
+; *** IR Dump After TailCallElimPass on _Z3muliiii ***
+define dso_local noundef i32 @_Z3muliiii(i32 noundef %a, i32 noundef %b, i32 noundef %c, i32 noundef %d) local_unnamed_addr {
+entry:
+  %cmp = icmp eq i32 %a, 500
+  %cmp1 = icmp eq i32 %d, 700
+  %or.cond = and i1 %cmp, %cmp1
+  %add = add nuw nsw i32 %a, 5
+  %cmp3 = icmp eq i32 %c, %add
+  %or.cond7 = select i1 %or.cond, i1 %cmp3, i1 false
+  br i1 %or.cond7, label %if.then, label %if.end
+
+if.then:                                          ; preds = %entry
+  %mul4 = mul nsw i32 %b, %c
+  %add5 = add nsw i32 %mul4, 1000
+  br label %return
+
+if.end:                                           ; preds = %entry
+  %mul6 = shl nsw i32 %a, 1
+  %mul7 = mul nsw i32 %b, %c
+  %add8 = add nsw i32 %mul6, %mul7
+  br label %return
+
+return:                                           ; preds = %if.end, %if.then
+  %retval.0 = phi i32 [ %add5, %if.then ], [ %add8, %if.end ]
+  ret i32 %retval.0
+}
+; *** IR Dump After SimplifyCFGPass on _Z3muliiii ***
+define dso_local noundef i32 @_Z3muliiii(i32 noundef %a, i32 noundef %b, i32 noundef %c, i32 noundef %d) local_unnamed_addr {
+entry:
+  %cmp = icmp eq i32 %a, 500
+  %cmp1 = icmp eq i32 %d, 700
+  %or.cond = and i1 %cmp, %cmp1
+  %add = add nuw nsw i32 %a, 5
+  %cmp3 = icmp eq i32 %c, %add
+  %or.cond7 = select i1 %or.cond, i1 %cmp3, i1 false
+  br i1 %or.cond7, label %if.then, label %if.end
+
+if.then:                                          ; preds = %entry
+  %mul4 = mul nsw i32 %b, %c
+  %add5 = add nsw i32 %mul4, 1000
+  br label %return
+
+if.end:                                           ; preds = %entry
+  %mul6 = shl nsw i32 %a, 1
+  %mul7 = mul nsw i32 %b, %c
+  %add8 = add nsw i32 %mul6, %mul7
+  br label %return
+
+return:                                           ; preds = %if.end, %if.then
+  %retval.0 = phi i32 [ %add5, %if.then ], [ %add8, %if.end ]
+  ret i32 %retval.0
+}
+; *** IR Dump After ReassociatePass on _Z3muliiii ***
+define dso_local noundef i32 @_Z3muliiii(i32 noundef %a, i32 noundef %b, i32 noundef %c, i32 noundef %d) local_unnamed_addr {
+entry:
+  %cmp = icmp eq i32 %a, 500
+  %cmp1 = icmp eq i32 %d, 700
+  %or.cond = and i1 %cmp, %cmp1
+  %add = add nuw nsw i32 %a, 5
+  %cmp3 = icmp eq i32 %c, %add
+  %or.cond7 = select i1 %or.cond, i1 %cmp3, i1 false
+  br i1 %or.cond7, label %if.then, label %if.end
+
+if.then:                                          ; preds = %entry
+  %mul4 = mul nsw i32 %c, %b
+  %add5 = add nsw i32 %mul4, 1000
+  br label %return
+
+if.end:                                           ; preds = %entry
+  %mul6 = mul nsw i32 %a, 2
+  %mul7 = mul nsw i32 %c, %b
+  %add8 = add nsw i32 %mul7, %mul6
+  br label %return
+
+return:                                           ; preds = %if.end, %if.then
+  %retval.0 = phi i32 [ %add5, %if.then ], [ %add8, %if.end ]
+  ret i32 %retval.0
+}
+; *** IR Dump After ConstraintEliminationPass on _Z3muliiii ***
+define dso_local noundef i32 @_Z3muliiii(i32 noundef %a, i32 noundef %b, i32 noundef %c, i32 noundef %d) local_unnamed_addr {
+entry:
+  %cmp = icmp eq i32 %a, 500
+  %cmp1 = icmp eq i32 %d, 700
+  %or.cond = and i1 %cmp, %cmp1
+  %add = add nuw nsw i32 %a, 5
+  %cmp3 = icmp eq i32 %c, %add
+  %or.cond7 = select i1 %or.cond, i1 %cmp3, i1 false
+  br i1 %or.cond7, label %if.then, label %if.end
+
+if.then:                                          ; preds = %entry
+  %mul4 = mul nsw i32 %c, %b
+  %add5 = add nsw i32 %mul4, 1000
+  br label %return
+
+if.end:                                           ; preds = %entry
+  %mul6 = mul nsw i32 %a, 2
+  %mul7 = mul nsw i32 %c, %b
+  %add8 = add nsw i32 %mul7, %mul6
+  br label %return
+
+return:                                           ; preds = %if.end, %if.then
+  %retval.0 = phi i32 [ %add5, %if.then ], [ %add8, %if.end ]
+  ret i32 %retval.0
+}
+; *** IR Dump After LoopSimplifyPass on _Z3muliiii ***
+define dso_local noundef i32 @_Z3muliiii(i32 noundef %a, i32 noundef %b, i32 noundef %c, i32 noundef %d) local_unnamed_addr {
+entry:
+  %cmp = icmp eq i32 %a, 500
+  %cmp1 = icmp eq i32 %d, 700
+  %or.cond = and i1 %cmp, %cmp1
+  %add = add nuw nsw i32 %a, 5
+  %cmp3 = icmp eq i32 %c, %add
+  %or.cond7 = select i1 %or.cond, i1 %cmp3, i1 false
+  br i1 %or.cond7, label %if.then, label %if.end
+
+if.then:                                          ; preds = %entry
+  %mul4 = mul nsw i32 %c, %b
+  %add5 = add nsw i32 %mul4, 1000
+  br label %return
+
+if.end:                                           ; preds = %entry
+  %mul6 = mul nsw i32 %a, 2
+  %mul7 = mul nsw i32 %c, %b
+  %add8 = add nsw i32 %mul7, %mul6
+  br label %return
+
+return:                                           ; preds = %if.end, %if.then
+  %retval.0 = phi i32 [ %add5, %if.then ], [ %add8, %if.end ]
+  ret i32 %retval.0
+}
+; *** IR Dump After LCSSAPass on _Z3muliiii ***
+define dso_local noundef i32 @_Z3muliiii(i32 noundef %a, i32 noundef %b, i32 noundef %c, i32 noundef %d) local_unnamed_addr {
+entry:
+  %cmp = icmp eq i32 %a, 500
+  %cmp1 = icmp eq i32 %d, 700
+  %or.cond = and i1 %cmp, %cmp1
+  %add = add nuw nsw i32 %a, 5
+  %cmp3 = icmp eq i32 %c, %add
+  %or.cond7 = select i1 %or.cond, i1 %cmp3, i1 false
+  br i1 %or.cond7, label %if.then, label %if.end
+
+if.then:                                          ; preds = %entry
+  %mul4 = mul nsw i32 %c, %b
+  %add5 = add nsw i32 %mul4, 1000
+  br label %return
+
+if.end:                                           ; preds = %entry
+  %mul6 = mul nsw i32 %a, 2
+  %mul7 = mul nsw i32 %c, %b
+  %add8 = add nsw i32 %mul7, %mul6
+  br label %return
+
+return:                                           ; preds = %if.end, %if.then
+  %retval.0 = phi i32 [ %add5, %if.then ], [ %add8, %if.end ]
+  ret i32 %retval.0
+}
+; *** IR Dump After SimplifyCFGPass on _Z3muliiii ***
+define dso_local noundef i32 @_Z3muliiii(i32 noundef %a, i32 noundef %b, i32 noundef %c, i32 noundef %d) local_unnamed_addr {
+entry:
+  %cmp = icmp eq i32 %a, 500
+  %cmp1 = icmp eq i32 %d, 700
+  %or.cond = and i1 %cmp, %cmp1
+  %add = add nuw nsw i32 %a, 5
+  %cmp3 = icmp eq i32 %c, %add
+  %or.cond7 = select i1 %or.cond, i1 %cmp3, i1 false
+  br i1 %or.cond7, label %if.then, label %if.end
+
+if.then:                                          ; preds = %entry
+  %mul4 = mul nsw i32 %c, %b
+  %add5 = add nsw i32 %mul4, 1000
+  br label %return
+
+if.end:                                           ; preds = %entry
+  %mul6 = mul nsw i32 %a, 2
+  %mul7 = mul nsw i32 %c, %b
+  %add8 = add nsw i32 %mul7, %mul6
+  br label %return
+
+return:                                           ; preds = %if.end, %if.then
+  %retval.0 = phi i32 [ %add5, %if.then ], [ %add8, %if.end ]
+  ret i32 %retval.0
+}
+; *** IR Dump After InstCombinePass on _Z3muliiii ***
+define dso_local noundef i32 @_Z3muliiii(i32 noundef %a, i32 noundef %b, i32 noundef %c, i32 noundef %d) local_unnamed_addr {
+entry:
+  %cmp = icmp eq i32 %a, 500
+  %cmp1 = icmp eq i32 %d, 700
+  %or.cond = and i1 %cmp, %cmp1
+  %add = add nuw nsw i32 %a, 5
+  %cmp3 = icmp eq i32 %c, %add
+  %or.cond7 = select i1 %or.cond, i1 %cmp3, i1 false
+  br i1 %or.cond7, label %if.then, label %if.end
+
+if.then:                                          ; preds = %entry
+  %mul4 = mul nsw i32 %c, %b
+  %add5 = add nsw i32 %mul4, 1000
+  br label %return
+
+if.end:                                           ; preds = %entry
+  %mul6 = shl nsw i32 %a, 1
+  %mul7 = mul nsw i32 %c, %b
+  %add8 = add nsw i32 %mul7, %mul6
+  br label %return
+
+return:                                           ; preds = %if.end, %if.then
+  %retval.0 = phi i32 [ %add5, %if.then ], [ %add8, %if.end ]
+  ret i32 %retval.0
+}
+; *** IR Dump After LoopSimplifyPass on _Z3muliiii ***
+define dso_local noundef i32 @_Z3muliiii(i32 noundef %a, i32 noundef %b, i32 noundef %c, i32 noundef %d) local_unnamed_addr {
+entry:
+  %cmp = icmp eq i32 %a, 500
+  %cmp1 = icmp eq i32 %d, 700
+  %or.cond = and i1 %cmp, %cmp1
+  %add = add nuw nsw i32 %a, 5
+  %cmp3 = icmp eq i32 %c, %add
+  %or.cond7 = select i1 %or.cond, i1 %cmp3, i1 false
+  br i1 %or.cond7, label %if.then, label %if.end
+
+if.then:                                          ; preds = %entry
+  %mul4 = mul nsw i32 %c, %b
+  %add5 = add nsw i32 %mul4, 1000
+  br label %return
+
+if.end:                                           ; preds = %entry
+  %mul6 = shl nsw i32 %a, 1
+  %mul7 = mul nsw i32 %c, %b
+  %add8 = add nsw i32 %mul7, %mul6
+  br label %return
+
+return:                                           ; preds = %if.end, %if.then
+  %retval.0 = phi i32 [ %add5, %if.then ], [ %add8, %if.end ]
+  ret i32 %retval.0
+}
+; *** IR Dump After LCSSAPass on _Z3muliiii ***
+define dso_local noundef i32 @_Z3muliiii(i32 noundef %a, i32 noundef %b, i32 noundef %c, i32 noundef %d) local_unnamed_addr {
+entry:
+  %cmp = icmp eq i32 %a, 500
+  %cmp1 = icmp eq i32 %d, 700
+  %or.cond = and i1 %cmp, %cmp1
+  %add = add nuw nsw i32 %a, 5
+  %cmp3 = icmp eq i32 %c, %add
+  %or.cond7 = select i1 %or.cond, i1 %cmp3, i1 false
+  br i1 %or.cond7, label %if.then, label %if.end
+
+if.then:                                          ; preds = %entry
+  %mul4 = mul nsw i32 %c, %b
+  %add5 = add nsw i32 %mul4, 1000
+  br label %return
+
+if.end:                                           ; preds = %entry
+  %mul6 = shl nsw i32 %a, 1
+  %mul7 = mul nsw i32 %c, %b
+  %add8 = add nsw i32 %mul7, %mul6
+  br label %return
+
+return:                                           ; preds = %if.end, %if.then
+  %retval.0 = phi i32 [ %add5, %if.then ], [ %add8, %if.end ]
+  ret i32 %retval.0
+}
+; *** IR Dump After SROAPass on _Z3muliiii ***
+define dso_local noundef i32 @_Z3muliiii(i32 noundef %a, i32 noundef %b, i32 noundef %c, i32 noundef %d) local_unnamed_addr {
+entry:
+  %cmp = icmp eq i32 %a, 500
+  %cmp1 = icmp eq i32 %d, 700
+  %or.cond = and i1 %cmp, %cmp1
+  %add = add nuw nsw i32 %a, 5
+  %cmp3 = icmp eq i32 %c, %add
+  %or.cond7 = select i1 %or.cond, i1 %cmp3, i1 false
+  br i1 %or.cond7, label %if.then, label %if.end
+
+if.then:                                          ; preds = %entry
+  %mul4 = mul nsw i32 %c, %b
+  %add5 = add nsw i32 %mul4, 1000
+  br label %return
+
+if.end:                                           ; preds = %entry
+  %mul6 = shl nsw i32 %a, 1
+  %mul7 = mul nsw i32 %c, %b
+  %add8 = add nsw i32 %mul7, %mul6
+  br label %return
+
+return:                                           ; preds = %if.end, %if.then
+  %retval.0 = phi i32 [ %add5, %if.then ], [ %add8, %if.end ]
+  ret i32 %retval.0
+}
+; *** IR Dump After VectorCombinePass on _Z3muliiii ***
+define dso_local noundef i32 @_Z3muliiii(i32 noundef %a, i32 noundef %b, i32 noundef %c, i32 noundef %d) local_unnamed_addr {
+entry:
+  %cmp = icmp eq i32 %a, 500
+  %cmp1 = icmp eq i32 %d, 700
+  %or.cond = and i1 %cmp, %cmp1
+  %add = add nuw nsw i32 %a, 5
+  %cmp3 = icmp eq i32 %c, %add
+  %or.cond7 = select i1 %or.cond, i1 %cmp3, i1 false
+  br i1 %or.cond7, label %if.then, label %if.end
+
+if.then:                                          ; preds = %entry
+  %mul4 = mul nsw i32 %c, %b
+  %add5 = add nsw i32 %mul4, 1000
+  br label %return
+
+if.end:                                           ; preds = %entry
+  %mul6 = shl nsw i32 %a, 1
+  %mul7 = mul nsw i32 %c, %b
+  %add8 = add nsw i32 %mul7, %mul6
+  br label %return
+
+return:                                           ; preds = %if.end, %if.then
+  %retval.0 = phi i32 [ %add5, %if.then ], [ %add8, %if.end ]
+  ret i32 %retval.0
+}
+; *** IR Dump After MergedLoadStoreMotionPass on _Z3muliiii ***
+define dso_local noundef i32 @_Z3muliiii(i32 noundef %a, i32 noundef %b, i32 noundef %c, i32 noundef %d) local_unnamed_addr {
+entry:
+  %cmp = icmp eq i32 %a, 500
+  %cmp1 = icmp eq i32 %d, 700
+  %or.cond = and i1 %cmp, %cmp1
+  %add = add nuw nsw i32 %a, 5
+  %cmp3 = icmp eq i32 %c, %add
+  %or.cond7 = select i1 %or.cond, i1 %cmp3, i1 false
+  br i1 %or.cond7, label %if.then, label %if.end
+
+if.then:                                          ; preds = %entry
+  %mul4 = mul nsw i32 %c, %b
+  %add5 = add nsw i32 %mul4, 1000
+  br label %return
+
+if.end:                                           ; preds = %entry
+  %mul6 = shl nsw i32 %a, 1
+  %mul7 = mul nsw i32 %c, %b
+  %add8 = add nsw i32 %mul7, %mul6
+  br label %return
+
+return:                                           ; preds = %if.end, %if.then
+  %retval.0 = phi i32 [ %add5, %if.then ], [ %add8, %if.end ]
+  ret i32 %retval.0
+}
+; *** IR Dump After GVNPass on _Z3muliiii ***
+define dso_local noundef i32 @_Z3muliiii(i32 noundef %a, i32 noundef %b, i32 noundef %c, i32 noundef %d) local_unnamed_addr {
+entry:
+  %cmp = icmp eq i32 %a, 500
+  %cmp1 = icmp eq i32 %d, 700
+  %or.cond = and i1 %cmp, %cmp1
+  %add = add nuw nsw i32 %a, 5
+  %cmp3 = icmp eq i32 %c, %add
+  %or.cond7 = select i1 %or.cond, i1 %cmp3, i1 false
+  br i1 %or.cond7, label %if.then, label %if.end
+
+if.then:                                          ; preds = %entry
+  %mul4 = mul nsw i32 %c, %b
+  %add5 = add nsw i32 %mul4, 1000
+  br label %return
+
+if.end:                                           ; preds = %entry
+  %mul6 = shl nsw i32 %a, 1
+  %mul7 = mul nsw i32 %c, %b
+  %add8 = add nsw i32 %mul7, %mul6
+  br label %return
+
+return:                                           ; preds = %if.end, %if.then
+  %retval.0 = phi i32 [ %add5, %if.then ], [ %add8, %if.end ]
+  ret i32 %retval.0
+}
+; *** IR Dump After SCCPPass on _Z3muliiii ***
+define dso_local noundef i32 @_Z3muliiii(i32 noundef %a, i32 noundef %b, i32 noundef %c, i32 noundef %d) local_unnamed_addr {
+entry:
+  %cmp = icmp eq i32 %a, 500
+  %cmp1 = icmp eq i32 %d, 700
+  %or.cond = and i1 %cmp, %cmp1
+  %add = add nuw nsw i32 %a, 5
+  %cmp3 = icmp eq i32 %c, %add
+  %or.cond7 = select i1 %or.cond, i1 %cmp3, i1 false
+  br i1 %or.cond7, label %if.then, label %if.end
+
+if.then:                                          ; preds = %entry
+  %mul4 = mul nsw i32 %c, %b
+  %add5 = add nsw i32 %mul4, 1000
+  br label %return
+
+if.end:                                           ; preds = %entry
+  %mul6 = shl nsw i32 %a, 1
+  %mul7 = mul nsw i32 %c, %b
+  %add8 = add nsw i32 %mul7, %mul6
+  br label %return
+
+return:                                           ; preds = %if.end, %if.then
+  %retval.0 = phi i32 [ %add5, %if.then ], [ %add8, %if.end ]
+  ret i32 %retval.0
+}
+; *** IR Dump After BDCEPass on _Z3muliiii ***
+define dso_local noundef i32 @_Z3muliiii(i32 noundef %a, i32 noundef %b, i32 noundef %c, i32 noundef %d) local_unnamed_addr {
+entry:
+  %cmp = icmp eq i32 %a, 500
+  %cmp1 = icmp eq i32 %d, 700
+  %or.cond = and i1 %cmp, %cmp1
+  %add = add nuw nsw i32 %a, 5
+  %cmp3 = icmp eq i32 %c, %add
+  %or.cond7 = select i1 %or.cond, i1 %cmp3, i1 false
+  br i1 %or.cond7, label %if.then, label %if.end
+
+if.then:                                          ; preds = %entry
+  %mul4 = mul nsw i32 %c, %b
+  %add5 = add nsw i32 %mul4, 1000
+  br label %return
+
+if.end:                                           ; preds = %entry
+  %mul6 = shl nsw i32 %a, 1
+  %mul7 = mul nsw i32 %c, %b
+  %add8 = add nsw i32 %mul7, %mul6
+  br label %return
+
+return:                                           ; preds = %if.end, %if.then
+  %retval.0 = phi i32 [ %add5, %if.then ], [ %add8, %if.end ]
+  ret i32 %retval.0
+}
+; *** IR Dump After InstCombinePass on _Z3muliiii ***
+define dso_local noundef i32 @_Z3muliiii(i32 noundef %a, i32 noundef %b, i32 noundef %c, i32 noundef %d) local_unnamed_addr {
+entry:
+  %cmp = icmp eq i32 %a, 500
+  %cmp1 = icmp eq i32 %d, 700
+  %or.cond = and i1 %cmp, %cmp1
+  %add = add nuw nsw i32 %a, 5
+  %cmp3 = icmp eq i32 %c, %add
+  %or.cond7 = select i1 %or.cond, i1 %cmp3, i1 false
+  br i1 %or.cond7, label %if.then, label %if.end
+
+if.then:                                          ; preds = %entry
+  %mul4 = mul nsw i32 %c, %b
+  %add5 = add nsw i32 %mul4, 1000
+  br label %return
+
+if.end:                                           ; preds = %entry
+  %mul6 = shl nsw i32 %a, 1
+  %mul7 = mul nsw i32 %c, %b
+  %add8 = add nsw i32 %mul7, %mul6
+  br label %return
+
+return:                                           ; preds = %if.end, %if.then
+  %retval.0 = phi i32 [ %add5, %if.then ], [ %add8, %if.end ]
+  ret i32 %retval.0
+}
+; *** IR Dump After JumpThreadingPass on _Z3muliiii ***
+define dso_local noundef i32 @_Z3muliiii(i32 noundef %a, i32 noundef %b, i32 noundef %c, i32 noundef %d) local_unnamed_addr {
+entry:
+  %cmp = icmp eq i32 %a, 500
+  %cmp1 = icmp eq i32 %d, 700
+  %or.cond = and i1 %cmp, %cmp1
+  %add = add nuw nsw i32 %a, 5
+  %cmp3 = icmp eq i32 %c, %add
+  %or.cond7 = select i1 %or.cond, i1 %cmp3, i1 false
+  br i1 %or.cond7, label %if.then, label %if.end
+
+if.then:                                          ; preds = %entry
+  %mul4 = mul nsw i32 %c, %b
+  %add5 = add nsw i32 %mul4, 1000
+  br label %return
+
+if.end:                                           ; preds = %entry
+  %mul6 = shl nsw i32 %a, 1
+  %mul7 = mul nsw i32 %c, %b
+  %add8 = add nsw i32 %mul7, %mul6
+  br label %return
+
+return:                                           ; preds = %if.end, %if.then
+  %retval.0 = phi i32 [ %add5, %if.then ], [ %add8, %if.end ]
+  ret i32 %retval.0
+}
+; *** IR Dump After CorrelatedValuePropagationPass on _Z3muliiii ***
+define dso_local noundef i32 @_Z3muliiii(i32 noundef %a, i32 noundef %b, i32 noundef %c, i32 noundef %d) local_unnamed_addr {
+entry:
+  %cmp = icmp eq i32 %a, 500
+  %cmp1 = icmp eq i32 %d, 700
+  %or.cond = and i1 %cmp, %cmp1
+  %add = add nuw nsw i32 %a, 5
+  %cmp3 = icmp eq i32 %c, %add
+  %or.cond7 = select i1 %or.cond, i1 %cmp3, i1 false
+  br i1 %or.cond7, label %if.then, label %if.end
+
+if.then:                                          ; preds = %entry
+  %mul4 = mul nsw i32 %c, %b
+  %add5 = add nsw i32 %mul4, 1000
+  br label %return
+
+if.end:                                           ; preds = %entry
+  %mul6 = shl nsw i32 %a, 1
+  %mul7 = mul nsw i32 %c, %b
+  %add8 = add nsw i32 %mul7, %mul6
+  br label %return
+
+return:                                           ; preds = %if.end, %if.then
+  %retval.0 = phi i32 [ %add5, %if.then ], [ %add8, %if.end ]
+  ret i32 %retval.0
+}
+; *** IR Dump After ADCEPass on _Z3muliiii ***
+define dso_local noundef i32 @_Z3muliiii(i32 noundef %a, i32 noundef %b, i32 noundef %c, i32 noundef %d) local_unnamed_addr {
+entry:
+  %cmp = icmp eq i32 %a, 500
+  %cmp1 = icmp eq i32 %d, 700
+  %or.cond = and i1 %cmp, %cmp1
+  %add = add nuw nsw i32 %a, 5
+  %cmp3 = icmp eq i32 %c, %add
+  %or.cond7 = select i1 %or.cond, i1 %cmp3, i1 false
+  br i1 %or.cond7, label %if.then, label %if.end
+
+if.then:                                          ; preds = %entry
+  %mul4 = mul nsw i32 %c, %b
+  %add5 = add nsw i32 %mul4, 1000
+  br label %return
+
+if.end:                                           ; preds = %entry
+  %mul6 = shl nsw i32 %a, 1
+  %mul7 = mul nsw i32 %c, %b
+  %add8 = add nsw i32 %mul7, %mul6
+  br label %return
+
+return:                                           ; preds = %if.end, %if.then
+  %retval.0 = phi i32 [ %add5, %if.then ], [ %add8, %if.end ]
+  ret i32 %retval.0
+}
+; *** IR Dump After MemCpyOptPass on _Z3muliiii ***
+define dso_local noundef i32 @_Z3muliiii(i32 noundef %a, i32 noundef %b, i32 noundef %c, i32 noundef %d) local_unnamed_addr {
+entry:
+  %cmp = icmp eq i32 %a, 500
+  %cmp1 = icmp eq i32 %d, 700
+  %or.cond = and i1 %cmp, %cmp1
+  %add = add nuw nsw i32 %a, 5
+  %cmp3 = icmp eq i32 %c, %add
+  %or.cond7 = select i1 %or.cond, i1 %cmp3, i1 false
+  br i1 %or.cond7, label %if.then, label %if.end
+
+if.then:                                          ; preds = %entry
+  %mul4 = mul nsw i32 %c, %b
+  %add5 = add nsw i32 %mul4, 1000
+  br label %return
+
+if.end:                                           ; preds = %entry
+  %mul6 = shl nsw i32 %a, 1
+  %mul7 = mul nsw i32 %c, %b
+  %add8 = add nsw i32 %mul7, %mul6
+  br label %return
+
+return:                                           ; preds = %if.end, %if.then
+  %retval.0 = phi i32 [ %add5, %if.then ], [ %add8, %if.end ]
+  ret i32 %retval.0
+}
+; *** IR Dump After DSEPass on _Z3muliiii ***
+define dso_local noundef i32 @_Z3muliiii(i32 noundef %a, i32 noundef %b, i32 noundef %c, i32 noundef %d) local_unnamed_addr {
+entry:
+  %cmp = icmp eq i32 %a, 500
+  %cmp1 = icmp eq i32 %d, 700
+  %or.cond = and i1 %cmp, %cmp1
+  %add = add nuw nsw i32 %a, 5
+  %cmp3 = icmp eq i32 %c, %add
+  %or.cond7 = select i1 %or.cond, i1 %cmp3, i1 false
+  br i1 %or.cond7, label %if.then, label %if.end
+
+if.then:                                          ; preds = %entry
+  %mul4 = mul nsw i32 %c, %b
+  %add5 = add nsw i32 %mul4, 1000
+  br label %return
+
+if.end:                                           ; preds = %entry
+  %mul6 = shl nsw i32 %a, 1
+  %mul7 = mul nsw i32 %c, %b
+  %add8 = add nsw i32 %mul7, %mul6
+  br label %return
+
+return:                                           ; preds = %if.end, %if.then
+  %retval.0 = phi i32 [ %add5, %if.then ], [ %add8, %if.end ]
+  ret i32 %retval.0
+}
+; *** IR Dump After MoveAutoInitPass on _Z3muliiii ***
+define dso_local noundef i32 @_Z3muliiii(i32 noundef %a, i32 noundef %b, i32 noundef %c, i32 noundef %d) local_unnamed_addr {
+entry:
+  %cmp = icmp eq i32 %a, 500
+  %cmp1 = icmp eq i32 %d, 700
+  %or.cond = and i1 %cmp, %cmp1
+  %add = add nuw nsw i32 %a, 5
+  %cmp3 = icmp eq i32 %c, %add
+  %or.cond7 = select i1 %or.cond, i1 %cmp3, i1 false
+  br i1 %or.cond7, label %if.then, label %if.end
+
+if.then:                                          ; preds = %entry
+  %mul4 = mul nsw i32 %c, %b
+  %add5 = add nsw i32 %mul4, 1000
+  br label %return
+
+if.end:                                           ; preds = %entry
+  %mul6 = shl nsw i32 %a, 1
+  %mul7 = mul nsw i32 %c, %b
+  %add8 = add nsw i32 %mul7, %mul6
+  br label %return
+
+return:                                           ; preds = %if.end, %if.then
+  %retval.0 = phi i32 [ %add5, %if.then ], [ %add8, %if.end ]
+  ret i32 %retval.0
+}
+; *** IR Dump After LoopSimplifyPass on _Z3muliiii ***
+define dso_local noundef i32 @_Z3muliiii(i32 noundef %a, i32 noundef %b, i32 noundef %c, i32 noundef %d) local_unnamed_addr {
+entry:
+  %cmp = icmp eq i32 %a, 500
+  %cmp1 = icmp eq i32 %d, 700
+  %or.cond = and i1 %cmp, %cmp1
+  %add = add nuw nsw i32 %a, 5
+  %cmp3 = icmp eq i32 %c, %add
+  %or.cond7 = select i1 %or.cond, i1 %cmp3, i1 false
+  br i1 %or.cond7, label %if.then, label %if.end
+
+if.then:                                          ; preds = %entry
+  %mul4 = mul nsw i32 %c, %b
+  %add5 = add nsw i32 %mul4, 1000
+  br label %return
+
+if.end:                                           ; preds = %entry
+  %mul6 = shl nsw i32 %a, 1
+  %mul7 = mul nsw i32 %c, %b
+  %add8 = add nsw i32 %mul7, %mul6
+  br label %return
+
+return:                                           ; preds = %if.end, %if.then
+  %retval.0 = phi i32 [ %add5, %if.then ], [ %add8, %if.end ]
+  ret i32 %retval.0
+}
+; *** IR Dump After LCSSAPass on _Z3muliiii ***
+define dso_local noundef i32 @_Z3muliiii(i32 noundef %a, i32 noundef %b, i32 noundef %c, i32 noundef %d) local_unnamed_addr {
+entry:
+  %cmp = icmp eq i32 %a, 500
+  %cmp1 = icmp eq i32 %d, 700
+  %or.cond = and i1 %cmp, %cmp1
+  %add = add nuw nsw i32 %a, 5
+  %cmp3 = icmp eq i32 %c, %add
+  %or.cond7 = select i1 %or.cond, i1 %cmp3, i1 false
+  br i1 %or.cond7, label %if.then, label %if.end
+
+if.then:                                          ; preds = %entry
+  %mul4 = mul nsw i32 %c, %b
+  %add5 = add nsw i32 %mul4, 1000
+  br label %return
+
+if.end:                                           ; preds = %entry
+  %mul6 = shl nsw i32 %a, 1
+  %mul7 = mul nsw i32 %c, %b
+  %add8 = add nsw i32 %mul7, %mul6
+  br label %return
+
+return:                                           ; preds = %if.end, %if.then
+  %retval.0 = phi i32 [ %add5, %if.then ], [ %add8, %if.end ]
+  ret i32 %retval.0
+}
+; *** IR Dump After CoroElidePass on _Z3muliiii ***
+define dso_local noundef i32 @_Z3muliiii(i32 noundef %a, i32 noundef %b, i32 noundef %c, i32 noundef %d) local_unnamed_addr {
+entry:
+  %cmp = icmp eq i32 %a, 500
+  %cmp1 = icmp eq i32 %d, 700
+  %or.cond = and i1 %cmp, %cmp1
+  %add = add nuw nsw i32 %a, 5
+  %cmp3 = icmp eq i32 %c, %add
+  %or.cond7 = select i1 %or.cond, i1 %cmp3, i1 false
+  br i1 %or.cond7, label %if.then, label %if.end
+
+if.then:                                          ; preds = %entry
+  %mul4 = mul nsw i32 %c, %b
+  %add5 = add nsw i32 %mul4, 1000
+  br label %return
+
+if.end:                                           ; preds = %entry
+  %mul6 = shl nsw i32 %a, 1
+  %mul7 = mul nsw i32 %c, %b
+  %add8 = add nsw i32 %mul7, %mul6
+  br label %return
+
+return:                                           ; preds = %if.end, %if.then
+  %retval.0 = phi i32 [ %add5, %if.then ], [ %add8, %if.end ]
+  ret i32 %retval.0
+}
+; *** IR Dump After SimplifyCFGPass on _Z3muliiii ***
+define dso_local noundef i32 @_Z3muliiii(i32 noundef %a, i32 noundef %b, i32 noundef %c, i32 noundef %d) local_unnamed_addr {
+entry:
+  %cmp = icmp eq i32 %a, 500
+  %cmp1 = icmp eq i32 %d, 700
+  %or.cond = and i1 %cmp, %cmp1
+  %add = add nuw nsw i32 %a, 5
+  %cmp3 = icmp eq i32 %c, %add
+  %or.cond7 = select i1 %or.cond, i1 %cmp3, i1 false
+  %mul6 = shl nsw i32 %a, 1
+  %mul6.sink = select i1 %or.cond7, i32 1000, i32 %mul6
+  %mul7 = mul nsw i32 %c, %b
+  %add8 = add nsw i32 %mul7, %mul6.sink
+  ret i32 %add8
+}
+; *** IR Dump After InstCombinePass on _Z3muliiii ***
+define dso_local noundef i32 @_Z3muliiii(i32 noundef %a, i32 noundef %b, i32 noundef %c, i32 noundef %d) local_unnamed_addr {
+entry:
+  %cmp = icmp eq i32 %a, 500
+  %cmp1 = icmp eq i32 %d, 700
+  %or.cond = and i1 %cmp, %cmp1
+  %add = add nuw nsw i32 %a, 5
+  %cmp3 = icmp eq i32 %c, %add
+  %or.cond7 = select i1 %or.cond, i1 %cmp3, i1 false
+  %mul6 = shl nsw i32 %a, 1
+  %mul6.sink = select i1 %or.cond7, i32 1000, i32 %mul6
+  %mul7 = mul nsw i32 %c, %b
+  %add8 = add nsw i32 %mul7, %mul6.sink
+  ret i32 %add8
+}
+; *** IR Dump After PostOrderFunctionAttrsPass on (_Z3muliiii) ***
+; Function Attrs: mustprogress nofree norecurse nosync nounwind willreturn memory(none)
+define dso_local noundef i32 @_Z3muliiii(i32 noundef %a, i32 noundef %b, i32 noundef %c, i32 noundef %d) local_unnamed_addr #0 {
+entry:
+  %cmp = icmp eq i32 %a, 500
+  %cmp1 = icmp eq i32 %d, 700
+  %or.cond = and i1 %cmp, %cmp1
+  %add = add nuw nsw i32 %a, 5
+  %cmp3 = icmp eq i32 %c, %add
+  %or.cond7 = select i1 %or.cond, i1 %cmp3, i1 false
+  %mul6 = shl nsw i32 %a, 1
+  %mul6.sink = select i1 %or.cond7, i32 1000, i32 %mul6
+  %mul7 = mul nsw i32 %c, %b
+  %add8 = add nsw i32 %mul7, %mul6.sink
+  ret i32 %add8
+}
+; *** IR Dump After RequireAnalysisPass<llvm::ShouldNotRunFunctionPassesAnalysis, llvm::Function> on _Z3muliiii ***
+; Function Attrs: mustprogress nofree norecurse nosync nounwind willreturn memory(none)
+define dso_local noundef i32 @_Z3muliiii(i32 noundef %a, i32 noundef %b, i32 noundef %c, i32 noundef %d) local_unnamed_addr #0 {
+entry:
+  %cmp = icmp eq i32 %a, 500
+  %cmp1 = icmp eq i32 %d, 700
+  %or.cond = and i1 %cmp, %cmp1
+  %add = add nuw nsw i32 %a, 5
+  %cmp3 = icmp eq i32 %c, %add
+  %or.cond7 = select i1 %or.cond, i1 %cmp3, i1 false
+  %mul6 = shl nsw i32 %a, 1
+  %mul6.sink = select i1 %or.cond7, i32 1000, i32 %mul6
+  %mul7 = mul nsw i32 %c, %b
+  %add8 = add nsw i32 %mul7, %mul6.sink
+  ret i32 %add8
+}
+; *** IR Dump After CoroSplitPass on (_Z3muliiii) ***
+; Function Attrs: mustprogress nofree norecurse nosync nounwind willreturn memory(none)
+define dso_local noundef i32 @_Z3muliiii(i32 noundef %a, i32 noundef %b, i32 noundef %c, i32 noundef %d) local_unnamed_addr #0 {
+entry:
+  %cmp = icmp eq i32 %a, 500
+  %cmp1 = icmp eq i32 %d, 700
+  %or.cond = and i1 %cmp, %cmp1
+  %add = add nuw nsw i32 %a, 5
+  %cmp3 = icmp eq i32 %c, %add
+  %or.cond7 = select i1 %or.cond, i1 %cmp3, i1 false
+  %mul6 = shl nsw i32 %a, 1
+  %mul6.sink = select i1 %or.cond7, i32 1000, i32 %mul6
+  %mul7 = mul nsw i32 %c, %b
+  %add8 = add nsw i32 %mul7, %mul6.sink
+  ret i32 %add8
+}
+; *** IR Dump After CoroAnnotationElidePass on (_Z3muliiii) ***
+; Function Attrs: mustprogress nofree norecurse nosync nounwind willreturn memory(none)
+define dso_local noundef i32 @_Z3muliiii(i32 noundef %a, i32 noundef %b, i32 noundef %c, i32 noundef %d) local_unnamed_addr #0 {
+entry:
+  %cmp = icmp eq i32 %a, 500
+  %cmp1 = icmp eq i32 %d, 700
+  %or.cond = and i1 %cmp, %cmp1
+  %add = add nuw nsw i32 %a, 5
+  %cmp3 = icmp eq i32 %c, %add
+  %or.cond7 = select i1 %or.cond, i1 %cmp3, i1 false
+  %mul6 = shl nsw i32 %a, 1
+  %mul6.sink = select i1 %or.cond7, i32 1000, i32 %mul6
+  %mul7 = mul nsw i32 %c, %b
+  %add8 = add nsw i32 %mul7, %mul6.sink
+  ret i32 %add8
+}
+; *** IR Dump After InvalidateAnalysisPass<llvm::ShouldNotRunFunctionPassesAnalysis> on _Z3muliiii ***
+; Function Attrs: mustprogress nofree norecurse nosync nounwind willreturn memory(none)
+define dso_local noundef i32 @_Z3muliiii(i32 noundef %a, i32 noundef %b, i32 noundef %c, i32 noundef %d) local_unnamed_addr #0 {
+entry:
+  %cmp = icmp eq i32 %a, 500
+  %cmp1 = icmp eq i32 %d, 700
+  %or.cond = and i1 %cmp, %cmp1
+  %add = add nuw nsw i32 %a, 5
+  %cmp3 = icmp eq i32 %c, %add
+  %or.cond7 = select i1 %or.cond, i1 %cmp3, i1 false
+  %mul6 = shl nsw i32 %a, 1
+  %mul6.sink = select i1 %or.cond7, i32 1000, i32 %mul6
+  %mul7 = mul nsw i32 %c, %b
+  %add8 = add nsw i32 %mul7, %mul6.sink
+  ret i32 %add8
+}
+; *** IR Dump After DeadArgumentEliminationPass on [module] ***
+; ModuleID = 'mul_smb.ll'
+source_filename = "mul_smb.ll"
+
+; Function Attrs: mustprogress nofree norecurse nosync nounwind willreturn memory(none)
+define dso_local noundef i32 @_Z3muliiii(i32 noundef %a, i32 noundef %b, i32 noundef %c, i32 noundef %d) local_unnamed_addr #0 {
+entry:
+  %cmp = icmp eq i32 %a, 500
+  %cmp1 = icmp eq i32 %d, 700
+  %or.cond = and i1 %cmp, %cmp1
+  %add = add nuw nsw i32 %a, 5
+  %cmp3 = icmp eq i32 %c, %add
+  %or.cond7 = select i1 %or.cond, i1 %cmp3, i1 false
+  %mul6 = shl nsw i32 %a, 1
+  %mul6.sink = select i1 %or.cond7, i32 1000, i32 %mul6
+  %mul7 = mul nsw i32 %c, %b
+  %add8 = add nsw i32 %mul7, %mul6.sink
+  ret i32 %add8
+}
+
+attributes #0 = { mustprogress nofree norecurse nosync nounwind willreturn memory(none) }
+; *** IR Dump After CoroCleanupPass on [module] ***
+; ModuleID = 'mul_smb.ll'
+source_filename = "mul_smb.ll"
+
+; Function Attrs: mustprogress nofree norecurse nosync nounwind willreturn memory(none)
+define dso_local noundef i32 @_Z3muliiii(i32 noundef %a, i32 noundef %b, i32 noundef %c, i32 noundef %d) local_unnamed_addr #0 {
+entry:
+  %cmp = icmp eq i32 %a, 500
+  %cmp1 = icmp eq i32 %d, 700
+  %or.cond = and i1 %cmp, %cmp1
+  %add = add nuw nsw i32 %a, 5
+  %cmp3 = icmp eq i32 %c, %add
+  %or.cond7 = select i1 %or.cond, i1 %cmp3, i1 false
+  %mul6 = shl nsw i32 %a, 1
+  %mul6.sink = select i1 %or.cond7, i32 1000, i32 %mul6
+  %mul7 = mul nsw i32 %c, %b
+  %add8 = add nsw i32 %mul7, %mul6.sink
+  ret i32 %add8
+}
+
+attributes #0 = { mustprogress nofree norecurse nosync nounwind willreturn memory(none) }
+; *** IR Dump After GlobalOptPass on [module] ***
+; ModuleID = 'mul_smb.ll'
+source_filename = "mul_smb.ll"
+
+; Function Attrs: mustprogress nofree norecurse nosync nounwind willreturn memory(none)
+define dso_local noundef i32 @_Z3muliiii(i32 noundef %a, i32 noundef %b, i32 noundef %c, i32 noundef %d) local_unnamed_addr #0 {
+entry:
+  %cmp = icmp eq i32 %a, 500
+  %cmp1 = icmp eq i32 %d, 700
+  %or.cond = and i1 %cmp, %cmp1
+  %add = add nuw nsw i32 %a, 5
+  %cmp3 = icmp eq i32 %c, %add
+  %or.cond7 = select i1 %or.cond, i1 %cmp3, i1 false
+  %mul6 = shl nsw i32 %a, 1
+  %mul6.sink = select i1 %or.cond7, i32 1000, i32 %mul6
+  %mul7 = mul nsw i32 %c, %b
+  %add8 = add nsw i32 %mul7, %mul6.sink
+  ret i32 %add8
+}
+
+attributes #0 = { mustprogress nofree norecurse nosync nounwind willreturn memory(none) }
+; *** IR Dump After GlobalDCEPass on [module] ***
+; ModuleID = 'mul_smb.ll'
+source_filename = "mul_smb.ll"
+
+; Function Attrs: mustprogress nofree norecurse nosync nounwind willreturn memory(none)
+define dso_local noundef i32 @_Z3muliiii(i32 noundef %a, i32 noundef %b, i32 noundef %c, i32 noundef %d) local_unnamed_addr #0 {
+entry:
+  %cmp = icmp eq i32 %a, 500
+  %cmp1 = icmp eq i32 %d, 700
+  %or.cond = and i1 %cmp, %cmp1
+  %add = add nuw nsw i32 %a, 5
+  %cmp3 = icmp eq i32 %c, %add
+  %or.cond7 = select i1 %or.cond, i1 %cmp3, i1 false
+  %mul6 = shl nsw i32 %a, 1
+  %mul6.sink = select i1 %or.cond7, i32 1000, i32 %mul6
+  %mul7 = mul nsw i32 %c, %b
+  %add8 = add nsw i32 %mul7, %mul6.sink
+  ret i32 %add8
+}
+
+attributes #0 = { mustprogress nofree norecurse nosync nounwind willreturn memory(none) }
+; *** IR Dump After EliminateAvailableExternallyPass on [module] ***
+; ModuleID = 'mul_smb.ll'
+source_filename = "mul_smb.ll"
+
+; Function Attrs: mustprogress nofree norecurse nosync nounwind willreturn memory(none)
+define dso_local noundef i32 @_Z3muliiii(i32 noundef %a, i32 noundef %b, i32 noundef %c, i32 noundef %d) local_unnamed_addr #0 {
+entry:
+  %cmp = icmp eq i32 %a, 500
+  %cmp1 = icmp eq i32 %d, 700
+  %or.cond = and i1 %cmp, %cmp1
+  %add = add nuw nsw i32 %a, 5
+  %cmp3 = icmp eq i32 %c, %add
+  %or.cond7 = select i1 %or.cond, i1 %cmp3, i1 false
+  %mul6 = shl nsw i32 %a, 1
+  %mul6.sink = select i1 %or.cond7, i32 1000, i32 %mul6
+  %mul7 = mul nsw i32 %c, %b
+  %add8 = add nsw i32 %mul7, %mul6.sink
+  ret i32 %add8
+}
+
+attributes #0 = { mustprogress nofree norecurse nosync nounwind willreturn memory(none) }
+; *** IR Dump After ReversePostOrderFunctionAttrsPass on [module] ***
+; ModuleID = 'mul_smb.ll'
+source_filename = "mul_smb.ll"
+
+; Function Attrs: mustprogress nofree norecurse nosync nounwind willreturn memory(none)
+define dso_local noundef i32 @_Z3muliiii(i32 noundef %a, i32 noundef %b, i32 noundef %c, i32 noundef %d) local_unnamed_addr #0 {
+entry:
+  %cmp = icmp eq i32 %a, 500
+  %cmp1 = icmp eq i32 %d, 700
+  %or.cond = and i1 %cmp, %cmp1
+  %add = add nuw nsw i32 %a, 5
+  %cmp3 = icmp eq i32 %c, %add
+  %or.cond7 = select i1 %or.cond, i1 %cmp3, i1 false
+  %mul6 = shl nsw i32 %a, 1
+  %mul6.sink = select i1 %or.cond7, i32 1000, i32 %mul6
+  %mul7 = mul nsw i32 %c, %b
+  %add8 = add nsw i32 %mul7, %mul6.sink
+  ret i32 %add8
+}
+
+attributes #0 = { mustprogress nofree norecurse nosync nounwind willreturn memory(none) }
+; *** IR Dump After RecomputeGlobalsAAPass on [module] ***
+; ModuleID = 'mul_smb.ll'
+source_filename = "mul_smb.ll"
+
+; Function Attrs: mustprogress nofree norecurse nosync nounwind willreturn memory(none)
+define dso_local noundef i32 @_Z3muliiii(i32 noundef %a, i32 noundef %b, i32 noundef %c, i32 noundef %d) local_unnamed_addr #0 {
+entry:
+  %cmp = icmp eq i32 %a, 500
+  %cmp1 = icmp eq i32 %d, 700
+  %or.cond = and i1 %cmp, %cmp1
+  %add = add nuw nsw i32 %a, 5
+  %cmp3 = icmp eq i32 %c, %add
+  %or.cond7 = select i1 %or.cond, i1 %cmp3, i1 false
+  %mul6 = shl nsw i32 %a, 1
+  %mul6.sink = select i1 %or.cond7, i32 1000, i32 %mul6
+  %mul7 = mul nsw i32 %c, %b
+  %add8 = add nsw i32 %mul7, %mul6.sink
+  ret i32 %add8
+}
+
+attributes #0 = { mustprogress nofree norecurse nosync nounwind willreturn memory(none) }
+; *** IR Dump After Float2IntPass on _Z3muliiii ***
+; Function Attrs: mustprogress nofree norecurse nosync nounwind willreturn memory(none)
+define dso_local noundef i32 @_Z3muliiii(i32 noundef %a, i32 noundef %b, i32 noundef %c, i32 noundef %d) local_unnamed_addr #0 {
+entry:
+  %cmp = icmp eq i32 %a, 500
+  %cmp1 = icmp eq i32 %d, 700
+  %or.cond = and i1 %cmp, %cmp1
+  %add = add nuw nsw i32 %a, 5
+  %cmp3 = icmp eq i32 %c, %add
+  %or.cond7 = select i1 %or.cond, i1 %cmp3, i1 false
+  %mul6 = shl nsw i32 %a, 1
+  %mul6.sink = select i1 %or.cond7, i32 1000, i32 %mul6
+  %mul7 = mul nsw i32 %c, %b
+  %add8 = add nsw i32 %mul7, %mul6.sink
+  ret i32 %add8
+}
+; *** IR Dump After LowerConstantIntrinsicsPass on _Z3muliiii ***
+; Function Attrs: mustprogress nofree norecurse nosync nounwind willreturn memory(none)
+define dso_local noundef i32 @_Z3muliiii(i32 noundef %a, i32 noundef %b, i32 noundef %c, i32 noundef %d) local_unnamed_addr #0 {
+entry:
+  %cmp = icmp eq i32 %a, 500
+  %cmp1 = icmp eq i32 %d, 700
+  %or.cond = and i1 %cmp, %cmp1
+  %add = add nuw nsw i32 %a, 5
+  %cmp3 = icmp eq i32 %c, %add
+  %or.cond7 = select i1 %or.cond, i1 %cmp3, i1 false
+  %mul6 = shl nsw i32 %a, 1
+  %mul6.sink = select i1 %or.cond7, i32 1000, i32 %mul6
+  %mul7 = mul nsw i32 %c, %b
+  %add8 = add nsw i32 %mul7, %mul6.sink
+  ret i32 %add8
+}
+; *** IR Dump After LoopSimplifyPass on _Z3muliiii ***
+; Function Attrs: mustprogress nofree norecurse nosync nounwind willreturn memory(none)
+define dso_local noundef i32 @_Z3muliiii(i32 noundef %a, i32 noundef %b, i32 noundef %c, i32 noundef %d) local_unnamed_addr #0 {
+entry:
+  %cmp = icmp eq i32 %a, 500
+  %cmp1 = icmp eq i32 %d, 700
+  %or.cond = and i1 %cmp, %cmp1
+  %add = add nuw nsw i32 %a, 5
+  %cmp3 = icmp eq i32 %c, %add
+  %or.cond7 = select i1 %or.cond, i1 %cmp3, i1 false
+  %mul6 = shl nsw i32 %a, 1
+  %mul6.sink = select i1 %or.cond7, i32 1000, i32 %mul6
+  %mul7 = mul nsw i32 %c, %b
+  %add8 = add nsw i32 %mul7, %mul6.sink
+  ret i32 %add8
+}
+; *** IR Dump After LCSSAPass on _Z3muliiii ***
+; Function Attrs: mustprogress nofree norecurse nosync nounwind willreturn memory(none)
+define dso_local noundef i32 @_Z3muliiii(i32 noundef %a, i32 noundef %b, i32 noundef %c, i32 noundef %d) local_unnamed_addr #0 {
+entry:
+  %cmp = icmp eq i32 %a, 500
+  %cmp1 = icmp eq i32 %d, 700
+  %or.cond = and i1 %cmp, %cmp1
+  %add = add nuw nsw i32 %a, 5
+  %cmp3 = icmp eq i32 %c, %add
+  %or.cond7 = select i1 %or.cond, i1 %cmp3, i1 false
+  %mul6 = shl nsw i32 %a, 1
+  %mul6.sink = select i1 %or.cond7, i32 1000, i32 %mul6
+  %mul7 = mul nsw i32 %c, %b
+  %add8 = add nsw i32 %mul7, %mul6.sink
+  ret i32 %add8
+}
+; *** IR Dump After LoopDistributePass on _Z3muliiii ***
+; Function Attrs: mustprogress nofree norecurse nosync nounwind willreturn memory(none)
+define dso_local noundef i32 @_Z3muliiii(i32 noundef %a, i32 noundef %b, i32 noundef %c, i32 noundef %d) local_unnamed_addr #0 {
+entry:
+  %cmp = icmp eq i32 %a, 500
+  %cmp1 = icmp eq i32 %d, 700
+  %or.cond = and i1 %cmp, %cmp1
+  %add = add nuw nsw i32 %a, 5
+  %cmp3 = icmp eq i32 %c, %add
+  %or.cond7 = select i1 %or.cond, i1 %cmp3, i1 false
+  %mul6 = shl nsw i32 %a, 1
+  %mul6.sink = select i1 %or.cond7, i32 1000, i32 %mul6
+  %mul7 = mul nsw i32 %c, %b
+  %add8 = add nsw i32 %mul7, %mul6.sink
+  ret i32 %add8
+}
+; *** IR Dump After InjectTLIMappings on _Z3muliiii ***
+; Function Attrs: mustprogress nofree norecurse nosync nounwind willreturn memory(none)
+define dso_local noundef i32 @_Z3muliiii(i32 noundef %a, i32 noundef %b, i32 noundef %c, i32 noundef %d) local_unnamed_addr #0 {
+entry:
+  %cmp = icmp eq i32 %a, 500
+  %cmp1 = icmp eq i32 %d, 700
+  %or.cond = and i1 %cmp, %cmp1
+  %add = add nuw nsw i32 %a, 5
+  %cmp3 = icmp eq i32 %c, %add
+  %or.cond7 = select i1 %or.cond, i1 %cmp3, i1 false
+  %mul6 = shl nsw i32 %a, 1
+  %mul6.sink = select i1 %or.cond7, i32 1000, i32 %mul6
+  %mul7 = mul nsw i32 %c, %b
+  %add8 = add nsw i32 %mul7, %mul6.sink
+  ret i32 %add8
+}
+; *** IR Dump After LoopVectorizePass on _Z3muliiii ***
+; Function Attrs: mustprogress nofree norecurse nosync nounwind willreturn memory(none)
+define dso_local noundef i32 @_Z3muliiii(i32 noundef %a, i32 noundef %b, i32 noundef %c, i32 noundef %d) local_unnamed_addr #0 {
+entry:
+  %cmp = icmp eq i32 %a, 500
+  %cmp1 = icmp eq i32 %d, 700
+  %or.cond = and i1 %cmp, %cmp1
+  %add = add nuw nsw i32 %a, 5
+  %cmp3 = icmp eq i32 %c, %add
+  %or.cond7 = select i1 %or.cond, i1 %cmp3, i1 false
+  %mul6 = shl nsw i32 %a, 1
+  %mul6.sink = select i1 %or.cond7, i32 1000, i32 %mul6
+  %mul7 = mul nsw i32 %c, %b
+  %add8 = add nsw i32 %mul7, %mul6.sink
+  ret i32 %add8
+}
+; *** IR Dump After InferAlignmentPass on _Z3muliiii ***
+; Function Attrs: mustprogress nofree norecurse nosync nounwind willreturn memory(none)
+define dso_local noundef i32 @_Z3muliiii(i32 noundef %a, i32 noundef %b, i32 noundef %c, i32 noundef %d) local_unnamed_addr #0 {
+entry:
+  %cmp = icmp eq i32 %a, 500
+  %cmp1 = icmp eq i32 %d, 700
+  %or.cond = and i1 %cmp, %cmp1
+  %add = add nuw nsw i32 %a, 5
+  %cmp3 = icmp eq i32 %c, %add
+  %or.cond7 = select i1 %or.cond, i1 %cmp3, i1 false
+  %mul6 = shl nsw i32 %a, 1
+  %mul6.sink = select i1 %or.cond7, i32 1000, i32 %mul6
+  %mul7 = mul nsw i32 %c, %b
+  %add8 = add nsw i32 %mul7, %mul6.sink
+  ret i32 %add8
+}
+; *** IR Dump After LoopLoadEliminationPass on _Z3muliiii ***
+; Function Attrs: mustprogress nofree norecurse nosync nounwind willreturn memory(none)
+define dso_local noundef i32 @_Z3muliiii(i32 noundef %a, i32 noundef %b, i32 noundef %c, i32 noundef %d) local_unnamed_addr #0 {
+entry:
+  %cmp = icmp eq i32 %a, 500
+  %cmp1 = icmp eq i32 %d, 700
+  %or.cond = and i1 %cmp, %cmp1
+  %add = add nuw nsw i32 %a, 5
+  %cmp3 = icmp eq i32 %c, %add
+  %or.cond7 = select i1 %or.cond, i1 %cmp3, i1 false
+  %mul6 = shl nsw i32 %a, 1
+  %mul6.sink = select i1 %or.cond7, i32 1000, i32 %mul6
+  %mul7 = mul nsw i32 %c, %b
+  %add8 = add nsw i32 %mul7, %mul6.sink
+  ret i32 %add8
+}
+; *** IR Dump After InstCombinePass on _Z3muliiii ***
+; Function Attrs: mustprogress nofree norecurse nosync nounwind willreturn memory(none)
+define dso_local noundef i32 @_Z3muliiii(i32 noundef %a, i32 noundef %b, i32 noundef %c, i32 noundef %d) local_unnamed_addr #0 {
+entry:
+  %cmp = icmp eq i32 %a, 500
+  %cmp1 = icmp eq i32 %d, 700
+  %or.cond = and i1 %cmp, %cmp1
+  %add = add nuw nsw i32 %a, 5
+  %cmp3 = icmp eq i32 %c, %add
+  %or.cond7 = select i1 %or.cond, i1 %cmp3, i1 false
+  %mul6 = shl nsw i32 %a, 1
+  %mul6.sink = select i1 %or.cond7, i32 1000, i32 %mul6
+  %mul7 = mul nsw i32 %c, %b
+  %add8 = add nsw i32 %mul7, %mul6.sink
+  ret i32 %add8
+}
+; *** IR Dump After SimplifyCFGPass on _Z3muliiii ***
+; Function Attrs: mustprogress nofree norecurse nosync nounwind willreturn memory(none)
+define dso_local noundef i32 @_Z3muliiii(i32 noundef %a, i32 noundef %b, i32 noundef %c, i32 noundef %d) local_unnamed_addr #0 {
+entry:
+  %cmp = icmp eq i32 %a, 500
+  %cmp1 = icmp eq i32 %d, 700
+  %or.cond = and i1 %cmp, %cmp1
+  %add = add nuw nsw i32 %a, 5
+  %cmp3 = icmp eq i32 %c, %add
+  %or.cond7 = select i1 %or.cond, i1 %cmp3, i1 false
+  %mul6 = shl nsw i32 %a, 1
+  %mul6.sink = select i1 %or.cond7, i32 1000, i32 %mul6
+  %mul7 = mul nsw i32 %c, %b
+  %add8 = add nsw i32 %mul7, %mul6.sink
+  ret i32 %add8
+}
+; *** IR Dump After SLPVectorizerPass on _Z3muliiii ***
+; Function Attrs: mustprogress nofree norecurse nosync nounwind willreturn memory(none)
+define dso_local noundef i32 @_Z3muliiii(i32 noundef %a, i32 noundef %b, i32 noundef %c, i32 noundef %d) local_unnamed_addr #0 {
+entry:
+  %cmp = icmp eq i32 %a, 500
+  %cmp1 = icmp eq i32 %d, 700
+  %or.cond = and i1 %cmp, %cmp1
+  %add = add nuw nsw i32 %a, 5
+  %cmp3 = icmp eq i32 %c, %add
+  %or.cond7 = select i1 %or.cond, i1 %cmp3, i1 false
+  %mul6 = shl nsw i32 %a, 1
+  %mul6.sink = select i1 %or.cond7, i32 1000, i32 %mul6
+  %mul7 = mul nsw i32 %c, %b
+  %add8 = add nsw i32 %mul7, %mul6.sink
+  ret i32 %add8
+}
+; *** IR Dump After VectorCombinePass on _Z3muliiii ***
+; Function Attrs: mustprogress nofree norecurse nosync nounwind willreturn memory(none)
+define dso_local noundef i32 @_Z3muliiii(i32 noundef %a, i32 noundef %b, i32 noundef %c, i32 noundef %d) local_unnamed_addr #0 {
+entry:
+  %cmp = icmp eq i32 %a, 500
+  %cmp1 = icmp eq i32 %d, 700
+  %or.cond = and i1 %cmp, %cmp1
+  %add = add nuw nsw i32 %a, 5
+  %cmp3 = icmp eq i32 %c, %add
+  %or.cond7 = select i1 %or.cond, i1 %cmp3, i1 false
+  %mul6 = shl nsw i32 %a, 1
+  %mul6.sink = select i1 %or.cond7, i32 1000, i32 %mul6
+  %mul7 = mul nsw i32 %c, %b
+  %add8 = add nsw i32 %mul7, %mul6.sink
+  ret i32 %add8
+}
+; *** IR Dump After InstCombinePass on _Z3muliiii ***
+; Function Attrs: mustprogress nofree norecurse nosync nounwind willreturn memory(none)
+define dso_local noundef i32 @_Z3muliiii(i32 noundef %a, i32 noundef %b, i32 noundef %c, i32 noundef %d) local_unnamed_addr #0 {
+entry:
+  %cmp = icmp eq i32 %a, 500
+  %cmp1 = icmp eq i32 %d, 700
+  %or.cond = and i1 %cmp, %cmp1
+  %add = add nuw nsw i32 %a, 5
+  %cmp3 = icmp eq i32 %c, %add
+  %or.cond7 = select i1 %or.cond, i1 %cmp3, i1 false
+  %mul6 = shl nsw i32 %a, 1
+  %mul6.sink = select i1 %or.cond7, i32 1000, i32 %mul6
+  %mul7 = mul nsw i32 %c, %b
+  %add8 = add nsw i32 %mul7, %mul6.sink
+  ret i32 %add8
+}
+; *** IR Dump After LoopUnrollPass on _Z3muliiii ***
+; Function Attrs: mustprogress nofree norecurse nosync nounwind willreturn memory(none)
+define dso_local noundef i32 @_Z3muliiii(i32 noundef %a, i32 noundef %b, i32 noundef %c, i32 noundef %d) local_unnamed_addr #0 {
+entry:
+  %cmp = icmp eq i32 %a, 500
+  %cmp1 = icmp eq i32 %d, 700
+  %or.cond = and i1 %cmp, %cmp1
+  %add = add nuw nsw i32 %a, 5
+  %cmp3 = icmp eq i32 %c, %add
+  %or.cond7 = select i1 %or.cond, i1 %cmp3, i1 false
+  %mul6 = shl nsw i32 %a, 1
+  %mul6.sink = select i1 %or.cond7, i32 1000, i32 %mul6
+  %mul7 = mul nsw i32 %c, %b
+  %add8 = add nsw i32 %mul7, %mul6.sink
+  ret i32 %add8
+}
+; *** IR Dump After WarnMissedTransformationsPass on _Z3muliiii ***
+; Function Attrs: mustprogress nofree norecurse nosync nounwind willreturn memory(none)
+define dso_local noundef i32 @_Z3muliiii(i32 noundef %a, i32 noundef %b, i32 noundef %c, i32 noundef %d) local_unnamed_addr #0 {
+entry:
+  %cmp = icmp eq i32 %a, 500
+  %cmp1 = icmp eq i32 %d, 700
+  %or.cond = and i1 %cmp, %cmp1
+  %add = add nuw nsw i32 %a, 5
+  %cmp3 = icmp eq i32 %c, %add
+  %or.cond7 = select i1 %or.cond, i1 %cmp3, i1 false
+  %mul6 = shl nsw i32 %a, 1
+  %mul6.sink = select i1 %or.cond7, i32 1000, i32 %mul6
+  %mul7 = mul nsw i32 %c, %b
+  %add8 = add nsw i32 %mul7, %mul6.sink
+  ret i32 %add8
+}
+; *** IR Dump After SROAPass on _Z3muliiii ***
+; Function Attrs: mustprogress nofree norecurse nosync nounwind willreturn memory(none)
+define dso_local noundef i32 @_Z3muliiii(i32 noundef %a, i32 noundef %b, i32 noundef %c, i32 noundef %d) local_unnamed_addr #0 {
+entry:
+  %cmp = icmp eq i32 %a, 500
+  %cmp1 = icmp eq i32 %d, 700
+  %or.cond = and i1 %cmp, %cmp1
+  %add = add nuw nsw i32 %a, 5
+  %cmp3 = icmp eq i32 %c, %add
+  %or.cond7 = select i1 %or.cond, i1 %cmp3, i1 false
+  %mul6 = shl nsw i32 %a, 1
+  %mul6.sink = select i1 %or.cond7, i32 1000, i32 %mul6
+  %mul7 = mul nsw i32 %c, %b
+  %add8 = add nsw i32 %mul7, %mul6.sink
+  ret i32 %add8
+}
+; *** IR Dump After InferAlignmentPass on _Z3muliiii ***
+; Function Attrs: mustprogress nofree norecurse nosync nounwind willreturn memory(none)
+define dso_local noundef i32 @_Z3muliiii(i32 noundef %a, i32 noundef %b, i32 noundef %c, i32 noundef %d) local_unnamed_addr #0 {
+entry:
+  %cmp = icmp eq i32 %a, 500
+  %cmp1 = icmp eq i32 %d, 700
+  %or.cond = and i1 %cmp, %cmp1
+  %add = add nuw nsw i32 %a, 5
+  %cmp3 = icmp eq i32 %c, %add
+  %or.cond7 = select i1 %or.cond, i1 %cmp3, i1 false
+  %mul6 = shl nsw i32 %a, 1
+  %mul6.sink = select i1 %or.cond7, i32 1000, i32 %mul6
+  %mul7 = mul nsw i32 %c, %b
+  %add8 = add nsw i32 %mul7, %mul6.sink
+  ret i32 %add8
+}
+; *** IR Dump After InstCombinePass on _Z3muliiii ***
+; Function Attrs: mustprogress nofree norecurse nosync nounwind willreturn memory(none)
+define dso_local noundef i32 @_Z3muliiii(i32 noundef %a, i32 noundef %b, i32 noundef %c, i32 noundef %d) local_unnamed_addr #0 {
+entry:
+  %cmp = icmp eq i32 %a, 500
+  %cmp1 = icmp eq i32 %d, 700
+  %or.cond = and i1 %cmp, %cmp1
+  %add = add nuw nsw i32 %a, 5
+  %cmp3 = icmp eq i32 %c, %add
+  %or.cond7 = select i1 %or.cond, i1 %cmp3, i1 false
+  %mul6 = shl nsw i32 %a, 1
+  %mul6.sink = select i1 %or.cond7, i32 1000, i32 %mul6
+  %mul7 = mul nsw i32 %c, %b
+  %add8 = add nsw i32 %mul7, %mul6.sink
+  ret i32 %add8
+}
+; *** IR Dump After LoopSimplifyPass on _Z3muliiii ***
+; Function Attrs: mustprogress nofree norecurse nosync nounwind willreturn memory(none)
+define dso_local noundef i32 @_Z3muliiii(i32 noundef %a, i32 noundef %b, i32 noundef %c, i32 noundef %d) local_unnamed_addr #0 {
+entry:
+  %cmp = icmp eq i32 %a, 500
+  %cmp1 = icmp eq i32 %d, 700
+  %or.cond = and i1 %cmp, %cmp1
+  %add = add nuw nsw i32 %a, 5
+  %cmp3 = icmp eq i32 %c, %add
+  %or.cond7 = select i1 %or.cond, i1 %cmp3, i1 false
+  %mul6 = shl nsw i32 %a, 1
+  %mul6.sink = select i1 %or.cond7, i32 1000, i32 %mul6
+  %mul7 = mul nsw i32 %c, %b
+  %add8 = add nsw i32 %mul7, %mul6.sink
+  ret i32 %add8
+}
+; *** IR Dump After LCSSAPass on _Z3muliiii ***
+; Function Attrs: mustprogress nofree norecurse nosync nounwind willreturn memory(none)
+define dso_local noundef i32 @_Z3muliiii(i32 noundef %a, i32 noundef %b, i32 noundef %c, i32 noundef %d) local_unnamed_addr #0 {
+entry:
+  %cmp = icmp eq i32 %a, 500
+  %cmp1 = icmp eq i32 %d, 700
+  %or.cond = and i1 %cmp, %cmp1
+  %add = add nuw nsw i32 %a, 5
+  %cmp3 = icmp eq i32 %c, %add
+  %or.cond7 = select i1 %or.cond, i1 %cmp3, i1 false
+  %mul6 = shl nsw i32 %a, 1
+  %mul6.sink = select i1 %or.cond7, i32 1000, i32 %mul6
+  %mul7 = mul nsw i32 %c, %b
+  %add8 = add nsw i32 %mul7, %mul6.sink
+  ret i32 %add8
+}
+; *** IR Dump After AlignmentFromAssumptionsPass on _Z3muliiii ***
+; Function Attrs: mustprogress nofree norecurse nosync nounwind willreturn memory(none)
+define dso_local noundef i32 @_Z3muliiii(i32 noundef %a, i32 noundef %b, i32 noundef %c, i32 noundef %d) local_unnamed_addr #0 {
+entry:
+  %cmp = icmp eq i32 %a, 500
+  %cmp1 = icmp eq i32 %d, 700
+  %or.cond = and i1 %cmp, %cmp1
+  %add = add nuw nsw i32 %a, 5
+  %cmp3 = icmp eq i32 %c, %add
+  %or.cond7 = select i1 %or.cond, i1 %cmp3, i1 false
+  %mul6 = shl nsw i32 %a, 1
+  %mul6.sink = select i1 %or.cond7, i32 1000, i32 %mul6
+  %mul7 = mul nsw i32 %c, %b
+  %add8 = add nsw i32 %mul7, %mul6.sink
+  ret i32 %add8
+}
+; *** IR Dump After LoopSinkPass on _Z3muliiii ***
+; Function Attrs: mustprogress nofree norecurse nosync nounwind willreturn memory(none)
+define dso_local noundef i32 @_Z3muliiii(i32 noundef %a, i32 noundef %b, i32 noundef %c, i32 noundef %d) local_unnamed_addr #0 {
+entry:
+  %cmp = icmp eq i32 %a, 500
+  %cmp1 = icmp eq i32 %d, 700
+  %or.cond = and i1 %cmp, %cmp1
+  %add = add nuw nsw i32 %a, 5
+  %cmp3 = icmp eq i32 %c, %add
+  %or.cond7 = select i1 %or.cond, i1 %cmp3, i1 false
+  %mul6 = shl nsw i32 %a, 1
+  %mul6.sink = select i1 %or.cond7, i32 1000, i32 %mul6
+  %mul7 = mul nsw i32 %c, %b
+  %add8 = add nsw i32 %mul7, %mul6.sink
+  ret i32 %add8
+}
+; *** IR Dump After InstSimplifyPass on _Z3muliiii ***
+; Function Attrs: mustprogress nofree norecurse nosync nounwind willreturn memory(none)
+define dso_local noundef i32 @_Z3muliiii(i32 noundef %a, i32 noundef %b, i32 noundef %c, i32 noundef %d) local_unnamed_addr #0 {
+entry:
+  %cmp = icmp eq i32 %a, 500
+  %cmp1 = icmp eq i32 %d, 700
+  %or.cond = and i1 %cmp, %cmp1
+  %add = add nuw nsw i32 %a, 5
+  %cmp3 = icmp eq i32 %c, %add
+  %or.cond7 = select i1 %or.cond, i1 %cmp3, i1 false
+  %mul6 = shl nsw i32 %a, 1
+  %mul6.sink = select i1 %or.cond7, i32 1000, i32 %mul6
+  %mul7 = mul nsw i32 %c, %b
+  %add8 = add nsw i32 %mul7, %mul6.sink
+  ret i32 %add8
+}
+; *** IR Dump After DivRemPairsPass on _Z3muliiii ***
+; Function Attrs: mustprogress nofree norecurse nosync nounwind willreturn memory(none)
+define dso_local noundef i32 @_Z3muliiii(i32 noundef %a, i32 noundef %b, i32 noundef %c, i32 noundef %d) local_unnamed_addr #0 {
+entry:
+  %cmp = icmp eq i32 %a, 500
+  %cmp1 = icmp eq i32 %d, 700
+  %or.cond = and i1 %cmp, %cmp1
+  %add = add nuw nsw i32 %a, 5
+  %cmp3 = icmp eq i32 %c, %add
+  %or.cond7 = select i1 %or.cond, i1 %cmp3, i1 false
+  %mul6 = shl nsw i32 %a, 1
+  %mul6.sink = select i1 %or.cond7, i32 1000, i32 %mul6
+  %mul7 = mul nsw i32 %c, %b
+  %add8 = add nsw i32 %mul7, %mul6.sink
+  ret i32 %add8
+}
+; *** IR Dump After TailCallElimPass on _Z3muliiii ***
+; Function Attrs: mustprogress nofree norecurse nosync nounwind willreturn memory(none)
+define dso_local noundef i32 @_Z3muliiii(i32 noundef %a, i32 noundef %b, i32 noundef %c, i32 noundef %d) local_unnamed_addr #0 {
+entry:
+  %cmp = icmp eq i32 %a, 500
+  %cmp1 = icmp eq i32 %d, 700
+  %or.cond = and i1 %cmp, %cmp1
+  %add = add nuw nsw i32 %a, 5
+  %cmp3 = icmp eq i32 %c, %add
+  %or.cond7 = select i1 %or.cond, i1 %cmp3, i1 false
+  %mul6 = shl nsw i32 %a, 1
+  %mul6.sink = select i1 %or.cond7, i32 1000, i32 %mul6
+  %mul7 = mul nsw i32 %c, %b
+  %add8 = add nsw i32 %mul7, %mul6.sink
+  ret i32 %add8
+}
+; *** IR Dump After SimplifyCFGPass on _Z3muliiii ***
+; Function Attrs: mustprogress nofree norecurse nosync nounwind willreturn memory(none)
+define dso_local noundef i32 @_Z3muliiii(i32 noundef %a, i32 noundef %b, i32 noundef %c, i32 noundef %d) local_unnamed_addr #0 {
+entry:
+  %cmp = icmp eq i32 %a, 500
+  %cmp1 = icmp eq i32 %d, 700
+  %or.cond = and i1 %cmp, %cmp1
+  %add = add nuw nsw i32 %a, 5
+  %cmp3 = icmp eq i32 %c, %add
+  %or.cond7 = select i1 %or.cond, i1 %cmp3, i1 false
+  %mul6 = shl nsw i32 %a, 1
+  %mul6.sink = select i1 %or.cond7, i32 1000, i32 %mul6
+  %mul7 = mul nsw i32 %c, %b
+  %add8 = add nsw i32 %mul7, %mul6.sink
+  ret i32 %add8
+}
+; *** IR Dump After GlobalDCEPass on [module] ***
+; ModuleID = 'mul_smb.ll'
+source_filename = "mul_smb.ll"
+
+; Function Attrs: mustprogress nofree norecurse nosync nounwind willreturn memory(none)
+define dso_local noundef i32 @_Z3muliiii(i32 noundef %a, i32 noundef %b, i32 noundef %c, i32 noundef %d) local_unnamed_addr #0 {
+entry:
+  %cmp = icmp eq i32 %a, 500
+  %cmp1 = icmp eq i32 %d, 700
+  %or.cond = and i1 %cmp, %cmp1
+  %add = add nuw nsw i32 %a, 5
+  %cmp3 = icmp eq i32 %c, %add
+  %or.cond7 = select i1 %or.cond, i1 %cmp3, i1 false
+  %mul6 = shl nsw i32 %a, 1
+  %mul6.sink = select i1 %or.cond7, i32 1000, i32 %mul6
+  %mul7 = mul nsw i32 %c, %b
+  %add8 = add nsw i32 %mul7, %mul6.sink
+  ret i32 %add8
+}
+
+attributes #0 = { mustprogress nofree norecurse nosync nounwind willreturn memory(none) }
+; *** IR Dump After ConstantMergePass on [module] ***
+; ModuleID = 'mul_smb.ll'
+source_filename = "mul_smb.ll"
+
+; Function Attrs: mustprogress nofree norecurse nosync nounwind willreturn memory(none)
+define dso_local noundef i32 @_Z3muliiii(i32 noundef %a, i32 noundef %b, i32 noundef %c, i32 noundef %d) local_unnamed_addr #0 {
+entry:
+  %cmp = icmp eq i32 %a, 500
+  %cmp1 = icmp eq i32 %d, 700
+  %or.cond = and i1 %cmp, %cmp1
+  %add = add nuw nsw i32 %a, 5
+  %cmp3 = icmp eq i32 %c, %add
+  %or.cond7 = select i1 %or.cond, i1 %cmp3, i1 false
+  %mul6 = shl nsw i32 %a, 1
+  %mul6.sink = select i1 %or.cond7, i32 1000, i32 %mul6
+  %mul7 = mul nsw i32 %c, %b
+  %add8 = add nsw i32 %mul7, %mul6.sink
+  ret i32 %add8
+}
+
+attributes #0 = { mustprogress nofree norecurse nosync nounwind willreturn memory(none) }
+; *** IR Dump After CGProfilePass on [module] ***
+; ModuleID = 'mul_smb.ll'
+source_filename = "mul_smb.ll"
+
+; Function Attrs: mustprogress nofree norecurse nosync nounwind willreturn memory(none)
+define dso_local noundef i32 @_Z3muliiii(i32 noundef %a, i32 noundef %b, i32 noundef %c, i32 noundef %d) local_unnamed_addr #0 {
+entry:
+  %cmp = icmp eq i32 %a, 500
+  %cmp1 = icmp eq i32 %d, 700
+  %or.cond = and i1 %cmp, %cmp1
+  %add = add nuw nsw i32 %a, 5
+  %cmp3 = icmp eq i32 %c, %add
+  %or.cond7 = select i1 %or.cond, i1 %cmp3, i1 false
+  %mul6 = shl nsw i32 %a, 1
+  %mul6.sink = select i1 %or.cond7, i32 1000, i32 %mul6
+  %mul7 = mul nsw i32 %c, %b
+  %add8 = add nsw i32 %mul7, %mul6.sink
+  ret i32 %add8
+}
+
+attributes #0 = { mustprogress nofree norecurse nosync nounwind willreturn memory(none) }
+; *** IR Dump After RelLookupTableConverterPass on [module] ***
+; ModuleID = 'mul_smb.ll'
+source_filename = "mul_smb.ll"
+
+; Function Attrs: mustprogress nofree norecurse nosync nounwind willreturn memory(none)
+define dso_local noundef i32 @_Z3muliiii(i32 noundef %a, i32 noundef %b, i32 noundef %c, i32 noundef %d) local_unnamed_addr #0 {
+entry:
+  %cmp = icmp eq i32 %a, 500
+  %cmp1 = icmp eq i32 %d, 700
+  %or.cond = and i1 %cmp, %cmp1
+  %add = add nuw nsw i32 %a, 5
+  %cmp3 = icmp eq i32 %c, %add
+  %or.cond7 = select i1 %or.cond, i1 %cmp3, i1 false
+  %mul6 = shl nsw i32 %a, 1
+  %mul6.sink = select i1 %or.cond7, i32 1000, i32 %mul6
+  %mul7 = mul nsw i32 %c, %b
+  %add8 = add nsw i32 %mul7, %mul6.sink
+  ret i32 %add8
+}
+
+attributes #0 = { mustprogress nofree norecurse nosync nounwind willreturn memory(none) }
+; *** IR Dump After AnnotationRemarksPass on _Z3muliiii ***
+; Function Attrs: mustprogress nofree norecurse nosync nounwind willreturn memory(none)
+define dso_local noundef i32 @_Z3muliiii(i32 noundef %a, i32 noundef %b, i32 noundef %c, i32 noundef %d) local_unnamed_addr #0 {
+entry:
+  %cmp = icmp eq i32 %a, 500
+  %cmp1 = icmp eq i32 %d, 700
+  %or.cond = and i1 %cmp, %cmp1
+  %add = add nuw nsw i32 %a, 5
+  %cmp3 = icmp eq i32 %c, %add
+  %or.cond7 = select i1 %or.cond, i1 %cmp3, i1 false
+  %mul6 = shl nsw i32 %a, 1
+  %mul6.sink = select i1 %or.cond7, i32 1000, i32 %mul6
+  %mul7 = mul nsw i32 %c, %b
+  %add8 = add nsw i32 %mul7, %mul6.sink
+  ret i32 %add8
+}
