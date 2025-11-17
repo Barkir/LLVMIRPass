@@ -6,17 +6,10 @@ target triple = "x86_64-unknown-linux-gnu"
 ; Function Attrs: mustprogress nofree noinline norecurse nosync nounwind willreturn memory(none) uwtable
 define dso_local noundef i32 @_Z3fooiiii(i32 noundef %a, i32 noundef %b, i32 noundef %c, i32 noundef %d) local_unnamed_addr #0 {
 entry:
-  %cmp = icmp eq i32 %a, 500
-  %cmp1 = icmp eq i32 %b, 700
-  %or.cond = and i1 %cmp, %cmp1
-  %add = add nuw nsw i32 %a, 5
-  %cmp3 = icmp eq i32 %c, %add
-  %or.cond5 = select i1 %or.cond, i1 %cmp3, i1 false
   %mul = shl nsw i32 %a, 1
   %mul4 = mul nsw i32 %c, %b
   %add5 = add nsw i32 %mul4, %mul
-  %res.0 = select i1 %or.cond5, i32 354500, i32 %add5
-  ret i32 %res.0
+  ret i32 %add5
 }
 
 attributes #0 = { mustprogress nofree noinline norecurse nosync nounwind willreturn memory(none) uwtable "frame-pointer"="all" "min-legal-vector-width"="0" "no-trapping-math"="true" "stack-protector-buffer-size"="8" "target-cpu"="x86-64" "target-features"="+cmov,+cx8,+fxsr,+mmx,+sse,+sse2,+x87" "tune-cpu"="generic" }
