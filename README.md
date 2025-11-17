@@ -81,9 +81,62 @@ EarlyFPM.addPass(SimplifyCFGPass());
 
 | Test number | Test            |
 | ----------- | --------------- |
-| 1           | [[Тест 1\|tap]] |
-| 2           | [[Тест 2\|tap]] |
-| 3           | [[Тест 3\|tap]] |
-|             |                 |
-~
-~
+| 1           | [tap](./test1.md) |
+| 2           | [tap](./test2.md) |
+| 3           | [tap](./test3.md) |
+
+In the next part of the research I tried to find tests that won't be optimized because of modified pass pipeline. I found those, you can find them [here](./MixedConstantsTests/)
+
+```cpp
+int mul_intV4(int a, int b, int c, int d) {
+
+    int res;
+    if (a == 500 && d == 700 && c == a + 5) {
+        res = a * c * b + d;
+    } else {
+        res = a * b * c + d;
+    }
+    return res;
+}
+```
+
+That's why I tried to modify SimplifyCFG inside.
+It has some paramaters which can be modified, they are situated below.
+
+![alt text](./md/image.png)
+
+It was decided to modify `MaxSmallBlockSize` and `BranchFoldToCommonDestVectorMultiplier`. It won't give any results though.
+
+### CollapseIdenticalNodes Pass
+It was decided to write a pass that would notice the pattern and optimize **IR** code.
+
+#### Current Result with this pass (-O2 flag)
+
+###### Before
+```llvm
+define dso_local noundef i32 @foo(int, int, int, int)(i32 noundef %a, i32 noundef %b, i32 noundef %c, i32 noundef %d) local_unnamed_addr {
+entry:
+  %cmp = icmp eq i32 %a, 500
+  %cmp1 = icmp eq i32 %b, 700
+  %or.cond = and i1 %cmp, %cmp1
+  %cmp3 = icmp eq i32 %c, 505
+  %or.cond10 = and i1 %or.cond, %cmp3
+  %mul = shl nsw i32 %a, 1
+  %mul4 = mul nsw i32 %b, %b
+  %add5 = add nsw i32 %mul4, %mul
+  %res.0 = select i1 %or.cond10, i32 354500, i32 %add5
+  ret i32 %res.0
+}
+
+```
+###### After
+```llvm
+define dso_local noundef i32 @_Z3fooiiii(i32 noundef %a, i32 noundef %b, i32 noundef %c, i32 noundef %d) local_unnamed_addr #0 {
+entry:
+  %mul = shl nsw i32 %a, 1
+  %mul4 = mul nsw i32 %c, %b
+  %add5 = add nsw i32 %mul4, %mul
+  ret i32 %add5
+}
+```
+

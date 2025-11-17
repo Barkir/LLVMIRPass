@@ -3,7 +3,7 @@ int foo(int a, int b, int c, int d) {
     if (a == 500 && b == 700 && c == a + 5) {
         res = 354500;
     } else {
-        res = 2 * a + b * c;
+        res = 2 * a + b * b;
     }
 
     return res;
