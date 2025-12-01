@@ -144,5 +144,75 @@ entry:
 }
 ```
 
+##### Provement problem
+The pass would also optmize this test and delete the phi-node
+
+
+```cpp
+int foo(int a, int b, int c, int d) {
+    int res = 0;
+    if (a == 500 && b == 700 && c == a + 5 || d == b * 8) {
+        res = 496600;
+    } else {
+        res = 2 * a + b * b + d;
+    }
+
+    return res;
+}
+```
+
+So it is needed to create an algorithm to proof that condition consists of `&&`
+
+This is a function which makes this check
+
+```cpp
+bool proofConjuctionLinks() {
+    errs() << UCYN "proofConjuctionLinks" RESET << "\n";
+    for (auto it = icmpTable.begin(), end = icmpTable.end() - 1; it != end; ++it) {
+        errs() << **it << **(it + 1) << "\n";
+        if (!checkLinkThruTerminator(it, it + 1) && !checkLinkThruSelect(it, it+1)) {
+            return false;
+        }
+    }
+    return true;
+    errs() << UCYN "END OF FUNC" RESET << "\n";
+}
+```
+
+As the result our pass won't optimize the condition with `||`
+
+```llvm
+define dso_local noundef i32 @_Z3fooiiii(i32 noundef %a, i32 noundef %b, i32 noundef %c, i32 noundef %d) local_unnamed_addr #0 {
+entry:
+  %cmp = icmp eq i32 %a, 500
+  %cmp1 = icmp eq i32 %b, 700
+  %or.cond = and i1 %cmp, %cmp1
+  %add = add nuw nsw i32 %a, 5
+  %cmp3 = icmp eq i32 %c, %add
+  %or.cond7 = select i1 %or.cond, i1 %cmp3, i1 false
+  %mul = shl nsw i32 %b, 3
+  %cmp4 = icmp eq i32 %d, %mul
+  %or.cond8 = select i1 %or.cond7, i1 true, i1 %cmp4
+  %mul5 = shl nsw i32 %a, 1
+  %mul6 = mul nsw i32 %b, %b
+  %add7 = add nsw i32 %mul6, %mul5
+  %add8 = add nsw i32 %add7, %d
+  %res.0 = select i1 %or.cond8, i32 496600, i32 %add8
+  ret i32 %res.0
+}
+```
+
+And this is the result we get if replace `||` to `&&`
+
+```llvm
+define dso_local noundef i32 @_Z3fooiiii(i32 noundef %a, i32 noundef %b, i32 noundef %c, i32 noundef %d) local_unnamed_addr #0 {
+entry:
+  %mul6 = shl nsw i32 %a, 1
+  %mul7 = mul nsw i32 %b, %b
+  %add8 = add nsw i32 %mul7, %mul6
+  %add9 = add nsw i32 %add8, %d
+  ret i32 %add9
+}
+```
 
 
