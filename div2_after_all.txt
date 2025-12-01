@@ -31,25 +31,34 @@ land.lhs.true2:                                   ; preds = %land.lhs.true
   %3 = load i32, ptr %a.addr, align 4
   %add = add nsw i32 %3, 5
   %cmp3 = icmp eq i32 %2, %add
-  br i1 %cmp3, label %if.then, label %if.else
+  br i1 %cmp3, label %land.lhs.true4, label %if.else
 
-if.then:                                          ; preds = %land.lhs.true2
-  store i32 354500, ptr %res, align 4
+land.lhs.true4:                                   ; preds = %land.lhs.true2
+  %4 = load i32, ptr %d.addr, align 4
+  %5 = load i32, ptr %b.addr, align 4
+  %mul = mul nsw i32 %5, 8
+  %cmp5 = icmp eq i32 %4, %mul
+  br i1 %cmp5, label %if.then, label %if.else
+
+if.then:                                          ; preds = %land.lhs.true4
+  store i32 496600, ptr %res, align 4
   br label %if.end
 
-if.else:                                          ; preds = %land.lhs.true2, %land.lhs.true, %entry
-  %4 = load i32, ptr %a.addr, align 4
-  %mul = mul nsw i32 2, %4
-  %5 = load i32, ptr %b.addr, align 4
-  %6 = load i32, ptr %c.addr, align 4
-  %mul4 = mul nsw i32 %5, %6
-  %add5 = add nsw i32 %mul, %mul4
-  store i32 %add5, ptr %res, align 4
+if.else:                                          ; preds = %land.lhs.true4, %land.lhs.true2, %land.lhs.true, %entry
+  %6 = load i32, ptr %a.addr, align 4
+  %mul6 = mul nsw i32 2, %6
+  %7 = load i32, ptr %b.addr, align 4
+  %8 = load i32, ptr %b.addr, align 4
+  %mul7 = mul nsw i32 %7, %8
+  %add8 = add nsw i32 %mul6, %mul7
+  %9 = load i32, ptr %d.addr, align 4
+  %add9 = add nsw i32 %add8, %9
+  store i32 %add9, ptr %res, align 4
   br label %if.end
 
 if.end:                                           ; preds = %if.else, %if.then
-  %7 = load i32, ptr %res, align 4
-  ret i32 %7
+  %10 = load i32, ptr %res, align 4
+  ret i32 %10
 }
 
 attributes #0 = { mustprogress noinline nounwind uwtable "frame-pointer"="all" "min-legal-vector-width"="0" "no-trapping-math"="true" "stack-protector-buffer-size"="8" "target-cpu"="x86-64" "target-features"="+cmov,+cx8,+fxsr,+mmx,+sse,+sse2,+x87" "tune-cpu"="generic" }
@@ -96,25 +105,34 @@ land.lhs.true2:                                   ; preds = %land.lhs.true
   %3 = load i32, ptr %a.addr, align 4
   %add = add nsw i32 %3, 5
   %cmp3 = icmp eq i32 %2, %add
-  br i1 %cmp3, label %if.then, label %if.else
+  br i1 %cmp3, label %land.lhs.true4, label %if.else
 
-if.then:                                          ; preds = %land.lhs.true2
-  store i32 354500, ptr %res, align 4
+land.lhs.true4:                                   ; preds = %land.lhs.true2
+  %4 = load i32, ptr %d.addr, align 4
+  %5 = load i32, ptr %b.addr, align 4
+  %mul = mul nsw i32 %5, 8
+  %cmp5 = icmp eq i32 %4, %mul
+  br i1 %cmp5, label %if.then, label %if.else
+
+if.then:                                          ; preds = %land.lhs.true4
+  store i32 496600, ptr %res, align 4
   br label %if.end
 
-if.else:                                          ; preds = %land.lhs.true2, %land.lhs.true, %entry
-  %4 = load i32, ptr %a.addr, align 4
-  %mul = mul nsw i32 2, %4
-  %5 = load i32, ptr %b.addr, align 4
-  %6 = load i32, ptr %c.addr, align 4
-  %mul4 = mul nsw i32 %5, %6
-  %add5 = add nsw i32 %mul, %mul4
-  store i32 %add5, ptr %res, align 4
+if.else:                                          ; preds = %land.lhs.true4, %land.lhs.true2, %land.lhs.true, %entry
+  %6 = load i32, ptr %a.addr, align 4
+  %mul6 = mul nsw i32 2, %6
+  %7 = load i32, ptr %b.addr, align 4
+  %8 = load i32, ptr %b.addr, align 4
+  %mul7 = mul nsw i32 %7, %8
+  %add8 = add nsw i32 %mul6, %mul7
+  %9 = load i32, ptr %d.addr, align 4
+  %add9 = add nsw i32 %add8, %9
+  store i32 %add9, ptr %res, align 4
   br label %if.end
 
 if.end:                                           ; preds = %if.else, %if.then
-  %7 = load i32, ptr %res, align 4
-  ret i32 %7
+  %10 = load i32, ptr %res, align 4
+  ret i32 %10
 }
 
 attributes #0 = { mustprogress noinline nounwind uwtable "frame-pointer"="all" "min-legal-vector-width"="0" "no-trapping-math"="true" "stack-protector-buffer-size"="8" "target-cpu"="x86-64" "target-features"="+cmov,+cx8,+fxsr,+mmx,+sse,+sse2,+x87" "tune-cpu"="generic" }
@@ -161,25 +179,34 @@ land.lhs.true2:                                   ; preds = %land.lhs.true
   %3 = load i32, ptr %a.addr, align 4
   %add = add nsw i32 %3, 5
   %cmp3 = icmp eq i32 %2, %add
-  br i1 %cmp3, label %if.then, label %if.else
+  br i1 %cmp3, label %land.lhs.true4, label %if.else
 
-if.then:                                          ; preds = %land.lhs.true2
-  store i32 354500, ptr %res, align 4
+land.lhs.true4:                                   ; preds = %land.lhs.true2
+  %4 = load i32, ptr %d.addr, align 4
+  %5 = load i32, ptr %b.addr, align 4
+  %mul = mul nsw i32 %5, 8
+  %cmp5 = icmp eq i32 %4, %mul
+  br i1 %cmp5, label %if.then, label %if.else
+
+if.then:                                          ; preds = %land.lhs.true4
+  store i32 496600, ptr %res, align 4
   br label %if.end
 
-if.else:                                          ; preds = %land.lhs.true2, %land.lhs.true, %entry
-  %4 = load i32, ptr %a.addr, align 4
-  %mul = mul nsw i32 2, %4
-  %5 = load i32, ptr %b.addr, align 4
-  %6 = load i32, ptr %c.addr, align 4
-  %mul4 = mul nsw i32 %5, %6
-  %add5 = add nsw i32 %mul, %mul4
-  store i32 %add5, ptr %res, align 4
+if.else:                                          ; preds = %land.lhs.true4, %land.lhs.true2, %land.lhs.true, %entry
+  %6 = load i32, ptr %a.addr, align 4
+  %mul6 = mul nsw i32 2, %6
+  %7 = load i32, ptr %b.addr, align 4
+  %8 = load i32, ptr %b.addr, align 4
+  %mul7 = mul nsw i32 %7, %8
+  %add8 = add nsw i32 %mul6, %mul7
+  %9 = load i32, ptr %d.addr, align 4
+  %add9 = add nsw i32 %add8, %9
+  store i32 %add9, ptr %res, align 4
   br label %if.end
 
 if.end:                                           ; preds = %if.else, %if.then
-  %7 = load i32, ptr %res, align 4
-  ret i32 %7
+  %10 = load i32, ptr %res, align 4
+  ret i32 %10
 }
 
 attributes #0 = { mustprogress noinline nounwind uwtable "frame-pointer"="all" "min-legal-vector-width"="0" "no-trapping-math"="true" "stack-protector-buffer-size"="8" "target-cpu"="x86-64" "target-features"="+cmov,+cx8,+fxsr,+mmx,+sse,+sse2,+x87" "tune-cpu"="generic" }
@@ -226,25 +253,34 @@ land.lhs.true2:                                   ; preds = %land.lhs.true
   %3 = load i32, ptr %a.addr, align 4
   %add = add nsw i32 %3, 5
   %cmp3 = icmp eq i32 %2, %add
-  br i1 %cmp3, label %if.then, label %if.else
+  br i1 %cmp3, label %land.lhs.true4, label %if.else
 
-if.then:                                          ; preds = %land.lhs.true2
-  store i32 354500, ptr %res, align 4
+land.lhs.true4:                                   ; preds = %land.lhs.true2
+  %4 = load i32, ptr %d.addr, align 4
+  %5 = load i32, ptr %b.addr, align 4
+  %mul = mul nsw i32 %5, 8
+  %cmp5 = icmp eq i32 %4, %mul
+  br i1 %cmp5, label %if.then, label %if.else
+
+if.then:                                          ; preds = %land.lhs.true4
+  store i32 496600, ptr %res, align 4
   br label %if.end
 
-if.else:                                          ; preds = %land.lhs.true2, %land.lhs.true, %entry
-  %4 = load i32, ptr %a.addr, align 4
-  %mul = mul nsw i32 2, %4
-  %5 = load i32, ptr %b.addr, align 4
-  %6 = load i32, ptr %c.addr, align 4
-  %mul4 = mul nsw i32 %5, %6
-  %add5 = add nsw i32 %mul, %mul4
-  store i32 %add5, ptr %res, align 4
+if.else:                                          ; preds = %land.lhs.true4, %land.lhs.true2, %land.lhs.true, %entry
+  %6 = load i32, ptr %a.addr, align 4
+  %mul6 = mul nsw i32 2, %6
+  %7 = load i32, ptr %b.addr, align 4
+  %8 = load i32, ptr %b.addr, align 4
+  %mul7 = mul nsw i32 %7, %8
+  %add8 = add nsw i32 %mul6, %mul7
+  %9 = load i32, ptr %d.addr, align 4
+  %add9 = add nsw i32 %add8, %9
+  store i32 %add9, ptr %res, align 4
   br label %if.end
 
 if.end:                                           ; preds = %if.else, %if.then
-  %7 = load i32, ptr %res, align 4
-  ret i32 %7
+  %10 = load i32, ptr %res, align 4
+  ret i32 %10
 }
 
 attributes #0 = { mustprogress noinline nounwind uwtable "frame-pointer"="all" "min-legal-vector-width"="0" "no-trapping-math"="true" "stack-protector-buffer-size"="8" "target-cpu"="x86-64" "target-features"="+cmov,+cx8,+fxsr,+mmx,+sse,+sse2,+x87" "tune-cpu"="generic" }
@@ -286,25 +322,34 @@ land.lhs.true2:                                   ; preds = %land.lhs.true
   %3 = load i32, ptr %a.addr, align 4
   %add = add nsw i32 %3, 5
   %cmp3 = icmp eq i32 %2, %add
-  br i1 %cmp3, label %if.then, label %if.else
+  br i1 %cmp3, label %land.lhs.true4, label %if.else
 
-if.then:                                          ; preds = %land.lhs.true2
-  store i32 354500, ptr %res, align 4
+land.lhs.true4:                                   ; preds = %land.lhs.true2
+  %4 = load i32, ptr %d.addr, align 4
+  %5 = load i32, ptr %b.addr, align 4
+  %mul = mul nsw i32 %5, 8
+  %cmp5 = icmp eq i32 %4, %mul
+  br i1 %cmp5, label %if.then, label %if.else
+
+if.then:                                          ; preds = %land.lhs.true4
+  store i32 496600, ptr %res, align 4
   br label %if.end
 
-if.else:                                          ; preds = %land.lhs.true2, %land.lhs.true, %entry
-  %4 = load i32, ptr %a.addr, align 4
-  %mul = mul nsw i32 2, %4
-  %5 = load i32, ptr %b.addr, align 4
-  %6 = load i32, ptr %c.addr, align 4
-  %mul4 = mul nsw i32 %5, %6
-  %add5 = add nsw i32 %mul, %mul4
-  store i32 %add5, ptr %res, align 4
+if.else:                                          ; preds = %land.lhs.true4, %land.lhs.true2, %land.lhs.true, %entry
+  %6 = load i32, ptr %a.addr, align 4
+  %mul6 = mul nsw i32 2, %6
+  %7 = load i32, ptr %b.addr, align 4
+  %8 = load i32, ptr %b.addr, align 4
+  %mul7 = mul nsw i32 %7, %8
+  %add8 = add nsw i32 %mul6, %mul7
+  %9 = load i32, ptr %d.addr, align 4
+  %add9 = add nsw i32 %add8, %9
+  store i32 %add9, ptr %res, align 4
   br label %if.end
 
 if.end:                                           ; preds = %if.else, %if.then
-  %7 = load i32, ptr %res, align 4
-  ret i32 %7
+  %10 = load i32, ptr %res, align 4
+  ret i32 %10
 }
 ; *** IR Dump After LowerExpectIntrinsicPass on _Z3fooiiii ***
 ; Function Attrs: mustprogress noinline nounwind uwtable
@@ -334,25 +379,34 @@ land.lhs.true2:                                   ; preds = %land.lhs.true
   %3 = load i32, ptr %a.addr, align 4
   %add = add nsw i32 %3, 5
   %cmp3 = icmp eq i32 %2, %add
-  br i1 %cmp3, label %if.then, label %if.else
+  br i1 %cmp3, label %land.lhs.true4, label %if.else
 
-if.then:                                          ; preds = %land.lhs.true2
-  store i32 354500, ptr %res, align 4
+land.lhs.true4:                                   ; preds = %land.lhs.true2
+  %4 = load i32, ptr %d.addr, align 4
+  %5 = load i32, ptr %b.addr, align 4
+  %mul = mul nsw i32 %5, 8
+  %cmp5 = icmp eq i32 %4, %mul
+  br i1 %cmp5, label %if.then, label %if.else
+
+if.then:                                          ; preds = %land.lhs.true4
+  store i32 496600, ptr %res, align 4
   br label %if.end
 
-if.else:                                          ; preds = %land.lhs.true2, %land.lhs.true, %entry
-  %4 = load i32, ptr %a.addr, align 4
-  %mul = mul nsw i32 2, %4
-  %5 = load i32, ptr %b.addr, align 4
-  %6 = load i32, ptr %c.addr, align 4
-  %mul4 = mul nsw i32 %5, %6
-  %add5 = add nsw i32 %mul, %mul4
-  store i32 %add5, ptr %res, align 4
+if.else:                                          ; preds = %land.lhs.true4, %land.lhs.true2, %land.lhs.true, %entry
+  %6 = load i32, ptr %a.addr, align 4
+  %mul6 = mul nsw i32 2, %6
+  %7 = load i32, ptr %b.addr, align 4
+  %8 = load i32, ptr %b.addr, align 4
+  %mul7 = mul nsw i32 %7, %8
+  %add8 = add nsw i32 %mul6, %mul7
+  %9 = load i32, ptr %d.addr, align 4
+  %add9 = add nsw i32 %add8, %9
+  store i32 %add9, ptr %res, align 4
   br label %if.end
 
 if.end:                                           ; preds = %if.else, %if.then
-  %7 = load i32, ptr %res, align 4
-  ret i32 %7
+  %10 = load i32, ptr %res, align 4
+  ret i32 %10
 }
 ; *** IR Dump After SimplifyCFGPass on _Z3fooiiii ***
 ; Function Attrs: mustprogress noinline nounwind uwtable
@@ -380,25 +434,34 @@ land.lhs.true2:                                   ; preds = %entry
   %3 = load i32, ptr %a.addr, align 4
   %add = add nsw i32 %3, 5
   %cmp3 = icmp eq i32 %2, %add
-  br i1 %cmp3, label %if.then, label %if.else
+  br i1 %cmp3, label %land.lhs.true4, label %if.else
 
-if.then:                                          ; preds = %land.lhs.true2
-  store i32 354500, ptr %res, align 4
+land.lhs.true4:                                   ; preds = %land.lhs.true2
+  %4 = load i32, ptr %d.addr, align 4
+  %5 = load i32, ptr %b.addr, align 4
+  %mul = mul nsw i32 %5, 8
+  %cmp5 = icmp eq i32 %4, %mul
+  br i1 %cmp5, label %if.then, label %if.else
+
+if.then:                                          ; preds = %land.lhs.true4
+  store i32 496600, ptr %res, align 4
   br label %if.end
 
-if.else:                                          ; preds = %land.lhs.true2, %entry
-  %4 = load i32, ptr %a.addr, align 4
-  %mul = mul nsw i32 2, %4
-  %5 = load i32, ptr %b.addr, align 4
-  %6 = load i32, ptr %c.addr, align 4
-  %mul4 = mul nsw i32 %5, %6
-  %add5 = add nsw i32 %mul, %mul4
-  store i32 %add5, ptr %res, align 4
+if.else:                                          ; preds = %land.lhs.true4, %land.lhs.true2, %entry
+  %6 = load i32, ptr %a.addr, align 4
+  %mul6 = mul nsw i32 2, %6
+  %7 = load i32, ptr %b.addr, align 4
+  %8 = load i32, ptr %b.addr, align 4
+  %mul7 = mul nsw i32 %7, %8
+  %add8 = add nsw i32 %mul6, %mul7
+  %9 = load i32, ptr %d.addr, align 4
+  %add9 = add nsw i32 %add8, %9
+  store i32 %add9, ptr %res, align 4
   br label %if.end
 
 if.end:                                           ; preds = %if.else, %if.then
-  %7 = load i32, ptr %res, align 4
-  ret i32 %7
+  %10 = load i32, ptr %res, align 4
+  ret i32 %10
 }
 ; *** IR Dump After SROAPass on _Z3fooiiii ***
 ; Function Attrs: mustprogress noinline nounwind uwtable
@@ -412,19 +475,25 @@ entry:
 land.lhs.true2:                                   ; preds = %entry
   %add = add nsw i32 %a, 5
   %cmp3 = icmp eq i32 %c, %add
-  br i1 %cmp3, label %if.then, label %if.else
+  br i1 %cmp3, label %land.lhs.true4, label %if.else
 
-if.then:                                          ; preds = %land.lhs.true2
+land.lhs.true4:                                   ; preds = %land.lhs.true2
+  %mul = mul nsw i32 %b, 8
+  %cmp5 = icmp eq i32 %d, %mul
+  br i1 %cmp5, label %if.then, label %if.else
+
+if.then:                                          ; preds = %land.lhs.true4
   br label %if.end
 
-if.else:                                          ; preds = %land.lhs.true2, %entry
-  %mul = mul nsw i32 2, %a
-  %mul4 = mul nsw i32 %b, %c
-  %add5 = add nsw i32 %mul, %mul4
+if.else:                                          ; preds = %land.lhs.true4, %land.lhs.true2, %entry
+  %mul6 = mul nsw i32 2, %a
+  %mul7 = mul nsw i32 %b, %b
+  %add8 = add nsw i32 %mul6, %mul7
+  %add9 = add nsw i32 %add8, %d
   br label %if.end
 
 if.end:                                           ; preds = %if.else, %if.then
-  %res.0 = phi i32 [ 354500, %if.then ], [ %add5, %if.else ]
+  %res.0 = phi i32 [ 496600, %if.then ], [ %add9, %if.else ]
   ret i32 %res.0
 }
 Starting CollapseIdenticalNodesPass...
@@ -437,20 +506,26 @@ Starting CollapseIdenticalNodesPass...
 [4;36mPhiNodeWithConstant[0m
 [1;33mGot instruction   %add = add nsw i32 %a, 5[0m
 [1;33mGot instruction   %cmp3 = icmp eq i32 %c, %add[0m
-[1;33mGot instruction   br i1 %cmp3, label %if.then, label %if.else[0m
+[1;33mGot instruction   br i1 %cmp3, label %land.lhs.true4, label %if.else[0m
+[4;36mEND OF FUNC[0m
+[4;36mPhiNodeWithConstant[0m
+[1;33mGot instruction   %mul = mul nsw i32 %b, 8[0m
+[1;33mGot instruction   %cmp5 = icmp eq i32 %d, %mul[0m
+[1;33mGot instruction   br i1 %cmp5, label %if.then, label %if.else[0m
 [4;36mEND OF FUNC[0m
 [4;36mPhiNodeWithConstant[0m
 [1;33mGot instruction   br label %if.end[0m
 [4;36mEND OF FUNC[0m
 [4;36mPhiNodeWithConstant[0m
-[1;33mGot instruction   %mul = mul nsw i32 2, %a[0m
-[1;33mGot instruction   %mul4 = mul nsw i32 %b, %c[0m
-[1;33mGot instruction   %add5 = add nsw i32 %mul, %mul4[0m
+[1;33mGot instruction   %mul6 = mul nsw i32 2, %a[0m
+[1;33mGot instruction   %mul7 = mul nsw i32 %b, %b[0m
+[1;33mGot instruction   %add8 = add nsw i32 %mul6, %mul7[0m
+[1;33mGot instruction   %add9 = add nsw i32 %add8, %d[0m
 [1;33mGot instruction   br label %if.end[0m
 [4;36mEND OF FUNC[0m
 [4;36mPhiNodeWithConstant[0m
-[1;33mGot instruction   %res.0 = phi i32 [ 354500, %if.then ], [ %add5, %if.else ][0m
-Found phi node   %res.0 = phi i32 [ 354500, %if.then ], [ %add5, %if.else ]
+[1;33mGot instruction   %res.0 = phi i32 [ 496600, %if.then ], [ %add9, %if.else ][0m
+Found phi node   %res.0 = phi i32 [ 496600, %if.then ], [ %add9, %if.else ]
 Phi node has a constant. Returning it as an Instruction*
 [4;36mEND OF FUNC[0m
 [4;36mcollectICmp[0m
@@ -473,28 +548,91 @@ That is icmp eq!
 [4;36mEND OF FUNC[0m
 [1;33msecondOperand is a complexed value![0m
 [0;106msextVal is 505[0m
-═══════════════
+[1;33mFound icmp!   %cmp5 = icmp eq i32 %d, %mul[0m
+That is icmp eq!
+[4;36mgetPznOrConstant[0m
+[1;33mValue [0mi32 %b[1;33m is in hash table - [1;37m700[0m
+[1;33msecond operand is a ConstantInt : first operand is an InstructionRESET
+[0;102mMUL = 5600
+[4;36mEND OF FUNC[0m
+[1;33msecondOperand is a complexed value![0m
+[0;106msextVal is 5600[0m
+════════════════════
+║ %d		║ 	5600║
 ║ %c		║ 	505║
 ║ %b		║ 	700║
 ║ %a		║ 	500║
-═══════════════
+════════════════════
 [4;36mEND OF FUNC[0m
 collected icmp and got hashtab!
-[4;36mCountValueRecursively of   %add5 = add nsw i32 %mul, %mul4[0m
-[0;33mADD   %add5 = add nsw i32 %mul, %mul4[0m
-[4;36mCountValueRecursively of   %mul = mul nsw i32 2, %a[0m
-[0;33mMUL   %mul = mul nsw i32 2, %a[0m
+[4;36mproofConjuctionLinks[0m
+  %cmp = icmp eq i32 %a, 500  %cmp1 = icmp eq i32 %b, 700
+[4;36mcheckLinkThruTerminator[0m
+
+land.lhs.true2:                                   ; preds = %entry
+  %add = add nsw i32 %a, 5
+  %cmp3 = icmp eq i32 %c, %add
+  br i1 %cmp3, label %land.lhs.true4, label %if.else
+
+entry:
+  %cmp = icmp eq i32 %a, 500
+  %cmp1 = icmp eq i32 %b, 700
+  %or.cond = select i1 %cmp, i1 %cmp1, i1 false
+  br i1 %or.cond, label %land.lhs.true2, label %if.else
+
+[4;36mEND OF FUNC[0m
+[4;36mcheckLinkThruSelect[0m
+Got User   %or.cond = select i1 %cmp, i1 %cmp1, i1 false
+user is select!
+  %or.cond = select i1 %cmp, i1 %cmp1, i1 false  %cmp3 = icmp eq i32 %c, %add
+[4;36mcheckLinkThruTerminator[0m
+
+land.lhs.true2:                                   ; preds = %entry
+  %add = add nsw i32 %a, 5
+  %cmp3 = icmp eq i32 %c, %add
+  br i1 %cmp3, label %land.lhs.true4, label %if.else
+
+land.lhs.true2:                                   ; preds = %entry
+  %add = add nsw i32 %a, 5
+  %cmp3 = icmp eq i32 %c, %add
+  br i1 %cmp3, label %land.lhs.true4, label %if.else
+
+[0;106mEQUAL![0m
+[4;36mEND OF FUNC[0m
+  %cmp3 = icmp eq i32 %c, %add  %cmp5 = icmp eq i32 %d, %mul
+[4;36mcheckLinkThruTerminator[0m
+
+land.lhs.true4:                                   ; preds = %land.lhs.true2
+  %mul = mul nsw i32 %b, 8
+  %cmp5 = icmp eq i32 %d, %mul
+  br i1 %cmp5, label %if.then, label %if.else
+
+land.lhs.true4:                                   ; preds = %land.lhs.true2
+  %mul = mul nsw i32 %b, 8
+  %cmp5 = icmp eq i32 %d, %mul
+  br i1 %cmp5, label %if.then, label %if.else
+
+[0;106mEQUAL![0m
+[4;36mEND OF FUNC[0m
+[4;36mCountValueRecursively of   %add9 = add nsw i32 %add8, %d[0m
+[0;33mADD   %add9 = add nsw i32 %add8, %d[0m
+[4;36mCountValueRecursively of   %add8 = add nsw i32 %mul6, %mul7[0m
+[0;33mADD   %add8 = add nsw i32 %mul6, %mul7[0m
+[4;36mCountValueRecursively of   %mul6 = mul nsw i32 2, %a[0m
+[0;33mMUL   %mul6 = mul nsw i32 2, %a[0m
 [4;36mCountValueRecursively of i32 2[0m
 The value from instruction is [1;33mi32 2[0m
 [4;36mCountValueRecursively of i32 %a[0m
 Found value in hashtable [1;33m500[0m
-[4;36mCountValueRecursively of   %mul4 = mul nsw i32 %b, %c[0m
-[0;33mMUL   %mul4 = mul nsw i32 %b, %c[0m
+[4;36mCountValueRecursively of   %mul7 = mul nsw i32 %b, %b[0m
+[0;33mMUL   %mul7 = mul nsw i32 %b, %b[0m
 [4;36mCountValueRecursively of i32 %b[0m
 Found value in hashtable [1;33m700[0m
-[4;36mCountValueRecursively of i32 %c[0m
-Found value in hashtable [1;33m505[0m
-[45mTotal Value is 354500[0m
+[4;36mCountValueRecursively of i32 %b[0m
+Found value in hashtable [1;33m700[0m
+[4;36mCountValueRecursively of i32 %d[0m
+Found value in hashtable [1;33m5600[0m
+[45mTotal Value is 496600[0m
 [4;36mGetConstantFromPhiNode[0m
 [4;36mDeprecateConstantFromPhiNode[0m
 [4;36mEND OF FUNC[0m
@@ -509,16 +647,22 @@ entry:
 land.lhs.true2:                                   ; preds = %entry
   %add = add nsw i32 %a, 5
   %cmp3 = icmp eq i32 %c, %add
-  br i1 %cmp3, label %if.else, label %if.else
+  br i1 %cmp3, label %land.lhs.true4, label %if.else
 
-if.else:                                          ; preds = %land.lhs.true2, %land.lhs.true2, %entry
-  %mul = mul nsw i32 2, %a
-  %mul4 = mul nsw i32 %b, %c
-  %add5 = add nsw i32 %mul, %mul4
+land.lhs.true4:                                   ; preds = %land.lhs.true2
+  %mul = mul nsw i32 %b, 8
+  %cmp5 = icmp eq i32 %d, %mul
+  br i1 %cmp5, label %if.else, label %if.else
+
+if.else:                                          ; preds = %land.lhs.true4, %land.lhs.true4, %land.lhs.true2, %entry
+  %mul6 = mul nsw i32 2, %a
+  %mul7 = mul nsw i32 %b, %b
+  %add8 = add nsw i32 %mul6, %mul7
+  %add9 = add nsw i32 %add8, %d
   br label %if.end
 
 if.end:                                           ; preds = %if.else
-  ret i32 %add5
+  ret i32 %add9
 }
 
 VALUES ARE EQUAL
@@ -534,16 +678,22 @@ entry:
 land.lhs.true2:                                   ; preds = %entry
   %add = add nsw i32 %a, 5
   %cmp3 = icmp eq i32 %c, %add
-  br i1 %cmp3, label %if.else, label %if.else
+  br i1 %cmp3, label %land.lhs.true4, label %if.else
 
-if.else:                                          ; preds = %land.lhs.true2, %land.lhs.true2, %entry
-  %mul = mul nsw i32 2, %a
-  %mul4 = mul nsw i32 %b, %c
-  %add5 = add nsw i32 %mul, %mul4
+land.lhs.true4:                                   ; preds = %land.lhs.true2
+  %mul = mul nsw i32 %b, 8
+  %cmp5 = icmp eq i32 %d, %mul
+  br i1 %cmp5, label %if.else, label %if.else
+
+if.else:                                          ; preds = %land.lhs.true4, %land.lhs.true4, %land.lhs.true2, %entry
+  %mul6 = mul nsw i32 2, %a
+  %mul7 = mul nsw i32 %b, %b
+  %add8 = add nsw i32 %mul6, %mul7
+  %add9 = add nsw i32 %add8, %d
   br label %if.end
 
 if.end:                                           ; preds = %if.else
-  ret i32 %add5
+  ret i32 %add9
 }
 ; *** IR Dump After SimplifyCFGPass on _Z3fooiiii ***
 ; Function Attrs: mustprogress noinline nounwind uwtable
@@ -552,10 +702,14 @@ entry:
   %cmp = icmp eq i32 %a, 500
   %cmp1 = icmp eq i32 %b, 700
   %or.cond = select i1 %cmp, i1 %cmp1, i1 false
-  %mul = mul nsw i32 2, %a
-  %mul4 = mul nsw i32 %b, %c
-  %add5 = add nsw i32 %mul, %mul4
-  ret i32 %add5
+  %add = add nsw i32 %a, 5
+  %cmp3 = icmp eq i32 %c, %add
+  %or.cond7 = select i1 %or.cond, i1 %cmp3, i1 false
+  %mul6 = mul nsw i32 2, %a
+  %mul7 = mul nsw i32 %b, %b
+  %add8 = add nsw i32 %mul6, %mul7
+  %add9 = add nsw i32 %add8, %d
+  ret i32 %add9
 }
 ; *** IR Dump After EarlyCSEPass on _Z3fooiiii ***
 ; Function Attrs: mustprogress noinline nounwind uwtable
@@ -563,28 +717,34 @@ define dso_local noundef i32 @_Z3fooiiii(i32 noundef %a, i32 noundef %b, i32 nou
 entry:
   %cmp = icmp eq i32 %a, 500
   %cmp1 = icmp eq i32 %b, 700
-  %mul = mul nsw i32 2, %a
-  %mul4 = mul nsw i32 %b, %c
-  %add5 = add nsw i32 %mul, %mul4
-  ret i32 %add5
+  %or.cond = select i1 %cmp, i1 %cmp1, i1 false
+  %add = add nsw i32 %a, 5
+  %cmp3 = icmp eq i32 %c, %add
+  %mul6 = mul nsw i32 2, %a
+  %mul7 = mul nsw i32 %b, %b
+  %add8 = add nsw i32 %mul6, %mul7
+  %add9 = add nsw i32 %add8, %d
+  ret i32 %add9
 }
 ; *** IR Dump After InstCombinePass on _Z3fooiiii ***
 ; Function Attrs: mustprogress noinline nounwind uwtable
 define dso_local noundef i32 @_Z3fooiiii(i32 noundef %a, i32 noundef %b, i32 noundef %c, i32 noundef %d) #0 {
 entry:
-  %mul = shl nsw i32 %a, 1
-  %mul4 = mul nsw i32 %b, %c
-  %add5 = add nsw i32 %mul, %mul4
-  ret i32 %add5
+  %mul6 = shl nsw i32 %a, 1
+  %mul7 = mul nsw i32 %b, %b
+  %add8 = add nsw i32 %mul6, %mul7
+  %add9 = add nsw i32 %add8, %d
+  ret i32 %add9
 }
 ; *** IR Dump After SimplifyCFGPass on _Z3fooiiii ***
 ; Function Attrs: mustprogress noinline nounwind uwtable
 define dso_local noundef i32 @_Z3fooiiii(i32 noundef %a, i32 noundef %b, i32 noundef %c, i32 noundef %d) #0 {
 entry:
-  %mul = shl nsw i32 %a, 1
-  %mul4 = mul nsw i32 %b, %c
-  %add5 = add nsw i32 %mul, %mul4
-  ret i32 %add5
+  %mul6 = shl nsw i32 %a, 1
+  %mul7 = mul nsw i32 %b, %b
+  %add8 = add nsw i32 %mul6, %mul7
+  %add9 = add nsw i32 %add8, %d
+  ret i32 %add9
 }
 ; *** IR Dump After OpenMPOptPass on [module] ***
 ; ModuleID = 'div2.ll'
@@ -595,10 +755,11 @@ target triple = "x86_64-unknown-linux-gnu"
 ; Function Attrs: mustprogress noinline nounwind uwtable
 define dso_local noundef i32 @_Z3fooiiii(i32 noundef %a, i32 noundef %b, i32 noundef %c, i32 noundef %d) #0 {
 entry:
-  %mul = shl nsw i32 %a, 1
-  %mul4 = mul nsw i32 %b, %c
-  %add5 = add nsw i32 %mul, %mul4
-  ret i32 %add5
+  %mul6 = shl nsw i32 %a, 1
+  %mul7 = mul nsw i32 %b, %b
+  %add8 = add nsw i32 %mul6, %mul7
+  %add9 = add nsw i32 %add8, %d
+  ret i32 %add9
 }
 
 attributes #0 = { mustprogress noinline nounwind uwtable "frame-pointer"="all" "min-legal-vector-width"="0" "no-trapping-math"="true" "stack-protector-buffer-size"="8" "target-cpu"="x86-64" "target-features"="+cmov,+cx8,+fxsr,+mmx,+sse,+sse2,+x87" "tune-cpu"="generic" }
@@ -621,10 +782,11 @@ target triple = "x86_64-unknown-linux-gnu"
 ; Function Attrs: mustprogress noinline nounwind uwtable
 define dso_local noundef i32 @_Z3fooiiii(i32 noundef %a, i32 noundef %b, i32 noundef %c, i32 noundef %d) #0 {
 entry:
-  %mul = shl nsw i32 %a, 1
-  %mul4 = mul nsw i32 %b, %c
-  %add5 = add nsw i32 %mul, %mul4
-  ret i32 %add5
+  %mul6 = shl nsw i32 %a, 1
+  %mul7 = mul nsw i32 %b, %b
+  %add8 = add nsw i32 %mul6, %mul7
+  %add9 = add nsw i32 %add8, %d
+  ret i32 %add9
 }
 
 attributes #0 = { mustprogress noinline nounwind uwtable "frame-pointer"="all" "min-legal-vector-width"="0" "no-trapping-math"="true" "stack-protector-buffer-size"="8" "target-cpu"="x86-64" "target-features"="+cmov,+cx8,+fxsr,+mmx,+sse,+sse2,+x87" "tune-cpu"="generic" }
@@ -647,10 +809,11 @@ target triple = "x86_64-unknown-linux-gnu"
 ; Function Attrs: mustprogress noinline nounwind uwtable
 define dso_local noundef i32 @_Z3fooiiii(i32 noundef %a, i32 noundef %b, i32 noundef %c, i32 noundef %d) #0 {
 entry:
-  %mul = shl nsw i32 %a, 1
-  %mul4 = mul nsw i32 %b, %c
-  %add5 = add nsw i32 %mul, %mul4
-  ret i32 %add5
+  %mul6 = shl nsw i32 %a, 1
+  %mul7 = mul nsw i32 %b, %b
+  %add8 = add nsw i32 %mul6, %mul7
+  %add9 = add nsw i32 %add8, %d
+  ret i32 %add9
 }
 
 attributes #0 = { mustprogress noinline nounwind uwtable "frame-pointer"="all" "min-legal-vector-width"="0" "no-trapping-math"="true" "stack-protector-buffer-size"="8" "target-cpu"="x86-64" "target-features"="+cmov,+cx8,+fxsr,+mmx,+sse,+sse2,+x87" "tune-cpu"="generic" }
@@ -673,10 +836,11 @@ target triple = "x86_64-unknown-linux-gnu"
 ; Function Attrs: mustprogress noinline nounwind uwtable
 define dso_local noundef i32 @_Z3fooiiii(i32 noundef %a, i32 noundef %b, i32 noundef %c, i32 noundef %d) local_unnamed_addr #0 {
 entry:
-  %mul = shl nsw i32 %a, 1
-  %mul4 = mul nsw i32 %b, %c
-  %add5 = add nsw i32 %mul, %mul4
-  ret i32 %add5
+  %mul6 = shl nsw i32 %a, 1
+  %mul7 = mul nsw i32 %b, %b
+  %add8 = add nsw i32 %mul6, %mul7
+  %add9 = add nsw i32 %add8, %d
+  ret i32 %add9
 }
 
 attributes #0 = { mustprogress noinline nounwind uwtable "frame-pointer"="all" "min-legal-vector-width"="0" "no-trapping-math"="true" "stack-protector-buffer-size"="8" "target-cpu"="x86-64" "target-features"="+cmov,+cx8,+fxsr,+mmx,+sse,+sse2,+x87" "tune-cpu"="generic" }
@@ -694,28 +858,31 @@ attributes #0 = { mustprogress noinline nounwind uwtable "frame-pointer"="all" "
 ; Function Attrs: mustprogress noinline nounwind uwtable
 define dso_local noundef i32 @_Z3fooiiii(i32 noundef %a, i32 noundef %b, i32 noundef %c, i32 noundef %d) local_unnamed_addr #0 {
 entry:
-  %mul = shl nsw i32 %a, 1
-  %mul4 = mul nsw i32 %b, %c
-  %add5 = add nsw i32 %mul, %mul4
-  ret i32 %add5
+  %mul6 = shl nsw i32 %a, 1
+  %mul7 = mul nsw i32 %b, %b
+  %add8 = add nsw i32 %mul6, %mul7
+  %add9 = add nsw i32 %add8, %d
+  ret i32 %add9
 }
 ; *** IR Dump After InstCombinePass on _Z3fooiiii ***
 ; Function Attrs: mustprogress noinline nounwind uwtable
 define dso_local noundef i32 @_Z3fooiiii(i32 noundef %a, i32 noundef %b, i32 noundef %c, i32 noundef %d) local_unnamed_addr #0 {
 entry:
-  %mul = shl nsw i32 %a, 1
-  %mul4 = mul nsw i32 %b, %c
-  %add5 = add nsw i32 %mul, %mul4
-  ret i32 %add5
+  %mul6 = shl nsw i32 %a, 1
+  %mul7 = mul nsw i32 %b, %b
+  %add8 = add nsw i32 %mul6, %mul7
+  %add9 = add nsw i32 %add8, %d
+  ret i32 %add9
 }
 ; *** IR Dump After SimplifyCFGPass on _Z3fooiiii ***
 ; Function Attrs: mustprogress noinline nounwind uwtable
 define dso_local noundef i32 @_Z3fooiiii(i32 noundef %a, i32 noundef %b, i32 noundef %c, i32 noundef %d) local_unnamed_addr #0 {
 entry:
-  %mul = shl nsw i32 %a, 1
-  %mul4 = mul nsw i32 %b, %c
-  %add5 = add nsw i32 %mul, %mul4
-  ret i32 %add5
+  %mul6 = shl nsw i32 %a, 1
+  %mul7 = mul nsw i32 %b, %b
+  %add8 = add nsw i32 %mul6, %mul7
+  %add9 = add nsw i32 %add8, %d
+  ret i32 %add9
 }
 ; *** IR Dump After AlwaysInlinerPass on [module] ***
 ; ModuleID = 'div2.ll'
@@ -726,10 +893,11 @@ target triple = "x86_64-unknown-linux-gnu"
 ; Function Attrs: mustprogress noinline nounwind uwtable
 define dso_local noundef i32 @_Z3fooiiii(i32 noundef %a, i32 noundef %b, i32 noundef %c, i32 noundef %d) local_unnamed_addr #0 {
 entry:
-  %mul = shl nsw i32 %a, 1
-  %mul4 = mul nsw i32 %b, %c
-  %add5 = add nsw i32 %mul, %mul4
-  ret i32 %add5
+  %mul6 = shl nsw i32 %a, 1
+  %mul7 = mul nsw i32 %b, %b
+  %add8 = add nsw i32 %mul6, %mul7
+  %add9 = add nsw i32 %add8, %d
+  ret i32 %add9
 }
 
 attributes #0 = { mustprogress noinline nounwind uwtable "frame-pointer"="all" "min-legal-vector-width"="0" "no-trapping-math"="true" "stack-protector-buffer-size"="8" "target-cpu"="x86-64" "target-features"="+cmov,+cx8,+fxsr,+mmx,+sse,+sse2,+x87" "tune-cpu"="generic" }
@@ -752,10 +920,11 @@ target triple = "x86_64-unknown-linux-gnu"
 ; Function Attrs: mustprogress noinline nounwind uwtable
 define dso_local noundef i32 @_Z3fooiiii(i32 noundef %a, i32 noundef %b, i32 noundef %c, i32 noundef %d) local_unnamed_addr #0 {
 entry:
-  %mul = shl nsw i32 %a, 1
-  %mul4 = mul nsw i32 %b, %c
-  %add5 = add nsw i32 %mul, %mul4
-  ret i32 %add5
+  %mul6 = shl nsw i32 %a, 1
+  %mul7 = mul nsw i32 %b, %b
+  %add8 = add nsw i32 %mul6, %mul7
+  %add9 = add nsw i32 %add8, %d
+  ret i32 %add9
 }
 
 attributes #0 = { mustprogress noinline nounwind uwtable "frame-pointer"="all" "min-legal-vector-width"="0" "no-trapping-math"="true" "stack-protector-buffer-size"="8" "target-cpu"="x86-64" "target-features"="+cmov,+cx8,+fxsr,+mmx,+sse,+sse2,+x87" "tune-cpu"="generic" }
@@ -773,10 +942,11 @@ attributes #0 = { mustprogress noinline nounwind uwtable "frame-pointer"="all" "
 ; Function Attrs: mustprogress noinline nounwind uwtable
 define dso_local noundef i32 @_Z3fooiiii(i32 noundef %a, i32 noundef %b, i32 noundef %c, i32 noundef %d) local_unnamed_addr #0 {
 entry:
-  %mul = shl nsw i32 %a, 1
-  %mul4 = mul nsw i32 %b, %c
-  %add5 = add nsw i32 %mul, %mul4
-  ret i32 %add5
+  %mul6 = shl nsw i32 %a, 1
+  %mul7 = mul nsw i32 %b, %b
+  %add8 = add nsw i32 %mul6, %mul7
+  %add9 = add nsw i32 %add8, %d
+  ret i32 %add9
 }
 ; *** IR Dump After RequireAnalysisPass<llvm::ProfileSummaryAnalysis, llvm::Module> on [module] ***
 ; ModuleID = 'div2.ll'
@@ -787,10 +957,11 @@ target triple = "x86_64-unknown-linux-gnu"
 ; Function Attrs: mustprogress noinline nounwind uwtable
 define dso_local noundef i32 @_Z3fooiiii(i32 noundef %a, i32 noundef %b, i32 noundef %c, i32 noundef %d) local_unnamed_addr #0 {
 entry:
-  %mul = shl nsw i32 %a, 1
-  %mul4 = mul nsw i32 %b, %c
-  %add5 = add nsw i32 %mul, %mul4
-  ret i32 %add5
+  %mul6 = shl nsw i32 %a, 1
+  %mul7 = mul nsw i32 %b, %b
+  %add8 = add nsw i32 %mul6, %mul7
+  %add9 = add nsw i32 %add8, %d
+  ret i32 %add9
 }
 
 attributes #0 = { mustprogress noinline nounwind uwtable "frame-pointer"="all" "min-legal-vector-width"="0" "no-trapping-math"="true" "stack-protector-buffer-size"="8" "target-cpu"="x86-64" "target-features"="+cmov,+cx8,+fxsr,+mmx,+sse,+sse2,+x87" "tune-cpu"="generic" }
@@ -808,406 +979,451 @@ attributes #0 = { mustprogress noinline nounwind uwtable "frame-pointer"="all" "
 ; Function Attrs: mustprogress noinline nounwind uwtable
 define dso_local noundef i32 @_Z3fooiiii(i32 noundef %a, i32 noundef %b, i32 noundef %c, i32 noundef %d) local_unnamed_addr #0 {
 entry:
-  %mul = shl nsw i32 %a, 1
-  %mul4 = mul nsw i32 %b, %c
-  %add5 = add nsw i32 %mul, %mul4
-  ret i32 %add5
+  %mul6 = shl nsw i32 %a, 1
+  %mul7 = mul nsw i32 %b, %b
+  %add8 = add nsw i32 %mul6, %mul7
+  %add9 = add nsw i32 %add8, %d
+  ret i32 %add9
 }
 ; *** IR Dump After PostOrderFunctionAttrsPass on (_Z3fooiiii) ***
 ; Function Attrs: mustprogress noinline nounwind uwtable
 define dso_local noundef i32 @_Z3fooiiii(i32 noundef %a, i32 noundef %b, i32 noundef %c, i32 noundef %d) local_unnamed_addr #0 {
 entry:
-  %mul = shl nsw i32 %a, 1
-  %mul4 = mul nsw i32 %b, %c
-  %add5 = add nsw i32 %mul, %mul4
-  ret i32 %add5
+  %mul6 = shl nsw i32 %a, 1
+  %mul7 = mul nsw i32 %b, %b
+  %add8 = add nsw i32 %mul6, %mul7
+  %add9 = add nsw i32 %add8, %d
+  ret i32 %add9
 }
 ; *** IR Dump After OpenMPOptCGSCCPass on (_Z3fooiiii) ***
 ; Function Attrs: mustprogress noinline nounwind uwtable
 define dso_local noundef i32 @_Z3fooiiii(i32 noundef %a, i32 noundef %b, i32 noundef %c, i32 noundef %d) local_unnamed_addr #0 {
 entry:
-  %mul = shl nsw i32 %a, 1
-  %mul4 = mul nsw i32 %b, %c
-  %add5 = add nsw i32 %mul, %mul4
-  ret i32 %add5
+  %mul6 = shl nsw i32 %a, 1
+  %mul7 = mul nsw i32 %b, %b
+  %add8 = add nsw i32 %mul6, %mul7
+  %add9 = add nsw i32 %add8, %d
+  ret i32 %add9
 }
 ; *** IR Dump After SROAPass on _Z3fooiiii ***
 ; Function Attrs: mustprogress noinline nounwind uwtable
 define dso_local noundef i32 @_Z3fooiiii(i32 noundef %a, i32 noundef %b, i32 noundef %c, i32 noundef %d) local_unnamed_addr #0 {
 entry:
-  %mul = shl nsw i32 %a, 1
-  %mul4 = mul nsw i32 %b, %c
-  %add5 = add nsw i32 %mul, %mul4
-  ret i32 %add5
+  %mul6 = shl nsw i32 %a, 1
+  %mul7 = mul nsw i32 %b, %b
+  %add8 = add nsw i32 %mul6, %mul7
+  %add9 = add nsw i32 %add8, %d
+  ret i32 %add9
 }
 ; *** IR Dump After EarlyCSEPass on _Z3fooiiii ***
 ; Function Attrs: mustprogress noinline nounwind uwtable
 define dso_local noundef i32 @_Z3fooiiii(i32 noundef %a, i32 noundef %b, i32 noundef %c, i32 noundef %d) local_unnamed_addr #0 {
 entry:
-  %mul = shl nsw i32 %a, 1
-  %mul4 = mul nsw i32 %b, %c
-  %add5 = add nsw i32 %mul, %mul4
-  ret i32 %add5
+  %mul6 = shl nsw i32 %a, 1
+  %mul7 = mul nsw i32 %b, %b
+  %add8 = add nsw i32 %mul6, %mul7
+  %add9 = add nsw i32 %add8, %d
+  ret i32 %add9
 }
 ; *** IR Dump After SpeculativeExecutionPass on _Z3fooiiii ***
 ; Function Attrs: mustprogress noinline nounwind uwtable
 define dso_local noundef i32 @_Z3fooiiii(i32 noundef %a, i32 noundef %b, i32 noundef %c, i32 noundef %d) local_unnamed_addr #0 {
 entry:
-  %mul = shl nsw i32 %a, 1
-  %mul4 = mul nsw i32 %b, %c
-  %add5 = add nsw i32 %mul, %mul4
-  ret i32 %add5
+  %mul6 = shl nsw i32 %a, 1
+  %mul7 = mul nsw i32 %b, %b
+  %add8 = add nsw i32 %mul6, %mul7
+  %add9 = add nsw i32 %add8, %d
+  ret i32 %add9
 }
 ; *** IR Dump After JumpThreadingPass on _Z3fooiiii ***
 ; Function Attrs: mustprogress noinline nounwind uwtable
 define dso_local noundef i32 @_Z3fooiiii(i32 noundef %a, i32 noundef %b, i32 noundef %c, i32 noundef %d) local_unnamed_addr #0 {
 entry:
-  %mul = shl nsw i32 %a, 1
-  %mul4 = mul nsw i32 %b, %c
-  %add5 = add nsw i32 %mul, %mul4
-  ret i32 %add5
+  %mul6 = shl nsw i32 %a, 1
+  %mul7 = mul nsw i32 %b, %b
+  %add8 = add nsw i32 %mul6, %mul7
+  %add9 = add nsw i32 %add8, %d
+  ret i32 %add9
 }
 ; *** IR Dump After CorrelatedValuePropagationPass on _Z3fooiiii ***
 ; Function Attrs: mustprogress noinline nounwind uwtable
 define dso_local noundef i32 @_Z3fooiiii(i32 noundef %a, i32 noundef %b, i32 noundef %c, i32 noundef %d) local_unnamed_addr #0 {
 entry:
-  %mul = shl nsw i32 %a, 1
-  %mul4 = mul nsw i32 %b, %c
-  %add5 = add nsw i32 %mul, %mul4
-  ret i32 %add5
+  %mul6 = shl nsw i32 %a, 1
+  %mul7 = mul nsw i32 %b, %b
+  %add8 = add nsw i32 %mul6, %mul7
+  %add9 = add nsw i32 %add8, %d
+  ret i32 %add9
 }
 ; *** IR Dump After SimplifyCFGPass on _Z3fooiiii ***
 ; Function Attrs: mustprogress noinline nounwind uwtable
 define dso_local noundef i32 @_Z3fooiiii(i32 noundef %a, i32 noundef %b, i32 noundef %c, i32 noundef %d) local_unnamed_addr #0 {
 entry:
-  %mul = shl nsw i32 %a, 1
-  %mul4 = mul nsw i32 %b, %c
-  %add5 = add nsw i32 %mul, %mul4
-  ret i32 %add5
+  %mul6 = shl nsw i32 %a, 1
+  %mul7 = mul nsw i32 %b, %b
+  %add8 = add nsw i32 %mul6, %mul7
+  %add9 = add nsw i32 %add8, %d
+  ret i32 %add9
 }
 ; *** IR Dump After InstCombinePass on _Z3fooiiii ***
 ; Function Attrs: mustprogress noinline nounwind uwtable
 define dso_local noundef i32 @_Z3fooiiii(i32 noundef %a, i32 noundef %b, i32 noundef %c, i32 noundef %d) local_unnamed_addr #0 {
 entry:
-  %mul = shl nsw i32 %a, 1
-  %mul4 = mul nsw i32 %b, %c
-  %add5 = add nsw i32 %mul, %mul4
-  ret i32 %add5
+  %mul6 = shl nsw i32 %a, 1
+  %mul7 = mul nsw i32 %b, %b
+  %add8 = add nsw i32 %mul6, %mul7
+  %add9 = add nsw i32 %add8, %d
+  ret i32 %add9
 }
 ; *** IR Dump After AggressiveInstCombinePass on _Z3fooiiii ***
 ; Function Attrs: mustprogress noinline nounwind uwtable
 define dso_local noundef i32 @_Z3fooiiii(i32 noundef %a, i32 noundef %b, i32 noundef %c, i32 noundef %d) local_unnamed_addr #0 {
 entry:
-  %mul = shl nsw i32 %a, 1
-  %mul4 = mul nsw i32 %b, %c
-  %add5 = add nsw i32 %mul, %mul4
-  ret i32 %add5
+  %mul6 = shl nsw i32 %a, 1
+  %mul7 = mul nsw i32 %b, %b
+  %add8 = add nsw i32 %mul6, %mul7
+  %add9 = add nsw i32 %add8, %d
+  ret i32 %add9
 }
 ; *** IR Dump After LibCallsShrinkWrapPass on _Z3fooiiii ***
 ; Function Attrs: mustprogress noinline nounwind uwtable
 define dso_local noundef i32 @_Z3fooiiii(i32 noundef %a, i32 noundef %b, i32 noundef %c, i32 noundef %d) local_unnamed_addr #0 {
 entry:
-  %mul = shl nsw i32 %a, 1
-  %mul4 = mul nsw i32 %b, %c
-  %add5 = add nsw i32 %mul, %mul4
-  ret i32 %add5
+  %mul6 = shl nsw i32 %a, 1
+  %mul7 = mul nsw i32 %b, %b
+  %add8 = add nsw i32 %mul6, %mul7
+  %add9 = add nsw i32 %add8, %d
+  ret i32 %add9
 }
 ; *** IR Dump After TailCallElimPass on _Z3fooiiii ***
 ; Function Attrs: mustprogress noinline nounwind uwtable
 define dso_local noundef i32 @_Z3fooiiii(i32 noundef %a, i32 noundef %b, i32 noundef %c, i32 noundef %d) local_unnamed_addr #0 {
 entry:
-  %mul = shl nsw i32 %a, 1
-  %mul4 = mul nsw i32 %b, %c
-  %add5 = add nsw i32 %mul, %mul4
-  ret i32 %add5
+  %mul6 = shl nsw i32 %a, 1
+  %mul7 = mul nsw i32 %b, %b
+  %add8 = add nsw i32 %mul6, %mul7
+  %add9 = add nsw i32 %add8, %d
+  ret i32 %add9
 }
 ; *** IR Dump After SimplifyCFGPass on _Z3fooiiii ***
 ; Function Attrs: mustprogress noinline nounwind uwtable
 define dso_local noundef i32 @_Z3fooiiii(i32 noundef %a, i32 noundef %b, i32 noundef %c, i32 noundef %d) local_unnamed_addr #0 {
 entry:
-  %mul = shl nsw i32 %a, 1
-  %mul4 = mul nsw i32 %b, %c
-  %add5 = add nsw i32 %mul, %mul4
-  ret i32 %add5
+  %mul6 = shl nsw i32 %a, 1
+  %mul7 = mul nsw i32 %b, %b
+  %add8 = add nsw i32 %mul6, %mul7
+  %add9 = add nsw i32 %add8, %d
+  ret i32 %add9
 }
 ; *** IR Dump After ReassociatePass on _Z3fooiiii ***
 ; Function Attrs: mustprogress noinline nounwind uwtable
 define dso_local noundef i32 @_Z3fooiiii(i32 noundef %a, i32 noundef %b, i32 noundef %c, i32 noundef %d) local_unnamed_addr #0 {
 entry:
-  %mul = mul nsw i32 %a, 2
-  %mul4 = mul nsw i32 %c, %b
-  %add5 = add nsw i32 %mul4, %mul
-  ret i32 %add5
+  %mul6 = mul nsw i32 %a, 2
+  %mul7 = mul nsw i32 %b, %b
+  %add8 = add nsw i32 %mul7, %mul6
+  %add9 = add nsw i32 %add8, %d
+  ret i32 %add9
 }
 ; *** IR Dump After ConstraintEliminationPass on _Z3fooiiii ***
 ; Function Attrs: mustprogress noinline nounwind uwtable
 define dso_local noundef i32 @_Z3fooiiii(i32 noundef %a, i32 noundef %b, i32 noundef %c, i32 noundef %d) local_unnamed_addr #0 {
 entry:
-  %mul = mul nsw i32 %a, 2
-  %mul4 = mul nsw i32 %c, %b
-  %add5 = add nsw i32 %mul4, %mul
-  ret i32 %add5
+  %mul6 = mul nsw i32 %a, 2
+  %mul7 = mul nsw i32 %b, %b
+  %add8 = add nsw i32 %mul7, %mul6
+  %add9 = add nsw i32 %add8, %d
+  ret i32 %add9
 }
 ; *** IR Dump After LoopSimplifyPass on _Z3fooiiii ***
 ; Function Attrs: mustprogress noinline nounwind uwtable
 define dso_local noundef i32 @_Z3fooiiii(i32 noundef %a, i32 noundef %b, i32 noundef %c, i32 noundef %d) local_unnamed_addr #0 {
 entry:
-  %mul = mul nsw i32 %a, 2
-  %mul4 = mul nsw i32 %c, %b
-  %add5 = add nsw i32 %mul4, %mul
-  ret i32 %add5
+  %mul6 = mul nsw i32 %a, 2
+  %mul7 = mul nsw i32 %b, %b
+  %add8 = add nsw i32 %mul7, %mul6
+  %add9 = add nsw i32 %add8, %d
+  ret i32 %add9
 }
 ; *** IR Dump After LCSSAPass on _Z3fooiiii ***
 ; Function Attrs: mustprogress noinline nounwind uwtable
 define dso_local noundef i32 @_Z3fooiiii(i32 noundef %a, i32 noundef %b, i32 noundef %c, i32 noundef %d) local_unnamed_addr #0 {
 entry:
-  %mul = mul nsw i32 %a, 2
-  %mul4 = mul nsw i32 %c, %b
-  %add5 = add nsw i32 %mul4, %mul
-  ret i32 %add5
+  %mul6 = mul nsw i32 %a, 2
+  %mul7 = mul nsw i32 %b, %b
+  %add8 = add nsw i32 %mul7, %mul6
+  %add9 = add nsw i32 %add8, %d
+  ret i32 %add9
 }
 ; *** IR Dump After SimplifyCFGPass on _Z3fooiiii ***
 ; Function Attrs: mustprogress noinline nounwind uwtable
 define dso_local noundef i32 @_Z3fooiiii(i32 noundef %a, i32 noundef %b, i32 noundef %c, i32 noundef %d) local_unnamed_addr #0 {
 entry:
-  %mul = mul nsw i32 %a, 2
-  %mul4 = mul nsw i32 %c, %b
-  %add5 = add nsw i32 %mul4, %mul
-  ret i32 %add5
+  %mul6 = mul nsw i32 %a, 2
+  %mul7 = mul nsw i32 %b, %b
+  %add8 = add nsw i32 %mul7, %mul6
+  %add9 = add nsw i32 %add8, %d
+  ret i32 %add9
 }
 ; *** IR Dump After InstCombinePass on _Z3fooiiii ***
 ; Function Attrs: mustprogress noinline nounwind uwtable
 define dso_local noundef i32 @_Z3fooiiii(i32 noundef %a, i32 noundef %b, i32 noundef %c, i32 noundef %d) local_unnamed_addr #0 {
 entry:
-  %mul = shl nsw i32 %a, 1
-  %mul4 = mul nsw i32 %c, %b
-  %add5 = add nsw i32 %mul4, %mul
-  ret i32 %add5
+  %mul6 = shl nsw i32 %a, 1
+  %mul7 = mul nsw i32 %b, %b
+  %add8 = add nsw i32 %mul7, %mul6
+  %add9 = add nsw i32 %add8, %d
+  ret i32 %add9
 }
 ; *** IR Dump After LoopSimplifyPass on _Z3fooiiii ***
 ; Function Attrs: mustprogress noinline nounwind uwtable
 define dso_local noundef i32 @_Z3fooiiii(i32 noundef %a, i32 noundef %b, i32 noundef %c, i32 noundef %d) local_unnamed_addr #0 {
 entry:
-  %mul = shl nsw i32 %a, 1
-  %mul4 = mul nsw i32 %c, %b
-  %add5 = add nsw i32 %mul4, %mul
-  ret i32 %add5
+  %mul6 = shl nsw i32 %a, 1
+  %mul7 = mul nsw i32 %b, %b
+  %add8 = add nsw i32 %mul7, %mul6
+  %add9 = add nsw i32 %add8, %d
+  ret i32 %add9
 }
 ; *** IR Dump After LCSSAPass on _Z3fooiiii ***
 ; Function Attrs: mustprogress noinline nounwind uwtable
 define dso_local noundef i32 @_Z3fooiiii(i32 noundef %a, i32 noundef %b, i32 noundef %c, i32 noundef %d) local_unnamed_addr #0 {
 entry:
-  %mul = shl nsw i32 %a, 1
-  %mul4 = mul nsw i32 %c, %b
-  %add5 = add nsw i32 %mul4, %mul
-  ret i32 %add5
+  %mul6 = shl nsw i32 %a, 1
+  %mul7 = mul nsw i32 %b, %b
+  %add8 = add nsw i32 %mul7, %mul6
+  %add9 = add nsw i32 %add8, %d
+  ret i32 %add9
 }
 ; *** IR Dump After SROAPass on _Z3fooiiii ***
 ; Function Attrs: mustprogress noinline nounwind uwtable
 define dso_local noundef i32 @_Z3fooiiii(i32 noundef %a, i32 noundef %b, i32 noundef %c, i32 noundef %d) local_unnamed_addr #0 {
 entry:
-  %mul = shl nsw i32 %a, 1
-  %mul4 = mul nsw i32 %c, %b
-  %add5 = add nsw i32 %mul4, %mul
-  ret i32 %add5
+  %mul6 = shl nsw i32 %a, 1
+  %mul7 = mul nsw i32 %b, %b
+  %add8 = add nsw i32 %mul7, %mul6
+  %add9 = add nsw i32 %add8, %d
+  ret i32 %add9
 }
 ; *** IR Dump After VectorCombinePass on _Z3fooiiii ***
 ; Function Attrs: mustprogress noinline nounwind uwtable
 define dso_local noundef i32 @_Z3fooiiii(i32 noundef %a, i32 noundef %b, i32 noundef %c, i32 noundef %d) local_unnamed_addr #0 {
 entry:
-  %mul = shl nsw i32 %a, 1
-  %mul4 = mul nsw i32 %c, %b
-  %add5 = add nsw i32 %mul4, %mul
-  ret i32 %add5
+  %mul6 = shl nsw i32 %a, 1
+  %mul7 = mul nsw i32 %b, %b
+  %add8 = add nsw i32 %mul7, %mul6
+  %add9 = add nsw i32 %add8, %d
+  ret i32 %add9
 }
 ; *** IR Dump After MergedLoadStoreMotionPass on _Z3fooiiii ***
 ; Function Attrs: mustprogress noinline nounwind uwtable
 define dso_local noundef i32 @_Z3fooiiii(i32 noundef %a, i32 noundef %b, i32 noundef %c, i32 noundef %d) local_unnamed_addr #0 {
 entry:
-  %mul = shl nsw i32 %a, 1
-  %mul4 = mul nsw i32 %c, %b
-  %add5 = add nsw i32 %mul4, %mul
-  ret i32 %add5
+  %mul6 = shl nsw i32 %a, 1
+  %mul7 = mul nsw i32 %b, %b
+  %add8 = add nsw i32 %mul7, %mul6
+  %add9 = add nsw i32 %add8, %d
+  ret i32 %add9
 }
 ; *** IR Dump After GVNPass on _Z3fooiiii ***
 ; Function Attrs: mustprogress noinline nounwind uwtable
 define dso_local noundef i32 @_Z3fooiiii(i32 noundef %a, i32 noundef %b, i32 noundef %c, i32 noundef %d) local_unnamed_addr #0 {
 entry:
-  %mul = shl nsw i32 %a, 1
-  %mul4 = mul nsw i32 %c, %b
-  %add5 = add nsw i32 %mul4, %mul
-  ret i32 %add5
+  %mul6 = shl nsw i32 %a, 1
+  %mul7 = mul nsw i32 %b, %b
+  %add8 = add nsw i32 %mul7, %mul6
+  %add9 = add nsw i32 %add8, %d
+  ret i32 %add9
 }
 ; *** IR Dump After SCCPPass on _Z3fooiiii ***
 ; Function Attrs: mustprogress noinline nounwind uwtable
 define dso_local noundef i32 @_Z3fooiiii(i32 noundef %a, i32 noundef %b, i32 noundef %c, i32 noundef %d) local_unnamed_addr #0 {
 entry:
-  %mul = shl nsw i32 %a, 1
-  %mul4 = mul nsw i32 %c, %b
-  %add5 = add nsw i32 %mul4, %mul
-  ret i32 %add5
+  %mul6 = shl nsw i32 %a, 1
+  %mul7 = mul nsw i32 %b, %b
+  %add8 = add nsw i32 %mul7, %mul6
+  %add9 = add nsw i32 %add8, %d
+  ret i32 %add9
 }
 ; *** IR Dump After BDCEPass on _Z3fooiiii ***
 ; Function Attrs: mustprogress noinline nounwind uwtable
 define dso_local noundef i32 @_Z3fooiiii(i32 noundef %a, i32 noundef %b, i32 noundef %c, i32 noundef %d) local_unnamed_addr #0 {
 entry:
-  %mul = shl nsw i32 %a, 1
-  %mul4 = mul nsw i32 %c, %b
-  %add5 = add nsw i32 %mul4, %mul
-  ret i32 %add5
+  %mul6 = shl nsw i32 %a, 1
+  %mul7 = mul nsw i32 %b, %b
+  %add8 = add nsw i32 %mul7, %mul6
+  %add9 = add nsw i32 %add8, %d
+  ret i32 %add9
 }
 ; *** IR Dump After InstCombinePass on _Z3fooiiii ***
 ; Function Attrs: mustprogress noinline nounwind uwtable
 define dso_local noundef i32 @_Z3fooiiii(i32 noundef %a, i32 noundef %b, i32 noundef %c, i32 noundef %d) local_unnamed_addr #0 {
 entry:
-  %mul = shl nsw i32 %a, 1
-  %mul4 = mul nsw i32 %c, %b
-  %add5 = add nsw i32 %mul4, %mul
-  ret i32 %add5
+  %mul6 = shl nsw i32 %a, 1
+  %mul7 = mul nsw i32 %b, %b
+  %add8 = add nsw i32 %mul7, %mul6
+  %add9 = add nsw i32 %add8, %d
+  ret i32 %add9
 }
 ; *** IR Dump After JumpThreadingPass on _Z3fooiiii ***
 ; Function Attrs: mustprogress noinline nounwind uwtable
 define dso_local noundef i32 @_Z3fooiiii(i32 noundef %a, i32 noundef %b, i32 noundef %c, i32 noundef %d) local_unnamed_addr #0 {
 entry:
-  %mul = shl nsw i32 %a, 1
-  %mul4 = mul nsw i32 %c, %b
-  %add5 = add nsw i32 %mul4, %mul
-  ret i32 %add5
+  %mul6 = shl nsw i32 %a, 1
+  %mul7 = mul nsw i32 %b, %b
+  %add8 = add nsw i32 %mul7, %mul6
+  %add9 = add nsw i32 %add8, %d
+  ret i32 %add9
 }
 ; *** IR Dump After CorrelatedValuePropagationPass on _Z3fooiiii ***
 ; Function Attrs: mustprogress noinline nounwind uwtable
 define dso_local noundef i32 @_Z3fooiiii(i32 noundef %a, i32 noundef %b, i32 noundef %c, i32 noundef %d) local_unnamed_addr #0 {
 entry:
-  %mul = shl nsw i32 %a, 1
-  %mul4 = mul nsw i32 %c, %b
-  %add5 = add nsw i32 %mul4, %mul
-  ret i32 %add5
+  %mul6 = shl nsw i32 %a, 1
+  %mul7 = mul nsw i32 %b, %b
+  %add8 = add nsw i32 %mul7, %mul6
+  %add9 = add nsw i32 %add8, %d
+  ret i32 %add9
 }
 ; *** IR Dump After ADCEPass on _Z3fooiiii ***
 ; Function Attrs: mustprogress noinline nounwind uwtable
 define dso_local noundef i32 @_Z3fooiiii(i32 noundef %a, i32 noundef %b, i32 noundef %c, i32 noundef %d) local_unnamed_addr #0 {
 entry:
-  %mul = shl nsw i32 %a, 1
-  %mul4 = mul nsw i32 %c, %b
-  %add5 = add nsw i32 %mul4, %mul
-  ret i32 %add5
+  %mul6 = shl nsw i32 %a, 1
+  %mul7 = mul nsw i32 %b, %b
+  %add8 = add nsw i32 %mul7, %mul6
+  %add9 = add nsw i32 %add8, %d
+  ret i32 %add9
 }
 ; *** IR Dump After MemCpyOptPass on _Z3fooiiii ***
 ; Function Attrs: mustprogress noinline nounwind uwtable
 define dso_local noundef i32 @_Z3fooiiii(i32 noundef %a, i32 noundef %b, i32 noundef %c, i32 noundef %d) local_unnamed_addr #0 {
 entry:
-  %mul = shl nsw i32 %a, 1
-  %mul4 = mul nsw i32 %c, %b
-  %add5 = add nsw i32 %mul4, %mul
-  ret i32 %add5
+  %mul6 = shl nsw i32 %a, 1
+  %mul7 = mul nsw i32 %b, %b
+  %add8 = add nsw i32 %mul7, %mul6
+  %add9 = add nsw i32 %add8, %d
+  ret i32 %add9
 }
 ; *** IR Dump After DSEPass on _Z3fooiiii ***
 ; Function Attrs: mustprogress noinline nounwind uwtable
 define dso_local noundef i32 @_Z3fooiiii(i32 noundef %a, i32 noundef %b, i32 noundef %c, i32 noundef %d) local_unnamed_addr #0 {
 entry:
-  %mul = shl nsw i32 %a, 1
-  %mul4 = mul nsw i32 %c, %b
-  %add5 = add nsw i32 %mul4, %mul
-  ret i32 %add5
+  %mul6 = shl nsw i32 %a, 1
+  %mul7 = mul nsw i32 %b, %b
+  %add8 = add nsw i32 %mul7, %mul6
+  %add9 = add nsw i32 %add8, %d
+  ret i32 %add9
 }
 ; *** IR Dump After MoveAutoInitPass on _Z3fooiiii ***
 ; Function Attrs: mustprogress noinline nounwind uwtable
 define dso_local noundef i32 @_Z3fooiiii(i32 noundef %a, i32 noundef %b, i32 noundef %c, i32 noundef %d) local_unnamed_addr #0 {
 entry:
-  %mul = shl nsw i32 %a, 1
-  %mul4 = mul nsw i32 %c, %b
-  %add5 = add nsw i32 %mul4, %mul
-  ret i32 %add5
+  %mul6 = shl nsw i32 %a, 1
+  %mul7 = mul nsw i32 %b, %b
+  %add8 = add nsw i32 %mul7, %mul6
+  %add9 = add nsw i32 %add8, %d
+  ret i32 %add9
 }
 ; *** IR Dump After LoopSimplifyPass on _Z3fooiiii ***
 ; Function Attrs: mustprogress noinline nounwind uwtable
 define dso_local noundef i32 @_Z3fooiiii(i32 noundef %a, i32 noundef %b, i32 noundef %c, i32 noundef %d) local_unnamed_addr #0 {
 entry:
-  %mul = shl nsw i32 %a, 1
-  %mul4 = mul nsw i32 %c, %b
-  %add5 = add nsw i32 %mul4, %mul
-  ret i32 %add5
+  %mul6 = shl nsw i32 %a, 1
+  %mul7 = mul nsw i32 %b, %b
+  %add8 = add nsw i32 %mul7, %mul6
+  %add9 = add nsw i32 %add8, %d
+  ret i32 %add9
 }
 ; *** IR Dump After LCSSAPass on _Z3fooiiii ***
 ; Function Attrs: mustprogress noinline nounwind uwtable
 define dso_local noundef i32 @_Z3fooiiii(i32 noundef %a, i32 noundef %b, i32 noundef %c, i32 noundef %d) local_unnamed_addr #0 {
 entry:
-  %mul = shl nsw i32 %a, 1
-  %mul4 = mul nsw i32 %c, %b
-  %add5 = add nsw i32 %mul4, %mul
-  ret i32 %add5
+  %mul6 = shl nsw i32 %a, 1
+  %mul7 = mul nsw i32 %b, %b
+  %add8 = add nsw i32 %mul7, %mul6
+  %add9 = add nsw i32 %add8, %d
+  ret i32 %add9
 }
 ; *** IR Dump After CoroElidePass on _Z3fooiiii ***
 ; Function Attrs: mustprogress noinline nounwind uwtable
 define dso_local noundef i32 @_Z3fooiiii(i32 noundef %a, i32 noundef %b, i32 noundef %c, i32 noundef %d) local_unnamed_addr #0 {
 entry:
-  %mul = shl nsw i32 %a, 1
-  %mul4 = mul nsw i32 %c, %b
-  %add5 = add nsw i32 %mul4, %mul
-  ret i32 %add5
+  %mul6 = shl nsw i32 %a, 1
+  %mul7 = mul nsw i32 %b, %b
+  %add8 = add nsw i32 %mul7, %mul6
+  %add9 = add nsw i32 %add8, %d
+  ret i32 %add9
 }
 ; *** IR Dump After SimplifyCFGPass on _Z3fooiiii ***
 ; Function Attrs: mustprogress noinline nounwind uwtable
 define dso_local noundef i32 @_Z3fooiiii(i32 noundef %a, i32 noundef %b, i32 noundef %c, i32 noundef %d) local_unnamed_addr #0 {
 entry:
-  %mul = shl nsw i32 %a, 1
-  %mul4 = mul nsw i32 %c, %b
-  %add5 = add nsw i32 %mul4, %mul
-  ret i32 %add5
+  %mul6 = shl nsw i32 %a, 1
+  %mul7 = mul nsw i32 %b, %b
+  %add8 = add nsw i32 %mul7, %mul6
+  %add9 = add nsw i32 %add8, %d
+  ret i32 %add9
 }
 ; *** IR Dump After InstCombinePass on _Z3fooiiii ***
 ; Function Attrs: mustprogress noinline nounwind uwtable
 define dso_local noundef i32 @_Z3fooiiii(i32 noundef %a, i32 noundef %b, i32 noundef %c, i32 noundef %d) local_unnamed_addr #0 {
 entry:
-  %mul = shl nsw i32 %a, 1
-  %mul4 = mul nsw i32 %c, %b
-  %add5 = add nsw i32 %mul4, %mul
-  ret i32 %add5
+  %mul6 = shl nsw i32 %a, 1
+  %mul7 = mul nsw i32 %b, %b
+  %add8 = add nsw i32 %mul7, %mul6
+  %add9 = add nsw i32 %add8, %d
+  ret i32 %add9
 }
 ; *** IR Dump After PostOrderFunctionAttrsPass on (_Z3fooiiii) ***
 ; Function Attrs: mustprogress nofree noinline norecurse nosync nounwind willreturn memory(none) uwtable
 define dso_local noundef i32 @_Z3fooiiii(i32 noundef %a, i32 noundef %b, i32 noundef %c, i32 noundef %d) local_unnamed_addr #0 {
 entry:
-  %mul = shl nsw i32 %a, 1
-  %mul4 = mul nsw i32 %c, %b
-  %add5 = add nsw i32 %mul4, %mul
-  ret i32 %add5
+  %mul6 = shl nsw i32 %a, 1
+  %mul7 = mul nsw i32 %b, %b
+  %add8 = add nsw i32 %mul7, %mul6
+  %add9 = add nsw i32 %add8, %d
+  ret i32 %add9
 }
 ; *** IR Dump After RequireAnalysisPass<llvm::ShouldNotRunFunctionPassesAnalysis, llvm::Function> on _Z3fooiiii ***
 ; Function Attrs: mustprogress nofree noinline norecurse nosync nounwind willreturn memory(none) uwtable
 define dso_local noundef i32 @_Z3fooiiii(i32 noundef %a, i32 noundef %b, i32 noundef %c, i32 noundef %d) local_unnamed_addr #0 {
 entry:
-  %mul = shl nsw i32 %a, 1
-  %mul4 = mul nsw i32 %c, %b
-  %add5 = add nsw i32 %mul4, %mul
-  ret i32 %add5
+  %mul6 = shl nsw i32 %a, 1
+  %mul7 = mul nsw i32 %b, %b
+  %add8 = add nsw i32 %mul7, %mul6
+  %add9 = add nsw i32 %add8, %d
+  ret i32 %add9
 }
 ; *** IR Dump After CoroSplitPass on (_Z3fooiiii) ***
 ; Function Attrs: mustprogress nofree noinline norecurse nosync nounwind willreturn memory(none) uwtable
 define dso_local noundef i32 @_Z3fooiiii(i32 noundef %a, i32 noundef %b, i32 noundef %c, i32 noundef %d) local_unnamed_addr #0 {
 entry:
-  %mul = shl nsw i32 %a, 1
-  %mul4 = mul nsw i32 %c, %b
-  %add5 = add nsw i32 %mul4, %mul
-  ret i32 %add5
+  %mul6 = shl nsw i32 %a, 1
+  %mul7 = mul nsw i32 %b, %b
+  %add8 = add nsw i32 %mul7, %mul6
+  %add9 = add nsw i32 %add8, %d
+  ret i32 %add9
 }
 ; *** IR Dump After CoroAnnotationElidePass on (_Z3fooiiii) ***
 ; Function Attrs: mustprogress nofree noinline norecurse nosync nounwind willreturn memory(none) uwtable
 define dso_local noundef i32 @_Z3fooiiii(i32 noundef %a, i32 noundef %b, i32 noundef %c, i32 noundef %d) local_unnamed_addr #0 {
 entry:
-  %mul = shl nsw i32 %a, 1
-  %mul4 = mul nsw i32 %c, %b
-  %add5 = add nsw i32 %mul4, %mul
-  ret i32 %add5
+  %mul6 = shl nsw i32 %a, 1
+  %mul7 = mul nsw i32 %b, %b
+  %add8 = add nsw i32 %mul7, %mul6
+  %add9 = add nsw i32 %add8, %d
+  ret i32 %add9
 }
 ; *** IR Dump After InvalidateAnalysisPass<llvm::ShouldNotRunFunctionPassesAnalysis> on _Z3fooiiii ***
 ; Function Attrs: mustprogress nofree noinline norecurse nosync nounwind willreturn memory(none) uwtable
 define dso_local noundef i32 @_Z3fooiiii(i32 noundef %a, i32 noundef %b, i32 noundef %c, i32 noundef %d) local_unnamed_addr #0 {
 entry:
-  %mul = shl nsw i32 %a, 1
-  %mul4 = mul nsw i32 %c, %b
-  %add5 = add nsw i32 %mul4, %mul
-  ret i32 %add5
+  %mul6 = shl nsw i32 %a, 1
+  %mul7 = mul nsw i32 %b, %b
+  %add8 = add nsw i32 %mul7, %mul6
+  %add9 = add nsw i32 %add8, %d
+  ret i32 %add9
 }
 ; *** IR Dump After DeadArgumentEliminationPass on [module] ***
 ; ModuleID = 'div2.ll'
@@ -1218,10 +1434,11 @@ target triple = "x86_64-unknown-linux-gnu"
 ; Function Attrs: mustprogress nofree noinline norecurse nosync nounwind willreturn memory(none) uwtable
 define dso_local noundef i32 @_Z3fooiiii(i32 noundef %a, i32 noundef %b, i32 noundef %c, i32 noundef %d) local_unnamed_addr #0 {
 entry:
-  %mul = shl nsw i32 %a, 1
-  %mul4 = mul nsw i32 %c, %b
-  %add5 = add nsw i32 %mul4, %mul
-  ret i32 %add5
+  %mul6 = shl nsw i32 %a, 1
+  %mul7 = mul nsw i32 %b, %b
+  %add8 = add nsw i32 %mul7, %mul6
+  %add9 = add nsw i32 %add8, %d
+  ret i32 %add9
 }
 
 attributes #0 = { mustprogress nofree noinline norecurse nosync nounwind willreturn memory(none) uwtable "frame-pointer"="all" "min-legal-vector-width"="0" "no-trapping-math"="true" "stack-protector-buffer-size"="8" "target-cpu"="x86-64" "target-features"="+cmov,+cx8,+fxsr,+mmx,+sse,+sse2,+x87" "tune-cpu"="generic" }
@@ -1244,10 +1461,11 @@ target triple = "x86_64-unknown-linux-gnu"
 ; Function Attrs: mustprogress nofree noinline norecurse nosync nounwind willreturn memory(none) uwtable
 define dso_local noundef i32 @_Z3fooiiii(i32 noundef %a, i32 noundef %b, i32 noundef %c, i32 noundef %d) local_unnamed_addr #0 {
 entry:
-  %mul = shl nsw i32 %a, 1
-  %mul4 = mul nsw i32 %c, %b
-  %add5 = add nsw i32 %mul4, %mul
-  ret i32 %add5
+  %mul6 = shl nsw i32 %a, 1
+  %mul7 = mul nsw i32 %b, %b
+  %add8 = add nsw i32 %mul7, %mul6
+  %add9 = add nsw i32 %add8, %d
+  ret i32 %add9
 }
 
 attributes #0 = { mustprogress nofree noinline norecurse nosync nounwind willreturn memory(none) uwtable "frame-pointer"="all" "min-legal-vector-width"="0" "no-trapping-math"="true" "stack-protector-buffer-size"="8" "target-cpu"="x86-64" "target-features"="+cmov,+cx8,+fxsr,+mmx,+sse,+sse2,+x87" "tune-cpu"="generic" }
@@ -1270,10 +1488,11 @@ target triple = "x86_64-unknown-linux-gnu"
 ; Function Attrs: mustprogress nofree noinline norecurse nosync nounwind willreturn memory(none) uwtable
 define dso_local noundef i32 @_Z3fooiiii(i32 noundef %a, i32 noundef %b, i32 noundef %c, i32 noundef %d) local_unnamed_addr #0 {
 entry:
-  %mul = shl nsw i32 %a, 1
-  %mul4 = mul nsw i32 %c, %b
-  %add5 = add nsw i32 %mul4, %mul
-  ret i32 %add5
+  %mul6 = shl nsw i32 %a, 1
+  %mul7 = mul nsw i32 %b, %b
+  %add8 = add nsw i32 %mul7, %mul6
+  %add9 = add nsw i32 %add8, %d
+  ret i32 %add9
 }
 
 attributes #0 = { mustprogress nofree noinline norecurse nosync nounwind willreturn memory(none) uwtable "frame-pointer"="all" "min-legal-vector-width"="0" "no-trapping-math"="true" "stack-protector-buffer-size"="8" "target-cpu"="x86-64" "target-features"="+cmov,+cx8,+fxsr,+mmx,+sse,+sse2,+x87" "tune-cpu"="generic" }
@@ -1296,10 +1515,11 @@ target triple = "x86_64-unknown-linux-gnu"
 ; Function Attrs: mustprogress nofree noinline norecurse nosync nounwind willreturn memory(none) uwtable
 define dso_local noundef i32 @_Z3fooiiii(i32 noundef %a, i32 noundef %b, i32 noundef %c, i32 noundef %d) local_unnamed_addr #0 {
 entry:
-  %mul = shl nsw i32 %a, 1
-  %mul4 = mul nsw i32 %c, %b
-  %add5 = add nsw i32 %mul4, %mul
-  ret i32 %add5
+  %mul6 = shl nsw i32 %a, 1
+  %mul7 = mul nsw i32 %b, %b
+  %add8 = add nsw i32 %mul7, %mul6
+  %add9 = add nsw i32 %add8, %d
+  ret i32 %add9
 }
 
 attributes #0 = { mustprogress nofree noinline norecurse nosync nounwind willreturn memory(none) uwtable "frame-pointer"="all" "min-legal-vector-width"="0" "no-trapping-math"="true" "stack-protector-buffer-size"="8" "target-cpu"="x86-64" "target-features"="+cmov,+cx8,+fxsr,+mmx,+sse,+sse2,+x87" "tune-cpu"="generic" }
@@ -1322,10 +1542,11 @@ target triple = "x86_64-unknown-linux-gnu"
 ; Function Attrs: mustprogress nofree noinline norecurse nosync nounwind willreturn memory(none) uwtable
 define dso_local noundef i32 @_Z3fooiiii(i32 noundef %a, i32 noundef %b, i32 noundef %c, i32 noundef %d) local_unnamed_addr #0 {
 entry:
-  %mul = shl nsw i32 %a, 1
-  %mul4 = mul nsw i32 %c, %b
-  %add5 = add nsw i32 %mul4, %mul
-  ret i32 %add5
+  %mul6 = shl nsw i32 %a, 1
+  %mul7 = mul nsw i32 %b, %b
+  %add8 = add nsw i32 %mul7, %mul6
+  %add9 = add nsw i32 %add8, %d
+  ret i32 %add9
 }
 
 attributes #0 = { mustprogress nofree noinline norecurse nosync nounwind willreturn memory(none) uwtable "frame-pointer"="all" "min-legal-vector-width"="0" "no-trapping-math"="true" "stack-protector-buffer-size"="8" "target-cpu"="x86-64" "target-features"="+cmov,+cx8,+fxsr,+mmx,+sse,+sse2,+x87" "tune-cpu"="generic" }
@@ -1348,10 +1569,11 @@ target triple = "x86_64-unknown-linux-gnu"
 ; Function Attrs: mustprogress nofree noinline norecurse nosync nounwind willreturn memory(none) uwtable
 define dso_local noundef i32 @_Z3fooiiii(i32 noundef %a, i32 noundef %b, i32 noundef %c, i32 noundef %d) local_unnamed_addr #0 {
 entry:
-  %mul = shl nsw i32 %a, 1
-  %mul4 = mul nsw i32 %c, %b
-  %add5 = add nsw i32 %mul4, %mul
-  ret i32 %add5
+  %mul6 = shl nsw i32 %a, 1
+  %mul7 = mul nsw i32 %b, %b
+  %add8 = add nsw i32 %mul7, %mul6
+  %add9 = add nsw i32 %add8, %d
+  ret i32 %add9
 }
 
 attributes #0 = { mustprogress nofree noinline norecurse nosync nounwind willreturn memory(none) uwtable "frame-pointer"="all" "min-legal-vector-width"="0" "no-trapping-math"="true" "stack-protector-buffer-size"="8" "target-cpu"="x86-64" "target-features"="+cmov,+cx8,+fxsr,+mmx,+sse,+sse2,+x87" "tune-cpu"="generic" }
@@ -1374,10 +1596,11 @@ target triple = "x86_64-unknown-linux-gnu"
 ; Function Attrs: mustprogress nofree noinline norecurse nosync nounwind willreturn memory(none) uwtable
 define dso_local noundef i32 @_Z3fooiiii(i32 noundef %a, i32 noundef %b, i32 noundef %c, i32 noundef %d) local_unnamed_addr #0 {
 entry:
-  %mul = shl nsw i32 %a, 1
-  %mul4 = mul nsw i32 %c, %b
-  %add5 = add nsw i32 %mul4, %mul
-  ret i32 %add5
+  %mul6 = shl nsw i32 %a, 1
+  %mul7 = mul nsw i32 %b, %b
+  %add8 = add nsw i32 %mul7, %mul6
+  %add9 = add nsw i32 %add8, %d
+  ret i32 %add9
 }
 
 attributes #0 = { mustprogress nofree noinline norecurse nosync nounwind willreturn memory(none) uwtable "frame-pointer"="all" "min-legal-vector-width"="0" "no-trapping-math"="true" "stack-protector-buffer-size"="8" "target-cpu"="x86-64" "target-features"="+cmov,+cx8,+fxsr,+mmx,+sse,+sse2,+x87" "tune-cpu"="generic" }
@@ -1395,244 +1618,271 @@ attributes #0 = { mustprogress nofree noinline norecurse nosync nounwind willret
 ; Function Attrs: mustprogress nofree noinline norecurse nosync nounwind willreturn memory(none) uwtable
 define dso_local noundef i32 @_Z3fooiiii(i32 noundef %a, i32 noundef %b, i32 noundef %c, i32 noundef %d) local_unnamed_addr #0 {
 entry:
-  %mul = shl nsw i32 %a, 1
-  %mul4 = mul nsw i32 %c, %b
-  %add5 = add nsw i32 %mul4, %mul
-  ret i32 %add5
+  %mul6 = shl nsw i32 %a, 1
+  %mul7 = mul nsw i32 %b, %b
+  %add8 = add nsw i32 %mul7, %mul6
+  %add9 = add nsw i32 %add8, %d
+  ret i32 %add9
 }
 ; *** IR Dump After LowerConstantIntrinsicsPass on _Z3fooiiii ***
 ; Function Attrs: mustprogress nofree noinline norecurse nosync nounwind willreturn memory(none) uwtable
 define dso_local noundef i32 @_Z3fooiiii(i32 noundef %a, i32 noundef %b, i32 noundef %c, i32 noundef %d) local_unnamed_addr #0 {
 entry:
-  %mul = shl nsw i32 %a, 1
-  %mul4 = mul nsw i32 %c, %b
-  %add5 = add nsw i32 %mul4, %mul
-  ret i32 %add5
+  %mul6 = shl nsw i32 %a, 1
+  %mul7 = mul nsw i32 %b, %b
+  %add8 = add nsw i32 %mul7, %mul6
+  %add9 = add nsw i32 %add8, %d
+  ret i32 %add9
 }
 ; *** IR Dump After LoopSimplifyPass on _Z3fooiiii ***
 ; Function Attrs: mustprogress nofree noinline norecurse nosync nounwind willreturn memory(none) uwtable
 define dso_local noundef i32 @_Z3fooiiii(i32 noundef %a, i32 noundef %b, i32 noundef %c, i32 noundef %d) local_unnamed_addr #0 {
 entry:
-  %mul = shl nsw i32 %a, 1
-  %mul4 = mul nsw i32 %c, %b
-  %add5 = add nsw i32 %mul4, %mul
-  ret i32 %add5
+  %mul6 = shl nsw i32 %a, 1
+  %mul7 = mul nsw i32 %b, %b
+  %add8 = add nsw i32 %mul7, %mul6
+  %add9 = add nsw i32 %add8, %d
+  ret i32 %add9
 }
 ; *** IR Dump After LCSSAPass on _Z3fooiiii ***
 ; Function Attrs: mustprogress nofree noinline norecurse nosync nounwind willreturn memory(none) uwtable
 define dso_local noundef i32 @_Z3fooiiii(i32 noundef %a, i32 noundef %b, i32 noundef %c, i32 noundef %d) local_unnamed_addr #0 {
 entry:
-  %mul = shl nsw i32 %a, 1
-  %mul4 = mul nsw i32 %c, %b
-  %add5 = add nsw i32 %mul4, %mul
-  ret i32 %add5
+  %mul6 = shl nsw i32 %a, 1
+  %mul7 = mul nsw i32 %b, %b
+  %add8 = add nsw i32 %mul7, %mul6
+  %add9 = add nsw i32 %add8, %d
+  ret i32 %add9
 }
 ; *** IR Dump After LoopDistributePass on _Z3fooiiii ***
 ; Function Attrs: mustprogress nofree noinline norecurse nosync nounwind willreturn memory(none) uwtable
 define dso_local noundef i32 @_Z3fooiiii(i32 noundef %a, i32 noundef %b, i32 noundef %c, i32 noundef %d) local_unnamed_addr #0 {
 entry:
-  %mul = shl nsw i32 %a, 1
-  %mul4 = mul nsw i32 %c, %b
-  %add5 = add nsw i32 %mul4, %mul
-  ret i32 %add5
+  %mul6 = shl nsw i32 %a, 1
+  %mul7 = mul nsw i32 %b, %b
+  %add8 = add nsw i32 %mul7, %mul6
+  %add9 = add nsw i32 %add8, %d
+  ret i32 %add9
 }
 ; *** IR Dump After InjectTLIMappings on _Z3fooiiii ***
 ; Function Attrs: mustprogress nofree noinline norecurse nosync nounwind willreturn memory(none) uwtable
 define dso_local noundef i32 @_Z3fooiiii(i32 noundef %a, i32 noundef %b, i32 noundef %c, i32 noundef %d) local_unnamed_addr #0 {
 entry:
-  %mul = shl nsw i32 %a, 1
-  %mul4 = mul nsw i32 %c, %b
-  %add5 = add nsw i32 %mul4, %mul
-  ret i32 %add5
+  %mul6 = shl nsw i32 %a, 1
+  %mul7 = mul nsw i32 %b, %b
+  %add8 = add nsw i32 %mul7, %mul6
+  %add9 = add nsw i32 %add8, %d
+  ret i32 %add9
 }
 ; *** IR Dump After LoopVectorizePass on _Z3fooiiii ***
 ; Function Attrs: mustprogress nofree noinline norecurse nosync nounwind willreturn memory(none) uwtable
 define dso_local noundef i32 @_Z3fooiiii(i32 noundef %a, i32 noundef %b, i32 noundef %c, i32 noundef %d) local_unnamed_addr #0 {
 entry:
-  %mul = shl nsw i32 %a, 1
-  %mul4 = mul nsw i32 %c, %b
-  %add5 = add nsw i32 %mul4, %mul
-  ret i32 %add5
+  %mul6 = shl nsw i32 %a, 1
+  %mul7 = mul nsw i32 %b, %b
+  %add8 = add nsw i32 %mul7, %mul6
+  %add9 = add nsw i32 %add8, %d
+  ret i32 %add9
 }
 ; *** IR Dump After InferAlignmentPass on _Z3fooiiii ***
 ; Function Attrs: mustprogress nofree noinline norecurse nosync nounwind willreturn memory(none) uwtable
 define dso_local noundef i32 @_Z3fooiiii(i32 noundef %a, i32 noundef %b, i32 noundef %c, i32 noundef %d) local_unnamed_addr #0 {
 entry:
-  %mul = shl nsw i32 %a, 1
-  %mul4 = mul nsw i32 %c, %b
-  %add5 = add nsw i32 %mul4, %mul
-  ret i32 %add5
+  %mul6 = shl nsw i32 %a, 1
+  %mul7 = mul nsw i32 %b, %b
+  %add8 = add nsw i32 %mul7, %mul6
+  %add9 = add nsw i32 %add8, %d
+  ret i32 %add9
 }
 ; *** IR Dump After LoopLoadEliminationPass on _Z3fooiiii ***
 ; Function Attrs: mustprogress nofree noinline norecurse nosync nounwind willreturn memory(none) uwtable
 define dso_local noundef i32 @_Z3fooiiii(i32 noundef %a, i32 noundef %b, i32 noundef %c, i32 noundef %d) local_unnamed_addr #0 {
 entry:
-  %mul = shl nsw i32 %a, 1
-  %mul4 = mul nsw i32 %c, %b
-  %add5 = add nsw i32 %mul4, %mul
-  ret i32 %add5
+  %mul6 = shl nsw i32 %a, 1
+  %mul7 = mul nsw i32 %b, %b
+  %add8 = add nsw i32 %mul7, %mul6
+  %add9 = add nsw i32 %add8, %d
+  ret i32 %add9
 }
 ; *** IR Dump After InstCombinePass on _Z3fooiiii ***
 ; Function Attrs: mustprogress nofree noinline norecurse nosync nounwind willreturn memory(none) uwtable
 define dso_local noundef i32 @_Z3fooiiii(i32 noundef %a, i32 noundef %b, i32 noundef %c, i32 noundef %d) local_unnamed_addr #0 {
 entry:
-  %mul = shl nsw i32 %a, 1
-  %mul4 = mul nsw i32 %c, %b
-  %add5 = add nsw i32 %mul4, %mul
-  ret i32 %add5
+  %mul6 = shl nsw i32 %a, 1
+  %mul7 = mul nsw i32 %b, %b
+  %add8 = add nsw i32 %mul7, %mul6
+  %add9 = add nsw i32 %add8, %d
+  ret i32 %add9
 }
 ; *** IR Dump After SimplifyCFGPass on _Z3fooiiii ***
 ; Function Attrs: mustprogress nofree noinline norecurse nosync nounwind willreturn memory(none) uwtable
 define dso_local noundef i32 @_Z3fooiiii(i32 noundef %a, i32 noundef %b, i32 noundef %c, i32 noundef %d) local_unnamed_addr #0 {
 entry:
-  %mul = shl nsw i32 %a, 1
-  %mul4 = mul nsw i32 %c, %b
-  %add5 = add nsw i32 %mul4, %mul
-  ret i32 %add5
+  %mul6 = shl nsw i32 %a, 1
+  %mul7 = mul nsw i32 %b, %b
+  %add8 = add nsw i32 %mul7, %mul6
+  %add9 = add nsw i32 %add8, %d
+  ret i32 %add9
 }
 ; *** IR Dump After SLPVectorizerPass on _Z3fooiiii ***
 ; Function Attrs: mustprogress nofree noinline norecurse nosync nounwind willreturn memory(none) uwtable
 define dso_local noundef i32 @_Z3fooiiii(i32 noundef %a, i32 noundef %b, i32 noundef %c, i32 noundef %d) local_unnamed_addr #0 {
 entry:
-  %mul = shl nsw i32 %a, 1
-  %mul4 = mul nsw i32 %c, %b
-  %add5 = add nsw i32 %mul4, %mul
-  ret i32 %add5
+  %mul6 = shl nsw i32 %a, 1
+  %mul7 = mul nsw i32 %b, %b
+  %add8 = add nsw i32 %mul7, %mul6
+  %add9 = add nsw i32 %add8, %d
+  ret i32 %add9
 }
 ; *** IR Dump After VectorCombinePass on _Z3fooiiii ***
 ; Function Attrs: mustprogress nofree noinline norecurse nosync nounwind willreturn memory(none) uwtable
 define dso_local noundef i32 @_Z3fooiiii(i32 noundef %a, i32 noundef %b, i32 noundef %c, i32 noundef %d) local_unnamed_addr #0 {
 entry:
-  %mul = shl nsw i32 %a, 1
-  %mul4 = mul nsw i32 %c, %b
-  %add5 = add nsw i32 %mul4, %mul
-  ret i32 %add5
+  %mul6 = shl nsw i32 %a, 1
+  %mul7 = mul nsw i32 %b, %b
+  %add8 = add nsw i32 %mul7, %mul6
+  %add9 = add nsw i32 %add8, %d
+  ret i32 %add9
 }
 ; *** IR Dump After InstCombinePass on _Z3fooiiii ***
 ; Function Attrs: mustprogress nofree noinline norecurse nosync nounwind willreturn memory(none) uwtable
 define dso_local noundef i32 @_Z3fooiiii(i32 noundef %a, i32 noundef %b, i32 noundef %c, i32 noundef %d) local_unnamed_addr #0 {
 entry:
-  %mul = shl nsw i32 %a, 1
-  %mul4 = mul nsw i32 %c, %b
-  %add5 = add nsw i32 %mul4, %mul
-  ret i32 %add5
+  %mul6 = shl nsw i32 %a, 1
+  %mul7 = mul nsw i32 %b, %b
+  %add8 = add nsw i32 %mul7, %mul6
+  %add9 = add nsw i32 %add8, %d
+  ret i32 %add9
 }
 ; *** IR Dump After LoopUnrollPass on _Z3fooiiii ***
 ; Function Attrs: mustprogress nofree noinline norecurse nosync nounwind willreturn memory(none) uwtable
 define dso_local noundef i32 @_Z3fooiiii(i32 noundef %a, i32 noundef %b, i32 noundef %c, i32 noundef %d) local_unnamed_addr #0 {
 entry:
-  %mul = shl nsw i32 %a, 1
-  %mul4 = mul nsw i32 %c, %b
-  %add5 = add nsw i32 %mul4, %mul
-  ret i32 %add5
+  %mul6 = shl nsw i32 %a, 1
+  %mul7 = mul nsw i32 %b, %b
+  %add8 = add nsw i32 %mul7, %mul6
+  %add9 = add nsw i32 %add8, %d
+  ret i32 %add9
 }
 ; *** IR Dump After WarnMissedTransformationsPass on _Z3fooiiii ***
 ; Function Attrs: mustprogress nofree noinline norecurse nosync nounwind willreturn memory(none) uwtable
 define dso_local noundef i32 @_Z3fooiiii(i32 noundef %a, i32 noundef %b, i32 noundef %c, i32 noundef %d) local_unnamed_addr #0 {
 entry:
-  %mul = shl nsw i32 %a, 1
-  %mul4 = mul nsw i32 %c, %b
-  %add5 = add nsw i32 %mul4, %mul
-  ret i32 %add5
+  %mul6 = shl nsw i32 %a, 1
+  %mul7 = mul nsw i32 %b, %b
+  %add8 = add nsw i32 %mul7, %mul6
+  %add9 = add nsw i32 %add8, %d
+  ret i32 %add9
 }
 ; *** IR Dump After SROAPass on _Z3fooiiii ***
 ; Function Attrs: mustprogress nofree noinline norecurse nosync nounwind willreturn memory(none) uwtable
 define dso_local noundef i32 @_Z3fooiiii(i32 noundef %a, i32 noundef %b, i32 noundef %c, i32 noundef %d) local_unnamed_addr #0 {
 entry:
-  %mul = shl nsw i32 %a, 1
-  %mul4 = mul nsw i32 %c, %b
-  %add5 = add nsw i32 %mul4, %mul
-  ret i32 %add5
+  %mul6 = shl nsw i32 %a, 1
+  %mul7 = mul nsw i32 %b, %b
+  %add8 = add nsw i32 %mul7, %mul6
+  %add9 = add nsw i32 %add8, %d
+  ret i32 %add9
 }
 ; *** IR Dump After InferAlignmentPass on _Z3fooiiii ***
 ; Function Attrs: mustprogress nofree noinline norecurse nosync nounwind willreturn memory(none) uwtable
 define dso_local noundef i32 @_Z3fooiiii(i32 noundef %a, i32 noundef %b, i32 noundef %c, i32 noundef %d) local_unnamed_addr #0 {
 entry:
-  %mul = shl nsw i32 %a, 1
-  %mul4 = mul nsw i32 %c, %b
-  %add5 = add nsw i32 %mul4, %mul
-  ret i32 %add5
+  %mul6 = shl nsw i32 %a, 1
+  %mul7 = mul nsw i32 %b, %b
+  %add8 = add nsw i32 %mul7, %mul6
+  %add9 = add nsw i32 %add8, %d
+  ret i32 %add9
 }
 ; *** IR Dump After InstCombinePass on _Z3fooiiii ***
 ; Function Attrs: mustprogress nofree noinline norecurse nosync nounwind willreturn memory(none) uwtable
 define dso_local noundef i32 @_Z3fooiiii(i32 noundef %a, i32 noundef %b, i32 noundef %c, i32 noundef %d) local_unnamed_addr #0 {
 entry:
-  %mul = shl nsw i32 %a, 1
-  %mul4 = mul nsw i32 %c, %b
-  %add5 = add nsw i32 %mul4, %mul
-  ret i32 %add5
+  %mul6 = shl nsw i32 %a, 1
+  %mul7 = mul nsw i32 %b, %b
+  %add8 = add nsw i32 %mul7, %mul6
+  %add9 = add nsw i32 %add8, %d
+  ret i32 %add9
 }
 ; *** IR Dump After LoopSimplifyPass on _Z3fooiiii ***
 ; Function Attrs: mustprogress nofree noinline norecurse nosync nounwind willreturn memory(none) uwtable
 define dso_local noundef i32 @_Z3fooiiii(i32 noundef %a, i32 noundef %b, i32 noundef %c, i32 noundef %d) local_unnamed_addr #0 {
 entry:
-  %mul = shl nsw i32 %a, 1
-  %mul4 = mul nsw i32 %c, %b
-  %add5 = add nsw i32 %mul4, %mul
-  ret i32 %add5
+  %mul6 = shl nsw i32 %a, 1
+  %mul7 = mul nsw i32 %b, %b
+  %add8 = add nsw i32 %mul7, %mul6
+  %add9 = add nsw i32 %add8, %d
+  ret i32 %add9
 }
 ; *** IR Dump After LCSSAPass on _Z3fooiiii ***
 ; Function Attrs: mustprogress nofree noinline norecurse nosync nounwind willreturn memory(none) uwtable
 define dso_local noundef i32 @_Z3fooiiii(i32 noundef %a, i32 noundef %b, i32 noundef %c, i32 noundef %d) local_unnamed_addr #0 {
 entry:
-  %mul = shl nsw i32 %a, 1
-  %mul4 = mul nsw i32 %c, %b
-  %add5 = add nsw i32 %mul4, %mul
-  ret i32 %add5
+  %mul6 = shl nsw i32 %a, 1
+  %mul7 = mul nsw i32 %b, %b
+  %add8 = add nsw i32 %mul7, %mul6
+  %add9 = add nsw i32 %add8, %d
+  ret i32 %add9
 }
 ; *** IR Dump After AlignmentFromAssumptionsPass on _Z3fooiiii ***
 ; Function Attrs: mustprogress nofree noinline norecurse nosync nounwind willreturn memory(none) uwtable
 define dso_local noundef i32 @_Z3fooiiii(i32 noundef %a, i32 noundef %b, i32 noundef %c, i32 noundef %d) local_unnamed_addr #0 {
 entry:
-  %mul = shl nsw i32 %a, 1
-  %mul4 = mul nsw i32 %c, %b
-  %add5 = add nsw i32 %mul4, %mul
-  ret i32 %add5
+  %mul6 = shl nsw i32 %a, 1
+  %mul7 = mul nsw i32 %b, %b
+  %add8 = add nsw i32 %mul7, %mul6
+  %add9 = add nsw i32 %add8, %d
+  ret i32 %add9
 }
 ; *** IR Dump After LoopSinkPass on _Z3fooiiii ***
 ; Function Attrs: mustprogress nofree noinline norecurse nosync nounwind willreturn memory(none) uwtable
 define dso_local noundef i32 @_Z3fooiiii(i32 noundef %a, i32 noundef %b, i32 noundef %c, i32 noundef %d) local_unnamed_addr #0 {
 entry:
-  %mul = shl nsw i32 %a, 1
-  %mul4 = mul nsw i32 %c, %b
-  %add5 = add nsw i32 %mul4, %mul
-  ret i32 %add5
+  %mul6 = shl nsw i32 %a, 1
+  %mul7 = mul nsw i32 %b, %b
+  %add8 = add nsw i32 %mul7, %mul6
+  %add9 = add nsw i32 %add8, %d
+  ret i32 %add9
 }
 ; *** IR Dump After InstSimplifyPass on _Z3fooiiii ***
 ; Function Attrs: mustprogress nofree noinline norecurse nosync nounwind willreturn memory(none) uwtable
 define dso_local noundef i32 @_Z3fooiiii(i32 noundef %a, i32 noundef %b, i32 noundef %c, i32 noundef %d) local_unnamed_addr #0 {
 entry:
-  %mul = shl nsw i32 %a, 1
-  %mul4 = mul nsw i32 %c, %b
-  %add5 = add nsw i32 %mul4, %mul
-  ret i32 %add5
+  %mul6 = shl nsw i32 %a, 1
+  %mul7 = mul nsw i32 %b, %b
+  %add8 = add nsw i32 %mul7, %mul6
+  %add9 = add nsw i32 %add8, %d
+  ret i32 %add9
 }
 ; *** IR Dump After DivRemPairsPass on _Z3fooiiii ***
 ; Function Attrs: mustprogress nofree noinline norecurse nosync nounwind willreturn memory(none) uwtable
 define dso_local noundef i32 @_Z3fooiiii(i32 noundef %a, i32 noundef %b, i32 noundef %c, i32 noundef %d) local_unnamed_addr #0 {
 entry:
-  %mul = shl nsw i32 %a, 1
-  %mul4 = mul nsw i32 %c, %b
-  %add5 = add nsw i32 %mul4, %mul
-  ret i32 %add5
+  %mul6 = shl nsw i32 %a, 1
+  %mul7 = mul nsw i32 %b, %b
+  %add8 = add nsw i32 %mul7, %mul6
+  %add9 = add nsw i32 %add8, %d
+  ret i32 %add9
 }
 ; *** IR Dump After TailCallElimPass on _Z3fooiiii ***
 ; Function Attrs: mustprogress nofree noinline norecurse nosync nounwind willreturn memory(none) uwtable
 define dso_local noundef i32 @_Z3fooiiii(i32 noundef %a, i32 noundef %b, i32 noundef %c, i32 noundef %d) local_unnamed_addr #0 {
 entry:
-  %mul = shl nsw i32 %a, 1
-  %mul4 = mul nsw i32 %c, %b
-  %add5 = add nsw i32 %mul4, %mul
-  ret i32 %add5
+  %mul6 = shl nsw i32 %a, 1
+  %mul7 = mul nsw i32 %b, %b
+  %add8 = add nsw i32 %mul7, %mul6
+  %add9 = add nsw i32 %add8, %d
+  ret i32 %add9
 }
 ; *** IR Dump After SimplifyCFGPass on _Z3fooiiii ***
 ; Function Attrs: mustprogress nofree noinline norecurse nosync nounwind willreturn memory(none) uwtable
 define dso_local noundef i32 @_Z3fooiiii(i32 noundef %a, i32 noundef %b, i32 noundef %c, i32 noundef %d) local_unnamed_addr #0 {
 entry:
-  %mul = shl nsw i32 %a, 1
-  %mul4 = mul nsw i32 %c, %b
-  %add5 = add nsw i32 %mul4, %mul
-  ret i32 %add5
+  %mul6 = shl nsw i32 %a, 1
+  %mul7 = mul nsw i32 %b, %b
+  %add8 = add nsw i32 %mul7, %mul6
+  %add9 = add nsw i32 %add8, %d
+  ret i32 %add9
 }
 ; *** IR Dump After GlobalDCEPass on [module] ***
 ; ModuleID = 'div2.ll'
@@ -1643,10 +1893,11 @@ target triple = "x86_64-unknown-linux-gnu"
 ; Function Attrs: mustprogress nofree noinline norecurse nosync nounwind willreturn memory(none) uwtable
 define dso_local noundef i32 @_Z3fooiiii(i32 noundef %a, i32 noundef %b, i32 noundef %c, i32 noundef %d) local_unnamed_addr #0 {
 entry:
-  %mul = shl nsw i32 %a, 1
-  %mul4 = mul nsw i32 %c, %b
-  %add5 = add nsw i32 %mul4, %mul
-  ret i32 %add5
+  %mul6 = shl nsw i32 %a, 1
+  %mul7 = mul nsw i32 %b, %b
+  %add8 = add nsw i32 %mul7, %mul6
+  %add9 = add nsw i32 %add8, %d
+  ret i32 %add9
 }
 
 attributes #0 = { mustprogress nofree noinline norecurse nosync nounwind willreturn memory(none) uwtable "frame-pointer"="all" "min-legal-vector-width"="0" "no-trapping-math"="true" "stack-protector-buffer-size"="8" "target-cpu"="x86-64" "target-features"="+cmov,+cx8,+fxsr,+mmx,+sse,+sse2,+x87" "tune-cpu"="generic" }
@@ -1669,10 +1920,11 @@ target triple = "x86_64-unknown-linux-gnu"
 ; Function Attrs: mustprogress nofree noinline norecurse nosync nounwind willreturn memory(none) uwtable
 define dso_local noundef i32 @_Z3fooiiii(i32 noundef %a, i32 noundef %b, i32 noundef %c, i32 noundef %d) local_unnamed_addr #0 {
 entry:
-  %mul = shl nsw i32 %a, 1
-  %mul4 = mul nsw i32 %c, %b
-  %add5 = add nsw i32 %mul4, %mul
-  ret i32 %add5
+  %mul6 = shl nsw i32 %a, 1
+  %mul7 = mul nsw i32 %b, %b
+  %add8 = add nsw i32 %mul7, %mul6
+  %add9 = add nsw i32 %add8, %d
+  ret i32 %add9
 }
 
 attributes #0 = { mustprogress nofree noinline norecurse nosync nounwind willreturn memory(none) uwtable "frame-pointer"="all" "min-legal-vector-width"="0" "no-trapping-math"="true" "stack-protector-buffer-size"="8" "target-cpu"="x86-64" "target-features"="+cmov,+cx8,+fxsr,+mmx,+sse,+sse2,+x87" "tune-cpu"="generic" }
@@ -1695,10 +1947,11 @@ target triple = "x86_64-unknown-linux-gnu"
 ; Function Attrs: mustprogress nofree noinline norecurse nosync nounwind willreturn memory(none) uwtable
 define dso_local noundef i32 @_Z3fooiiii(i32 noundef %a, i32 noundef %b, i32 noundef %c, i32 noundef %d) local_unnamed_addr #0 {
 entry:
-  %mul = shl nsw i32 %a, 1
-  %mul4 = mul nsw i32 %c, %b
-  %add5 = add nsw i32 %mul4, %mul
-  ret i32 %add5
+  %mul6 = shl nsw i32 %a, 1
+  %mul7 = mul nsw i32 %b, %b
+  %add8 = add nsw i32 %mul7, %mul6
+  %add9 = add nsw i32 %add8, %d
+  ret i32 %add9
 }
 
 attributes #0 = { mustprogress nofree noinline norecurse nosync nounwind willreturn memory(none) uwtable "frame-pointer"="all" "min-legal-vector-width"="0" "no-trapping-math"="true" "stack-protector-buffer-size"="8" "target-cpu"="x86-64" "target-features"="+cmov,+cx8,+fxsr,+mmx,+sse,+sse2,+x87" "tune-cpu"="generic" }
@@ -1721,10 +1974,11 @@ target triple = "x86_64-unknown-linux-gnu"
 ; Function Attrs: mustprogress nofree noinline norecurse nosync nounwind willreturn memory(none) uwtable
 define dso_local noundef i32 @_Z3fooiiii(i32 noundef %a, i32 noundef %b, i32 noundef %c, i32 noundef %d) local_unnamed_addr #0 {
 entry:
-  %mul = shl nsw i32 %a, 1
-  %mul4 = mul nsw i32 %c, %b
-  %add5 = add nsw i32 %mul4, %mul
-  ret i32 %add5
+  %mul6 = shl nsw i32 %a, 1
+  %mul7 = mul nsw i32 %b, %b
+  %add8 = add nsw i32 %mul7, %mul6
+  %add9 = add nsw i32 %add8, %d
+  ret i32 %add9
 }
 
 attributes #0 = { mustprogress nofree noinline norecurse nosync nounwind willreturn memory(none) uwtable "frame-pointer"="all" "min-legal-vector-width"="0" "no-trapping-math"="true" "stack-protector-buffer-size"="8" "target-cpu"="x86-64" "target-features"="+cmov,+cx8,+fxsr,+mmx,+sse,+sse2,+x87" "tune-cpu"="generic" }
@@ -1742,8 +1996,9 @@ attributes #0 = { mustprogress nofree noinline norecurse nosync nounwind willret
 ; Function Attrs: mustprogress nofree noinline norecurse nosync nounwind willreturn memory(none) uwtable
 define dso_local noundef i32 @_Z3fooiiii(i32 noundef %a, i32 noundef %b, i32 noundef %c, i32 noundef %d) local_unnamed_addr #0 {
 entry:
-  %mul = shl nsw i32 %a, 1
-  %mul4 = mul nsw i32 %c, %b
-  %add5 = add nsw i32 %mul4, %mul
-  ret i32 %add5
+  %mul6 = shl nsw i32 %a, 1
+  %mul7 = mul nsw i32 %b, %b
+  %add8 = add nsw i32 %mul7, %mul6
+  %add9 = add nsw i32 %add8, %d
+  ret i32 %add9
 }

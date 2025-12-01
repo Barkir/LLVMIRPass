@@ -40,6 +40,11 @@ using namespace llvm;
 
 using valueHashTab = std::unordered_map<Value*, int32_t>;
 
+
+// table for collecting icmp (needed to proof && links between conditions)
+static std::vector<Instruction*> icmpTable;
+using icmpIterator = std::vector<Instruction*>::iterator;
+
 llvm::raw_fd_ostream& operator<<(llvm::raw_fd_ostream& os, valueHashTab& tab) {
 
     for (size_t i = 0; i < tab.size(); i++) {
@@ -225,17 +230,20 @@ valueHashTab collectICmp(Function &F) {
                         const int32_t sextVal = secondOperandConst->getSExtValue();
                         errs() << CYNHB "sextVal is " << sextVal << RESET "\n";
                         instrMap[firstOperand] = sextVal;
+                        icmpTable.push_back(castI);
                     } else if (!isa<PoisonValue>(secondFromTab)) {
                         auto *secondFromTabConst = dyn_cast<ConstantInt>(secondFromTab);
                         errs() << BYEL << "secondOperand is a complexed value!" << RESET << "\n";
                         const int32_t sextVal = secondFromTabConst->getSExtValue();
                         errs() << CYNHB "sextVal is " << sextVal << RESET "\n";
                         instrMap[firstOperand] = sextVal;
+                        icmpTable.push_back(castI);
                     } else if (auto *firstOperandConst = dyn_cast<ConstantInt>(firstOperand)) {
                         errs() << BYEL << "first op is num! ";
                         const int32_t sextVal = firstOperandConst->getSExtValue();
                         errs() << CYNHB "sextVal is " << sextVal << RESET "\n";
                         instrMap[secondOperand] = sextVal;
+                        icmpTable.push_back(castI);
                     }
 
                 }
@@ -246,6 +254,54 @@ valueHashTab collectICmp(Function &F) {
     errs() << instrMap;
     errs() << UCYN "END OF FUNC" RESET << "\n";
     return instrMap;
+}
+
+bool checkLinkThruTerminator(icmpIterator pred, icmpIterator post) {
+    errs() << UCYN "checkLinkThruTerminator" RESET << "\n";
+    auto predBBTerminator = (*pred)->getParent()->getTerminator();
+    auto postBB = (*post)->getParent();
+
+    errs() << *(predBBTerminator->getOperand(2)) << *postBB << "\n";
+    if (predBBTerminator->getOperand(2) == postBB) {
+        errs() << CYNHB "EQUAL!" << RESET "\n";
+        errs() << UCYN "END OF FUNC" RESET << "\n";
+        return true;
+    }
+    errs() << UCYN "END OF FUNC" RESET << "\n";
+    return false;
+}
+
+bool checkLinkThruSelect(icmpIterator pred, icmpIterator post) {
+    errs() << UCYN "checkLinkThruSelect" RESET << "\n";
+    if ((*pred)->getParent() == (*post)->getParent()) { // instructions are in the same basic block
+        for (auto user: (*pred)->users()) {
+            errs() << "Got User " << *user << "\n";
+            if (auto userToInst = dyn_cast<Instruction>(user)) {
+                if (userToInst->getOpcode() == Instruction::Select) {
+                    errs() << "user is select!" << "\n";
+                    if (userToInst->getOperand(0) == *pred && userToInst->getOperand(1) == *post) {
+                        *post = userToInst; // updating because select result will be used in future BB's, not the old post
+                        return true;
+                    }
+                }
+            }
+        }
+
+    }
+    errs() << UCYN "END OF FUNC" RESET << "\n";
+    return false;
+}
+
+bool proofConjuctionLinks() {
+    errs() << UCYN "proofConjuctionLinks" RESET << "\n";
+    for (auto it = icmpTable.begin(), end = icmpTable.end() - 1; it != end; ++it) {
+        errs() << **it << **(it + 1) << "\n";
+        if (!checkLinkThruTerminator(it, it + 1) && !checkLinkThruSelect(it, it+1)) {
+            return false;
+        }
+    }
+    return true;
+    errs() << UCYN "END OF FUNC" RESET << "\n";
 }
 
 void DeprecateConstantFromPhiNode(PHINode* phi, BasicBlock *target) {
@@ -274,6 +330,8 @@ PreservedAnalyses CollapseIdenticalNodesPass::run(Function &F, FunctionAnalysisM
         if (auto *phiNode = PhiNodeWithConstant(BB)) {
             valueHashTab tab = collectICmp(F);
             errs() << "collected icmp and got hashtab!" << "\n";
+            bool links = proofConjuctionLinks();
+            if (links){
             auto *phi = dyn_cast<PHINode>(phiNode);
             auto *phiToReplace = phi->getIncomingValue(1);
             auto value = CountValueRecursively(phiToReplace, tab);
@@ -286,6 +344,7 @@ PreservedAnalyses CollapseIdenticalNodesPass::run(Function &F, FunctionAnalysisM
                 }
                 errs() << "VALUES ARE EQUAL" << "\n";
                 return PreservedAnalyses::all();
+            }
             }
         }
     }

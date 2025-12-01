@@ -30,25 +30,34 @@ land.lhs.true2:                                   ; preds = %land.lhs.true
   %3 = load i32, ptr %a.addr, align 4
   %add = add nsw i32 %3, 5
   %cmp3 = icmp eq i32 %2, %add
-  br i1 %cmp3, label %if.then, label %if.else
+  br i1 %cmp3, label %land.lhs.true4, label %if.else
 
-if.then:                                          ; preds = %land.lhs.true2
-  store i32 354500, ptr %res, align 4
+land.lhs.true4:                                   ; preds = %land.lhs.true2
+  %4 = load i32, ptr %d.addr, align 4
+  %5 = load i32, ptr %b.addr, align 4
+  %mul = mul nsw i32 %5, 8
+  %cmp5 = icmp eq i32 %4, %mul
+  br i1 %cmp5, label %if.then, label %if.else
+
+if.then:                                          ; preds = %land.lhs.true4
+  store i32 496600, ptr %res, align 4
   br label %if.end
 
-if.else:                                          ; preds = %land.lhs.true2, %land.lhs.true, %entry
-  %4 = load i32, ptr %a.addr, align 4
-  %mul = mul nsw i32 2, %4
-  %5 = load i32, ptr %b.addr, align 4
-  %6 = load i32, ptr %c.addr, align 4
-  %mul4 = mul nsw i32 %5, %6
-  %add5 = add nsw i32 %mul, %mul4
-  store i32 %add5, ptr %res, align 4
+if.else:                                          ; preds = %land.lhs.true4, %land.lhs.true2, %land.lhs.true, %entry
+  %6 = load i32, ptr %a.addr, align 4
+  %mul6 = mul nsw i32 2, %6
+  %7 = load i32, ptr %b.addr, align 4
+  %8 = load i32, ptr %b.addr, align 4
+  %mul7 = mul nsw i32 %7, %8
+  %add8 = add nsw i32 %mul6, %mul7
+  %9 = load i32, ptr %d.addr, align 4
+  %add9 = add nsw i32 %add8, %9
+  store i32 %add9, ptr %res, align 4
   br label %if.end
 
 if.end:                                           ; preds = %if.else, %if.then
-  %7 = load i32, ptr %res, align 4
-  ret i32 %7
+  %10 = load i32, ptr %res, align 4
+  ret i32 %10
 }
 
 attributes #0 = { mustprogress noinline nounwind uwtable "frame-pointer"="all" "min-legal-vector-width"="0" "no-trapping-math"="true" "stack-protector-buffer-size"="8" "target-cpu"="x86-64" "target-features"="+cmov,+cx8,+fxsr,+mmx,+sse,+sse2,+x87" "tune-cpu"="generic" }

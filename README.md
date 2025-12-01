@@ -109,6 +109,10 @@ It was decided to modify `MaxSmallBlockSize` and `BranchFoldToCommonDestVectorMu
 
 ### CollapseIdenticalNodes Pass
 It was decided to write a pass that would notice the pattern and optimize **IR** code.
+<div style="text-align: center;">
+  <img src="./md/collapse.png" alt="Optimized Compilation Result with -O2 flag" />
+  <p><em>CollapseIdenticalNodes pass structure.</em></p>
+</div>
 
 #### Current Result with this pass (-O2 flag)
 
@@ -139,4 +143,6 @@ entry:
   ret i32 %add5
 }
 ```
+
+
 
