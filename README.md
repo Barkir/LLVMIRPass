@@ -215,4 +215,69 @@ entry:
 }
 ```
 
+----
+# Fixing errors after code review
+
+- The algorithm was ineffective because it would find `icmp` through the entire function.
+- This approach was changed to finding all `icmp` in the paths `immediate dominator` -> `phi node`.
+
+> d=dom(n) of basic block n is defined as if any path from entry block to n goes through d and d is called dominator.
+
+> idom(n) is a basic block which strictly dominates n and doesn't dominate any other node that also dominates n.
+
+_to feel the difference between idom and dom - look at the picture below_
+
+![alt text](./md/dom.png)
+
+So, the idea of the algorithm is to find only the `icmps` we need.
+It can be proven that to find those `icmps` we only need to traverse from `immediate dominator of phi node block` to `phi node block`. (actually i don't know how to prove it, maybe i'll try to explain it later).
+
+So I added this function to find all the paths
+```cpp
+void findAllPaths  (BasicBlock *curr,                                   // current basic block
+                    BasicBlock *target,                                 // target basic block
+                    std::vector<BasicBlock*> &CurPath,                  // current path we chose to go from current -> ... -> target
+                    std::vector<std::vector<BasicBlock*>>& AllPaths,    // vector of all paths
+                    std::set<BasicBlock*>& Visited) {                   // needed to prevent cycling if we have cycle in a block (e.g. current -> current -> ...)
+    if (curr == nullptr) {
+        return;
+    }
+    CurPath.push_back(curr);
+    Visited.insert(curr);
+
+    if (curr == target) {
+        for (auto path : CurPath) {
+            errs() << path->getName() << "->";
+        }
+        errs() << "\n";
+        AllPaths.push_back(CurPath);
+        return;
+    }
+
+    for (BasicBlock *succ : successors(curr)) {
+        if (Visited.find(succ) == Visited.end()) {
+            errs() << succ->getName() << " BB IS IN PATH" << "\n";
+            findAllPaths(succ, target, CurPath, AllPaths, Visited);
+        }
+    }
+
+    CurPath.pop_back();
+    Visited.erase(curr);
+
+}
+```
+
+LLVM computes the Dominator Tree during compilation. We only need the immediate dominator.
+
+```cpp
+auto &DT = AM.getResult<DominatorTreeAnalysis>(F);
+const DomTreeNode *Node = DT.getNode(&BB);
+DomTreeNode *IDom = Node->getIDom();
+BasicBlock *ImmBB = IDom->getBlock();
+```
+
+-----
+
+
+
 

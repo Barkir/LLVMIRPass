@@ -529,6 +529,16 @@ Found phi node   %res.0 = phi i32 [ 496600, %if.then ], [ %add9, %if.else ]
 Phi node has a constant. Returning it as an Instruction*
 [4;36mEND OF FUNC[0m
 [4;36mcollectICmp[0m
+land.lhs.true2 BB IS IN PATH
+land.lhs.true4 BB IS IN PATH
+if.then BB IS IN PATH
+if.end BB IS IN PATH
+entry->land.lhs.true2->land.lhs.true4->if.then->if.end->
+if.else BB IS IN PATH
+if.else BB IS IN PATH
+if.else BB IS IN PATH
+FOUND ALL PATHS!!!
+entryIN PATH CYCLE
 [1;33mFound icmp!   %cmp = icmp eq i32 %a, 500[0m
 That is icmp eq!
 [4;36mgetPznOrConstant[0m
@@ -539,6 +549,7 @@ That is icmp eq!
 [4;36mgetPznOrConstant[0m
 [4;36mEND OF FUNC[0m
 [1;33msecond op is num! [0;106msextVal is 700[0m
+land.lhs.true2IN PATH CYCLE
 [1;33mFound icmp!   %cmp3 = icmp eq i32 %c, %add[0m
 That is icmp eq!
 [4;36mgetPznOrConstant[0m
@@ -548,6 +559,7 @@ That is icmp eq!
 [4;36mEND OF FUNC[0m
 [1;33msecondOperand is a complexed value![0m
 [0;106msextVal is 505[0m
+land.lhs.true4IN PATH CYCLE
 [1;33mFound icmp!   %cmp5 = icmp eq i32 %d, %mul[0m
 That is icmp eq!
 [4;36mgetPznOrConstant[0m
@@ -557,6 +569,8 @@ That is icmp eq!
 [4;36mEND OF FUNC[0m
 [1;33msecondOperand is a complexed value![0m
 [0;106msextVal is 5600[0m
+if.thenIN PATH CYCLE
+if.endIN PATH CYCLE
 ════════════════════
 ║ %d		║ 	5600║
 ║ %c		║ 	505║

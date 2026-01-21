@@ -28,6 +28,11 @@
 #include "llvm/IR/Type.h"
 // #include "llvm/Support/CFG.h"
 
+#include "llvm/Analysis/DominanceFrontier.h"
+#include "llvm/Analysis/DomTreeUpdater.h"
+#include "llvm/Analysis/PostDominators.h"
+#include "llvm/IR/Dominators.h"
+
 #define DEBUG_TYPE "collapse-nodes"
 
 #ifdef DEBUG
@@ -67,6 +72,38 @@ llvm::raw_fd_ostream& operator<<(llvm::raw_fd_ostream& os, valueHashTab& tab) {
     }
     os << "\n";
     return os;
+}
+
+void findAllPaths  (BasicBlock *curr,                                   // current basic block
+                    BasicBlock *target,                                 // target basic block
+                    std::vector<BasicBlock*> &CurPath,                  // current path we chose to go from current -> ... -> target
+                    std::vector<std::vector<BasicBlock*>>& AllPaths,    // vector of all paths
+                    std::set<BasicBlock*>& Visited) {                   // needed to prevent cycling if we have cycle in a block (e.g. current -> current -> ...)
+    if (curr == nullptr) {
+        return;
+    }
+    CurPath.push_back(curr);
+    Visited.insert(curr);
+
+    if (curr == target) {
+        for (auto path : CurPath) {
+            errs() << path->getName() << "->";
+        }
+        errs() << "\n";
+        AllPaths.push_back(CurPath);
+        return;
+    }
+
+    for (BasicBlock *succ : successors(curr)) {
+        if (Visited.find(succ) == Visited.end()) {
+            errs() << succ->getName() << " BB IS IN PATH" << "\n";
+            findAllPaths(succ, target, CurPath, AllPaths, Visited);
+        }
+    }
+
+    CurPath.pop_back();
+    Visited.erase(curr);
+
 }
 
 int CountValueRecursively(Value *val, valueHashTab& tab) {
@@ -212,45 +249,58 @@ Value *getPznOrConstant(Value *val, valueHashTab& tab) {
     return pzn;
 }
 
-valueHashTab collectICmp(Function &F) {
+valueHashTab collectICmp(BasicBlock &BB, DominatorTree &DT) {
     errs() << UCYN "collectICmp" RESET << "\n";
     valueHashTab instrMap;
-    for (auto &BB : F) {
-        for (auto &I : BB) {
-            if (I.getOpcode() == Instruction::ICmp) {
-                errs() << BYEL "Found icmp! " << I << RESET "\n";
-                auto *castI = dyn_cast<ICmpInst>(&I);
-                if(castI->getPredicate() == CmpInst::ICMP_EQ) {
-                    errs() << "That is icmp eq!" << "\n";
-                    auto *firstOperand  = I.getOperand(0);
-                    auto *secondOperand = I.getOperand(1);
-                    auto *secondFromTab = getPznOrConstant(secondOperand, instrMap);
-                    if (auto *secondOperandConst = dyn_cast<ConstantInt>(secondOperand)) {
-                        errs() << BYEL << "second op is num! ";
-                        const int32_t sextVal = secondOperandConst->getSExtValue();
-                        errs() << CYNHB "sextVal is " << sextVal << RESET "\n";
-                        instrMap[firstOperand] = sextVal;
-                        icmpTable.push_back(castI);
-                    } else if (!isa<PoisonValue>(secondFromTab)) {
-                        auto *secondFromTabConst = dyn_cast<ConstantInt>(secondFromTab);
-                        errs() << BYEL << "secondOperand is a complexed value!" << RESET << "\n";
-                        const int32_t sextVal = secondFromTabConst->getSExtValue();
-                        errs() << CYNHB "sextVal is " << sextVal << RESET "\n";
-                        instrMap[firstOperand] = sextVal;
-                        icmpTable.push_back(castI);
-                    } else if (auto *firstOperandConst = dyn_cast<ConstantInt>(firstOperand)) {
-                        errs() << BYEL << "first op is num! ";
-                        const int32_t sextVal = firstOperandConst->getSExtValue();
-                        errs() << CYNHB "sextVal is " << sextVal << RESET "\n";
-                        instrMap[secondOperand] = sextVal;
-                        icmpTable.push_back(castI);
-                    }
+    const DomTreeNode *Node = DT.getNode(&BB);
+    DomTreeNode *IDom = Node->getIDom();
+    BasicBlock *ImmBB = IDom->getBlock();
 
+    std::vector<BasicBlock*> curPath;
+    std::vector<std::vector<BasicBlock*>> allPaths;
+    std::set<BasicBlock*> visited;
+
+    findAllPaths(ImmBB, &BB, curPath, allPaths, visited);
+    errs() << "FOUND ALL PATHS!!!" << "\n";
+    for (auto &path : allPaths) {
+        for (auto pathBB : path) {
+            errs() << pathBB->getName() << "IN PATH CYCLE" << "\n";
+            for (auto &I : *pathBB) {
+                if (I.getOpcode() == Instruction::ICmp) {
+                    errs() << BYEL "Found icmp! " << I << RESET "\n";
+                    auto *castI = dyn_cast<ICmpInst>(&I);
+                    if(castI->getPredicate() == CmpInst::ICMP_EQ) {
+                        errs() << "That is icmp eq!" << "\n";
+                        auto *firstOperand  = I.getOperand(0);
+                        auto *secondOperand = I.getOperand(1);
+                        auto *secondFromTab = getPznOrConstant(secondOperand, instrMap);
+                        if (auto *secondOperandConst = dyn_cast<ConstantInt>(secondOperand)) {
+                            errs() << BYEL << "second op is num! ";
+                            const int32_t sextVal = secondOperandConst->getSExtValue();
+                            errs() << CYNHB "sextVal is " << sextVal << RESET "\n";
+                            instrMap[firstOperand] = sextVal;
+                            icmpTable.push_back(castI);
+                        } else if (!isa<PoisonValue>(secondFromTab)) {
+                            auto *secondFromTabConst = dyn_cast<ConstantInt>(secondFromTab);
+                            errs() << BYEL << "secondOperand is a complexed value!" << RESET << "\n";
+                            const int32_t sextVal = secondFromTabConst->getSExtValue();
+                            errs() << CYNHB "sextVal is " << sextVal << RESET "\n";
+                            instrMap[firstOperand] = sextVal;
+                            icmpTable.push_back(castI);
+                        } else if (auto *firstOperandConst = dyn_cast<ConstantInt>(firstOperand)) {
+                            errs() << BYEL << "first op is num! ";
+                            const int32_t sextVal = firstOperandConst->getSExtValue();
+                            errs() << CYNHB "sextVal is " << sextVal << RESET "\n";
+                            instrMap[secondOperand] = sextVal;
+                            icmpTable.push_back(castI);
+                        }
+                    }
                 }
             }
+
+
         }
     }
-
     errs() << instrMap;
     errs() << UCYN "END OF FUNC" RESET << "\n";
     return instrMap;
@@ -326,25 +376,26 @@ PreservedAnalyses CollapseIdenticalNodesPass::run(Function &F, FunctionAnalysisM
 
     errs() << "Starting CollapseIdenticalNodesPass..." << "\n";
 
+    auto &DT = AM.getResult<DominatorTreeAnalysis>(F);
     for (auto &BB : F) {
         if (auto *phiNode = PhiNodeWithConstant(BB)) {
-            valueHashTab tab = collectICmp(F);
+            valueHashTab tab = collectICmp(BB, DT);
             errs() << "collected icmp and got hashtab!" << "\n";
             bool links = proofConjuctionLinks();
             if (links){
-            auto *phi = dyn_cast<PHINode>(phiNode);
-            auto *phiToReplace = phi->getIncomingValue(1);
-            auto value = CountValueRecursively(phiToReplace, tab);
-            errs() << MAGB "Total Value is " << value << RESET "\n";
-            if (value == GetConstantFromPhiNode(phiNode)) {
-                if (auto *phiToReplaceInstr = dyn_cast<Instruction>(phiToReplace)) {
-                    BasicBlock *incomingBlock = phi->getIncomingBlock(1);
-                    DeprecateConstantFromPhiNode(phi, incomingBlock);
-                    errs() << F << "\n";
+                auto *phi = dyn_cast<PHINode>(phiNode);
+                auto *phiToReplace = phi->getIncomingValue(1);
+                auto value = CountValueRecursively(phiToReplace, tab);
+                errs() << MAGB "Total Value is " << value << RESET "\n";
+                if (value == GetConstantFromPhiNode(phiNode)) {
+                    if (auto *phiToReplaceInstr = dyn_cast<Instruction>(phiToReplace)) {
+                        BasicBlock *incomingBlock = phi->getIncomingBlock(1);
+                        DeprecateConstantFromPhiNode(phi, incomingBlock);
+                        errs() << F << "\n";
+                    }
+                    errs() << "VALUES ARE EQUAL" << "\n";
+                    return PreservedAnalyses::all();
                 }
-                errs() << "VALUES ARE EQUAL" << "\n";
-                return PreservedAnalyses::all();
-            }
             }
         }
     }
