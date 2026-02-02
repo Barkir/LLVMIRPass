@@ -1,0 +1,118 @@
+Starting CollapseIdenticalNodesPass...
+[4;36mPhiNodeWithConstant[0m
+[1;33mGot instruction   %cmp = icmp eq i32 %a, 46346[0m
+[1;33mGot instruction   %cmp1 = icmp eq i32 %b, 5745[0m
+[1;33mGot instruction   %or.cond = select i1 %cmp, i1 %cmp1, i1 false[0m
+[1;33mGot instruction   %cmp3 = icmp eq i32 %c, 5[0m
+[1;33mGot instruction   %or.cond1 = select i1 %or.cond, i1 %cmp3, i1 false[0m
+[1;33mGot instruction   br i1 %or.cond1, label %if.then, label %if.end[0m
+[4;36mEND OF FUNC[0m
+[4;36mPhiNodeWithConstant[0m
+[1;33mGot instruction   br label %return[0m
+[4;36mEND OF FUNC[0m
+[4;36mPhiNodeWithConstant[0m
+[1;33mGot instruction   %mul = mul nsw i32 %a, %b[0m
+[1;33mGot instruction   br label %return[0m
+[4;36mEND OF FUNC[0m
+[4;36mPhiNodeWithConstant[0m
+[1;33mGot instruction   %retval.0 = phi i32 [ 266257770, %if.then ], [ %mul, %if.end ][0m
+Found phi node   %retval.0 = phi i32 [ 266257770, %if.then ], [ %mul, %if.end ]
+Phi node has a constant. Returning it as an Instruction*
+[4;36mEND OF FUNC[0m
+[4;36mcollectICmp[0m
+if.then BB IS IN PATH
+return BB IS IN PATH
+entry->if.then->return->
+if.end BB IS IN PATH
+FOUND ALL PATHS!!!
+entryIN PATH CYCLE
+[1;33mFound icmp!   %cmp = icmp eq i32 %a, 46346[0m
+That is icmp eq!
+[4;36mgetPznOrConstant[0m
+[4;36mEND OF FUNC[0m
+[1;33msecond op is num! [0;106msextVal is 46346[0m
+[1;33mFound icmp!   %cmp1 = icmp eq i32 %b, 5745[0m
+That is icmp eq!
+[4;36mgetPznOrConstant[0m
+[4;36mEND OF FUNC[0m
+[1;33msecond op is num! [0;106msextVal is 5745[0m
+[1;33mFound icmp!   %cmp3 = icmp eq i32 %c, 5[0m
+That is icmp eq!
+[4;36mgetPznOrConstant[0m
+[4;36mEND OF FUNC[0m
+[1;33msecond op is num! [0;106msextVal is 5[0m
+if.thenIN PATH CYCLE
+returnIN PATH CYCLE
+═══════════════
+║ %c		║ 	5║
+║ %b		║ 	5745║
+║ %a		║ 	46346║
+═══════════════
+[4;36mEND OF FUNC[0m
+collected icmp and got hashtab!
+[4;36mproofConjuctionLinks[0m
+  %cmp = icmp eq i32 %a, 46346  %cmp1 = icmp eq i32 %b, 5745
+[4;36mcheckLinkThruTerminator[0m
+
+if.then:                                          ; preds = %entry
+  br label %return
+
+entry:
+  %cmp = icmp eq i32 %a, 46346
+  %cmp1 = icmp eq i32 %b, 5745
+  %or.cond = select i1 %cmp, i1 %cmp1, i1 false
+  %cmp3 = icmp eq i32 %c, 5
+  %or.cond1 = select i1 %or.cond, i1 %cmp3, i1 false
+  br i1 %or.cond1, label %if.then, label %if.end
+
+[4;36mEND OF FUNC[0m
+[4;36mcheckLinkThruSelect[0m
+Got User   %or.cond = select i1 %cmp, i1 %cmp1, i1 false
+user is select!
+  %or.cond = select i1 %cmp, i1 %cmp1, i1 false  %cmp3 = icmp eq i32 %c, 5
+[4;36mcheckLinkThruTerminator[0m
+
+if.then:                                          ; preds = %entry
+  br label %return
+
+entry:
+  %cmp = icmp eq i32 %a, 46346
+  %cmp1 = icmp eq i32 %b, 5745
+  %or.cond = select i1 %cmp, i1 %cmp1, i1 false
+  %cmp3 = icmp eq i32 %c, 5
+  %or.cond1 = select i1 %or.cond, i1 %cmp3, i1 false
+  br i1 %or.cond1, label %if.then, label %if.end
+
+[4;36mEND OF FUNC[0m
+[4;36mcheckLinkThruSelect[0m
+Got User   %or.cond1 = select i1 %or.cond, i1 %cmp3, i1 false
+user is select!
+[4;36mCountValueRecursively of   %mul = mul nsw i32 %a, %b[0m
+[0;33mMUL   %mul = mul nsw i32 %a, %b[0m
+[4;36mCountValueRecursively of i32 %a[0m
+Found value in hashtable [1;33m46346[0m
+[4;36mCountValueRecursively of i32 %b[0m
+Found value in hashtable [1;33m5745[0m
+[45mTotal Value is 266257770[0m
+[4;36mGetConstantFromPhiNode[0m
+[4;36mDeprecateConstantFromPhiNode[0m
+[4;36mEND OF FUNC[0m
+; Function Attrs: mustprogress noinline nounwind uwtable
+define dso_local noundef i32 @_Z5test1iii(i32 noundef %a, i32 noundef %b, i32 noundef %c) #0 {
+entry:
+  %cmp = icmp eq i32 %a, 46346
+  %cmp1 = icmp eq i32 %b, 5745
+  %or.cond = select i1 %cmp, i1 %cmp1, i1 false
+  %cmp3 = icmp eq i32 %c, 5
+  %or.cond1 = select i1 %or.cond, i1 %cmp3, i1 false
+  br i1 %or.cond1, label %if.end, label %if.end
+
+if.end:                                           ; preds = %entry, %entry
+  %mul = mul nsw i32 %a, %b
+  br label %return
+
+return:                                           ; preds = %if.end
+  ret i32 %mul
+}
+
+VALUES ARE EQUAL

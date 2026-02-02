@@ -1,0 +1,62 @@
+Starting CollapseIdenticalNodesPass...
+[4;36mPhiNodeWithConstant[0m
+[1;33mGot instruction   %cmp = icmp eq i32 %a, -1[0m
+[1;33mGot instruction   br i1 %cmp, label %if.then, label %if.else[0m
+[4;36mEND OF FUNC[0m
+[4;36mPhiNodeWithConstant[0m
+[1;33mGot instruction   br label %if.end[0m
+[4;36mEND OF FUNC[0m
+[4;36mPhiNodeWithConstant[0m
+[1;33mGot instruction   %add = add i32 %a, 1[0m
+[1;33mGot instruction   br label %if.end[0m
+[4;36mEND OF FUNC[0m
+[4;36mPhiNodeWithConstant[0m
+[1;33mGot instruction   %res.0 = phi i32 [ 0, %if.then ], [ %add, %if.else ][0m
+Found phi node   %res.0 = phi i32 [ 0, %if.then ], [ %add, %if.else ]
+Phi node has a constant. Returning it as an Instruction*
+[4;36mEND OF FUNC[0m
+[4;36mcollectICmp[0m
+if.then BB IS IN PATH
+if.end BB IS IN PATH
+entry->if.then->if.end->
+if.else BB IS IN PATH
+FOUND ALL PATHS!!!
+entryIN PATH CYCLE
+[1;33mFound icmp!   %cmp = icmp eq i32 %a, -1[0m
+That is icmp eq!
+[4;36mgetPznOrConstant[0m
+[4;36mEND OF FUNC[0m
+[1;33msecond op is num! [0;106msextVal is -1[0m
+if.thenIN PATH CYCLE
+if.endIN PATH CYCLE
+═════
+║ %a		║ 	-1║
+═════
+[4;36mEND OF FUNC[0m
+collected icmp and got hashtab!
+[4;36mproofConjuctionLinks[0m
+[4;36mCountValueRecursively of   %add = add i32 %a, 1[0m
+[0;33mADD   %add = add i32 %a, 1[0m
+[4;36mCountValueRecursively of i32 %a[0m
+Found value in hashtable [1;33m-1[0m
+[4;36mCountValueRecursively of i32 1[0m
+The value from instruction is [1;33mi32 1[0m
+[45mTotal Value is 0[0m
+[4;36mGetConstantFromPhiNode[0m
+[4;36mDeprecateConstantFromPhiNode[0m
+[4;36mEND OF FUNC[0m
+; Function Attrs: mustprogress noinline nounwind uwtable
+define dso_local noundef i32 @_Z18test_unsigned_wrapj(i32 noundef %a) #0 {
+entry:
+  %cmp = icmp eq i32 %a, -1
+  br i1 %cmp, label %if.else, label %if.else
+
+if.else:                                          ; preds = %entry, %entry
+  %add = add i32 %a, 1
+  br label %if.end
+
+if.end:                                           ; preds = %if.else
+  ret i32 %add
+}
+
+VALUES ARE EQUAL

@@ -1,0 +1,184 @@
+Starting CollapseIdenticalNodesPass...
+[4;36mPhiNodeWithConstant[0m
+[1;33mGot instruction   %cmp = icmp eq i32 %a, 500[0m
+[1;33mGot instruction   %cmp1 = icmp eq i32 %b, 700[0m
+[1;33mGot instruction   %or.cond = select i1 %cmp, i1 %cmp1, i1 false[0m
+[1;33mGot instruction   br i1 %or.cond, label %land.lhs.true2, label %if.else[0m
+[4;36mEND OF FUNC[0m
+[4;36mPhiNodeWithConstant[0m
+[1;33mGot instruction   %add = add nsw i32 %a, 5[0m
+[1;33mGot instruction   %cmp3 = icmp eq i32 %c, %add[0m
+[1;33mGot instruction   br i1 %cmp3, label %land.lhs.true4, label %if.else[0m
+[4;36mEND OF FUNC[0m
+[4;36mPhiNodeWithConstant[0m
+[1;33mGot instruction   %mul = mul nsw i32 %b, 8[0m
+[1;33mGot instruction   %cmp5 = icmp eq i32 %d, %mul[0m
+[1;33mGot instruction   br i1 %cmp5, label %if.then, label %if.else[0m
+[4;36mEND OF FUNC[0m
+[4;36mPhiNodeWithConstant[0m
+[1;33mGot instruction   br label %if.end[0m
+[4;36mEND OF FUNC[0m
+[4;36mPhiNodeWithConstant[0m
+[1;33mGot instruction   %mul6 = mul nsw i32 2, %a[0m
+[1;33mGot instruction   %mul7 = mul nsw i32 %b, %b[0m
+[1;33mGot instruction   %add8 = add nsw i32 %mul6, %mul7[0m
+[1;33mGot instruction   %add9 = add nsw i32 %add8, %d[0m
+[1;33mGot instruction   br label %if.end[0m
+[4;36mEND OF FUNC[0m
+[4;36mPhiNodeWithConstant[0m
+[1;33mGot instruction   %res.0 = phi i32 [ 496600, %if.then ], [ %add9, %if.else ][0m
+Found phi node   %res.0 = phi i32 [ 496600, %if.then ], [ %add9, %if.else ]
+Phi node has a constant. Returning it as an Instruction*
+[4;36mEND OF FUNC[0m
+[4;36mcollectICmp[0m
+land.lhs.true2 BB IS IN PATH
+land.lhs.true4 BB IS IN PATH
+if.then BB IS IN PATH
+if.end BB IS IN PATH
+entry->land.lhs.true2->land.lhs.true4->if.then->if.end->
+if.else BB IS IN PATH
+if.else BB IS IN PATH
+if.else BB IS IN PATH
+FOUND ALL PATHS!!!
+entryIN PATH CYCLE
+[1;33mFound icmp!   %cmp = icmp eq i32 %a, 500[0m
+That is icmp eq!
+[4;36mgetPznOrConstant[0m
+[4;36mEND OF FUNC[0m
+[1;33msecond op is num! [0;106msextVal is 500[0m
+[1;33mFound icmp!   %cmp1 = icmp eq i32 %b, 700[0m
+That is icmp eq!
+[4;36mgetPznOrConstant[0m
+[4;36mEND OF FUNC[0m
+[1;33msecond op is num! [0;106msextVal is 700[0m
+land.lhs.true2IN PATH CYCLE
+[1;33mFound icmp!   %cmp3 = icmp eq i32 %c, %add[0m
+That is icmp eq!
+[4;36mgetPznOrConstant[0m
+[1;33mValue [0mi32 %a[1;33m is in hash table - [1;37m500[0m
+[1;33msecond operand is a ConstantInt : first operand is an InstructionRESET
+[0;102mADD = 505
+[4;36mEND OF FUNC[0m
+[1;33msecondOperand is a complexed value![0m
+[0;106msextVal is 505[0m
+land.lhs.true4IN PATH CYCLE
+[1;33mFound icmp!   %cmp5 = icmp eq i32 %d, %mul[0m
+That is icmp eq!
+[4;36mgetPznOrConstant[0m
+[1;33mValue [0mi32 %b[1;33m is in hash table - [1;37m700[0m
+[1;33msecond operand is a ConstantInt : first operand is an InstructionRESET
+[0;102mMUL = 5600
+[4;36mEND OF FUNC[0m
+[1;33msecondOperand is a complexed value![0m
+[0;106msextVal is 5600[0m
+if.thenIN PATH CYCLE
+if.endIN PATH CYCLE
+════════════════════
+║ %d		║ 	5600║
+║ %c		║ 	505║
+║ %b		║ 	700║
+║ %a		║ 	500║
+════════════════════
+[4;36mEND OF FUNC[0m
+collected icmp and got hashtab!
+[4;36mproofConjuctionLinks[0m
+  %cmp = icmp eq i32 %a, 500  %cmp1 = icmp eq i32 %b, 700
+[4;36mcheckLinkThruTerminator[0m
+
+land.lhs.true2:                                   ; preds = %entry
+  %add = add nsw i32 %a, 5
+  %cmp3 = icmp eq i32 %c, %add
+  br i1 %cmp3, label %land.lhs.true4, label %if.else
+
+entry:
+  %cmp = icmp eq i32 %a, 500
+  %cmp1 = icmp eq i32 %b, 700
+  %or.cond = select i1 %cmp, i1 %cmp1, i1 false
+  br i1 %or.cond, label %land.lhs.true2, label %if.else
+
+[4;36mEND OF FUNC[0m
+[4;36mcheckLinkThruSelect[0m
+Got User   %or.cond = select i1 %cmp, i1 %cmp1, i1 false
+user is select!
+  %or.cond = select i1 %cmp, i1 %cmp1, i1 false  %cmp3 = icmp eq i32 %c, %add
+[4;36mcheckLinkThruTerminator[0m
+
+land.lhs.true2:                                   ; preds = %entry
+  %add = add nsw i32 %a, 5
+  %cmp3 = icmp eq i32 %c, %add
+  br i1 %cmp3, label %land.lhs.true4, label %if.else
+
+land.lhs.true2:                                   ; preds = %entry
+  %add = add nsw i32 %a, 5
+  %cmp3 = icmp eq i32 %c, %add
+  br i1 %cmp3, label %land.lhs.true4, label %if.else
+
+[0;106mEQUAL![0m
+[4;36mEND OF FUNC[0m
+  %cmp3 = icmp eq i32 %c, %add  %cmp5 = icmp eq i32 %d, %mul
+[4;36mcheckLinkThruTerminator[0m
+
+land.lhs.true4:                                   ; preds = %land.lhs.true2
+  %mul = mul nsw i32 %b, 8
+  %cmp5 = icmp eq i32 %d, %mul
+  br i1 %cmp5, label %if.then, label %if.else
+
+land.lhs.true4:                                   ; preds = %land.lhs.true2
+  %mul = mul nsw i32 %b, 8
+  %cmp5 = icmp eq i32 %d, %mul
+  br i1 %cmp5, label %if.then, label %if.else
+
+[0;106mEQUAL![0m
+[4;36mEND OF FUNC[0m
+[4;36mCountValueRecursively of   %add9 = add nsw i32 %add8, %d[0m
+[0;33mADD   %add9 = add nsw i32 %add8, %d[0m
+[4;36mCountValueRecursively of   %add8 = add nsw i32 %mul6, %mul7[0m
+[0;33mADD   %add8 = add nsw i32 %mul6, %mul7[0m
+[4;36mCountValueRecursively of   %mul6 = mul nsw i32 2, %a[0m
+[0;33mMUL   %mul6 = mul nsw i32 2, %a[0m
+[4;36mCountValueRecursively of i32 2[0m
+The value from instruction is [1;33mi32 2[0m
+[4;36mCountValueRecursively of i32 %a[0m
+Found value in hashtable [1;33m500[0m
+[4;36mCountValueRecursively of   %mul7 = mul nsw i32 %b, %b[0m
+[0;33mMUL   %mul7 = mul nsw i32 %b, %b[0m
+[4;36mCountValueRecursively of i32 %b[0m
+Found value in hashtable [1;33m700[0m
+[4;36mCountValueRecursively of i32 %b[0m
+Found value in hashtable [1;33m700[0m
+[4;36mCountValueRecursively of i32 %d[0m
+Found value in hashtable [1;33m5600[0m
+[45mTotal Value is 496600[0m
+[4;36mGetConstantFromPhiNode[0m
+[4;36mDeprecateConstantFromPhiNode[0m
+[4;36mEND OF FUNC[0m
+; Function Attrs: mustprogress noinline nounwind uwtable
+define dso_local noundef i32 @_Z3fooiiii(i32 noundef %a, i32 noundef %b, i32 noundef %c, i32 noundef %d) #0 {
+entry:
+  %cmp = icmp eq i32 %a, 500
+  %cmp1 = icmp eq i32 %b, 700
+  %or.cond = select i1 %cmp, i1 %cmp1, i1 false
+  br i1 %or.cond, label %land.lhs.true2, label %if.else
+
+land.lhs.true2:                                   ; preds = %entry
+  %add = add nsw i32 %a, 5
+  %cmp3 = icmp eq i32 %c, %add
+  br i1 %cmp3, label %land.lhs.true4, label %if.else
+
+land.lhs.true4:                                   ; preds = %land.lhs.true2
+  %mul = mul nsw i32 %b, 8
+  %cmp5 = icmp eq i32 %d, %mul
+  br i1 %cmp5, label %if.else, label %if.else
+
+if.else:                                          ; preds = %land.lhs.true4, %land.lhs.true4, %land.lhs.true2, %entry
+  %mul6 = mul nsw i32 2, %a
+  %mul7 = mul nsw i32 %b, %b
+  %add8 = add nsw i32 %mul6, %mul7
+  %add9 = add nsw i32 %add8, %d
+  br label %if.end
+
+if.end:                                           ; preds = %if.else
+  ret i32 %add9
+}
+
+VALUES ARE EQUAL

@@ -1,0 +1,37 @@
+Starting CollapseIdenticalNodesPass...
+[4;36mPhiNodeWithConstant[0m
+[1;33mGot instruction   %cmp = icmp eq i32 %a, 1[0m
+[1;33mGot instruction   br i1 %cmp, label %if.then, label %if.else25[0m
+[4;36mEND OF FUNC[0m
+[4;36mPhiNodeWithConstant[0m
+[1;33mGot instruction   %add = add nsw i32 %a, %a[0m
+[1;33mGot instruction   %add1 = add nsw i32 %add, %a[0m
+[1;33mGot instruction   %add2 = add nsw i32 %add1, %a[0m
+[1;33mGot instruction   %add3 = add nsw i32 %add2, %a[0m
+[1;33mGot instruction   %add4 = add nsw i32 %add3, %a[0m
+[1;33mGot instruction   %add5 = add nsw i32 %add4, %a[0m
+[1;33mGot instruction   %add6 = add nsw i32 %add5, %a[0m
+[1;33mGot instruction   %add7 = add nsw i32 %add6, %a[0m
+[1;33mGot instruction   %add8 = add nsw i32 %add7, %a[0m
+[1;33mGot instruction   %add9 = add nsw i32 %add8, %a[0m
+[1;33mGot instruction   %add10 = add nsw i32 %add9, %a[0m
+[1;33mGot instruction   %add11 = add nsw i32 %add10, %a[0m
+[1;33mGot instruction   %add12 = add nsw i32 %add11, %a[0m
+[1;33mGot instruction   %add13 = add nsw i32 %add12, %a[0m
+[1;33mGot instruction   %add14 = add nsw i32 %add13, %a[0m
+[1;33mGot instruction   %add15 = add nsw i32 %add14, %a[0m
+[1;33mGot instruction   %add16 = add nsw i32 %add15, %a[0m
+[1;33mGot instruction   %add17 = add nsw i32 %add16, %a[0m
+[1;33mGot instruction   %add18 = add nsw i32 %add17, %a[0m
+[1;33mGot instruction   %add19 = add nsw i32 %add18, %a[0m
+[1;33mGot instruction   %add20 = add nsw i32 %add19, %a[0m
+[1;33mGot instruction   %add21 = add nsw i32 %add20, %a[0m
+[1;33mGot instruction   %add22 = add nsw i32 %add21, %a[0m
+[1;33mGot instruction   br label %if.end26[0m
+[4;36mEND OF FUNC[0m
+[4;36mPhiNodeWithConstant[0m
+[1;33mGot instruction   br label %if.end26[0m
+[4;36mEND OF FUNC[0m
+[4;36mPhiNodeWithConstant[0m
+[1;33mGot instruction   ret i32 100[0m
+[4;36mEND OF FUNC[0m

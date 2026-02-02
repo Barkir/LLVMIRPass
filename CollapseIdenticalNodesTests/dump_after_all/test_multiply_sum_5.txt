@@ -1,0 +1,29 @@
+Starting CollapseIdenticalNodesPass...
+[4;36mPhiNodeWithConstant[0m
+[1;33mGot instruction   %add = add nsw i32 %b, %d[0m
+[1;33mGot instruction   %cmp = icmp eq i32 %a, %add[0m
+[1;33mGot instruction   br i1 %cmp, label %land.lhs.true, label %if.else[0m
+[4;36mEND OF FUNC[0m
+[4;36mPhiNodeWithConstant[0m
+[1;33mGot instruction   %cmp1 = icmp eq i32 %c, %a[0m
+[1;33mGot instruction   %cmp3 = icmp eq i32 %d, 700[0m
+[1;33mGot instruction   %or.cond = select i1 %cmp1, i1 %cmp3, i1 false[0m
+[1;33mGot instruction   br i1 %or.cond, label %if.then, label %if.else[0m
+[4;36mEND OF FUNC[0m
+[4;36mPhiNodeWithConstant[0m
+[1;33mGot instruction   %mul = mul nsw i32 %a, %c[0m
+[1;33mGot instruction   %mul4 = mul nsw i32 %mul, %b[0m
+[1;33mGot instruction   %add5 = add nsw i32 %mul4, %d[0m
+[1;33mGot instruction   br label %if.end[0m
+[4;36mEND OF FUNC[0m
+[4;36mPhiNodeWithConstant[0m
+[1;33mGot instruction   %mul6 = mul nsw i32 %a, %b[0m
+[1;33mGot instruction   %mul7 = mul nsw i32 %mul6, %c[0m
+[1;33mGot instruction   %add8 = add nsw i32 %mul7, %d[0m
+[1;33mGot instruction   br label %if.end[0m
+[4;36mEND OF FUNC[0m
+[4;36mPhiNodeWithConstant[0m
+[1;33mGot instruction   %res.0 = phi i32 [ %add5, %if.then ], [ %add8, %if.else ][0m
+Found phi node   %res.0 = phi i32 [ %add5, %if.then ], [ %add8, %if.else ]
+[1;33mGot instruction   ret i32 %res.0[0m
+[4;36mEND OF FUNC[0m

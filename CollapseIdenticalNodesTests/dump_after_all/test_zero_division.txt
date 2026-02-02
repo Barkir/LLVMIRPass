@@ -1,0 +1,102 @@
+Starting CollapseIdenticalNodesPass...
+[4;36mPhiNodeWithConstant[0m
+[1;33mGot instruction   %cmp = icmp eq i32 %a, 10[0m
+[1;33mGot instruction   br i1 %cmp, label %if.then, label %if.else3[0m
+[4;36mEND OF FUNC[0m
+[4;36mPhiNodeWithConstant[0m
+[1;33mGot instruction   %sub = sub nsw i32 10, %a[0m
+[1;33mGot instruction   %cmp1 = icmp eq i32 %b, 5[0m
+[1;33mGot instruction   br i1 %cmp1, label %if.then2, label %if.else[0m
+[4;36mEND OF FUNC[0m
+[4;36mPhiNodeWithConstant[0m
+[1;33mGot instruction   br label %if.end4[0m
+[4;36mEND OF FUNC[0m
+[4;36mPhiNodeWithConstant[0m
+[1;33mGot instruction   %div = sdiv i32 %a, %sub[0m
+[1;33mGot instruction   br label %if.end4[0m
+[4;36mEND OF FUNC[0m
+[4;36mPhiNodeWithConstant[0m
+[1;33mGot instruction   br label %if.end4[0m
+[4;36mEND OF FUNC[0m
+[4;36mPhiNodeWithConstant[0m
+[1;33mGot instruction   %res.0 = phi i32 [ 100, %if.then2 ], [ %div, %if.else ], [ 100, %if.else3 ][0m
+Found phi node   %res.0 = phi i32 [ 100, %if.then2 ], [ %div, %if.else ], [ 100, %if.else3 ]
+Phi node has a constant. Returning it as an Instruction*
+[4;36mEND OF FUNC[0m
+[4;36mcollectICmp[0m
+if.then BB IS IN PATH
+if.then2 BB IS IN PATH
+if.end4 BB IS IN PATH
+entry->if.then->if.then2->if.end4->
+if.else BB IS IN PATH
+if.else3 BB IS IN PATH
+FOUND ALL PATHS!!!
+entryIN PATH CYCLE
+[1;33mFound icmp!   %cmp = icmp eq i32 %a, 10[0m
+That is icmp eq!
+[4;36mgetPznOrConstant[0m
+[4;36mEND OF FUNC[0m
+[1;33msecond op is num! [0;106msextVal is 10[0m
+if.thenIN PATH CYCLE
+[1;33mFound icmp!   %cmp1 = icmp eq i32 %b, 5[0m
+That is icmp eq!
+[4;36mgetPznOrConstant[0m
+[4;36mEND OF FUNC[0m
+[1;33msecond op is num! [0;106msextVal is 5[0m
+if.then2IN PATH CYCLE
+if.end4IN PATH CYCLE
+══════════
+║ %b		║ 	5║
+║ %a		║ 	10║
+══════════
+[4;36mEND OF FUNC[0m
+collected icmp and got hashtab!
+[4;36mproofConjuctionLinks[0m
+  %cmp = icmp eq i32 %a, 10  %cmp1 = icmp eq i32 %b, 5
+[4;36mcheckLinkThruTerminator[0m
+
+if.then:                                          ; preds = %entry
+  %sub = sub nsw i32 10, %a
+  %cmp1 = icmp eq i32 %b, 5
+  br i1 %cmp1, label %if.then2, label %if.else
+
+if.then:                                          ; preds = %entry
+  %sub = sub nsw i32 10, %a
+  %cmp1 = icmp eq i32 %b, 5
+  br i1 %cmp1, label %if.then2, label %if.else
+
+[0;106mEQUAL![0m
+[4;36mEND OF FUNC[0m
+[4;36mCountValueRecursively of   %div = sdiv i32 %a, %sub[0m
+[0;33mDIV   %div = sdiv i32 %a, %sub[0m
+[4;36mCountValueRecursively of i32 %a[0m
+Found value in hashtable [1;33m10[0m
+[4;36mCountValueRecursively of   %sub = sub nsw i32 10, %a[0m
+[0;33mSUB   %sub = sub nsw i32 10, %a[0m
+[4;36mCountValueRecursively of i32 10[0m
+The value from instruction is [1;33mi32 10[0m
+[4;36mCountValueRecursively of i32 %a[0m
+Found value in hashtable [1;33m10[0m
+PLEASE submit a bug report to https://github.com/llvm/llvm-project/issues/ and include the crash backtrace.
+Stack dump:
+0.	Program arguments: ../build-llvm/bin/opt -S -O2 ./CollapseIdenticalNodesTests/ll/test_zero_division.ll -o -print-after-all
+1.	Running pass "function<eager-inv>(ee-instrument<>,lower-expect,simplifycfg<bonus-inst-threshold=1;no-forward-switch-cond;no-switch-range-to-icmp;no-switch-to-lookup;keep-loops;no-hoist-common-insts;no-hoist-loads-stores-with-cond-faulting;no-sink-common-insts;speculate-blocks;simplify-cond-branch;no-speculate-unpredictables>,sroa<modify-cfg>,collapse-nodes,simplifycfg<bonus-inst-threshold=1;no-forward-switch-cond;no-switch-range-to-icmp;no-switch-to-lookup;keep-loops;no-hoist-common-insts;no-hoist-loads-stores-with-cond-faulting;no-sink-common-insts;speculate-blocks;simplify-cond-branch;no-speculate-unpredictables>,early-cse<>,instcombine<max-iterations=1;no-verify-fixpoint>,simplifycfg<bonus-inst-threshold=1;no-forward-switch-cond;no-switch-range-to-icmp;no-switch-to-lookup;keep-loops;no-hoist-common-insts;no-hoist-loads-stores-with-cond-faulting;no-sink-common-insts;speculate-blocks;simplify-cond-branch;no-speculate-unpredictables>)" on module "./CollapseIdenticalNodesTests/ll/test_zero_division.ll"
+2.	Running pass "collapse-nodes" on function "_Z21test_div_by_zero_foldii"
+ #0 0x00005c4d4480c7f0 llvm::sys::PrintStackTrace(llvm::raw_ostream&, int) (../build-llvm/bin/opt+0x54077f0)
+ #1 0x00005c4d4480949f llvm::sys::RunSignalHandlers() (../build-llvm/bin/opt+0x540449f)
+ #2 0x00005c4d448095f2 SignalHandler(int, siginfo_t*, void*) Signals.cpp:0:0
+ #3 0x000071483ca42520 (/lib/x86_64-linux-gnu/libc.so.6+0x42520)
+ #4 0x00005c4d438fe121 CountValueRecursively(llvm::Value*, std::unordered_map<llvm::Value*, int, std::hash<llvm::Value*>, std::equal_to<llvm::Value*>, std::allocator<std::pair<llvm::Value* const, int>>>&) (../build-llvm/bin/opt+0x44f9121)
+ #5 0x00005c4d43901f72 llvm::CollapseIdenticalNodesPass::run(llvm::Function&, llvm::AnalysisManager<llvm::Function>&) (../build-llvm/bin/opt+0x44fcf72)
+ #6 0x00005c4d41daaa26 llvm::detail::PassModel<llvm::Function, llvm::CollapseIdenticalNodesPass, llvm::AnalysisManager<llvm::Function>>::run(llvm::Function&, llvm::AnalysisManager<llvm::Function>&) (../build-llvm/bin/opt+0x29a5a26)
+ #7 0x00005c4d445e5c87 llvm::PassManager<llvm::Function, llvm::AnalysisManager<llvm::Function>>::run(llvm::Function&, llvm::AnalysisManager<llvm::Function>&) (../build-llvm/bin/opt+0x51e0c87)
+ #8 0x00005c4d401227d6 llvm::detail::PassModel<llvm::Function, llvm::PassManager<llvm::Function, llvm::AnalysisManager<llvm::Function>>, llvm::AnalysisManager<llvm::Function>>::run(llvm::Function&, llvm::AnalysisManager<llvm::Function>&) (../build-llvm/bin/opt+0xd1d7d6)
+ #9 0x00005c4d445e61a9 llvm::ModuleToFunctionPassAdaptor::run(llvm::Module&, llvm::AnalysisManager<llvm::Module>&) (../build-llvm/bin/opt+0x51e11a9)
+#10 0x00005c4d3fba11c6 llvm::detail::PassModel<llvm::Module, llvm::ModuleToFunctionPassAdaptor, llvm::AnalysisManager<llvm::Module>>::run(llvm::Module&, llvm::AnalysisManager<llvm::Module>&) (../build-llvm/bin/opt+0x79c1c6)
+#11 0x00005c4d445e3fc4 llvm::PassManager<llvm::Module, llvm::AnalysisManager<llvm::Module>>::run(llvm::Module&, llvm::AnalysisManager<llvm::Module>&) (../build-llvm/bin/opt+0x51defc4)
+#12 0x00005c4d3fbacb32 llvm::runPassPipeline(llvm::StringRef, llvm::Module&, llvm::TargetMachine*, llvm::TargetLibraryInfoImpl*, llvm::ToolOutputFile*, llvm::ToolOutputFile*, llvm::ToolOutputFile*, llvm::StringRef, llvm::ArrayRef<llvm::PassPlugin>, llvm::ArrayRef<std::function<void (llvm::PassBuilder&)>>, llvm::opt_tool::OutputKind, llvm::opt_tool::VerifierKind, bool, bool, bool, bool, bool, bool, bool, bool) (../build-llvm/bin/opt+0x7a7b32)
+#13 0x00005c4d3fb9f3d9 optMain (../build-llvm/bin/opt+0x79a3d9)
+#14 0x000071483ca29d90 __libc_start_call_main ./csu/../sysdeps/nptl/libc_start_call_main.h:58:16
+#15 0x000071483ca29e40 call_init ./csu/../csu/libc-start.c:128:20
+#16 0x000071483ca29e40 __libc_start_main ./csu/../csu/libc-start.c:379:5
+#17 0x00005c4d3fb95605 _start (../build-llvm/bin/opt+0x790605)

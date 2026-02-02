@@ -1,0 +1,50 @@
+Starting CollapseIdenticalNodesPass...
+[4;36mPhiNodeWithConstant[0m
+[1;33mGot instruction   switch i32 %a, label %sw.default [
+    i32 100, label %sw.bb
+    i32 200, label %sw.bb1
+  ][0m
+[4;36mEND OF FUNC[0m
+[4;36mPhiNodeWithConstant[0m
+[1;33mGot instruction   br label %sw.epilog[0m
+[4;36mEND OF FUNC[0m
+[4;36mPhiNodeWithConstant[0m
+[1;33mGot instruction   br label %sw.epilog[0m
+[4;36mEND OF FUNC[0m
+[4;36mPhiNodeWithConstant[0m
+[1;33mGot instruction   %cmp = icmp eq i32 %a, 100[0m
+[1;33mGot instruction   %0 = zext i1 %cmp to i64[0m
+[1;33mGot instruction   %cond = select i1 %cmp, i32 1000, i32 1000[0m
+[1;33mGot instruction   br label %sw.epilog[0m
+[4;36mEND OF FUNC[0m
+[4;36mPhiNodeWithConstant[0m
+[1;33mGot instruction   %res.0 = phi i32 [ %cond, %sw.default ], [ 1000, %sw.bb ], [ 1000, %sw.bb1 ][0m
+Found phi node   %res.0 = phi i32 [ %cond, %sw.default ], [ 1000, %sw.bb ], [ 1000, %sw.bb1 ]
+Phi node has a constant. Returning it as an Instruction*
+[4;36mEND OF FUNC[0m
+[4;36mcollectICmp[0m
+sw.default BB IS IN PATH
+sw.epilog BB IS IN PATH
+entry->sw.default->sw.epilog->
+sw.bb BB IS IN PATH
+sw.bb1 BB IS IN PATH
+FOUND ALL PATHS!!!
+entryIN PATH CYCLE
+sw.defaultIN PATH CYCLE
+[1;33mFound icmp!   %cmp = icmp eq i32 %a, 100[0m
+That is icmp eq!
+[4;36mgetPznOrConstant[0m
+[4;36mEND OF FUNC[0m
+[1;33msecond op is num! [0;106msextVal is 100[0m
+sw.epilogIN PATH CYCLE
+═════
+║ %a		║ 	100║
+═════
+[4;36mEND OF FUNC[0m
+collected icmp and got hashtab!
+[4;36mproofConjuctionLinks[0m
+[4;36mCountValueRecursively of i32 1000[0m
+The value from instruction is [1;33mi32 1000[0m
+[45mTotal Value is 1000[0m
+[4;36mGetConstantFromPhiNode[0m
+VALUES ARE EQUAL

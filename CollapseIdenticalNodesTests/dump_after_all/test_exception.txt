@@ -1,0 +1,29 @@
+Starting CollapseIdenticalNodesPass...
+[4;36mPhiNodeWithConstant[0m
+[1;33mGot instruction   %cmp = icmp eq i32 %a, 42[0m
+[1;33mGot instruction   br i1 %cmp, label %if.then, label %if.else[0m
+[4;36mEND OF FUNC[0m
+[4;36mPhiNodeWithConstant[0m
+[1;33mGot instruction   %exception = call ptr @__cxa_allocate_exception(i64 4) #2[0m
+[1;33mGot instruction   store i32 1, ptr %exception, align 16[0m
+[1;33mGot instruction   invoke void @__cxa_throw(ptr %exception, ptr @_ZTIi, ptr null) #3
+          to label %unreachable unwind label %lpad[0m
+[4;36mEND OF FUNC[0m
+[4;36mPhiNodeWithConstant[0m
+[1;33mGot instruction   %0 = landingpad { ptr, i32 }
+          catch ptr null[0m
+[1;33mGot instruction   %1 = extractvalue { ptr, i32 } %0, 0[0m
+[1;33mGot instruction   %2 = extractvalue { ptr, i32 } %0, 1[0m
+[1;33mGot instruction   %3 = call ptr @__cxa_begin_catch(ptr %1) #2[0m
+[1;33mGot instruction   call void @__cxa_end_catch()[0m
+[1;33mGot instruction   br label %try.cont[0m
+[4;36mEND OF FUNC[0m
+[4;36mPhiNodeWithConstant[0m
+[1;33mGot instruction   ret i32 100[0m
+[4;36mEND OF FUNC[0m
+[4;36mPhiNodeWithConstant[0m
+[1;33mGot instruction   br label %try.cont[0m
+[4;36mEND OF FUNC[0m
+[4;36mPhiNodeWithConstant[0m
+[1;33mGot instruction   unreachable[0m
+[4;36mEND OF FUNC[0m

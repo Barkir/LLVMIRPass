@@ -1,0 +1,20 @@
+Starting CollapseIdenticalNodesPass...
+[4;36mPhiNodeWithConstant[0m
+[1;33mGot instruction   %cmp = icmp eq i32 %a, 10[0m
+[1;33mGot instruction   %cmp1 = icmp eq i32 %b, 15[0m
+[1;33mGot instruction   %or.cond = select i1 %cmp, i1 %cmp1, i1 false[0m
+[1;33mGot instruction   br i1 %or.cond, label %if.then, label %if.end[0m
+[4;36mEND OF FUNC[0m
+[4;36mPhiNodeWithConstant[0m
+[1;33mGot instruction   %div = sdiv i32 %a, %b[0m
+[1;33mGot instruction   br label %return[0m
+[4;36mEND OF FUNC[0m
+[4;36mPhiNodeWithConstant[0m
+[1;33mGot instruction   %div2 = sdiv i32 %a, %b[0m
+[1;33mGot instruction   br label %return[0m
+[4;36mEND OF FUNC[0m
+[4;36mPhiNodeWithConstant[0m
+[1;33mGot instruction   %retval.0 = phi i32 [ %div, %if.then ], [ %div2, %if.end ][0m
+Found phi node   %retval.0 = phi i32 [ %div, %if.then ], [ %div2, %if.end ]
+[1;33mGot instruction   ret i32 %retval.0[0m
+[4;36mEND OF FUNC[0m

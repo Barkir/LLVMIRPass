@@ -1,0 +1,12 @@
+Starting CollapseIdenticalNodesPass...
+[4;36mPhiNodeWithConstant[0m
+[1;33mGot instruction   %cmp = icmp eq i32 %a, 5[0m
+[1;33mGot instruction   %storedv = zext i1 %cmp to i8[0m
+[1;33mGot instruction   %cmp1 = icmp eq i32 %a, 6[0m
+[1;33mGot instruction   %storedv2 = zext i1 %cmp1 to i8[0m
+[1;33mGot instruction   %loadedv = trunc i8 %storedv to i1[0m
+[1;33mGot instruction   %loadedv3 = trunc i8 %storedv2 to i1[0m
+[1;33mGot instruction   %cond = select i1 %loadedv, i1 %loadedv3, i1 false[0m
+[1;33mGot instruction   %storedv4 = zext i1 %cond to i8[0m
+[1;33mGot instruction   ret i32 10[0m
+[4;36mEND OF FUNC[0m

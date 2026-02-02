@@ -1,0 +1,15 @@
+Starting CollapseIdenticalNodesPass...
+[4;36mPhiNodeWithConstant[0m
+[1;33mGot instruction   %cmp = icmp eq i32 %a, 5[0m
+[1;33mGot instruction   br i1 %cmp, label %if.then, label %if.else3[0m
+[4;36mEND OF FUNC[0m
+[4;36mPhiNodeWithConstant[0m
+[1;33mGot instruction   %add = add nsw i32 undef, 5[0m
+[1;33mGot instruction   br label %if.end4[0m
+[4;36mEND OF FUNC[0m
+[4;36mPhiNodeWithConstant[0m
+[1;33mGot instruction   br label %if.end4[0m
+[4;36mEND OF FUNC[0m
+[4;36mPhiNodeWithConstant[0m
+[1;33mGot instruction   ret i32 10[0m
+[4;36mEND OF FUNC[0m
