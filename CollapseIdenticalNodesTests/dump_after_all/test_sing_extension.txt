@@ -1,3 +1,264 @@
+; *** IR Dump After Annotation2MetadataPass on [module] ***
+; ModuleID = './CollapseIdenticalNodesTests/ll/test_sing_extension.ll'
+source_filename = "./CollapseIdenticalNodesTests/cpp/test_sing_extension.cpp"
+target datalayout = "e-m:e-p270:32:32-p271:32:32-p272:64:64-i64:64-i128:128-f80:128-n8:16:32:64-S128"
+target triple = "x86_64-unknown-linux-gnu"
+
+; Function Attrs: mustprogress noinline nounwind uwtable
+define dso_local noundef i32 @_Z18test_unsigned_wrapj(i32 noundef %a) #0 {
+entry:
+  %a.addr = alloca i32, align 4
+  %res = alloca i32, align 4
+  store i32 %a, ptr %a.addr, align 4
+  %0 = load i32, ptr %a.addr, align 4
+  %cmp = icmp eq i32 %0, -1
+  br i1 %cmp, label %if.then, label %if.else
+
+if.then:                                          ; preds = %entry
+  store i32 0, ptr %res, align 4
+  br label %if.end
+
+if.else:                                          ; preds = %entry
+  %1 = load i32, ptr %a.addr, align 4
+  %add = add i32 %1, 1
+  store i32 %add, ptr %res, align 4
+  br label %if.end
+
+if.end:                                           ; preds = %if.else, %if.then
+  %2 = load i32, ptr %res, align 4
+  ret i32 %2
+}
+
+attributes #0 = { mustprogress noinline nounwind uwtable "frame-pointer"="all" "min-legal-vector-width"="0" "no-trapping-math"="true" "stack-protector-buffer-size"="8" "target-cpu"="x86-64" "target-features"="+cmov,+cx8,+fxsr,+mmx,+sse,+sse2,+x87" "tune-cpu"="generic" }
+
+!llvm.module.flags = !{!0, !1, !2, !3, !4}
+!llvm.ident = !{!5}
+
+!0 = !{i32 1, !"wchar_size", i32 4}
+!1 = !{i32 8, !"PIC Level", i32 2}
+!2 = !{i32 7, !"PIE Level", i32 2}
+!3 = !{i32 7, !"uwtable", i32 2}
+!4 = !{i32 7, !"frame-pointer", i32 2}
+!5 = !{!"clang version 22.0.0git (https://github.com/llvm/llvm-project 78636be4d6ff5be00d7ec0a599eb9f5daa391bc9)"}
+; *** IR Dump After ForceFunctionAttrsPass on [module] ***
+; ModuleID = './CollapseIdenticalNodesTests/ll/test_sing_extension.ll'
+source_filename = "./CollapseIdenticalNodesTests/cpp/test_sing_extension.cpp"
+target datalayout = "e-m:e-p270:32:32-p271:32:32-p272:64:64-i64:64-i128:128-f80:128-n8:16:32:64-S128"
+target triple = "x86_64-unknown-linux-gnu"
+
+; Function Attrs: mustprogress noinline nounwind uwtable
+define dso_local noundef i32 @_Z18test_unsigned_wrapj(i32 noundef %a) #0 {
+entry:
+  %a.addr = alloca i32, align 4
+  %res = alloca i32, align 4
+  store i32 %a, ptr %a.addr, align 4
+  %0 = load i32, ptr %a.addr, align 4
+  %cmp = icmp eq i32 %0, -1
+  br i1 %cmp, label %if.then, label %if.else
+
+if.then:                                          ; preds = %entry
+  store i32 0, ptr %res, align 4
+  br label %if.end
+
+if.else:                                          ; preds = %entry
+  %1 = load i32, ptr %a.addr, align 4
+  %add = add i32 %1, 1
+  store i32 %add, ptr %res, align 4
+  br label %if.end
+
+if.end:                                           ; preds = %if.else, %if.then
+  %2 = load i32, ptr %res, align 4
+  ret i32 %2
+}
+
+attributes #0 = { mustprogress noinline nounwind uwtable "frame-pointer"="all" "min-legal-vector-width"="0" "no-trapping-math"="true" "stack-protector-buffer-size"="8" "target-cpu"="x86-64" "target-features"="+cmov,+cx8,+fxsr,+mmx,+sse,+sse2,+x87" "tune-cpu"="generic" }
+
+!llvm.module.flags = !{!0, !1, !2, !3, !4}
+!llvm.ident = !{!5}
+
+!0 = !{i32 1, !"wchar_size", i32 4}
+!1 = !{i32 8, !"PIC Level", i32 2}
+!2 = !{i32 7, !"PIE Level", i32 2}
+!3 = !{i32 7, !"uwtable", i32 2}
+!4 = !{i32 7, !"frame-pointer", i32 2}
+!5 = !{!"clang version 22.0.0git (https://github.com/llvm/llvm-project 78636be4d6ff5be00d7ec0a599eb9f5daa391bc9)"}
+; *** IR Dump After InferFunctionAttrsPass on [module] ***
+; ModuleID = './CollapseIdenticalNodesTests/ll/test_sing_extension.ll'
+source_filename = "./CollapseIdenticalNodesTests/cpp/test_sing_extension.cpp"
+target datalayout = "e-m:e-p270:32:32-p271:32:32-p272:64:64-i64:64-i128:128-f80:128-n8:16:32:64-S128"
+target triple = "x86_64-unknown-linux-gnu"
+
+; Function Attrs: mustprogress noinline nounwind uwtable
+define dso_local noundef i32 @_Z18test_unsigned_wrapj(i32 noundef %a) #0 {
+entry:
+  %a.addr = alloca i32, align 4
+  %res = alloca i32, align 4
+  store i32 %a, ptr %a.addr, align 4
+  %0 = load i32, ptr %a.addr, align 4
+  %cmp = icmp eq i32 %0, -1
+  br i1 %cmp, label %if.then, label %if.else
+
+if.then:                                          ; preds = %entry
+  store i32 0, ptr %res, align 4
+  br label %if.end
+
+if.else:                                          ; preds = %entry
+  %1 = load i32, ptr %a.addr, align 4
+  %add = add i32 %1, 1
+  store i32 %add, ptr %res, align 4
+  br label %if.end
+
+if.end:                                           ; preds = %if.else, %if.then
+  %2 = load i32, ptr %res, align 4
+  ret i32 %2
+}
+
+attributes #0 = { mustprogress noinline nounwind uwtable "frame-pointer"="all" "min-legal-vector-width"="0" "no-trapping-math"="true" "stack-protector-buffer-size"="8" "target-cpu"="x86-64" "target-features"="+cmov,+cx8,+fxsr,+mmx,+sse,+sse2,+x87" "tune-cpu"="generic" }
+
+!llvm.module.flags = !{!0, !1, !2, !3, !4}
+!llvm.ident = !{!5}
+
+!0 = !{i32 1, !"wchar_size", i32 4}
+!1 = !{i32 8, !"PIC Level", i32 2}
+!2 = !{i32 7, !"PIE Level", i32 2}
+!3 = !{i32 7, !"uwtable", i32 2}
+!4 = !{i32 7, !"frame-pointer", i32 2}
+!5 = !{!"clang version 22.0.0git (https://github.com/llvm/llvm-project 78636be4d6ff5be00d7ec0a599eb9f5daa391bc9)"}
+; *** IR Dump After CoroEarlyPass on [module] ***
+; ModuleID = './CollapseIdenticalNodesTests/ll/test_sing_extension.ll'
+source_filename = "./CollapseIdenticalNodesTests/cpp/test_sing_extension.cpp"
+target datalayout = "e-m:e-p270:32:32-p271:32:32-p272:64:64-i64:64-i128:128-f80:128-n8:16:32:64-S128"
+target triple = "x86_64-unknown-linux-gnu"
+
+; Function Attrs: mustprogress noinline nounwind uwtable
+define dso_local noundef i32 @_Z18test_unsigned_wrapj(i32 noundef %a) #0 {
+entry:
+  %a.addr = alloca i32, align 4
+  %res = alloca i32, align 4
+  store i32 %a, ptr %a.addr, align 4
+  %0 = load i32, ptr %a.addr, align 4
+  %cmp = icmp eq i32 %0, -1
+  br i1 %cmp, label %if.then, label %if.else
+
+if.then:                                          ; preds = %entry
+  store i32 0, ptr %res, align 4
+  br label %if.end
+
+if.else:                                          ; preds = %entry
+  %1 = load i32, ptr %a.addr, align 4
+  %add = add i32 %1, 1
+  store i32 %add, ptr %res, align 4
+  br label %if.end
+
+if.end:                                           ; preds = %if.else, %if.then
+  %2 = load i32, ptr %res, align 4
+  ret i32 %2
+}
+
+attributes #0 = { mustprogress noinline nounwind uwtable "frame-pointer"="all" "min-legal-vector-width"="0" "no-trapping-math"="true" "stack-protector-buffer-size"="8" "target-cpu"="x86-64" "target-features"="+cmov,+cx8,+fxsr,+mmx,+sse,+sse2,+x87" "tune-cpu"="generic" }
+
+!llvm.module.flags = !{!0, !1, !2, !3, !4}
+!llvm.ident = !{!5}
+
+!0 = !{i32 1, !"wchar_size", i32 4}
+!1 = !{i32 8, !"PIC Level", i32 2}
+!2 = !{i32 7, !"PIE Level", i32 2}
+!3 = !{i32 7, !"uwtable", i32 2}
+!4 = !{i32 7, !"frame-pointer", i32 2}
+!5 = !{!"clang version 22.0.0git (https://github.com/llvm/llvm-project 78636be4d6ff5be00d7ec0a599eb9f5daa391bc9)"}
+; *** IR Dump After EntryExitInstrumenterPass on _Z18test_unsigned_wrapj ***
+; Function Attrs: mustprogress noinline nounwind uwtable
+define dso_local noundef i32 @_Z18test_unsigned_wrapj(i32 noundef %a) #0 {
+entry:
+  %a.addr = alloca i32, align 4
+  %res = alloca i32, align 4
+  store i32 %a, ptr %a.addr, align 4
+  %0 = load i32, ptr %a.addr, align 4
+  %cmp = icmp eq i32 %0, -1
+  br i1 %cmp, label %if.then, label %if.else
+
+if.then:                                          ; preds = %entry
+  store i32 0, ptr %res, align 4
+  br label %if.end
+
+if.else:                                          ; preds = %entry
+  %1 = load i32, ptr %a.addr, align 4
+  %add = add i32 %1, 1
+  store i32 %add, ptr %res, align 4
+  br label %if.end
+
+if.end:                                           ; preds = %if.else, %if.then
+  %2 = load i32, ptr %res, align 4
+  ret i32 %2
+}
+; *** IR Dump After LowerExpectIntrinsicPass on _Z18test_unsigned_wrapj ***
+; Function Attrs: mustprogress noinline nounwind uwtable
+define dso_local noundef i32 @_Z18test_unsigned_wrapj(i32 noundef %a) #0 {
+entry:
+  %a.addr = alloca i32, align 4
+  %res = alloca i32, align 4
+  store i32 %a, ptr %a.addr, align 4
+  %0 = load i32, ptr %a.addr, align 4
+  %cmp = icmp eq i32 %0, -1
+  br i1 %cmp, label %if.then, label %if.else
+
+if.then:                                          ; preds = %entry
+  store i32 0, ptr %res, align 4
+  br label %if.end
+
+if.else:                                          ; preds = %entry
+  %1 = load i32, ptr %a.addr, align 4
+  %add = add i32 %1, 1
+  store i32 %add, ptr %res, align 4
+  br label %if.end
+
+if.end:                                           ; preds = %if.else, %if.then
+  %2 = load i32, ptr %res, align 4
+  ret i32 %2
+}
+; *** IR Dump After SimplifyCFGPass on _Z18test_unsigned_wrapj ***
+; Function Attrs: mustprogress noinline nounwind uwtable
+define dso_local noundef i32 @_Z18test_unsigned_wrapj(i32 noundef %a) #0 {
+entry:
+  %a.addr = alloca i32, align 4
+  %res = alloca i32, align 4
+  store i32 %a, ptr %a.addr, align 4
+  %0 = load i32, ptr %a.addr, align 4
+  %cmp = icmp eq i32 %0, -1
+  br i1 %cmp, label %if.then, label %if.else
+
+if.then:                                          ; preds = %entry
+  store i32 0, ptr %res, align 4
+  br label %if.end
+
+if.else:                                          ; preds = %entry
+  %1 = load i32, ptr %a.addr, align 4
+  %add = add i32 %1, 1
+  store i32 %add, ptr %res, align 4
+  br label %if.end
+
+if.end:                                           ; preds = %if.else, %if.then
+  %2 = load i32, ptr %res, align 4
+  ret i32 %2
+}
+; *** IR Dump After SROAPass on _Z18test_unsigned_wrapj ***
+; Function Attrs: mustprogress noinline nounwind uwtable
+define dso_local noundef i32 @_Z18test_unsigned_wrapj(i32 noundef %a) #0 {
+entry:
+  %cmp = icmp eq i32 %a, -1
+  br i1 %cmp, label %if.then, label %if.else
+
+if.then:                                          ; preds = %entry
+  br label %if.end
+
+if.else:                                          ; preds = %entry
+  %add = add i32 %a, 1
+  br label %if.end
+
+if.end:                                           ; preds = %if.else, %if.then
+  %res.0 = phi i32 [ 0, %if.then ], [ %add, %if.else ]
+  ret i32 %res.0
+}
 Starting CollapseIdenticalNodesPass...
 [4;36mPhiNodeWithConstant[0m
 [1;33mGot instruction   %cmp = icmp eq i32 %a, -1[0m
@@ -60,3 +321,1016 @@ if.end:                                           ; preds = %if.else
 }
 
 VALUES ARE EQUAL
+; *** IR Dump After CollapseIdenticalNodesPass on _Z18test_unsigned_wrapj ***
+; Function Attrs: mustprogress noinline nounwind uwtable
+define dso_local noundef i32 @_Z18test_unsigned_wrapj(i32 noundef %a) #0 {
+entry:
+  %cmp = icmp eq i32 %a, -1
+  br i1 %cmp, label %if.else, label %if.else
+
+if.else:                                          ; preds = %entry, %entry
+  %add = add i32 %a, 1
+  br label %if.end
+
+if.end:                                           ; preds = %if.else
+  ret i32 %add
+}
+; *** IR Dump After SimplifyCFGPass on _Z18test_unsigned_wrapj ***
+; Function Attrs: mustprogress noinline nounwind uwtable
+define dso_local noundef i32 @_Z18test_unsigned_wrapj(i32 noundef %a) #0 {
+entry:
+  %add = add i32 %a, 1
+  ret i32 %add
+}
+; *** IR Dump After EarlyCSEPass on _Z18test_unsigned_wrapj ***
+; Function Attrs: mustprogress noinline nounwind uwtable
+define dso_local noundef i32 @_Z18test_unsigned_wrapj(i32 noundef %a) #0 {
+entry:
+  %add = add i32 %a, 1
+  ret i32 %add
+}
+; *** IR Dump After InstCombinePass on _Z18test_unsigned_wrapj ***
+; Function Attrs: mustprogress noinline nounwind uwtable
+define dso_local noundef i32 @_Z18test_unsigned_wrapj(i32 noundef %a) #0 {
+entry:
+  %add = add i32 %a, 1
+  ret i32 %add
+}
+; *** IR Dump After SimplifyCFGPass on _Z18test_unsigned_wrapj ***
+; Function Attrs: mustprogress noinline nounwind uwtable
+define dso_local noundef i32 @_Z18test_unsigned_wrapj(i32 noundef %a) #0 {
+entry:
+  %add = add i32 %a, 1
+  ret i32 %add
+}
+; *** IR Dump After OpenMPOptPass on [module] ***
+; ModuleID = './CollapseIdenticalNodesTests/ll/test_sing_extension.ll'
+source_filename = "./CollapseIdenticalNodesTests/cpp/test_sing_extension.cpp"
+target datalayout = "e-m:e-p270:32:32-p271:32:32-p272:64:64-i64:64-i128:128-f80:128-n8:16:32:64-S128"
+target triple = "x86_64-unknown-linux-gnu"
+
+; Function Attrs: mustprogress noinline nounwind uwtable
+define dso_local noundef i32 @_Z18test_unsigned_wrapj(i32 noundef %a) #0 {
+entry:
+  %add = add i32 %a, 1
+  ret i32 %add
+}
+
+attributes #0 = { mustprogress noinline nounwind uwtable "frame-pointer"="all" "min-legal-vector-width"="0" "no-trapping-math"="true" "stack-protector-buffer-size"="8" "target-cpu"="x86-64" "target-features"="+cmov,+cx8,+fxsr,+mmx,+sse,+sse2,+x87" "tune-cpu"="generic" }
+
+!llvm.module.flags = !{!0, !1, !2, !3, !4}
+!llvm.ident = !{!5}
+
+!0 = !{i32 1, !"wchar_size", i32 4}
+!1 = !{i32 8, !"PIC Level", i32 2}
+!2 = !{i32 7, !"PIE Level", i32 2}
+!3 = !{i32 7, !"uwtable", i32 2}
+!4 = !{i32 7, !"frame-pointer", i32 2}
+!5 = !{!"clang version 22.0.0git (https://github.com/llvm/llvm-project 78636be4d6ff5be00d7ec0a599eb9f5daa391bc9)"}
+; *** IR Dump After IPSCCPPass on [module] ***
+; ModuleID = './CollapseIdenticalNodesTests/ll/test_sing_extension.ll'
+source_filename = "./CollapseIdenticalNodesTests/cpp/test_sing_extension.cpp"
+target datalayout = "e-m:e-p270:32:32-p271:32:32-p272:64:64-i64:64-i128:128-f80:128-n8:16:32:64-S128"
+target triple = "x86_64-unknown-linux-gnu"
+
+; Function Attrs: mustprogress noinline nounwind uwtable
+define dso_local noundef i32 @_Z18test_unsigned_wrapj(i32 noundef %a) #0 {
+entry:
+  %add = add i32 %a, 1
+  ret i32 %add
+}
+
+attributes #0 = { mustprogress noinline nounwind uwtable "frame-pointer"="all" "min-legal-vector-width"="0" "no-trapping-math"="true" "stack-protector-buffer-size"="8" "target-cpu"="x86-64" "target-features"="+cmov,+cx8,+fxsr,+mmx,+sse,+sse2,+x87" "tune-cpu"="generic" }
+
+!llvm.module.flags = !{!0, !1, !2, !3, !4}
+!llvm.ident = !{!5}
+
+!0 = !{i32 1, !"wchar_size", i32 4}
+!1 = !{i32 8, !"PIC Level", i32 2}
+!2 = !{i32 7, !"PIE Level", i32 2}
+!3 = !{i32 7, !"uwtable", i32 2}
+!4 = !{i32 7, !"frame-pointer", i32 2}
+!5 = !{!"clang version 22.0.0git (https://github.com/llvm/llvm-project 78636be4d6ff5be00d7ec0a599eb9f5daa391bc9)"}
+; *** IR Dump After CalledValuePropagationPass on [module] ***
+; ModuleID = './CollapseIdenticalNodesTests/ll/test_sing_extension.ll'
+source_filename = "./CollapseIdenticalNodesTests/cpp/test_sing_extension.cpp"
+target datalayout = "e-m:e-p270:32:32-p271:32:32-p272:64:64-i64:64-i128:128-f80:128-n8:16:32:64-S128"
+target triple = "x86_64-unknown-linux-gnu"
+
+; Function Attrs: mustprogress noinline nounwind uwtable
+define dso_local noundef i32 @_Z18test_unsigned_wrapj(i32 noundef %a) #0 {
+entry:
+  %add = add i32 %a, 1
+  ret i32 %add
+}
+
+attributes #0 = { mustprogress noinline nounwind uwtable "frame-pointer"="all" "min-legal-vector-width"="0" "no-trapping-math"="true" "stack-protector-buffer-size"="8" "target-cpu"="x86-64" "target-features"="+cmov,+cx8,+fxsr,+mmx,+sse,+sse2,+x87" "tune-cpu"="generic" }
+
+!llvm.module.flags = !{!0, !1, !2, !3, !4}
+!llvm.ident = !{!5}
+
+!0 = !{i32 1, !"wchar_size", i32 4}
+!1 = !{i32 8, !"PIC Level", i32 2}
+!2 = !{i32 7, !"PIE Level", i32 2}
+!3 = !{i32 7, !"uwtable", i32 2}
+!4 = !{i32 7, !"frame-pointer", i32 2}
+!5 = !{!"clang version 22.0.0git (https://github.com/llvm/llvm-project 78636be4d6ff5be00d7ec0a599eb9f5daa391bc9)"}
+; *** IR Dump After GlobalOptPass on [module] ***
+; ModuleID = './CollapseIdenticalNodesTests/ll/test_sing_extension.ll'
+source_filename = "./CollapseIdenticalNodesTests/cpp/test_sing_extension.cpp"
+target datalayout = "e-m:e-p270:32:32-p271:32:32-p272:64:64-i64:64-i128:128-f80:128-n8:16:32:64-S128"
+target triple = "x86_64-unknown-linux-gnu"
+
+; Function Attrs: mustprogress noinline nounwind uwtable
+define dso_local noundef i32 @_Z18test_unsigned_wrapj(i32 noundef %a) local_unnamed_addr #0 {
+entry:
+  %add = add i32 %a, 1
+  ret i32 %add
+}
+
+attributes #0 = { mustprogress noinline nounwind uwtable "frame-pointer"="all" "min-legal-vector-width"="0" "no-trapping-math"="true" "stack-protector-buffer-size"="8" "target-cpu"="x86-64" "target-features"="+cmov,+cx8,+fxsr,+mmx,+sse,+sse2,+x87" "tune-cpu"="generic" }
+
+!llvm.module.flags = !{!0, !1, !2, !3, !4}
+!llvm.ident = !{!5}
+
+!0 = !{i32 1, !"wchar_size", i32 4}
+!1 = !{i32 8, !"PIC Level", i32 2}
+!2 = !{i32 7, !"PIE Level", i32 2}
+!3 = !{i32 7, !"uwtable", i32 2}
+!4 = !{i32 7, !"frame-pointer", i32 2}
+!5 = !{!"clang version 22.0.0git (https://github.com/llvm/llvm-project 78636be4d6ff5be00d7ec0a599eb9f5daa391bc9)"}
+; *** IR Dump After PromotePass on _Z18test_unsigned_wrapj ***
+; Function Attrs: mustprogress noinline nounwind uwtable
+define dso_local noundef i32 @_Z18test_unsigned_wrapj(i32 noundef %a) local_unnamed_addr #0 {
+entry:
+  %add = add i32 %a, 1
+  ret i32 %add
+}
+; *** IR Dump After InstCombinePass on _Z18test_unsigned_wrapj ***
+; Function Attrs: mustprogress noinline nounwind uwtable
+define dso_local noundef i32 @_Z18test_unsigned_wrapj(i32 noundef %a) local_unnamed_addr #0 {
+entry:
+  %add = add i32 %a, 1
+  ret i32 %add
+}
+; *** IR Dump After SimplifyCFGPass on _Z18test_unsigned_wrapj ***
+; Function Attrs: mustprogress noinline nounwind uwtable
+define dso_local noundef i32 @_Z18test_unsigned_wrapj(i32 noundef %a) local_unnamed_addr #0 {
+entry:
+  %add = add i32 %a, 1
+  ret i32 %add
+}
+; *** IR Dump After AlwaysInlinerPass on [module] ***
+; ModuleID = './CollapseIdenticalNodesTests/ll/test_sing_extension.ll'
+source_filename = "./CollapseIdenticalNodesTests/cpp/test_sing_extension.cpp"
+target datalayout = "e-m:e-p270:32:32-p271:32:32-p272:64:64-i64:64-i128:128-f80:128-n8:16:32:64-S128"
+target triple = "x86_64-unknown-linux-gnu"
+
+; Function Attrs: mustprogress noinline nounwind uwtable
+define dso_local noundef i32 @_Z18test_unsigned_wrapj(i32 noundef %a) local_unnamed_addr #0 {
+entry:
+  %add = add i32 %a, 1
+  ret i32 %add
+}
+
+attributes #0 = { mustprogress noinline nounwind uwtable "frame-pointer"="all" "min-legal-vector-width"="0" "no-trapping-math"="true" "stack-protector-buffer-size"="8" "target-cpu"="x86-64" "target-features"="+cmov,+cx8,+fxsr,+mmx,+sse,+sse2,+x87" "tune-cpu"="generic" }
+
+!llvm.module.flags = !{!0, !1, !2, !3, !4}
+!llvm.ident = !{!5}
+
+!0 = !{i32 1, !"wchar_size", i32 4}
+!1 = !{i32 8, !"PIC Level", i32 2}
+!2 = !{i32 7, !"PIE Level", i32 2}
+!3 = !{i32 7, !"uwtable", i32 2}
+!4 = !{i32 7, !"frame-pointer", i32 2}
+!5 = !{!"clang version 22.0.0git (https://github.com/llvm/llvm-project 78636be4d6ff5be00d7ec0a599eb9f5daa391bc9)"}
+; *** IR Dump After RequireAnalysisPass<llvm::GlobalsAA, llvm::Module> on [module] ***
+; ModuleID = './CollapseIdenticalNodesTests/ll/test_sing_extension.ll'
+source_filename = "./CollapseIdenticalNodesTests/cpp/test_sing_extension.cpp"
+target datalayout = "e-m:e-p270:32:32-p271:32:32-p272:64:64-i64:64-i128:128-f80:128-n8:16:32:64-S128"
+target triple = "x86_64-unknown-linux-gnu"
+
+; Function Attrs: mustprogress noinline nounwind uwtable
+define dso_local noundef i32 @_Z18test_unsigned_wrapj(i32 noundef %a) local_unnamed_addr #0 {
+entry:
+  %add = add i32 %a, 1
+  ret i32 %add
+}
+
+attributes #0 = { mustprogress noinline nounwind uwtable "frame-pointer"="all" "min-legal-vector-width"="0" "no-trapping-math"="true" "stack-protector-buffer-size"="8" "target-cpu"="x86-64" "target-features"="+cmov,+cx8,+fxsr,+mmx,+sse,+sse2,+x87" "tune-cpu"="generic" }
+
+!llvm.module.flags = !{!0, !1, !2, !3, !4}
+!llvm.ident = !{!5}
+
+!0 = !{i32 1, !"wchar_size", i32 4}
+!1 = !{i32 8, !"PIC Level", i32 2}
+!2 = !{i32 7, !"PIE Level", i32 2}
+!3 = !{i32 7, !"uwtable", i32 2}
+!4 = !{i32 7, !"frame-pointer", i32 2}
+!5 = !{!"clang version 22.0.0git (https://github.com/llvm/llvm-project 78636be4d6ff5be00d7ec0a599eb9f5daa391bc9)"}
+; *** IR Dump After InvalidateAnalysisPass<llvm::AAManager> on _Z18test_unsigned_wrapj ***
+; Function Attrs: mustprogress noinline nounwind uwtable
+define dso_local noundef i32 @_Z18test_unsigned_wrapj(i32 noundef %a) local_unnamed_addr #0 {
+entry:
+  %add = add i32 %a, 1
+  ret i32 %add
+}
+; *** IR Dump After RequireAnalysisPass<llvm::ProfileSummaryAnalysis, llvm::Module> on [module] ***
+; ModuleID = './CollapseIdenticalNodesTests/ll/test_sing_extension.ll'
+source_filename = "./CollapseIdenticalNodesTests/cpp/test_sing_extension.cpp"
+target datalayout = "e-m:e-p270:32:32-p271:32:32-p272:64:64-i64:64-i128:128-f80:128-n8:16:32:64-S128"
+target triple = "x86_64-unknown-linux-gnu"
+
+; Function Attrs: mustprogress noinline nounwind uwtable
+define dso_local noundef i32 @_Z18test_unsigned_wrapj(i32 noundef %a) local_unnamed_addr #0 {
+entry:
+  %add = add i32 %a, 1
+  ret i32 %add
+}
+
+attributes #0 = { mustprogress noinline nounwind uwtable "frame-pointer"="all" "min-legal-vector-width"="0" "no-trapping-math"="true" "stack-protector-buffer-size"="8" "target-cpu"="x86-64" "target-features"="+cmov,+cx8,+fxsr,+mmx,+sse,+sse2,+x87" "tune-cpu"="generic" }
+
+!llvm.module.flags = !{!0, !1, !2, !3, !4}
+!llvm.ident = !{!5}
+
+!0 = !{i32 1, !"wchar_size", i32 4}
+!1 = !{i32 8, !"PIC Level", i32 2}
+!2 = !{i32 7, !"PIE Level", i32 2}
+!3 = !{i32 7, !"uwtable", i32 2}
+!4 = !{i32 7, !"frame-pointer", i32 2}
+!5 = !{!"clang version 22.0.0git (https://github.com/llvm/llvm-project 78636be4d6ff5be00d7ec0a599eb9f5daa391bc9)"}
+; *** IR Dump After InlinerPass on (_Z18test_unsigned_wrapj) ***
+; Function Attrs: mustprogress noinline nounwind uwtable
+define dso_local noundef i32 @_Z18test_unsigned_wrapj(i32 noundef %a) local_unnamed_addr #0 {
+entry:
+  %add = add i32 %a, 1
+  ret i32 %add
+}
+; *** IR Dump After PostOrderFunctionAttrsPass on (_Z18test_unsigned_wrapj) ***
+; Function Attrs: mustprogress noinline nounwind uwtable
+define dso_local noundef i32 @_Z18test_unsigned_wrapj(i32 noundef %a) local_unnamed_addr #0 {
+entry:
+  %add = add i32 %a, 1
+  ret i32 %add
+}
+; *** IR Dump After OpenMPOptCGSCCPass on (_Z18test_unsigned_wrapj) ***
+; Function Attrs: mustprogress noinline nounwind uwtable
+define dso_local noundef i32 @_Z18test_unsigned_wrapj(i32 noundef %a) local_unnamed_addr #0 {
+entry:
+  %add = add i32 %a, 1
+  ret i32 %add
+}
+; *** IR Dump After SROAPass on _Z18test_unsigned_wrapj ***
+; Function Attrs: mustprogress noinline nounwind uwtable
+define dso_local noundef i32 @_Z18test_unsigned_wrapj(i32 noundef %a) local_unnamed_addr #0 {
+entry:
+  %add = add i32 %a, 1
+  ret i32 %add
+}
+; *** IR Dump After EarlyCSEPass on _Z18test_unsigned_wrapj ***
+; Function Attrs: mustprogress noinline nounwind uwtable
+define dso_local noundef i32 @_Z18test_unsigned_wrapj(i32 noundef %a) local_unnamed_addr #0 {
+entry:
+  %add = add i32 %a, 1
+  ret i32 %add
+}
+; *** IR Dump After SpeculativeExecutionPass on _Z18test_unsigned_wrapj ***
+; Function Attrs: mustprogress noinline nounwind uwtable
+define dso_local noundef i32 @_Z18test_unsigned_wrapj(i32 noundef %a) local_unnamed_addr #0 {
+entry:
+  %add = add i32 %a, 1
+  ret i32 %add
+}
+; *** IR Dump After JumpThreadingPass on _Z18test_unsigned_wrapj ***
+; Function Attrs: mustprogress noinline nounwind uwtable
+define dso_local noundef i32 @_Z18test_unsigned_wrapj(i32 noundef %a) local_unnamed_addr #0 {
+entry:
+  %add = add i32 %a, 1
+  ret i32 %add
+}
+; *** IR Dump After CorrelatedValuePropagationPass on _Z18test_unsigned_wrapj ***
+; Function Attrs: mustprogress noinline nounwind uwtable
+define dso_local noundef i32 @_Z18test_unsigned_wrapj(i32 noundef %a) local_unnamed_addr #0 {
+entry:
+  %add = add i32 %a, 1
+  ret i32 %add
+}
+; *** IR Dump After SimplifyCFGPass on _Z18test_unsigned_wrapj ***
+; Function Attrs: mustprogress noinline nounwind uwtable
+define dso_local noundef i32 @_Z18test_unsigned_wrapj(i32 noundef %a) local_unnamed_addr #0 {
+entry:
+  %add = add i32 %a, 1
+  ret i32 %add
+}
+; *** IR Dump After InstCombinePass on _Z18test_unsigned_wrapj ***
+; Function Attrs: mustprogress noinline nounwind uwtable
+define dso_local noundef i32 @_Z18test_unsigned_wrapj(i32 noundef %a) local_unnamed_addr #0 {
+entry:
+  %add = add i32 %a, 1
+  ret i32 %add
+}
+; *** IR Dump After AggressiveInstCombinePass on _Z18test_unsigned_wrapj ***
+; Function Attrs: mustprogress noinline nounwind uwtable
+define dso_local noundef i32 @_Z18test_unsigned_wrapj(i32 noundef %a) local_unnamed_addr #0 {
+entry:
+  %add = add i32 %a, 1
+  ret i32 %add
+}
+; *** IR Dump After LibCallsShrinkWrapPass on _Z18test_unsigned_wrapj ***
+; Function Attrs: mustprogress noinline nounwind uwtable
+define dso_local noundef i32 @_Z18test_unsigned_wrapj(i32 noundef %a) local_unnamed_addr #0 {
+entry:
+  %add = add i32 %a, 1
+  ret i32 %add
+}
+; *** IR Dump After TailCallElimPass on _Z18test_unsigned_wrapj ***
+; Function Attrs: mustprogress noinline nounwind uwtable
+define dso_local noundef i32 @_Z18test_unsigned_wrapj(i32 noundef %a) local_unnamed_addr #0 {
+entry:
+  %add = add i32 %a, 1
+  ret i32 %add
+}
+; *** IR Dump After SimplifyCFGPass on _Z18test_unsigned_wrapj ***
+; Function Attrs: mustprogress noinline nounwind uwtable
+define dso_local noundef i32 @_Z18test_unsigned_wrapj(i32 noundef %a) local_unnamed_addr #0 {
+entry:
+  %add = add i32 %a, 1
+  ret i32 %add
+}
+; *** IR Dump After ReassociatePass on _Z18test_unsigned_wrapj ***
+; Function Attrs: mustprogress noinline nounwind uwtable
+define dso_local noundef i32 @_Z18test_unsigned_wrapj(i32 noundef %a) local_unnamed_addr #0 {
+entry:
+  %add = add i32 %a, 1
+  ret i32 %add
+}
+; *** IR Dump After ConstraintEliminationPass on _Z18test_unsigned_wrapj ***
+; Function Attrs: mustprogress noinline nounwind uwtable
+define dso_local noundef i32 @_Z18test_unsigned_wrapj(i32 noundef %a) local_unnamed_addr #0 {
+entry:
+  %add = add i32 %a, 1
+  ret i32 %add
+}
+; *** IR Dump After LoopSimplifyPass on _Z18test_unsigned_wrapj ***
+; Function Attrs: mustprogress noinline nounwind uwtable
+define dso_local noundef i32 @_Z18test_unsigned_wrapj(i32 noundef %a) local_unnamed_addr #0 {
+entry:
+  %add = add i32 %a, 1
+  ret i32 %add
+}
+; *** IR Dump After LCSSAPass on _Z18test_unsigned_wrapj ***
+; Function Attrs: mustprogress noinline nounwind uwtable
+define dso_local noundef i32 @_Z18test_unsigned_wrapj(i32 noundef %a) local_unnamed_addr #0 {
+entry:
+  %add = add i32 %a, 1
+  ret i32 %add
+}
+; *** IR Dump After SimplifyCFGPass on _Z18test_unsigned_wrapj ***
+; Function Attrs: mustprogress noinline nounwind uwtable
+define dso_local noundef i32 @_Z18test_unsigned_wrapj(i32 noundef %a) local_unnamed_addr #0 {
+entry:
+  %add = add i32 %a, 1
+  ret i32 %add
+}
+; *** IR Dump After InstCombinePass on _Z18test_unsigned_wrapj ***
+; Function Attrs: mustprogress noinline nounwind uwtable
+define dso_local noundef i32 @_Z18test_unsigned_wrapj(i32 noundef %a) local_unnamed_addr #0 {
+entry:
+  %add = add i32 %a, 1
+  ret i32 %add
+}
+; *** IR Dump After LoopSimplifyPass on _Z18test_unsigned_wrapj ***
+; Function Attrs: mustprogress noinline nounwind uwtable
+define dso_local noundef i32 @_Z18test_unsigned_wrapj(i32 noundef %a) local_unnamed_addr #0 {
+entry:
+  %add = add i32 %a, 1
+  ret i32 %add
+}
+; *** IR Dump After LCSSAPass on _Z18test_unsigned_wrapj ***
+; Function Attrs: mustprogress noinline nounwind uwtable
+define dso_local noundef i32 @_Z18test_unsigned_wrapj(i32 noundef %a) local_unnamed_addr #0 {
+entry:
+  %add = add i32 %a, 1
+  ret i32 %add
+}
+; *** IR Dump After SROAPass on _Z18test_unsigned_wrapj ***
+; Function Attrs: mustprogress noinline nounwind uwtable
+define dso_local noundef i32 @_Z18test_unsigned_wrapj(i32 noundef %a) local_unnamed_addr #0 {
+entry:
+  %add = add i32 %a, 1
+  ret i32 %add
+}
+; *** IR Dump After VectorCombinePass on _Z18test_unsigned_wrapj ***
+; Function Attrs: mustprogress noinline nounwind uwtable
+define dso_local noundef i32 @_Z18test_unsigned_wrapj(i32 noundef %a) local_unnamed_addr #0 {
+entry:
+  %add = add i32 %a, 1
+  ret i32 %add
+}
+; *** IR Dump After MergedLoadStoreMotionPass on _Z18test_unsigned_wrapj ***
+; Function Attrs: mustprogress noinline nounwind uwtable
+define dso_local noundef i32 @_Z18test_unsigned_wrapj(i32 noundef %a) local_unnamed_addr #0 {
+entry:
+  %add = add i32 %a, 1
+  ret i32 %add
+}
+; *** IR Dump After GVNPass on _Z18test_unsigned_wrapj ***
+; Function Attrs: mustprogress noinline nounwind uwtable
+define dso_local noundef i32 @_Z18test_unsigned_wrapj(i32 noundef %a) local_unnamed_addr #0 {
+entry:
+  %add = add i32 %a, 1
+  ret i32 %add
+}
+; *** IR Dump After SCCPPass on _Z18test_unsigned_wrapj ***
+; Function Attrs: mustprogress noinline nounwind uwtable
+define dso_local noundef i32 @_Z18test_unsigned_wrapj(i32 noundef %a) local_unnamed_addr #0 {
+entry:
+  %add = add i32 %a, 1
+  ret i32 %add
+}
+; *** IR Dump After BDCEPass on _Z18test_unsigned_wrapj ***
+; Function Attrs: mustprogress noinline nounwind uwtable
+define dso_local noundef i32 @_Z18test_unsigned_wrapj(i32 noundef %a) local_unnamed_addr #0 {
+entry:
+  %add = add i32 %a, 1
+  ret i32 %add
+}
+; *** IR Dump After InstCombinePass on _Z18test_unsigned_wrapj ***
+; Function Attrs: mustprogress noinline nounwind uwtable
+define dso_local noundef i32 @_Z18test_unsigned_wrapj(i32 noundef %a) local_unnamed_addr #0 {
+entry:
+  %add = add i32 %a, 1
+  ret i32 %add
+}
+; *** IR Dump After JumpThreadingPass on _Z18test_unsigned_wrapj ***
+; Function Attrs: mustprogress noinline nounwind uwtable
+define dso_local noundef i32 @_Z18test_unsigned_wrapj(i32 noundef %a) local_unnamed_addr #0 {
+entry:
+  %add = add i32 %a, 1
+  ret i32 %add
+}
+; *** IR Dump After CorrelatedValuePropagationPass on _Z18test_unsigned_wrapj ***
+; Function Attrs: mustprogress noinline nounwind uwtable
+define dso_local noundef i32 @_Z18test_unsigned_wrapj(i32 noundef %a) local_unnamed_addr #0 {
+entry:
+  %add = add i32 %a, 1
+  ret i32 %add
+}
+; *** IR Dump After ADCEPass on _Z18test_unsigned_wrapj ***
+; Function Attrs: mustprogress noinline nounwind uwtable
+define dso_local noundef i32 @_Z18test_unsigned_wrapj(i32 noundef %a) local_unnamed_addr #0 {
+entry:
+  %add = add i32 %a, 1
+  ret i32 %add
+}
+; *** IR Dump After MemCpyOptPass on _Z18test_unsigned_wrapj ***
+; Function Attrs: mustprogress noinline nounwind uwtable
+define dso_local noundef i32 @_Z18test_unsigned_wrapj(i32 noundef %a) local_unnamed_addr #0 {
+entry:
+  %add = add i32 %a, 1
+  ret i32 %add
+}
+; *** IR Dump After DSEPass on _Z18test_unsigned_wrapj ***
+; Function Attrs: mustprogress noinline nounwind uwtable
+define dso_local noundef i32 @_Z18test_unsigned_wrapj(i32 noundef %a) local_unnamed_addr #0 {
+entry:
+  %add = add i32 %a, 1
+  ret i32 %add
+}
+; *** IR Dump After MoveAutoInitPass on _Z18test_unsigned_wrapj ***
+; Function Attrs: mustprogress noinline nounwind uwtable
+define dso_local noundef i32 @_Z18test_unsigned_wrapj(i32 noundef %a) local_unnamed_addr #0 {
+entry:
+  %add = add i32 %a, 1
+  ret i32 %add
+}
+; *** IR Dump After LoopSimplifyPass on _Z18test_unsigned_wrapj ***
+; Function Attrs: mustprogress noinline nounwind uwtable
+define dso_local noundef i32 @_Z18test_unsigned_wrapj(i32 noundef %a) local_unnamed_addr #0 {
+entry:
+  %add = add i32 %a, 1
+  ret i32 %add
+}
+; *** IR Dump After LCSSAPass on _Z18test_unsigned_wrapj ***
+; Function Attrs: mustprogress noinline nounwind uwtable
+define dso_local noundef i32 @_Z18test_unsigned_wrapj(i32 noundef %a) local_unnamed_addr #0 {
+entry:
+  %add = add i32 %a, 1
+  ret i32 %add
+}
+; *** IR Dump After CoroElidePass on _Z18test_unsigned_wrapj ***
+; Function Attrs: mustprogress noinline nounwind uwtable
+define dso_local noundef i32 @_Z18test_unsigned_wrapj(i32 noundef %a) local_unnamed_addr #0 {
+entry:
+  %add = add i32 %a, 1
+  ret i32 %add
+}
+; *** IR Dump After SimplifyCFGPass on _Z18test_unsigned_wrapj ***
+; Function Attrs: mustprogress noinline nounwind uwtable
+define dso_local noundef i32 @_Z18test_unsigned_wrapj(i32 noundef %a) local_unnamed_addr #0 {
+entry:
+  %add = add i32 %a, 1
+  ret i32 %add
+}
+; *** IR Dump After InstCombinePass on _Z18test_unsigned_wrapj ***
+; Function Attrs: mustprogress noinline nounwind uwtable
+define dso_local noundef i32 @_Z18test_unsigned_wrapj(i32 noundef %a) local_unnamed_addr #0 {
+entry:
+  %add = add i32 %a, 1
+  ret i32 %add
+}
+; *** IR Dump After PostOrderFunctionAttrsPass on (_Z18test_unsigned_wrapj) ***
+; Function Attrs: mustprogress nofree noinline norecurse nosync nounwind willreturn memory(none) uwtable
+define dso_local noundef i32 @_Z18test_unsigned_wrapj(i32 noundef %a) local_unnamed_addr #0 {
+entry:
+  %add = add i32 %a, 1
+  ret i32 %add
+}
+; *** IR Dump After RequireAnalysisPass<llvm::ShouldNotRunFunctionPassesAnalysis, llvm::Function> on _Z18test_unsigned_wrapj ***
+; Function Attrs: mustprogress nofree noinline norecurse nosync nounwind willreturn memory(none) uwtable
+define dso_local noundef i32 @_Z18test_unsigned_wrapj(i32 noundef %a) local_unnamed_addr #0 {
+entry:
+  %add = add i32 %a, 1
+  ret i32 %add
+}
+; *** IR Dump After CoroSplitPass on (_Z18test_unsigned_wrapj) ***
+; Function Attrs: mustprogress nofree noinline norecurse nosync nounwind willreturn memory(none) uwtable
+define dso_local noundef i32 @_Z18test_unsigned_wrapj(i32 noundef %a) local_unnamed_addr #0 {
+entry:
+  %add = add i32 %a, 1
+  ret i32 %add
+}
+; *** IR Dump After CoroAnnotationElidePass on (_Z18test_unsigned_wrapj) ***
+; Function Attrs: mustprogress nofree noinline norecurse nosync nounwind willreturn memory(none) uwtable
+define dso_local noundef i32 @_Z18test_unsigned_wrapj(i32 noundef %a) local_unnamed_addr #0 {
+entry:
+  %add = add i32 %a, 1
+  ret i32 %add
+}
+; *** IR Dump After InvalidateAnalysisPass<llvm::ShouldNotRunFunctionPassesAnalysis> on _Z18test_unsigned_wrapj ***
+; Function Attrs: mustprogress nofree noinline norecurse nosync nounwind willreturn memory(none) uwtable
+define dso_local noundef i32 @_Z18test_unsigned_wrapj(i32 noundef %a) local_unnamed_addr #0 {
+entry:
+  %add = add i32 %a, 1
+  ret i32 %add
+}
+; *** IR Dump After DeadArgumentEliminationPass on [module] ***
+; ModuleID = './CollapseIdenticalNodesTests/ll/test_sing_extension.ll'
+source_filename = "./CollapseIdenticalNodesTests/cpp/test_sing_extension.cpp"
+target datalayout = "e-m:e-p270:32:32-p271:32:32-p272:64:64-i64:64-i128:128-f80:128-n8:16:32:64-S128"
+target triple = "x86_64-unknown-linux-gnu"
+
+; Function Attrs: mustprogress nofree noinline norecurse nosync nounwind willreturn memory(none) uwtable
+define dso_local noundef i32 @_Z18test_unsigned_wrapj(i32 noundef %a) local_unnamed_addr #0 {
+entry:
+  %add = add i32 %a, 1
+  ret i32 %add
+}
+
+attributes #0 = { mustprogress nofree noinline norecurse nosync nounwind willreturn memory(none) uwtable "frame-pointer"="all" "min-legal-vector-width"="0" "no-trapping-math"="true" "stack-protector-buffer-size"="8" "target-cpu"="x86-64" "target-features"="+cmov,+cx8,+fxsr,+mmx,+sse,+sse2,+x87" "tune-cpu"="generic" }
+
+!llvm.module.flags = !{!0, !1, !2, !3, !4}
+!llvm.ident = !{!5}
+
+!0 = !{i32 1, !"wchar_size", i32 4}
+!1 = !{i32 8, !"PIC Level", i32 2}
+!2 = !{i32 7, !"PIE Level", i32 2}
+!3 = !{i32 7, !"uwtable", i32 2}
+!4 = !{i32 7, !"frame-pointer", i32 2}
+!5 = !{!"clang version 22.0.0git (https://github.com/llvm/llvm-project 78636be4d6ff5be00d7ec0a599eb9f5daa391bc9)"}
+; *** IR Dump After CoroCleanupPass on [module] ***
+; ModuleID = './CollapseIdenticalNodesTests/ll/test_sing_extension.ll'
+source_filename = "./CollapseIdenticalNodesTests/cpp/test_sing_extension.cpp"
+target datalayout = "e-m:e-p270:32:32-p271:32:32-p272:64:64-i64:64-i128:128-f80:128-n8:16:32:64-S128"
+target triple = "x86_64-unknown-linux-gnu"
+
+; Function Attrs: mustprogress nofree noinline norecurse nosync nounwind willreturn memory(none) uwtable
+define dso_local noundef i32 @_Z18test_unsigned_wrapj(i32 noundef %a) local_unnamed_addr #0 {
+entry:
+  %add = add i32 %a, 1
+  ret i32 %add
+}
+
+attributes #0 = { mustprogress nofree noinline norecurse nosync nounwind willreturn memory(none) uwtable "frame-pointer"="all" "min-legal-vector-width"="0" "no-trapping-math"="true" "stack-protector-buffer-size"="8" "target-cpu"="x86-64" "target-features"="+cmov,+cx8,+fxsr,+mmx,+sse,+sse2,+x87" "tune-cpu"="generic" }
+
+!llvm.module.flags = !{!0, !1, !2, !3, !4}
+!llvm.ident = !{!5}
+
+!0 = !{i32 1, !"wchar_size", i32 4}
+!1 = !{i32 8, !"PIC Level", i32 2}
+!2 = !{i32 7, !"PIE Level", i32 2}
+!3 = !{i32 7, !"uwtable", i32 2}
+!4 = !{i32 7, !"frame-pointer", i32 2}
+!5 = !{!"clang version 22.0.0git (https://github.com/llvm/llvm-project 78636be4d6ff5be00d7ec0a599eb9f5daa391bc9)"}
+; *** IR Dump After GlobalOptPass on [module] ***
+; ModuleID = './CollapseIdenticalNodesTests/ll/test_sing_extension.ll'
+source_filename = "./CollapseIdenticalNodesTests/cpp/test_sing_extension.cpp"
+target datalayout = "e-m:e-p270:32:32-p271:32:32-p272:64:64-i64:64-i128:128-f80:128-n8:16:32:64-S128"
+target triple = "x86_64-unknown-linux-gnu"
+
+; Function Attrs: mustprogress nofree noinline norecurse nosync nounwind willreturn memory(none) uwtable
+define dso_local noundef i32 @_Z18test_unsigned_wrapj(i32 noundef %a) local_unnamed_addr #0 {
+entry:
+  %add = add i32 %a, 1
+  ret i32 %add
+}
+
+attributes #0 = { mustprogress nofree noinline norecurse nosync nounwind willreturn memory(none) uwtable "frame-pointer"="all" "min-legal-vector-width"="0" "no-trapping-math"="true" "stack-protector-buffer-size"="8" "target-cpu"="x86-64" "target-features"="+cmov,+cx8,+fxsr,+mmx,+sse,+sse2,+x87" "tune-cpu"="generic" }
+
+!llvm.module.flags = !{!0, !1, !2, !3, !4}
+!llvm.ident = !{!5}
+
+!0 = !{i32 1, !"wchar_size", i32 4}
+!1 = !{i32 8, !"PIC Level", i32 2}
+!2 = !{i32 7, !"PIE Level", i32 2}
+!3 = !{i32 7, !"uwtable", i32 2}
+!4 = !{i32 7, !"frame-pointer", i32 2}
+!5 = !{!"clang version 22.0.0git (https://github.com/llvm/llvm-project 78636be4d6ff5be00d7ec0a599eb9f5daa391bc9)"}
+; *** IR Dump After GlobalDCEPass on [module] ***
+; ModuleID = './CollapseIdenticalNodesTests/ll/test_sing_extension.ll'
+source_filename = "./CollapseIdenticalNodesTests/cpp/test_sing_extension.cpp"
+target datalayout = "e-m:e-p270:32:32-p271:32:32-p272:64:64-i64:64-i128:128-f80:128-n8:16:32:64-S128"
+target triple = "x86_64-unknown-linux-gnu"
+
+; Function Attrs: mustprogress nofree noinline norecurse nosync nounwind willreturn memory(none) uwtable
+define dso_local noundef i32 @_Z18test_unsigned_wrapj(i32 noundef %a) local_unnamed_addr #0 {
+entry:
+  %add = add i32 %a, 1
+  ret i32 %add
+}
+
+attributes #0 = { mustprogress nofree noinline norecurse nosync nounwind willreturn memory(none) uwtable "frame-pointer"="all" "min-legal-vector-width"="0" "no-trapping-math"="true" "stack-protector-buffer-size"="8" "target-cpu"="x86-64" "target-features"="+cmov,+cx8,+fxsr,+mmx,+sse,+sse2,+x87" "tune-cpu"="generic" }
+
+!llvm.module.flags = !{!0, !1, !2, !3, !4}
+!llvm.ident = !{!5}
+
+!0 = !{i32 1, !"wchar_size", i32 4}
+!1 = !{i32 8, !"PIC Level", i32 2}
+!2 = !{i32 7, !"PIE Level", i32 2}
+!3 = !{i32 7, !"uwtable", i32 2}
+!4 = !{i32 7, !"frame-pointer", i32 2}
+!5 = !{!"clang version 22.0.0git (https://github.com/llvm/llvm-project 78636be4d6ff5be00d7ec0a599eb9f5daa391bc9)"}
+; *** IR Dump After EliminateAvailableExternallyPass on [module] ***
+; ModuleID = './CollapseIdenticalNodesTests/ll/test_sing_extension.ll'
+source_filename = "./CollapseIdenticalNodesTests/cpp/test_sing_extension.cpp"
+target datalayout = "e-m:e-p270:32:32-p271:32:32-p272:64:64-i64:64-i128:128-f80:128-n8:16:32:64-S128"
+target triple = "x86_64-unknown-linux-gnu"
+
+; Function Attrs: mustprogress nofree noinline norecurse nosync nounwind willreturn memory(none) uwtable
+define dso_local noundef i32 @_Z18test_unsigned_wrapj(i32 noundef %a) local_unnamed_addr #0 {
+entry:
+  %add = add i32 %a, 1
+  ret i32 %add
+}
+
+attributes #0 = { mustprogress nofree noinline norecurse nosync nounwind willreturn memory(none) uwtable "frame-pointer"="all" "min-legal-vector-width"="0" "no-trapping-math"="true" "stack-protector-buffer-size"="8" "target-cpu"="x86-64" "target-features"="+cmov,+cx8,+fxsr,+mmx,+sse,+sse2,+x87" "tune-cpu"="generic" }
+
+!llvm.module.flags = !{!0, !1, !2, !3, !4}
+!llvm.ident = !{!5}
+
+!0 = !{i32 1, !"wchar_size", i32 4}
+!1 = !{i32 8, !"PIC Level", i32 2}
+!2 = !{i32 7, !"PIE Level", i32 2}
+!3 = !{i32 7, !"uwtable", i32 2}
+!4 = !{i32 7, !"frame-pointer", i32 2}
+!5 = !{!"clang version 22.0.0git (https://github.com/llvm/llvm-project 78636be4d6ff5be00d7ec0a599eb9f5daa391bc9)"}
+; *** IR Dump After ReversePostOrderFunctionAttrsPass on [module] ***
+; ModuleID = './CollapseIdenticalNodesTests/ll/test_sing_extension.ll'
+source_filename = "./CollapseIdenticalNodesTests/cpp/test_sing_extension.cpp"
+target datalayout = "e-m:e-p270:32:32-p271:32:32-p272:64:64-i64:64-i128:128-f80:128-n8:16:32:64-S128"
+target triple = "x86_64-unknown-linux-gnu"
+
+; Function Attrs: mustprogress nofree noinline norecurse nosync nounwind willreturn memory(none) uwtable
+define dso_local noundef i32 @_Z18test_unsigned_wrapj(i32 noundef %a) local_unnamed_addr #0 {
+entry:
+  %add = add i32 %a, 1
+  ret i32 %add
+}
+
+attributes #0 = { mustprogress nofree noinline norecurse nosync nounwind willreturn memory(none) uwtable "frame-pointer"="all" "min-legal-vector-width"="0" "no-trapping-math"="true" "stack-protector-buffer-size"="8" "target-cpu"="x86-64" "target-features"="+cmov,+cx8,+fxsr,+mmx,+sse,+sse2,+x87" "tune-cpu"="generic" }
+
+!llvm.module.flags = !{!0, !1, !2, !3, !4}
+!llvm.ident = !{!5}
+
+!0 = !{i32 1, !"wchar_size", i32 4}
+!1 = !{i32 8, !"PIC Level", i32 2}
+!2 = !{i32 7, !"PIE Level", i32 2}
+!3 = !{i32 7, !"uwtable", i32 2}
+!4 = !{i32 7, !"frame-pointer", i32 2}
+!5 = !{!"clang version 22.0.0git (https://github.com/llvm/llvm-project 78636be4d6ff5be00d7ec0a599eb9f5daa391bc9)"}
+; *** IR Dump After RecomputeGlobalsAAPass on [module] ***
+; ModuleID = './CollapseIdenticalNodesTests/ll/test_sing_extension.ll'
+source_filename = "./CollapseIdenticalNodesTests/cpp/test_sing_extension.cpp"
+target datalayout = "e-m:e-p270:32:32-p271:32:32-p272:64:64-i64:64-i128:128-f80:128-n8:16:32:64-S128"
+target triple = "x86_64-unknown-linux-gnu"
+
+; Function Attrs: mustprogress nofree noinline norecurse nosync nounwind willreturn memory(none) uwtable
+define dso_local noundef i32 @_Z18test_unsigned_wrapj(i32 noundef %a) local_unnamed_addr #0 {
+entry:
+  %add = add i32 %a, 1
+  ret i32 %add
+}
+
+attributes #0 = { mustprogress nofree noinline norecurse nosync nounwind willreturn memory(none) uwtable "frame-pointer"="all" "min-legal-vector-width"="0" "no-trapping-math"="true" "stack-protector-buffer-size"="8" "target-cpu"="x86-64" "target-features"="+cmov,+cx8,+fxsr,+mmx,+sse,+sse2,+x87" "tune-cpu"="generic" }
+
+!llvm.module.flags = !{!0, !1, !2, !3, !4}
+!llvm.ident = !{!5}
+
+!0 = !{i32 1, !"wchar_size", i32 4}
+!1 = !{i32 8, !"PIC Level", i32 2}
+!2 = !{i32 7, !"PIE Level", i32 2}
+!3 = !{i32 7, !"uwtable", i32 2}
+!4 = !{i32 7, !"frame-pointer", i32 2}
+!5 = !{!"clang version 22.0.0git (https://github.com/llvm/llvm-project 78636be4d6ff5be00d7ec0a599eb9f5daa391bc9)"}
+; *** IR Dump After Float2IntPass on _Z18test_unsigned_wrapj ***
+; Function Attrs: mustprogress nofree noinline norecurse nosync nounwind willreturn memory(none) uwtable
+define dso_local noundef i32 @_Z18test_unsigned_wrapj(i32 noundef %a) local_unnamed_addr #0 {
+entry:
+  %add = add i32 %a, 1
+  ret i32 %add
+}
+; *** IR Dump After LowerConstantIntrinsicsPass on _Z18test_unsigned_wrapj ***
+; Function Attrs: mustprogress nofree noinline norecurse nosync nounwind willreturn memory(none) uwtable
+define dso_local noundef i32 @_Z18test_unsigned_wrapj(i32 noundef %a) local_unnamed_addr #0 {
+entry:
+  %add = add i32 %a, 1
+  ret i32 %add
+}
+; *** IR Dump After LoopSimplifyPass on _Z18test_unsigned_wrapj ***
+; Function Attrs: mustprogress nofree noinline norecurse nosync nounwind willreturn memory(none) uwtable
+define dso_local noundef i32 @_Z18test_unsigned_wrapj(i32 noundef %a) local_unnamed_addr #0 {
+entry:
+  %add = add i32 %a, 1
+  ret i32 %add
+}
+; *** IR Dump After LCSSAPass on _Z18test_unsigned_wrapj ***
+; Function Attrs: mustprogress nofree noinline norecurse nosync nounwind willreturn memory(none) uwtable
+define dso_local noundef i32 @_Z18test_unsigned_wrapj(i32 noundef %a) local_unnamed_addr #0 {
+entry:
+  %add = add i32 %a, 1
+  ret i32 %add
+}
+; *** IR Dump After LoopDistributePass on _Z18test_unsigned_wrapj ***
+; Function Attrs: mustprogress nofree noinline norecurse nosync nounwind willreturn memory(none) uwtable
+define dso_local noundef i32 @_Z18test_unsigned_wrapj(i32 noundef %a) local_unnamed_addr #0 {
+entry:
+  %add = add i32 %a, 1
+  ret i32 %add
+}
+; *** IR Dump After InjectTLIMappings on _Z18test_unsigned_wrapj ***
+; Function Attrs: mustprogress nofree noinline norecurse nosync nounwind willreturn memory(none) uwtable
+define dso_local noundef i32 @_Z18test_unsigned_wrapj(i32 noundef %a) local_unnamed_addr #0 {
+entry:
+  %add = add i32 %a, 1
+  ret i32 %add
+}
+; *** IR Dump After LoopVectorizePass on _Z18test_unsigned_wrapj ***
+; Function Attrs: mustprogress nofree noinline norecurse nosync nounwind willreturn memory(none) uwtable
+define dso_local noundef i32 @_Z18test_unsigned_wrapj(i32 noundef %a) local_unnamed_addr #0 {
+entry:
+  %add = add i32 %a, 1
+  ret i32 %add
+}
+; *** IR Dump After InferAlignmentPass on _Z18test_unsigned_wrapj ***
+; Function Attrs: mustprogress nofree noinline norecurse nosync nounwind willreturn memory(none) uwtable
+define dso_local noundef i32 @_Z18test_unsigned_wrapj(i32 noundef %a) local_unnamed_addr #0 {
+entry:
+  %add = add i32 %a, 1
+  ret i32 %add
+}
+; *** IR Dump After LoopLoadEliminationPass on _Z18test_unsigned_wrapj ***
+; Function Attrs: mustprogress nofree noinline norecurse nosync nounwind willreturn memory(none) uwtable
+define dso_local noundef i32 @_Z18test_unsigned_wrapj(i32 noundef %a) local_unnamed_addr #0 {
+entry:
+  %add = add i32 %a, 1
+  ret i32 %add
+}
+; *** IR Dump After InstCombinePass on _Z18test_unsigned_wrapj ***
+; Function Attrs: mustprogress nofree noinline norecurse nosync nounwind willreturn memory(none) uwtable
+define dso_local noundef i32 @_Z18test_unsigned_wrapj(i32 noundef %a) local_unnamed_addr #0 {
+entry:
+  %add = add i32 %a, 1
+  ret i32 %add
+}
+; *** IR Dump After SimplifyCFGPass on _Z18test_unsigned_wrapj ***
+; Function Attrs: mustprogress nofree noinline norecurse nosync nounwind willreturn memory(none) uwtable
+define dso_local noundef i32 @_Z18test_unsigned_wrapj(i32 noundef %a) local_unnamed_addr #0 {
+entry:
+  %add = add i32 %a, 1
+  ret i32 %add
+}
+; *** IR Dump After SLPVectorizerPass on _Z18test_unsigned_wrapj ***
+; Function Attrs: mustprogress nofree noinline norecurse nosync nounwind willreturn memory(none) uwtable
+define dso_local noundef i32 @_Z18test_unsigned_wrapj(i32 noundef %a) local_unnamed_addr #0 {
+entry:
+  %add = add i32 %a, 1
+  ret i32 %add
+}
+; *** IR Dump After VectorCombinePass on _Z18test_unsigned_wrapj ***
+; Function Attrs: mustprogress nofree noinline norecurse nosync nounwind willreturn memory(none) uwtable
+define dso_local noundef i32 @_Z18test_unsigned_wrapj(i32 noundef %a) local_unnamed_addr #0 {
+entry:
+  %add = add i32 %a, 1
+  ret i32 %add
+}
+; *** IR Dump After InstCombinePass on _Z18test_unsigned_wrapj ***
+; Function Attrs: mustprogress nofree noinline norecurse nosync nounwind willreturn memory(none) uwtable
+define dso_local noundef i32 @_Z18test_unsigned_wrapj(i32 noundef %a) local_unnamed_addr #0 {
+entry:
+  %add = add i32 %a, 1
+  ret i32 %add
+}
+; *** IR Dump After LoopUnrollPass on _Z18test_unsigned_wrapj ***
+; Function Attrs: mustprogress nofree noinline norecurse nosync nounwind willreturn memory(none) uwtable
+define dso_local noundef i32 @_Z18test_unsigned_wrapj(i32 noundef %a) local_unnamed_addr #0 {
+entry:
+  %add = add i32 %a, 1
+  ret i32 %add
+}
+; *** IR Dump After WarnMissedTransformationsPass on _Z18test_unsigned_wrapj ***
+; Function Attrs: mustprogress nofree noinline norecurse nosync nounwind willreturn memory(none) uwtable
+define dso_local noundef i32 @_Z18test_unsigned_wrapj(i32 noundef %a) local_unnamed_addr #0 {
+entry:
+  %add = add i32 %a, 1
+  ret i32 %add
+}
+; *** IR Dump After SROAPass on _Z18test_unsigned_wrapj ***
+; Function Attrs: mustprogress nofree noinline norecurse nosync nounwind willreturn memory(none) uwtable
+define dso_local noundef i32 @_Z18test_unsigned_wrapj(i32 noundef %a) local_unnamed_addr #0 {
+entry:
+  %add = add i32 %a, 1
+  ret i32 %add
+}
+; *** IR Dump After InferAlignmentPass on _Z18test_unsigned_wrapj ***
+; Function Attrs: mustprogress nofree noinline norecurse nosync nounwind willreturn memory(none) uwtable
+define dso_local noundef i32 @_Z18test_unsigned_wrapj(i32 noundef %a) local_unnamed_addr #0 {
+entry:
+  %add = add i32 %a, 1
+  ret i32 %add
+}
+; *** IR Dump After InstCombinePass on _Z18test_unsigned_wrapj ***
+; Function Attrs: mustprogress nofree noinline norecurse nosync nounwind willreturn memory(none) uwtable
+define dso_local noundef i32 @_Z18test_unsigned_wrapj(i32 noundef %a) local_unnamed_addr #0 {
+entry:
+  %add = add i32 %a, 1
+  ret i32 %add
+}
+; *** IR Dump After LoopSimplifyPass on _Z18test_unsigned_wrapj ***
+; Function Attrs: mustprogress nofree noinline norecurse nosync nounwind willreturn memory(none) uwtable
+define dso_local noundef i32 @_Z18test_unsigned_wrapj(i32 noundef %a) local_unnamed_addr #0 {
+entry:
+  %add = add i32 %a, 1
+  ret i32 %add
+}
+; *** IR Dump After LCSSAPass on _Z18test_unsigned_wrapj ***
+; Function Attrs: mustprogress nofree noinline norecurse nosync nounwind willreturn memory(none) uwtable
+define dso_local noundef i32 @_Z18test_unsigned_wrapj(i32 noundef %a) local_unnamed_addr #0 {
+entry:
+  %add = add i32 %a, 1
+  ret i32 %add
+}
+; *** IR Dump After AlignmentFromAssumptionsPass on _Z18test_unsigned_wrapj ***
+; Function Attrs: mustprogress nofree noinline norecurse nosync nounwind willreturn memory(none) uwtable
+define dso_local noundef i32 @_Z18test_unsigned_wrapj(i32 noundef %a) local_unnamed_addr #0 {
+entry:
+  %add = add i32 %a, 1
+  ret i32 %add
+}
+; *** IR Dump After LoopSinkPass on _Z18test_unsigned_wrapj ***
+; Function Attrs: mustprogress nofree noinline norecurse nosync nounwind willreturn memory(none) uwtable
+define dso_local noundef i32 @_Z18test_unsigned_wrapj(i32 noundef %a) local_unnamed_addr #0 {
+entry:
+  %add = add i32 %a, 1
+  ret i32 %add
+}
+; *** IR Dump After InstSimplifyPass on _Z18test_unsigned_wrapj ***
+; Function Attrs: mustprogress nofree noinline norecurse nosync nounwind willreturn memory(none) uwtable
+define dso_local noundef i32 @_Z18test_unsigned_wrapj(i32 noundef %a) local_unnamed_addr #0 {
+entry:
+  %add = add i32 %a, 1
+  ret i32 %add
+}
+; *** IR Dump After DivRemPairsPass on _Z18test_unsigned_wrapj ***
+; Function Attrs: mustprogress nofree noinline norecurse nosync nounwind willreturn memory(none) uwtable
+define dso_local noundef i32 @_Z18test_unsigned_wrapj(i32 noundef %a) local_unnamed_addr #0 {
+entry:
+  %add = add i32 %a, 1
+  ret i32 %add
+}
+; *** IR Dump After TailCallElimPass on _Z18test_unsigned_wrapj ***
+; Function Attrs: mustprogress nofree noinline norecurse nosync nounwind willreturn memory(none) uwtable
+define dso_local noundef i32 @_Z18test_unsigned_wrapj(i32 noundef %a) local_unnamed_addr #0 {
+entry:
+  %add = add i32 %a, 1
+  ret i32 %add
+}
+; *** IR Dump After SimplifyCFGPass on _Z18test_unsigned_wrapj ***
+; Function Attrs: mustprogress nofree noinline norecurse nosync nounwind willreturn memory(none) uwtable
+define dso_local noundef i32 @_Z18test_unsigned_wrapj(i32 noundef %a) local_unnamed_addr #0 {
+entry:
+  %add = add i32 %a, 1
+  ret i32 %add
+}
+; *** IR Dump After GlobalDCEPass on [module] ***
+; ModuleID = './CollapseIdenticalNodesTests/ll/test_sing_extension.ll'
+source_filename = "./CollapseIdenticalNodesTests/cpp/test_sing_extension.cpp"
+target datalayout = "e-m:e-p270:32:32-p271:32:32-p272:64:64-i64:64-i128:128-f80:128-n8:16:32:64-S128"
+target triple = "x86_64-unknown-linux-gnu"
+
+; Function Attrs: mustprogress nofree noinline norecurse nosync nounwind willreturn memory(none) uwtable
+define dso_local noundef i32 @_Z18test_unsigned_wrapj(i32 noundef %a) local_unnamed_addr #0 {
+entry:
+  %add = add i32 %a, 1
+  ret i32 %add
+}
+
+attributes #0 = { mustprogress nofree noinline norecurse nosync nounwind willreturn memory(none) uwtable "frame-pointer"="all" "min-legal-vector-width"="0" "no-trapping-math"="true" "stack-protector-buffer-size"="8" "target-cpu"="x86-64" "target-features"="+cmov,+cx8,+fxsr,+mmx,+sse,+sse2,+x87" "tune-cpu"="generic" }
+
+!llvm.module.flags = !{!0, !1, !2, !3, !4}
+!llvm.ident = !{!5}
+
+!0 = !{i32 1, !"wchar_size", i32 4}
+!1 = !{i32 8, !"PIC Level", i32 2}
+!2 = !{i32 7, !"PIE Level", i32 2}
+!3 = !{i32 7, !"uwtable", i32 2}
+!4 = !{i32 7, !"frame-pointer", i32 2}
+!5 = !{!"clang version 22.0.0git (https://github.com/llvm/llvm-project 78636be4d6ff5be00d7ec0a599eb9f5daa391bc9)"}
+; *** IR Dump After ConstantMergePass on [module] ***
+; ModuleID = './CollapseIdenticalNodesTests/ll/test_sing_extension.ll'
+source_filename = "./CollapseIdenticalNodesTests/cpp/test_sing_extension.cpp"
+target datalayout = "e-m:e-p270:32:32-p271:32:32-p272:64:64-i64:64-i128:128-f80:128-n8:16:32:64-S128"
+target triple = "x86_64-unknown-linux-gnu"
+
+; Function Attrs: mustprogress nofree noinline norecurse nosync nounwind willreturn memory(none) uwtable
+define dso_local noundef i32 @_Z18test_unsigned_wrapj(i32 noundef %a) local_unnamed_addr #0 {
+entry:
+  %add = add i32 %a, 1
+  ret i32 %add
+}
+
+attributes #0 = { mustprogress nofree noinline norecurse nosync nounwind willreturn memory(none) uwtable "frame-pointer"="all" "min-legal-vector-width"="0" "no-trapping-math"="true" "stack-protector-buffer-size"="8" "target-cpu"="x86-64" "target-features"="+cmov,+cx8,+fxsr,+mmx,+sse,+sse2,+x87" "tune-cpu"="generic" }
+
+!llvm.module.flags = !{!0, !1, !2, !3, !4}
+!llvm.ident = !{!5}
+
+!0 = !{i32 1, !"wchar_size", i32 4}
+!1 = !{i32 8, !"PIC Level", i32 2}
+!2 = !{i32 7, !"PIE Level", i32 2}
+!3 = !{i32 7, !"uwtable", i32 2}
+!4 = !{i32 7, !"frame-pointer", i32 2}
+!5 = !{!"clang version 22.0.0git (https://github.com/llvm/llvm-project 78636be4d6ff5be00d7ec0a599eb9f5daa391bc9)"}
+; *** IR Dump After CGProfilePass on [module] ***
+; ModuleID = './CollapseIdenticalNodesTests/ll/test_sing_extension.ll'
+source_filename = "./CollapseIdenticalNodesTests/cpp/test_sing_extension.cpp"
+target datalayout = "e-m:e-p270:32:32-p271:32:32-p272:64:64-i64:64-i128:128-f80:128-n8:16:32:64-S128"
+target triple = "x86_64-unknown-linux-gnu"
+
+; Function Attrs: mustprogress nofree noinline norecurse nosync nounwind willreturn memory(none) uwtable
+define dso_local noundef i32 @_Z18test_unsigned_wrapj(i32 noundef %a) local_unnamed_addr #0 {
+entry:
+  %add = add i32 %a, 1
+  ret i32 %add
+}
+
+attributes #0 = { mustprogress nofree noinline norecurse nosync nounwind willreturn memory(none) uwtable "frame-pointer"="all" "min-legal-vector-width"="0" "no-trapping-math"="true" "stack-protector-buffer-size"="8" "target-cpu"="x86-64" "target-features"="+cmov,+cx8,+fxsr,+mmx,+sse,+sse2,+x87" "tune-cpu"="generic" }
+
+!llvm.module.flags = !{!0, !1, !2, !3, !4}
+!llvm.ident = !{!5}
+
+!0 = !{i32 1, !"wchar_size", i32 4}
+!1 = !{i32 8, !"PIC Level", i32 2}
+!2 = !{i32 7, !"PIE Level", i32 2}
+!3 = !{i32 7, !"uwtable", i32 2}
+!4 = !{i32 7, !"frame-pointer", i32 2}
+!5 = !{!"clang version 22.0.0git (https://github.com/llvm/llvm-project 78636be4d6ff5be00d7ec0a599eb9f5daa391bc9)"}
+; *** IR Dump After RelLookupTableConverterPass on [module] ***
+; ModuleID = './CollapseIdenticalNodesTests/ll/test_sing_extension.ll'
+source_filename = "./CollapseIdenticalNodesTests/cpp/test_sing_extension.cpp"
+target datalayout = "e-m:e-p270:32:32-p271:32:32-p272:64:64-i64:64-i128:128-f80:128-n8:16:32:64-S128"
+target triple = "x86_64-unknown-linux-gnu"
+
+; Function Attrs: mustprogress nofree noinline norecurse nosync nounwind willreturn memory(none) uwtable
+define dso_local noundef i32 @_Z18test_unsigned_wrapj(i32 noundef %a) local_unnamed_addr #0 {
+entry:
+  %add = add i32 %a, 1
+  ret i32 %add
+}
+
+attributes #0 = { mustprogress nofree noinline norecurse nosync nounwind willreturn memory(none) uwtable "frame-pointer"="all" "min-legal-vector-width"="0" "no-trapping-math"="true" "stack-protector-buffer-size"="8" "target-cpu"="x86-64" "target-features"="+cmov,+cx8,+fxsr,+mmx,+sse,+sse2,+x87" "tune-cpu"="generic" }
+
+!llvm.module.flags = !{!0, !1, !2, !3, !4}
+!llvm.ident = !{!5}
+
+!0 = !{i32 1, !"wchar_size", i32 4}
+!1 = !{i32 8, !"PIC Level", i32 2}
+!2 = !{i32 7, !"PIE Level", i32 2}
+!3 = !{i32 7, !"uwtable", i32 2}
+!4 = !{i32 7, !"frame-pointer", i32 2}
+!5 = !{!"clang version 22.0.0git (https://github.com/llvm/llvm-project 78636be4d6ff5be00d7ec0a599eb9f5daa391bc9)"}
+; *** IR Dump After AnnotationRemarksPass on _Z18test_unsigned_wrapj ***
+; Function Attrs: mustprogress nofree noinline norecurse nosync nounwind willreturn memory(none) uwtable
+define dso_local noundef i32 @_Z18test_unsigned_wrapj(i32 noundef %a) local_unnamed_addr #0 {
+entry:
+  %add = add i32 %a, 1
+  ret i32 %add
+}

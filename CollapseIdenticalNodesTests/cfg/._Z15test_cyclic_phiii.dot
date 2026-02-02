@@ -1,0 +1,19 @@
+digraph "CFG for '_Z15test_cyclic_phiii' function" {
+	label="CFG for '_Z15test_cyclic_phiii' function";
+
+	Node0x63524dea1490 [shape=record,color="#3d50c3ff", style=filled, fillcolor="#d0473d70" fontname="Courier",label="{entry:\l|  %cmp = icmp eq i32 %init, 1\l  br i1 %cmp, label %if.then, label %if.else\l|{<s0>T|<s1>F}}"];
+	Node0x63524dea1490:s0 -> Node0x63524dea14f0;
+	Node0x63524dea1490:s1 -> Node0x63524dea19e0;
+	Node0x63524dea14f0 [shape=record,color="#3d50c3ff", style=filled, fillcolor="#d6524470" fontname="Courier",label="{if.then:\l|  br label %for.cond\l}"];
+	Node0x63524dea14f0 -> Node0x63524dea1980;
+	Node0x63524dea1980 [shape=record,color="#b70d28ff", style=filled, fillcolor="#b70d2870" fontname="Courier",label="{for.cond:\l|  %x.0 = phi i32 [ 0, %if.then ], [ %y.0, %for.body ]\l  %y.0 = phi i32 [ 1, %if.then ], [ %add, %for.body ]\l  %i.0 = phi i32 [ 0, %if.then ], [ %inc, %for.body ]\l  %cmp1 = icmp slt i32 %i.0, %n\l  br i1 %cmp1, label %for.body, label %for.end\l|{<s0>T|<s1>F}}"];
+	Node0x63524dea1980:s0 -> Node0x63524dea2100;
+	Node0x63524dea1980:s1 -> Node0x63524dea2560;
+	Node0x63524dea2100 [shape=record,color="#b70d28ff", style=filled, fillcolor="#b70d2870" fontname="Courier",label="{for.body:\l|  %add = add nsw i32 %x.0, %y.0\l  %inc = add nsw i32 %i.0, 1\l  br label %for.cond, !llvm.loop !0\l}"];
+	Node0x63524dea2100 -> Node0x63524dea1980;
+	Node0x63524dea2560 [shape=record,color="#3d50c3ff", style=filled, fillcolor="#d6524470" fontname="Courier",label="{for.end:\l|  br label %if.end\l}"];
+	Node0x63524dea2560 -> Node0x63524dea2780;
+	Node0x63524dea19e0 [shape=record,color="#3d50c3ff", style=filled, fillcolor="#d6524470" fontname="Courier",label="{if.else:\l|  br label %if.end\l}"];
+	Node0x63524dea19e0 -> Node0x63524dea2780;
+	Node0x63524dea2780 [shape=record,color="#3d50c3ff", style=filled, fillcolor="#d0473d70" fontname="Courier",label="{if.end:\l|  %result.0 = phi i32 [ %x.0, %for.end ], [ 0, %if.else ]\l  ret i32 %result.0\l}"];
+}

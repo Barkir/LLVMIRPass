@@ -1,3 +1,521 @@
+; *** IR Dump After Annotation2MetadataPass on [module] ***
+; ModuleID = './CollapseIdenticalNodesTests/ll/test_stack_overflow.ll'
+source_filename = "./CollapseIdenticalNodesTests/cpp/test_stack_overflow.cpp"
+target datalayout = "e-m:e-p270:32:32-p271:32:32-p272:64:64-i64:64-i128:128-f80:128-n8:16:32:64-S128"
+target triple = "x86_64-unknown-linux-gnu"
+
+; Function Attrs: mustprogress noinline nounwind uwtable
+define dso_local noundef i32 @_Z15test_cyclic_phiii(i32 noundef %n, i32 noundef %init) #0 {
+entry:
+  %n.addr = alloca i32, align 4
+  %init.addr = alloca i32, align 4
+  %result = alloca i32, align 4
+  %x = alloca i32, align 4
+  %y = alloca i32, align 4
+  %i = alloca i32, align 4
+  %temp = alloca i32, align 4
+  store i32 %n, ptr %n.addr, align 4
+  store i32 %init, ptr %init.addr, align 4
+  %0 = load i32, ptr %init.addr, align 4
+  %cmp = icmp eq i32 %0, 1
+  br i1 %cmp, label %if.then, label %if.else
+
+if.then:                                          ; preds = %entry
+  store i32 0, ptr %x, align 4
+  store i32 1, ptr %y, align 4
+  store i32 0, ptr %i, align 4
+  br label %for.cond
+
+for.cond:                                         ; preds = %for.inc, %if.then
+  %1 = load i32, ptr %i, align 4
+  %2 = load i32, ptr %n.addr, align 4
+  %cmp1 = icmp slt i32 %1, %2
+  br i1 %cmp1, label %for.body, label %for.end
+
+for.body:                                         ; preds = %for.cond
+  %3 = load i32, ptr %x, align 4
+  store i32 %3, ptr %temp, align 4
+  %4 = load i32, ptr %y, align 4
+  store i32 %4, ptr %x, align 4
+  %5 = load i32, ptr %temp, align 4
+  %6 = load i32, ptr %y, align 4
+  %add = add nsw i32 %5, %6
+  store i32 %add, ptr %y, align 4
+  br label %for.inc
+
+for.inc:                                          ; preds = %for.body
+  %7 = load i32, ptr %i, align 4
+  %inc = add nsw i32 %7, 1
+  store i32 %inc, ptr %i, align 4
+  br label %for.cond, !llvm.loop !6
+
+for.end:                                          ; preds = %for.cond
+  %8 = load i32, ptr %x, align 4
+  store i32 %8, ptr %result, align 4
+  br label %if.end
+
+if.else:                                          ; preds = %entry
+  store i32 0, ptr %result, align 4
+  br label %if.end
+
+if.end:                                           ; preds = %if.else, %for.end
+  %9 = load i32, ptr %result, align 4
+  ret i32 %9
+}
+
+attributes #0 = { mustprogress noinline nounwind uwtable "frame-pointer"="all" "min-legal-vector-width"="0" "no-trapping-math"="true" "stack-protector-buffer-size"="8" "target-cpu"="x86-64" "target-features"="+cmov,+cx8,+fxsr,+mmx,+sse,+sse2,+x87" "tune-cpu"="generic" }
+
+!llvm.module.flags = !{!0, !1, !2, !3, !4}
+!llvm.ident = !{!5}
+
+!0 = !{i32 1, !"wchar_size", i32 4}
+!1 = !{i32 8, !"PIC Level", i32 2}
+!2 = !{i32 7, !"PIE Level", i32 2}
+!3 = !{i32 7, !"uwtable", i32 2}
+!4 = !{i32 7, !"frame-pointer", i32 2}
+!5 = !{!"clang version 22.0.0git (https://github.com/llvm/llvm-project 78636be4d6ff5be00d7ec0a599eb9f5daa391bc9)"}
+!6 = distinct !{!6, !7}
+!7 = !{!"llvm.loop.mustprogress"}
+; *** IR Dump After ForceFunctionAttrsPass on [module] ***
+; ModuleID = './CollapseIdenticalNodesTests/ll/test_stack_overflow.ll'
+source_filename = "./CollapseIdenticalNodesTests/cpp/test_stack_overflow.cpp"
+target datalayout = "e-m:e-p270:32:32-p271:32:32-p272:64:64-i64:64-i128:128-f80:128-n8:16:32:64-S128"
+target triple = "x86_64-unknown-linux-gnu"
+
+; Function Attrs: mustprogress noinline nounwind uwtable
+define dso_local noundef i32 @_Z15test_cyclic_phiii(i32 noundef %n, i32 noundef %init) #0 {
+entry:
+  %n.addr = alloca i32, align 4
+  %init.addr = alloca i32, align 4
+  %result = alloca i32, align 4
+  %x = alloca i32, align 4
+  %y = alloca i32, align 4
+  %i = alloca i32, align 4
+  %temp = alloca i32, align 4
+  store i32 %n, ptr %n.addr, align 4
+  store i32 %init, ptr %init.addr, align 4
+  %0 = load i32, ptr %init.addr, align 4
+  %cmp = icmp eq i32 %0, 1
+  br i1 %cmp, label %if.then, label %if.else
+
+if.then:                                          ; preds = %entry
+  store i32 0, ptr %x, align 4
+  store i32 1, ptr %y, align 4
+  store i32 0, ptr %i, align 4
+  br label %for.cond
+
+for.cond:                                         ; preds = %for.inc, %if.then
+  %1 = load i32, ptr %i, align 4
+  %2 = load i32, ptr %n.addr, align 4
+  %cmp1 = icmp slt i32 %1, %2
+  br i1 %cmp1, label %for.body, label %for.end
+
+for.body:                                         ; preds = %for.cond
+  %3 = load i32, ptr %x, align 4
+  store i32 %3, ptr %temp, align 4
+  %4 = load i32, ptr %y, align 4
+  store i32 %4, ptr %x, align 4
+  %5 = load i32, ptr %temp, align 4
+  %6 = load i32, ptr %y, align 4
+  %add = add nsw i32 %5, %6
+  store i32 %add, ptr %y, align 4
+  br label %for.inc
+
+for.inc:                                          ; preds = %for.body
+  %7 = load i32, ptr %i, align 4
+  %inc = add nsw i32 %7, 1
+  store i32 %inc, ptr %i, align 4
+  br label %for.cond, !llvm.loop !6
+
+for.end:                                          ; preds = %for.cond
+  %8 = load i32, ptr %x, align 4
+  store i32 %8, ptr %result, align 4
+  br label %if.end
+
+if.else:                                          ; preds = %entry
+  store i32 0, ptr %result, align 4
+  br label %if.end
+
+if.end:                                           ; preds = %if.else, %for.end
+  %9 = load i32, ptr %result, align 4
+  ret i32 %9
+}
+
+attributes #0 = { mustprogress noinline nounwind uwtable "frame-pointer"="all" "min-legal-vector-width"="0" "no-trapping-math"="true" "stack-protector-buffer-size"="8" "target-cpu"="x86-64" "target-features"="+cmov,+cx8,+fxsr,+mmx,+sse,+sse2,+x87" "tune-cpu"="generic" }
+
+!llvm.module.flags = !{!0, !1, !2, !3, !4}
+!llvm.ident = !{!5}
+
+!0 = !{i32 1, !"wchar_size", i32 4}
+!1 = !{i32 8, !"PIC Level", i32 2}
+!2 = !{i32 7, !"PIE Level", i32 2}
+!3 = !{i32 7, !"uwtable", i32 2}
+!4 = !{i32 7, !"frame-pointer", i32 2}
+!5 = !{!"clang version 22.0.0git (https://github.com/llvm/llvm-project 78636be4d6ff5be00d7ec0a599eb9f5daa391bc9)"}
+!6 = distinct !{!6, !7}
+!7 = !{!"llvm.loop.mustprogress"}
+; *** IR Dump After InferFunctionAttrsPass on [module] ***
+; ModuleID = './CollapseIdenticalNodesTests/ll/test_stack_overflow.ll'
+source_filename = "./CollapseIdenticalNodesTests/cpp/test_stack_overflow.cpp"
+target datalayout = "e-m:e-p270:32:32-p271:32:32-p272:64:64-i64:64-i128:128-f80:128-n8:16:32:64-S128"
+target triple = "x86_64-unknown-linux-gnu"
+
+; Function Attrs: mustprogress noinline nounwind uwtable
+define dso_local noundef i32 @_Z15test_cyclic_phiii(i32 noundef %n, i32 noundef %init) #0 {
+entry:
+  %n.addr = alloca i32, align 4
+  %init.addr = alloca i32, align 4
+  %result = alloca i32, align 4
+  %x = alloca i32, align 4
+  %y = alloca i32, align 4
+  %i = alloca i32, align 4
+  %temp = alloca i32, align 4
+  store i32 %n, ptr %n.addr, align 4
+  store i32 %init, ptr %init.addr, align 4
+  %0 = load i32, ptr %init.addr, align 4
+  %cmp = icmp eq i32 %0, 1
+  br i1 %cmp, label %if.then, label %if.else
+
+if.then:                                          ; preds = %entry
+  store i32 0, ptr %x, align 4
+  store i32 1, ptr %y, align 4
+  store i32 0, ptr %i, align 4
+  br label %for.cond
+
+for.cond:                                         ; preds = %for.inc, %if.then
+  %1 = load i32, ptr %i, align 4
+  %2 = load i32, ptr %n.addr, align 4
+  %cmp1 = icmp slt i32 %1, %2
+  br i1 %cmp1, label %for.body, label %for.end
+
+for.body:                                         ; preds = %for.cond
+  %3 = load i32, ptr %x, align 4
+  store i32 %3, ptr %temp, align 4
+  %4 = load i32, ptr %y, align 4
+  store i32 %4, ptr %x, align 4
+  %5 = load i32, ptr %temp, align 4
+  %6 = load i32, ptr %y, align 4
+  %add = add nsw i32 %5, %6
+  store i32 %add, ptr %y, align 4
+  br label %for.inc
+
+for.inc:                                          ; preds = %for.body
+  %7 = load i32, ptr %i, align 4
+  %inc = add nsw i32 %7, 1
+  store i32 %inc, ptr %i, align 4
+  br label %for.cond, !llvm.loop !6
+
+for.end:                                          ; preds = %for.cond
+  %8 = load i32, ptr %x, align 4
+  store i32 %8, ptr %result, align 4
+  br label %if.end
+
+if.else:                                          ; preds = %entry
+  store i32 0, ptr %result, align 4
+  br label %if.end
+
+if.end:                                           ; preds = %if.else, %for.end
+  %9 = load i32, ptr %result, align 4
+  ret i32 %9
+}
+
+attributes #0 = { mustprogress noinline nounwind uwtable "frame-pointer"="all" "min-legal-vector-width"="0" "no-trapping-math"="true" "stack-protector-buffer-size"="8" "target-cpu"="x86-64" "target-features"="+cmov,+cx8,+fxsr,+mmx,+sse,+sse2,+x87" "tune-cpu"="generic" }
+
+!llvm.module.flags = !{!0, !1, !2, !3, !4}
+!llvm.ident = !{!5}
+
+!0 = !{i32 1, !"wchar_size", i32 4}
+!1 = !{i32 8, !"PIC Level", i32 2}
+!2 = !{i32 7, !"PIE Level", i32 2}
+!3 = !{i32 7, !"uwtable", i32 2}
+!4 = !{i32 7, !"frame-pointer", i32 2}
+!5 = !{!"clang version 22.0.0git (https://github.com/llvm/llvm-project 78636be4d6ff5be00d7ec0a599eb9f5daa391bc9)"}
+!6 = distinct !{!6, !7}
+!7 = !{!"llvm.loop.mustprogress"}
+; *** IR Dump After CoroEarlyPass on [module] ***
+; ModuleID = './CollapseIdenticalNodesTests/ll/test_stack_overflow.ll'
+source_filename = "./CollapseIdenticalNodesTests/cpp/test_stack_overflow.cpp"
+target datalayout = "e-m:e-p270:32:32-p271:32:32-p272:64:64-i64:64-i128:128-f80:128-n8:16:32:64-S128"
+target triple = "x86_64-unknown-linux-gnu"
+
+; Function Attrs: mustprogress noinline nounwind uwtable
+define dso_local noundef i32 @_Z15test_cyclic_phiii(i32 noundef %n, i32 noundef %init) #0 {
+entry:
+  %n.addr = alloca i32, align 4
+  %init.addr = alloca i32, align 4
+  %result = alloca i32, align 4
+  %x = alloca i32, align 4
+  %y = alloca i32, align 4
+  %i = alloca i32, align 4
+  %temp = alloca i32, align 4
+  store i32 %n, ptr %n.addr, align 4
+  store i32 %init, ptr %init.addr, align 4
+  %0 = load i32, ptr %init.addr, align 4
+  %cmp = icmp eq i32 %0, 1
+  br i1 %cmp, label %if.then, label %if.else
+
+if.then:                                          ; preds = %entry
+  store i32 0, ptr %x, align 4
+  store i32 1, ptr %y, align 4
+  store i32 0, ptr %i, align 4
+  br label %for.cond
+
+for.cond:                                         ; preds = %for.inc, %if.then
+  %1 = load i32, ptr %i, align 4
+  %2 = load i32, ptr %n.addr, align 4
+  %cmp1 = icmp slt i32 %1, %2
+  br i1 %cmp1, label %for.body, label %for.end
+
+for.body:                                         ; preds = %for.cond
+  %3 = load i32, ptr %x, align 4
+  store i32 %3, ptr %temp, align 4
+  %4 = load i32, ptr %y, align 4
+  store i32 %4, ptr %x, align 4
+  %5 = load i32, ptr %temp, align 4
+  %6 = load i32, ptr %y, align 4
+  %add = add nsw i32 %5, %6
+  store i32 %add, ptr %y, align 4
+  br label %for.inc
+
+for.inc:                                          ; preds = %for.body
+  %7 = load i32, ptr %i, align 4
+  %inc = add nsw i32 %7, 1
+  store i32 %inc, ptr %i, align 4
+  br label %for.cond, !llvm.loop !6
+
+for.end:                                          ; preds = %for.cond
+  %8 = load i32, ptr %x, align 4
+  store i32 %8, ptr %result, align 4
+  br label %if.end
+
+if.else:                                          ; preds = %entry
+  store i32 0, ptr %result, align 4
+  br label %if.end
+
+if.end:                                           ; preds = %if.else, %for.end
+  %9 = load i32, ptr %result, align 4
+  ret i32 %9
+}
+
+attributes #0 = { mustprogress noinline nounwind uwtable "frame-pointer"="all" "min-legal-vector-width"="0" "no-trapping-math"="true" "stack-protector-buffer-size"="8" "target-cpu"="x86-64" "target-features"="+cmov,+cx8,+fxsr,+mmx,+sse,+sse2,+x87" "tune-cpu"="generic" }
+
+!llvm.module.flags = !{!0, !1, !2, !3, !4}
+!llvm.ident = !{!5}
+
+!0 = !{i32 1, !"wchar_size", i32 4}
+!1 = !{i32 8, !"PIC Level", i32 2}
+!2 = !{i32 7, !"PIE Level", i32 2}
+!3 = !{i32 7, !"uwtable", i32 2}
+!4 = !{i32 7, !"frame-pointer", i32 2}
+!5 = !{!"clang version 22.0.0git (https://github.com/llvm/llvm-project 78636be4d6ff5be00d7ec0a599eb9f5daa391bc9)"}
+!6 = distinct !{!6, !7}
+!7 = !{!"llvm.loop.mustprogress"}
+; *** IR Dump After EntryExitInstrumenterPass on _Z15test_cyclic_phiii ***
+; Function Attrs: mustprogress noinline nounwind uwtable
+define dso_local noundef i32 @_Z15test_cyclic_phiii(i32 noundef %n, i32 noundef %init) #0 {
+entry:
+  %n.addr = alloca i32, align 4
+  %init.addr = alloca i32, align 4
+  %result = alloca i32, align 4
+  %x = alloca i32, align 4
+  %y = alloca i32, align 4
+  %i = alloca i32, align 4
+  %temp = alloca i32, align 4
+  store i32 %n, ptr %n.addr, align 4
+  store i32 %init, ptr %init.addr, align 4
+  %0 = load i32, ptr %init.addr, align 4
+  %cmp = icmp eq i32 %0, 1
+  br i1 %cmp, label %if.then, label %if.else
+
+if.then:                                          ; preds = %entry
+  store i32 0, ptr %x, align 4
+  store i32 1, ptr %y, align 4
+  store i32 0, ptr %i, align 4
+  br label %for.cond
+
+for.cond:                                         ; preds = %for.inc, %if.then
+  %1 = load i32, ptr %i, align 4
+  %2 = load i32, ptr %n.addr, align 4
+  %cmp1 = icmp slt i32 %1, %2
+  br i1 %cmp1, label %for.body, label %for.end
+
+for.body:                                         ; preds = %for.cond
+  %3 = load i32, ptr %x, align 4
+  store i32 %3, ptr %temp, align 4
+  %4 = load i32, ptr %y, align 4
+  store i32 %4, ptr %x, align 4
+  %5 = load i32, ptr %temp, align 4
+  %6 = load i32, ptr %y, align 4
+  %add = add nsw i32 %5, %6
+  store i32 %add, ptr %y, align 4
+  br label %for.inc
+
+for.inc:                                          ; preds = %for.body
+  %7 = load i32, ptr %i, align 4
+  %inc = add nsw i32 %7, 1
+  store i32 %inc, ptr %i, align 4
+  br label %for.cond, !llvm.loop !6
+
+for.end:                                          ; preds = %for.cond
+  %8 = load i32, ptr %x, align 4
+  store i32 %8, ptr %result, align 4
+  br label %if.end
+
+if.else:                                          ; preds = %entry
+  store i32 0, ptr %result, align 4
+  br label %if.end
+
+if.end:                                           ; preds = %if.else, %for.end
+  %9 = load i32, ptr %result, align 4
+  ret i32 %9
+}
+; *** IR Dump After LowerExpectIntrinsicPass on _Z15test_cyclic_phiii ***
+; Function Attrs: mustprogress noinline nounwind uwtable
+define dso_local noundef i32 @_Z15test_cyclic_phiii(i32 noundef %n, i32 noundef %init) #0 {
+entry:
+  %n.addr = alloca i32, align 4
+  %init.addr = alloca i32, align 4
+  %result = alloca i32, align 4
+  %x = alloca i32, align 4
+  %y = alloca i32, align 4
+  %i = alloca i32, align 4
+  %temp = alloca i32, align 4
+  store i32 %n, ptr %n.addr, align 4
+  store i32 %init, ptr %init.addr, align 4
+  %0 = load i32, ptr %init.addr, align 4
+  %cmp = icmp eq i32 %0, 1
+  br i1 %cmp, label %if.then, label %if.else
+
+if.then:                                          ; preds = %entry
+  store i32 0, ptr %x, align 4
+  store i32 1, ptr %y, align 4
+  store i32 0, ptr %i, align 4
+  br label %for.cond
+
+for.cond:                                         ; preds = %for.inc, %if.then
+  %1 = load i32, ptr %i, align 4
+  %2 = load i32, ptr %n.addr, align 4
+  %cmp1 = icmp slt i32 %1, %2
+  br i1 %cmp1, label %for.body, label %for.end
+
+for.body:                                         ; preds = %for.cond
+  %3 = load i32, ptr %x, align 4
+  store i32 %3, ptr %temp, align 4
+  %4 = load i32, ptr %y, align 4
+  store i32 %4, ptr %x, align 4
+  %5 = load i32, ptr %temp, align 4
+  %6 = load i32, ptr %y, align 4
+  %add = add nsw i32 %5, %6
+  store i32 %add, ptr %y, align 4
+  br label %for.inc
+
+for.inc:                                          ; preds = %for.body
+  %7 = load i32, ptr %i, align 4
+  %inc = add nsw i32 %7, 1
+  store i32 %inc, ptr %i, align 4
+  br label %for.cond, !llvm.loop !6
+
+for.end:                                          ; preds = %for.cond
+  %8 = load i32, ptr %x, align 4
+  store i32 %8, ptr %result, align 4
+  br label %if.end
+
+if.else:                                          ; preds = %entry
+  store i32 0, ptr %result, align 4
+  br label %if.end
+
+if.end:                                           ; preds = %if.else, %for.end
+  %9 = load i32, ptr %result, align 4
+  ret i32 %9
+}
+; *** IR Dump After SimplifyCFGPass on _Z15test_cyclic_phiii ***
+; Function Attrs: mustprogress noinline nounwind uwtable
+define dso_local noundef i32 @_Z15test_cyclic_phiii(i32 noundef %n, i32 noundef %init) #0 {
+entry:
+  %n.addr = alloca i32, align 4
+  %init.addr = alloca i32, align 4
+  %result = alloca i32, align 4
+  %x = alloca i32, align 4
+  %y = alloca i32, align 4
+  %i = alloca i32, align 4
+  %temp = alloca i32, align 4
+  store i32 %n, ptr %n.addr, align 4
+  store i32 %init, ptr %init.addr, align 4
+  %0 = load i32, ptr %init.addr, align 4
+  %cmp = icmp eq i32 %0, 1
+  br i1 %cmp, label %if.then, label %if.else
+
+if.then:                                          ; preds = %entry
+  store i32 0, ptr %x, align 4
+  store i32 1, ptr %y, align 4
+  store i32 0, ptr %i, align 4
+  br label %for.cond
+
+for.cond:                                         ; preds = %for.body, %if.then
+  %1 = load i32, ptr %i, align 4
+  %2 = load i32, ptr %n.addr, align 4
+  %cmp1 = icmp slt i32 %1, %2
+  br i1 %cmp1, label %for.body, label %for.end
+
+for.body:                                         ; preds = %for.cond
+  %3 = load i32, ptr %x, align 4
+  store i32 %3, ptr %temp, align 4
+  %4 = load i32, ptr %y, align 4
+  store i32 %4, ptr %x, align 4
+  %5 = load i32, ptr %temp, align 4
+  %6 = load i32, ptr %y, align 4
+  %add = add nsw i32 %5, %6
+  store i32 %add, ptr %y, align 4
+  %7 = load i32, ptr %i, align 4
+  %inc = add nsw i32 %7, 1
+  store i32 %inc, ptr %i, align 4
+  br label %for.cond, !llvm.loop !6
+
+for.end:                                          ; preds = %for.cond
+  %8 = load i32, ptr %x, align 4
+  store i32 %8, ptr %result, align 4
+  br label %if.end
+
+if.else:                                          ; preds = %entry
+  store i32 0, ptr %result, align 4
+  br label %if.end
+
+if.end:                                           ; preds = %if.else, %for.end
+  %9 = load i32, ptr %result, align 4
+  ret i32 %9
+}
+; *** IR Dump After SROAPass on _Z15test_cyclic_phiii ***
+; Function Attrs: mustprogress noinline nounwind uwtable
+define dso_local noundef i32 @_Z15test_cyclic_phiii(i32 noundef %n, i32 noundef %init) #0 {
+entry:
+  %cmp = icmp eq i32 %init, 1
+  br i1 %cmp, label %if.then, label %if.else
+
+if.then:                                          ; preds = %entry
+  br label %for.cond
+
+for.cond:                                         ; preds = %for.body, %if.then
+  %x.0 = phi i32 [ 0, %if.then ], [ %y.0, %for.body ]
+  %y.0 = phi i32 [ 1, %if.then ], [ %add, %for.body ]
+  %i.0 = phi i32 [ 0, %if.then ], [ %inc, %for.body ]
+  %cmp1 = icmp slt i32 %i.0, %n
+  br i1 %cmp1, label %for.body, label %for.end
+
+for.body:                                         ; preds = %for.cond
+  %add = add nsw i32 %x.0, %y.0
+  %inc = add nsw i32 %i.0, 1
+  br label %for.cond, !llvm.loop !6
+
+for.end:                                          ; preds = %for.cond
+  br label %if.end
+
+if.else:                                          ; preds = %entry
+  br label %if.end
+
+if.end:                                           ; preds = %if.else, %for.end
+  %result.0 = phi i32 [ %x.0, %for.end ], [ 0, %if.else ]
+  ret i32 %result.0
+}
 Starting CollapseIdenticalNodesPass...
 [4;36mPhiNodeWithConstant[0m
 [1;33mGot instruction   %cmp = icmp eq i32 %init, 1[0m
@@ -25,24 +543,24 @@ collected icmp and got hashtab!
 [4;36mproofConjuctionLinks[0m
 PLEASE submit a bug report to https://github.com/llvm/llvm-project/issues/ and include the crash backtrace.
 Stack dump:
-0.	Program arguments: ../build-llvm/bin/opt -S -O2 ./CollapseIdenticalNodesTests/ll/test_stack_overflow.ll -o -print-after-all
+0.	Program arguments: ../build-llvm/bin/opt -S -O2 ./CollapseIdenticalNodesTests/ll/test_stack_overflow.ll -o ./CollapseIdenticalNodesTests/ll_opt/test_stack_overflowO2.ll -print-after-all
 1.	Running pass "function<eager-inv>(ee-instrument<>,lower-expect,simplifycfg<bonus-inst-threshold=1;no-forward-switch-cond;no-switch-range-to-icmp;no-switch-to-lookup;keep-loops;no-hoist-common-insts;no-hoist-loads-stores-with-cond-faulting;no-sink-common-insts;speculate-blocks;simplify-cond-branch;no-speculate-unpredictables>,sroa<modify-cfg>,collapse-nodes,simplifycfg<bonus-inst-threshold=1;no-forward-switch-cond;no-switch-range-to-icmp;no-switch-to-lookup;keep-loops;no-hoist-common-insts;no-hoist-loads-stores-with-cond-faulting;no-sink-common-insts;speculate-blocks;simplify-cond-branch;no-speculate-unpredictables>,early-cse<>,instcombine<max-iterations=1;no-verify-fixpoint>,simplifycfg<bonus-inst-threshold=1;no-forward-switch-cond;no-switch-range-to-icmp;no-switch-to-lookup;keep-loops;no-hoist-common-insts;no-hoist-loads-stores-with-cond-faulting;no-sink-common-insts;speculate-blocks;simplify-cond-branch;no-speculate-unpredictables>)" on module "./CollapseIdenticalNodesTests/ll/test_stack_overflow.ll"
 2.	Running pass "collapse-nodes" on function "_Z15test_cyclic_phiii"
- #0 0x00006304588617f0 llvm::sys::PrintStackTrace(llvm::raw_ostream&, int) (../build-llvm/bin/opt+0x54077f0)
- #1 0x000063045885e49f llvm::sys::RunSignalHandlers() (../build-llvm/bin/opt+0x540449f)
- #2 0x000063045885e5f2 SignalHandler(int, siginfo_t*, void*) Signals.cpp:0:0
- #3 0x0000743e1d842520 (/lib/x86_64-linux-gnu/libc.so.6+0x42520)
- #4 0x0000630457954cbe proofConjuctionLinks() (../build-llvm/bin/opt+0x44facbe)
- #5 0x0000630457956f39 llvm::CollapseIdenticalNodesPass::run(llvm::Function&, llvm::AnalysisManager<llvm::Function>&) (../build-llvm/bin/opt+0x44fcf39)
- #6 0x0000630455dffa26 llvm::detail::PassModel<llvm::Function, llvm::CollapseIdenticalNodesPass, llvm::AnalysisManager<llvm::Function>>::run(llvm::Function&, llvm::AnalysisManager<llvm::Function>&) (../build-llvm/bin/opt+0x29a5a26)
- #7 0x000063045863ac87 llvm::PassManager<llvm::Function, llvm::AnalysisManager<llvm::Function>>::run(llvm::Function&, llvm::AnalysisManager<llvm::Function>&) (../build-llvm/bin/opt+0x51e0c87)
- #8 0x00006304541777d6 llvm::detail::PassModel<llvm::Function, llvm::PassManager<llvm::Function, llvm::AnalysisManager<llvm::Function>>, llvm::AnalysisManager<llvm::Function>>::run(llvm::Function&, llvm::AnalysisManager<llvm::Function>&) (../build-llvm/bin/opt+0xd1d7d6)
- #9 0x000063045863b1a9 llvm::ModuleToFunctionPassAdaptor::run(llvm::Module&, llvm::AnalysisManager<llvm::Module>&) (../build-llvm/bin/opt+0x51e11a9)
-#10 0x0000630453bf61c6 llvm::detail::PassModel<llvm::Module, llvm::ModuleToFunctionPassAdaptor, llvm::AnalysisManager<llvm::Module>>::run(llvm::Module&, llvm::AnalysisManager<llvm::Module>&) (../build-llvm/bin/opt+0x79c1c6)
-#11 0x0000630458638fc4 llvm::PassManager<llvm::Module, llvm::AnalysisManager<llvm::Module>>::run(llvm::Module&, llvm::AnalysisManager<llvm::Module>&) (../build-llvm/bin/opt+0x51defc4)
-#12 0x0000630453c01b32 llvm::runPassPipeline(llvm::StringRef, llvm::Module&, llvm::TargetMachine*, llvm::TargetLibraryInfoImpl*, llvm::ToolOutputFile*, llvm::ToolOutputFile*, llvm::ToolOutputFile*, llvm::StringRef, llvm::ArrayRef<llvm::PassPlugin>, llvm::ArrayRef<std::function<void (llvm::PassBuilder&)>>, llvm::opt_tool::OutputKind, llvm::opt_tool::VerifierKind, bool, bool, bool, bool, bool, bool, bool, bool) (../build-llvm/bin/opt+0x7a7b32)
-#13 0x0000630453bf43d9 optMain (../build-llvm/bin/opt+0x79a3d9)
-#14 0x0000743e1d829d90 __libc_start_call_main ./csu/../sysdeps/nptl/libc_start_call_main.h:58:16
-#15 0x0000743e1d829e40 call_init ./csu/../csu/libc-start.c:128:20
-#16 0x0000743e1d829e40 __libc_start_main ./csu/../csu/libc-start.c:379:5
-#17 0x0000630453bea605 _start (../build-llvm/bin/opt+0x790605)
+ #0 0x00005c856519f7f0 llvm::sys::PrintStackTrace(llvm::raw_ostream&, int) (../build-llvm/bin/opt+0x54077f0)
+ #1 0x00005c856519c49f llvm::sys::RunSignalHandlers() (../build-llvm/bin/opt+0x540449f)
+ #2 0x00005c856519c5f2 SignalHandler(int, siginfo_t*, void*) Signals.cpp:0:0
+ #3 0x00007432da442520 (/lib/x86_64-linux-gnu/libc.so.6+0x42520)
+ #4 0x00005c8564292cbe proofConjuctionLinks() (../build-llvm/bin/opt+0x44facbe)
+ #5 0x00005c8564294f39 llvm::CollapseIdenticalNodesPass::run(llvm::Function&, llvm::AnalysisManager<llvm::Function>&) (../build-llvm/bin/opt+0x44fcf39)
+ #6 0x00005c856273da26 llvm::detail::PassModel<llvm::Function, llvm::CollapseIdenticalNodesPass, llvm::AnalysisManager<llvm::Function>>::run(llvm::Function&, llvm::AnalysisManager<llvm::Function>&) (../build-llvm/bin/opt+0x29a5a26)
+ #7 0x00005c8564f78c87 llvm::PassManager<llvm::Function, llvm::AnalysisManager<llvm::Function>>::run(llvm::Function&, llvm::AnalysisManager<llvm::Function>&) (../build-llvm/bin/opt+0x51e0c87)
+ #8 0x00005c8560ab57d6 llvm::detail::PassModel<llvm::Function, llvm::PassManager<llvm::Function, llvm::AnalysisManager<llvm::Function>>, llvm::AnalysisManager<llvm::Function>>::run(llvm::Function&, llvm::AnalysisManager<llvm::Function>&) (../build-llvm/bin/opt+0xd1d7d6)
+ #9 0x00005c8564f791a9 llvm::ModuleToFunctionPassAdaptor::run(llvm::Module&, llvm::AnalysisManager<llvm::Module>&) (../build-llvm/bin/opt+0x51e11a9)
+#10 0x00005c85605341c6 llvm::detail::PassModel<llvm::Module, llvm::ModuleToFunctionPassAdaptor, llvm::AnalysisManager<llvm::Module>>::run(llvm::Module&, llvm::AnalysisManager<llvm::Module>&) (../build-llvm/bin/opt+0x79c1c6)
+#11 0x00005c8564f76fc4 llvm::PassManager<llvm::Module, llvm::AnalysisManager<llvm::Module>>::run(llvm::Module&, llvm::AnalysisManager<llvm::Module>&) (../build-llvm/bin/opt+0x51defc4)
+#12 0x00005c856053fb32 llvm::runPassPipeline(llvm::StringRef, llvm::Module&, llvm::TargetMachine*, llvm::TargetLibraryInfoImpl*, llvm::ToolOutputFile*, llvm::ToolOutputFile*, llvm::ToolOutputFile*, llvm::StringRef, llvm::ArrayRef<llvm::PassPlugin>, llvm::ArrayRef<std::function<void (llvm::PassBuilder&)>>, llvm::opt_tool::OutputKind, llvm::opt_tool::VerifierKind, bool, bool, bool, bool, bool, bool, bool, bool) (../build-llvm/bin/opt+0x7a7b32)
+#13 0x00005c85605323d9 optMain (../build-llvm/bin/opt+0x79a3d9)
+#14 0x00007432da429d90 __libc_start_call_main ./csu/../sysdeps/nptl/libc_start_call_main.h:58:16
+#15 0x00007432da429e40 call_init ./csu/../csu/libc-start.c:128:20
+#16 0x00007432da429e40 __libc_start_main ./csu/../csu/libc-start.c:379:5
+#17 0x00005c8560528605 _start (../build-llvm/bin/opt+0x790605)
