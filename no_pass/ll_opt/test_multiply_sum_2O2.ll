@@ -1,22 +1,21 @@
-; ModuleID = './CollapseIdenticalNodesTests/ll/test_multiply_sum_1.ll'
-source_filename = "./CollapseIdenticalNodesTests/cpp/test_multiply_sum_1.cpp"
+; ModuleID = './CollapseIdenticalNodesTests/ll/test_multiply_sum_2.ll'
+source_filename = "./CollapseIdenticalNodesTests/cpp/test_multiply_sum_2.cpp"
 target datalayout = "e-m:e-p270:32:32-p271:32:32-p272:64:64-i64:64-i128:128-f80:128-n8:16:32:64-S128"
 target triple = "x86_64-unknown-linux-gnu"
 
 ; Function Attrs: mustprogress nofree noinline norecurse nosync nounwind willreturn memory(none) uwtable
-define dso_local noundef i32 @_Z3fooiiii(i32 noundef %a, i32 noundef %b, i32 noundef %c, i32 noundef %d) local_unnamed_addr #0 {
+define dso_local noundef i32 @_Z3muliiii(i32 noundef %a, i32 noundef %b, i32 noundef %c, i32 noundef %d) local_unnamed_addr #0 {
 entry:
-  %mul = mul nsw i32 %c, %b
-  %add = add nsw i32 %mul, %a
-  ret i32 %add
-}
-
-; Function Attrs: mustprogress nofree noinline norecurse nosync nounwind willreturn memory(none) uwtable
-define dso_local noundef i32 @_Z3bariiii(i32 noundef %a, i32 noundef %b, i32 noundef %c, i32 noundef %d) local_unnamed_addr #0 {
-entry:
-  %mul = mul nsw i32 %c, %b
-  %add = add nsw i32 %mul, %a
-  ret i32 %add
+  %cmp = icmp eq i32 %a, 500
+  %cmp1 = icmp eq i32 %b, 700
+  %or.cond = and i1 %cmp, %cmp1
+  %cmp3 = icmp eq i32 %c, 505
+  %or.cond8 = and i1 %or.cond, %cmp3
+  %mul6 = shl nsw i32 %a, 1
+  %mul7 = mul nsw i32 %c, %b
+  %add8 = add nsw i32 %mul7, %mul6
+  %retval.0 = select i1 %or.cond8, i32 354500, i32 %add8
+  ret i32 %retval.0
 }
 
 attributes #0 = { mustprogress nofree noinline norecurse nosync nounwind willreturn memory(none) uwtable "frame-pointer"="all" "min-legal-vector-width"="0" "no-trapping-math"="true" "stack-protector-buffer-size"="8" "target-cpu"="x86-64" "target-features"="+cmov,+cx8,+fxsr,+mmx,+sse,+sse2,+x87" "tune-cpu"="generic" }

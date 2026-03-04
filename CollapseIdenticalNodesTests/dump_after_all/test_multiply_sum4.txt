@@ -709,6 +709,40 @@ attributes #0 = { mustprogress noinline nounwind uwtable "frame-pointer"="all" "
 !3 = !{i32 7, !"uwtable", i32 2}
 !4 = !{i32 7, !"frame-pointer", i32 2}
 !5 = !{!"clang version 22.0.0git (https://github.com/llvm/llvm-project 78636be4d6ff5be00d7ec0a599eb9f5daa391bc9)"}
+Starting CollapseIdenticalNodesPass...
+[4;36mPhiNodeWithConstant[0m
+[1;33mGot instruction   %cmp = icmp eq i32 %a, 500[0m
+[1;33mGot instruction   %cmp1 = icmp eq i32 %d, 700[0m
+[1;33mGot instruction   %or.cond = and i1 %cmp, %cmp1[0m
+[1;33mGot instruction   %add = add nsw i32 %a, 5[0m
+[1;33mGot instruction   %cmp3 = icmp eq i32 %c, %add[0m
+[1;33mGot instruction   %or.cond9 = select i1 %or.cond, i1 %cmp3, i1 false[0m
+[1;33mGot instruction   %mul = mul nsw i32 %a, %c[0m
+[1;33mGot instruction   %mul4 = mul nsw i32 %mul, %b[0m
+[1;33mGot instruction   %mul6 = mul nsw i32 %a, %b[0m
+[1;33mGot instruction   %mul7 = mul nsw i32 %mul6, %c[0m
+[1;33mGot instruction   %mul4.pn = select i1 %or.cond9, i32 %mul4, i32 %mul7[0m
+[1;33mGot instruction   %res.0 = add nsw i32 %mul4.pn, %d[0m
+[1;33mGot instruction   ret i32 %res.0[0m
+[4;36mEND OF FUNC[0m
+; *** IR Dump After CollapseIdenticalNodesPass on _Z9mul_intV1iiii ***
+; Function Attrs: mustprogress noinline nounwind uwtable
+define dso_local noundef i32 @_Z9mul_intV1iiii(i32 noundef %a, i32 noundef %b, i32 noundef %c, i32 noundef %d) #0 {
+entry:
+  %cmp = icmp eq i32 %a, 500
+  %cmp1 = icmp eq i32 %d, 700
+  %or.cond = and i1 %cmp, %cmp1
+  %add = add nsw i32 %a, 5
+  %cmp3 = icmp eq i32 %c, %add
+  %or.cond9 = select i1 %or.cond, i1 %cmp3, i1 false
+  %mul = mul nsw i32 %a, %c
+  %mul4 = mul nsw i32 %mul, %b
+  %mul6 = mul nsw i32 %a, %b
+  %mul7 = mul nsw i32 %mul6, %c
+  %mul4.pn = select i1 %or.cond9, i32 %mul4, i32 %mul7
+  %res.0 = add nsw i32 %mul4.pn, %d
+  ret i32 %res.0
+}
 ; *** IR Dump After CalledValuePropagationPass on [module] ***
 ; ModuleID = './CollapseIdenticalNodesTests/ll/test_multiply_sum4.ll'
 source_filename = "./CollapseIdenticalNodesTests/cpp/test_multiply_sum4.cpp"

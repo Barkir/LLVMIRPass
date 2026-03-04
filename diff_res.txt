@@ -1,0 +1,136 @@
+CollapseIdenticalNodesTests/ll_opt/test_constant_convolution_1O2.ll
+9,13d8
+<   %cmp = icmp eq i32 %a, 46346
+<   %cmp1 = icmp eq i32 %b, 5745
+<   %or.cond = and i1 %cmp, %cmp1
+<   %cmp3 = icmp eq i32 %c, 5
+<   %or.cond1 = and i1 %or.cond, %cmp3
+15,16c10
+<   %retval.0 = select i1 %or.cond1, i32 266257770, i32 %mul
+<   ret i32 %retval.0
+---
+>   ret i32 %mul
+CollapseIdenticalNodesTests/ll_opt/test_constant_convolution_2O2.ll
+9,15d8
+<   %cmp = icmp eq i32 %a, 500
+<   %cmp1 = icmp eq i32 %b, 700
+<   %or.cond = and i1 %cmp, %cmp1
+<   %cmp3 = icmp eq i32 %c, 505
+<   %or.cond7 = and i1 %or.cond, %cmp3
+<   %cmp5 = icmp eq i32 %d, 5600
+<   %or.cond8 = and i1 %or.cond7, %cmp5
+20,21c13
+<   %res.0 = select i1 %or.cond8, i32 496600, i32 %add9
+<   ret i32 %res.0
+---
+>   ret i32 %add9
+CollapseIdenticalNodesTests/ll_opt/test_integer_overflowO2.ll
+7c7
+< define dso_local noundef range(i32 -294967296, -2147483648) i32 @_Z22test_overflow_mismatchii(i32 noundef %a, i32 noundef %b) local_unnamed_addr #0 {
+---
+> define dso_local noundef range(i32 -147483648, -2147483648) i32 @_Z22test_overflow_mismatchii(i32 noundef %a, i32 noundef %b) local_unnamed_addr #0 {
+10c10
+<   %add = add i32 %b, 2000000000
+---
+>   %add = add nsw i32 %b, 2000000000
+CollapseIdenticalNodesTests/ll_opt/test_multiply_sum_2O2.ll
+12,13c12,14
+<   %cmp3 = icmp eq i32 %c, 505
+<   %or.cond8 = and i1 %or.cond, %cmp3
+---
+>   %add = add nuw nsw i32 %a, 5
+>   %cmp3 = icmp eq i32 %c, %add
+>   %or.cond8 = select i1 %or.cond, i1 %cmp3, i1 false
+15,18c16,20
+<   %mul7 = mul nsw i32 %c, %b
+<   %add8 = add nsw i32 %mul7, %mul6
+<   %retval.0 = select i1 %or.cond8, i32 354500, i32 %add8
+<   ret i32 %retval.0
+---
+>   %b.sink = select i1 %or.cond8, i32 700, i32 %b
+>   %mul6.sink = select i1 %or.cond8, i32 1000, i32 %mul6
+>   %mul7 = mul nsw i32 %c, %b.sink
+>   %add8 = add nsw i32 %mul7, %mul6.sink
+>   ret i32 %add8
+CollapseIdenticalNodesTests/ll_opt/test_multiply_sum_3O2.ll
+9,20d8
+<   %cmp = icmp eq i32 %a, 500
+<   %cmp1 = icmp eq i32 %d, 700
+<   %or.cond = and i1 %cmp, %cmp1
+<   br i1 %or.cond, label %land.lhs.true2, label %if.else
+<
+< land.lhs.true2:                                   ; preds = %entry
+<   %cmp3 = icmp eq i32 %c, 505
+<   %cmp5 = icmp eq i32 %b, 100
+<   %or.cond1 = and i1 %cmp5, %cmp3
+<   br i1 %or.cond1, label %if.end, label %if.else
+<
+< if.else:                                          ; preds = %land.lhs.true2, %entry
+23,27c11
+<   %add10 = add nsw i32 %mul9, %d
+<   br label %if.end
+<
+< if.end:                                           ; preds = %land.lhs.true2, %if.else
+<   %res.0 = phi i32 [ %add10, %if.else ], [ 25250700, %land.lhs.true2 ]
+---
+>   %res.0 = add nsw i32 %mul9, %d
+CollapseIdenticalNodesTests/ll_opt/test_multiply_sum4O2.ll
+9,28c9,11
+<   %cmp = icmp eq i32 %a, 500
+<   %cmp1 = icmp eq i32 %d, 700
+<   %or.cond = and i1 %cmp, %cmp1
+<   %cmp3 = icmp eq i32 %c, 505
+<   %or.cond9 = and i1 %cmp3, %or.cond
+<   br i1 %or.cond9, label %if.then, label %if.else
+<
+< if.then:                                          ; preds = %entry
+<   %mul4 = mul nsw i32 %b, 252500
+<   %add5 = add nsw i32 %mul4, 700
+<   br label %if.end
+<
+< if.else:                                          ; preds = %entry
+<   %mul6 = mul nsw i32 %b, %a
+<   %mul7 = mul nsw i32 %mul6, %c
+<   %add8 = add nsw i32 %mul7, %d
+<   br label %if.end
+<
+< if.end:                                           ; preds = %if.else, %if.then
+<   %res.0 = phi i32 [ %add5, %if.then ], [ %add8, %if.else ]
+---
+>   %mul4.pn.v = mul i32 %b, %a
+>   %mul4.pn = mul i32 %mul4.pn.v, %c
+>   %res.0 = add nsw i32 %mul4.pn, %d
+CollapseIdenticalNodesTests/ll_opt/test_multiply_sum_5O2.ll
+9,28c9,12
+<   %add = add nsw i32 %d, %b
+<   %cmp = icmp eq i32 %a, %add
+<   br i1 %cmp, label %land.lhs.true, label %if.else
+<
+< land.lhs.true:                                    ; preds = %entry
+<   %cmp1 = icmp eq i32 %c, %a
+<   %cmp3 = icmp eq i32 %d, 700
+<   %or.cond = and i1 %cmp1, %cmp3
+<   br i1 %or.cond, label %if.end, label %if.else
+<
+< if.else:                                          ; preds = %land.lhs.true, %entry
+<   br label %if.end
+<
+< if.end:                                           ; preds = %land.lhs.true, %if.else
+<   %c.sink = phi i32 [ %c, %if.else ], [ %a, %land.lhs.true ]
+<   %d.sink = phi i32 [ %d, %if.else ], [ 700, %land.lhs.true ]
+<   %mul6 = mul i32 %b, %a
+<   %mul7 = mul i32 %mul6, %c.sink
+<   %add8 = add nsw i32 %mul7, %d.sink
+<   ret i32 %add8
+---
+>   %mul.pn = mul i32 %b, %a
+>   %mul4.pn = mul i32 %mul.pn, %c
+>   %res.0 = add nsw i32 %mul4.pn, %d
+>   ret i32 %res.0
+CollapseIdenticalNodesTests/ll_opt/test_simdO2.ll
+CollapseIdenticalNodesTests/ll_opt/test_sing_extensionO2.ll
+CollapseIdenticalNodesTests/ll_opt/test_stack_overflow_2O2.ll
+CollapseIdenticalNodesTests/ll_opt/test_stack_overflowO2.ll
+CollapseIdenticalNodesTests/ll_opt/test_switchO2.ll
+CollapseIdenticalNodesTests/ll_opt/test_undefined_valueO2.ll
+CollapseIdenticalNodesTests/ll_opt/test_zero_divisionO2.ll

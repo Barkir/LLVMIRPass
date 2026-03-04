@@ -6,9 +6,9 @@ target triple = "x86_64-unknown-linux-gnu"
 ; Function Attrs: mustprogress nofree noinline norecurse nosync nounwind willreturn memory(none) uwtable
 define dso_local noundef i32 @_Z9mul_intV4iiii(i32 noundef %a, i32 noundef %b, i32 noundef %c, i32 noundef %d) local_unnamed_addr #0 {
 entry:
-  %mul4.pn.v = mul i32 %b, %a
-  %mul4.pn = mul i32 %mul4.pn.v, %c
-  %res.0 = add nsw i32 %mul4.pn, %d
+  %mul8 = mul nsw i32 %b, %a
+  %mul9 = mul nsw i32 %mul8, %c
+  %res.0 = add nsw i32 %mul9, %d
   ret i32 %res.0
 }
 

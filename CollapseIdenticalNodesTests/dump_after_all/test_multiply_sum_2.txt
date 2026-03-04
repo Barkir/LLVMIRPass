@@ -21,7 +21,7 @@ entry:
   br i1 %cmp, label %land.lhs.true, label %if.end
 
 land.lhs.true:                                    ; preds = %entry
-  %1 = load i32, ptr %d.addr, align 4
+  %1 = load i32, ptr %b.addr, align 4
   %cmp1 = icmp eq i32 %1, 700
   br i1 %cmp1, label %land.lhs.true2, label %if.end
 
@@ -91,7 +91,7 @@ entry:
   br i1 %cmp, label %land.lhs.true, label %if.end
 
 land.lhs.true:                                    ; preds = %entry
-  %1 = load i32, ptr %d.addr, align 4
+  %1 = load i32, ptr %b.addr, align 4
   %cmp1 = icmp eq i32 %1, 700
   br i1 %cmp1, label %land.lhs.true2, label %if.end
 
@@ -161,7 +161,7 @@ entry:
   br i1 %cmp, label %land.lhs.true, label %if.end
 
 land.lhs.true:                                    ; preds = %entry
-  %1 = load i32, ptr %d.addr, align 4
+  %1 = load i32, ptr %b.addr, align 4
   %cmp1 = icmp eq i32 %1, 700
   br i1 %cmp1, label %land.lhs.true2, label %if.end
 
@@ -231,7 +231,7 @@ entry:
   br i1 %cmp, label %land.lhs.true, label %if.end
 
 land.lhs.true:                                    ; preds = %entry
-  %1 = load i32, ptr %d.addr, align 4
+  %1 = load i32, ptr %b.addr, align 4
   %cmp1 = icmp eq i32 %1, 700
   br i1 %cmp1, label %land.lhs.true2, label %if.end
 
@@ -296,7 +296,7 @@ entry:
   br i1 %cmp, label %land.lhs.true, label %if.end
 
 land.lhs.true:                                    ; preds = %entry
-  %1 = load i32, ptr %d.addr, align 4
+  %1 = load i32, ptr %b.addr, align 4
   %cmp1 = icmp eq i32 %1, 700
   br i1 %cmp1, label %land.lhs.true2, label %if.end
 
@@ -349,7 +349,7 @@ entry:
   br i1 %cmp, label %land.lhs.true, label %if.end
 
 land.lhs.true:                                    ; preds = %entry
-  %1 = load i32, ptr %d.addr, align 4
+  %1 = load i32, ptr %b.addr, align 4
   %cmp1 = icmp eq i32 %1, 700
   br i1 %cmp1, label %land.lhs.true2, label %if.end
 
@@ -399,7 +399,7 @@ entry:
   store i32 %d, ptr %d.addr, align 4
   %0 = load i32, ptr %a.addr, align 4
   %cmp = icmp eq i32 %0, 500
-  %1 = load i32, ptr %d.addr, align 4
+  %1 = load i32, ptr %b.addr, align 4
   %cmp1 = icmp eq i32 %1, 700
   %or.cond = select i1 %cmp, i1 %cmp1, i1 false
   br i1 %or.cond, label %land.lhs.true2, label %if.end
@@ -440,7 +440,7 @@ return:                                           ; preds = %if.end, %if.then
 define dso_local noundef i32 @_Z3muliiii(i32 noundef %a, i32 noundef %b, i32 noundef %c, i32 noundef %d) #0 {
 entry:
   %cmp = icmp eq i32 %a, 500
-  %cmp1 = icmp eq i32 %d, 700
+  %cmp1 = icmp eq i32 %b, 700
   %or.cond = select i1 %cmp, i1 %cmp1, i1 false
   br i1 %or.cond, label %land.lhs.true2, label %if.end
 
@@ -468,7 +468,7 @@ return:                                           ; preds = %if.end, %if.then
 Starting CollapseIdenticalNodesPass...
 [4;36mPhiNodeWithConstant[0m
 [1;33mGot instruction   %cmp = icmp eq i32 %a, 500[0m
-[1;33mGot instruction   %cmp1 = icmp eq i32 %d, 700[0m
+[1;33mGot instruction   %cmp1 = icmp eq i32 %b, 700[0m
 [1;33mGot instruction   %or.cond = select i1 %cmp, i1 %cmp1, i1 false[0m
 [1;33mGot instruction   br i1 %or.cond, label %land.lhs.true2, label %if.end[0m
 [4;36mEND OF FUNC[0m
@@ -499,7 +499,7 @@ Found phi node   %retval.0 = phi i32 [ %add5, %if.then ], [ %add8, %if.end ]
 define dso_local noundef i32 @_Z3muliiii(i32 noundef %a, i32 noundef %b, i32 noundef %c, i32 noundef %d) #0 {
 entry:
   %cmp = icmp eq i32 %a, 500
-  %cmp1 = icmp eq i32 %d, 700
+  %cmp1 = icmp eq i32 %b, 700
   %or.cond = select i1 %cmp, i1 %cmp1, i1 false
   br i1 %or.cond, label %land.lhs.true2, label %if.end
 
@@ -529,12 +529,12 @@ return:                                           ; preds = %if.end, %if.then
 define dso_local noundef i32 @_Z3muliiii(i32 noundef %a, i32 noundef %b, i32 noundef %c, i32 noundef %d) #0 {
 entry:
   %cmp = icmp eq i32 %a, 500
-  %cmp1 = icmp eq i32 %d, 700
+  %cmp1 = icmp eq i32 %b, 700
   %or.cond = select i1 %cmp, i1 %cmp1, i1 false
   %add = add nsw i32 %a, 5
   %cmp3 = icmp eq i32 %c, %add
-  %or.cond7 = select i1 %or.cond, i1 %cmp3, i1 false
-  br i1 %or.cond7, label %if.then, label %if.end
+  %or.cond8 = select i1 %or.cond, i1 %cmp3, i1 false
+  br i1 %or.cond8, label %if.then, label %if.end
 
 if.then:                                          ; preds = %entry
   %mul = mul nsw i32 2, %a
@@ -557,12 +557,12 @@ return:                                           ; preds = %if.end, %if.then
 define dso_local noundef i32 @_Z3muliiii(i32 noundef %a, i32 noundef %b, i32 noundef %c, i32 noundef %d) #0 {
 entry:
   %cmp = icmp eq i32 %a, 500
-  %cmp1 = icmp eq i32 %d, 700
+  %cmp1 = icmp eq i32 %b, 700
   %or.cond = select i1 %cmp, i1 %cmp1, i1 false
   %add = add nsw i32 %a, 5
   %cmp3 = icmp eq i32 %c, %add
-  %or.cond7 = select i1 %or.cond, i1 %cmp3, i1 false
-  br i1 %or.cond7, label %if.then, label %if.end
+  %or.cond8 = select i1 %or.cond, i1 %cmp3, i1 false
+  br i1 %or.cond8, label %if.then, label %if.end
 
 if.then:                                          ; preds = %entry
   %mul = mul nsw i32 2, %a
@@ -585,12 +585,12 @@ return:                                           ; preds = %if.end, %if.then
 define dso_local noundef i32 @_Z3muliiii(i32 noundef %a, i32 noundef %b, i32 noundef %c, i32 noundef %d) #0 {
 entry:
   %cmp = icmp eq i32 %a, 500
-  %cmp1 = icmp eq i32 %d, 700
+  %cmp1 = icmp eq i32 %b, 700
   %or.cond = and i1 %cmp, %cmp1
   %add = add nsw i32 %a, 5
   %cmp3 = icmp eq i32 %c, %add
-  %or.cond7 = select i1 %or.cond, i1 %cmp3, i1 false
-  br i1 %or.cond7, label %if.then, label %if.end
+  %or.cond8 = select i1 %or.cond, i1 %cmp3, i1 false
+  br i1 %or.cond8, label %if.then, label %if.end
 
 if.then:                                          ; preds = %entry
   %mul4 = mul nsw i32 %b, %c
@@ -612,12 +612,12 @@ return:                                           ; preds = %if.end, %if.then
 define dso_local noundef i32 @_Z3muliiii(i32 noundef %a, i32 noundef %b, i32 noundef %c, i32 noundef %d) #0 {
 entry:
   %cmp = icmp eq i32 %a, 500
-  %cmp1 = icmp eq i32 %d, 700
+  %cmp1 = icmp eq i32 %b, 700
   %or.cond = and i1 %cmp, %cmp1
   %add = add nsw i32 %a, 5
   %cmp3 = icmp eq i32 %c, %add
-  %or.cond7 = select i1 %or.cond, i1 %cmp3, i1 false
-  br i1 %or.cond7, label %if.then, label %if.end
+  %or.cond8 = select i1 %or.cond, i1 %cmp3, i1 false
+  br i1 %or.cond8, label %if.then, label %if.end
 
 if.then:                                          ; preds = %entry
   %mul4 = mul nsw i32 %b, %c
@@ -644,12 +644,12 @@ target triple = "x86_64-unknown-linux-gnu"
 define dso_local noundef i32 @_Z3muliiii(i32 noundef %a, i32 noundef %b, i32 noundef %c, i32 noundef %d) #0 {
 entry:
   %cmp = icmp eq i32 %a, 500
-  %cmp1 = icmp eq i32 %d, 700
+  %cmp1 = icmp eq i32 %b, 700
   %or.cond = and i1 %cmp, %cmp1
   %add = add nsw i32 %a, 5
   %cmp3 = icmp eq i32 %c, %add
-  %or.cond7 = select i1 %or.cond, i1 %cmp3, i1 false
-  br i1 %or.cond7, label %if.then, label %if.end
+  %or.cond8 = select i1 %or.cond, i1 %cmp3, i1 false
+  br i1 %or.cond8, label %if.then, label %if.end
 
 if.then:                                          ; preds = %entry
   %mul4 = mul nsw i32 %b, %c
@@ -688,15 +688,15 @@ target triple = "x86_64-unknown-linux-gnu"
 define dso_local noundef i32 @_Z3muliiii(i32 noundef %a, i32 noundef %b, i32 noundef %c, i32 noundef %d) #0 {
 entry:
   %cmp = icmp eq i32 %a, 500
-  %cmp1 = icmp eq i32 %d, 700
+  %cmp1 = icmp eq i32 %b, 700
   %or.cond = and i1 %cmp, %cmp1
   %add = add nsw i32 %a, 5
   %cmp3 = icmp eq i32 %c, %add
-  %or.cond7 = select i1 %or.cond, i1 %cmp3, i1 false
-  br i1 %or.cond7, label %if.then, label %if.end
+  %or.cond8 = select i1 %or.cond, i1 %cmp3, i1 false
+  br i1 %or.cond8, label %if.then, label %if.end
 
 if.then:                                          ; preds = %entry
-  %mul4 = mul nsw i32 %b, %c
+  %mul4 = mul nsw i32 700, %c
   %add5 = add nsw i32 %mul4, 1000
   br label %return
 
@@ -722,6 +722,59 @@ attributes #0 = { mustprogress noinline nounwind uwtable "frame-pointer"="all" "
 !3 = !{i32 7, !"uwtable", i32 2}
 !4 = !{i32 7, !"frame-pointer", i32 2}
 !5 = !{!"clang version 22.0.0git (https://github.com/llvm/llvm-project 78636be4d6ff5be00d7ec0a599eb9f5daa391bc9)"}
+Starting CollapseIdenticalNodesPass...
+[4;36mPhiNodeWithConstant[0m
+[1;33mGot instruction   %cmp = icmp eq i32 %a, 500[0m
+[1;33mGot instruction   %cmp1 = icmp eq i32 %b, 700[0m
+[1;33mGot instruction   %or.cond = and i1 %cmp, %cmp1[0m
+[1;33mGot instruction   %add = add nsw i32 %a, 5[0m
+[1;33mGot instruction   %cmp3 = icmp eq i32 %c, %add[0m
+[1;33mGot instruction   %or.cond8 = select i1 %or.cond, i1 %cmp3, i1 false[0m
+[1;33mGot instruction   br i1 %or.cond8, label %if.then, label %if.end[0m
+[4;36mEND OF FUNC[0m
+[4;36mPhiNodeWithConstant[0m
+[1;33mGot instruction   %mul4 = mul nsw i32 700, %c[0m
+[1;33mGot instruction   %add5 = add nsw i32 %mul4, 1000[0m
+[1;33mGot instruction   br label %return[0m
+[4;36mEND OF FUNC[0m
+[4;36mPhiNodeWithConstant[0m
+[1;33mGot instruction   %mul6 = shl nsw i32 %a, 1[0m
+[1;33mGot instruction   %mul7 = mul nsw i32 %b, %c[0m
+[1;33mGot instruction   %add8 = add nsw i32 %mul6, %mul7[0m
+[1;33mGot instruction   br label %return[0m
+[4;36mEND OF FUNC[0m
+[4;36mPhiNodeWithConstant[0m
+[1;33mGot instruction   %retval.0 = phi i32 [ %add5, %if.then ], [ %add8, %if.end ][0m
+Found phi node   %retval.0 = phi i32 [ %add5, %if.then ], [ %add8, %if.end ]
+[1;33mGot instruction   ret i32 %retval.0[0m
+[4;36mEND OF FUNC[0m
+; *** IR Dump After CollapseIdenticalNodesPass on _Z3muliiii ***
+; Function Attrs: mustprogress noinline nounwind uwtable
+define dso_local noundef i32 @_Z3muliiii(i32 noundef %a, i32 noundef %b, i32 noundef %c, i32 noundef %d) #0 {
+entry:
+  %cmp = icmp eq i32 %a, 500
+  %cmp1 = icmp eq i32 %b, 700
+  %or.cond = and i1 %cmp, %cmp1
+  %add = add nsw i32 %a, 5
+  %cmp3 = icmp eq i32 %c, %add
+  %or.cond8 = select i1 %or.cond, i1 %cmp3, i1 false
+  br i1 %or.cond8, label %if.then, label %if.end
+
+if.then:                                          ; preds = %entry
+  %mul4 = mul nsw i32 700, %c
+  %add5 = add nsw i32 %mul4, 1000
+  br label %return
+
+if.end:                                           ; preds = %entry
+  %mul6 = shl nsw i32 %a, 1
+  %mul7 = mul nsw i32 %b, %c
+  %add8 = add nsw i32 %mul6, %mul7
+  br label %return
+
+return:                                           ; preds = %if.end, %if.then
+  %retval.0 = phi i32 [ %add5, %if.then ], [ %add8, %if.end ]
+  ret i32 %retval.0
+}
 ; *** IR Dump After CalledValuePropagationPass on [module] ***
 ; ModuleID = './CollapseIdenticalNodesTests/ll/test_multiply_sum_2.ll'
 source_filename = "./CollapseIdenticalNodesTests/cpp/test_multiply_sum_2.cpp"
@@ -732,15 +785,15 @@ target triple = "x86_64-unknown-linux-gnu"
 define dso_local noundef i32 @_Z3muliiii(i32 noundef %a, i32 noundef %b, i32 noundef %c, i32 noundef %d) #0 {
 entry:
   %cmp = icmp eq i32 %a, 500
-  %cmp1 = icmp eq i32 %d, 700
+  %cmp1 = icmp eq i32 %b, 700
   %or.cond = and i1 %cmp, %cmp1
   %add = add nsw i32 %a, 5
   %cmp3 = icmp eq i32 %c, %add
-  %or.cond7 = select i1 %or.cond, i1 %cmp3, i1 false
-  br i1 %or.cond7, label %if.then, label %if.end
+  %or.cond8 = select i1 %or.cond, i1 %cmp3, i1 false
+  br i1 %or.cond8, label %if.then, label %if.end
 
 if.then:                                          ; preds = %entry
-  %mul4 = mul nsw i32 %b, %c
+  %mul4 = mul nsw i32 700, %c
   %add5 = add nsw i32 %mul4, 1000
   br label %return
 
@@ -776,15 +829,15 @@ target triple = "x86_64-unknown-linux-gnu"
 define dso_local noundef i32 @_Z3muliiii(i32 noundef %a, i32 noundef %b, i32 noundef %c, i32 noundef %d) local_unnamed_addr #0 {
 entry:
   %cmp = icmp eq i32 %a, 500
-  %cmp1 = icmp eq i32 %d, 700
+  %cmp1 = icmp eq i32 %b, 700
   %or.cond = and i1 %cmp, %cmp1
   %add = add nsw i32 %a, 5
   %cmp3 = icmp eq i32 %c, %add
-  %or.cond7 = select i1 %or.cond, i1 %cmp3, i1 false
-  br i1 %or.cond7, label %if.then, label %if.end
+  %or.cond8 = select i1 %or.cond, i1 %cmp3, i1 false
+  br i1 %or.cond8, label %if.then, label %if.end
 
 if.then:                                          ; preds = %entry
-  %mul4 = mul nsw i32 %b, %c
+  %mul4 = mul nsw i32 700, %c
   %add5 = add nsw i32 %mul4, 1000
   br label %return
 
@@ -815,15 +868,15 @@ attributes #0 = { mustprogress noinline nounwind uwtable "frame-pointer"="all" "
 define dso_local noundef i32 @_Z3muliiii(i32 noundef %a, i32 noundef %b, i32 noundef %c, i32 noundef %d) local_unnamed_addr #0 {
 entry:
   %cmp = icmp eq i32 %a, 500
-  %cmp1 = icmp eq i32 %d, 700
+  %cmp1 = icmp eq i32 %b, 700
   %or.cond = and i1 %cmp, %cmp1
   %add = add nsw i32 %a, 5
   %cmp3 = icmp eq i32 %c, %add
-  %or.cond7 = select i1 %or.cond, i1 %cmp3, i1 false
-  br i1 %or.cond7, label %if.then, label %if.end
+  %or.cond8 = select i1 %or.cond, i1 %cmp3, i1 false
+  br i1 %or.cond8, label %if.then, label %if.end
 
 if.then:                                          ; preds = %entry
-  %mul4 = mul nsw i32 %b, %c
+  %mul4 = mul nsw i32 700, %c
   %add5 = add nsw i32 %mul4, 1000
   br label %return
 
@@ -842,15 +895,15 @@ return:                                           ; preds = %if.end, %if.then
 define dso_local noundef i32 @_Z3muliiii(i32 noundef %a, i32 noundef %b, i32 noundef %c, i32 noundef %d) local_unnamed_addr #0 {
 entry:
   %cmp = icmp eq i32 %a, 500
-  %cmp1 = icmp eq i32 %d, 700
+  %cmp1 = icmp eq i32 %b, 700
   %or.cond = and i1 %cmp, %cmp1
   %add = add nsw i32 %a, 5
   %cmp3 = icmp eq i32 %c, %add
-  %or.cond7 = select i1 %or.cond, i1 %cmp3, i1 false
-  br i1 %or.cond7, label %if.then, label %if.end
+  %or.cond8 = select i1 %or.cond, i1 %cmp3, i1 false
+  br i1 %or.cond8, label %if.then, label %if.end
 
 if.then:                                          ; preds = %entry
-  %mul4 = mul nsw i32 %b, %c
+  %mul4 = mul nsw i32 %c, 700
   %add5 = add nsw i32 %mul4, 1000
   br label %return
 
@@ -869,15 +922,15 @@ return:                                           ; preds = %if.end, %if.then
 define dso_local noundef i32 @_Z3muliiii(i32 noundef %a, i32 noundef %b, i32 noundef %c, i32 noundef %d) local_unnamed_addr #0 {
 entry:
   %cmp = icmp eq i32 %a, 500
-  %cmp1 = icmp eq i32 %d, 700
+  %cmp1 = icmp eq i32 %b, 700
   %or.cond = and i1 %cmp, %cmp1
   %add = add nsw i32 %a, 5
   %cmp3 = icmp eq i32 %c, %add
-  %or.cond7 = select i1 %or.cond, i1 %cmp3, i1 false
-  br i1 %or.cond7, label %if.then, label %if.end
+  %or.cond8 = select i1 %or.cond, i1 %cmp3, i1 false
+  br i1 %or.cond8, label %if.then, label %if.end
 
 if.then:                                          ; preds = %entry
-  %mul4 = mul nsw i32 %b, %c
+  %mul4 = mul nsw i32 %c, 700
   %add5 = add nsw i32 %mul4, 1000
   br label %return
 
@@ -901,15 +954,15 @@ target triple = "x86_64-unknown-linux-gnu"
 define dso_local noundef i32 @_Z3muliiii(i32 noundef %a, i32 noundef %b, i32 noundef %c, i32 noundef %d) local_unnamed_addr #0 {
 entry:
   %cmp = icmp eq i32 %a, 500
-  %cmp1 = icmp eq i32 %d, 700
+  %cmp1 = icmp eq i32 %b, 700
   %or.cond = and i1 %cmp, %cmp1
   %add = add nsw i32 %a, 5
   %cmp3 = icmp eq i32 %c, %add
-  %or.cond7 = select i1 %or.cond, i1 %cmp3, i1 false
-  br i1 %or.cond7, label %if.then, label %if.end
+  %or.cond8 = select i1 %or.cond, i1 %cmp3, i1 false
+  br i1 %or.cond8, label %if.then, label %if.end
 
 if.then:                                          ; preds = %entry
-  %mul4 = mul nsw i32 %b, %c
+  %mul4 = mul nsw i32 %c, 700
   %add5 = add nsw i32 %mul4, 1000
   br label %return
 
@@ -945,15 +998,15 @@ target triple = "x86_64-unknown-linux-gnu"
 define dso_local noundef i32 @_Z3muliiii(i32 noundef %a, i32 noundef %b, i32 noundef %c, i32 noundef %d) local_unnamed_addr #0 {
 entry:
   %cmp = icmp eq i32 %a, 500
-  %cmp1 = icmp eq i32 %d, 700
+  %cmp1 = icmp eq i32 %b, 700
   %or.cond = and i1 %cmp, %cmp1
   %add = add nsw i32 %a, 5
   %cmp3 = icmp eq i32 %c, %add
-  %or.cond7 = select i1 %or.cond, i1 %cmp3, i1 false
-  br i1 %or.cond7, label %if.then, label %if.end
+  %or.cond8 = select i1 %or.cond, i1 %cmp3, i1 false
+  br i1 %or.cond8, label %if.then, label %if.end
 
 if.then:                                          ; preds = %entry
-  %mul4 = mul nsw i32 %b, %c
+  %mul4 = mul nsw i32 %c, 700
   %add5 = add nsw i32 %mul4, 1000
   br label %return
 
@@ -984,15 +1037,15 @@ attributes #0 = { mustprogress noinline nounwind uwtable "frame-pointer"="all" "
 define dso_local noundef i32 @_Z3muliiii(i32 noundef %a, i32 noundef %b, i32 noundef %c, i32 noundef %d) local_unnamed_addr #0 {
 entry:
   %cmp = icmp eq i32 %a, 500
-  %cmp1 = icmp eq i32 %d, 700
+  %cmp1 = icmp eq i32 %b, 700
   %or.cond = and i1 %cmp, %cmp1
   %add = add nsw i32 %a, 5
   %cmp3 = icmp eq i32 %c, %add
-  %or.cond7 = select i1 %or.cond, i1 %cmp3, i1 false
-  br i1 %or.cond7, label %if.then, label %if.end
+  %or.cond8 = select i1 %or.cond, i1 %cmp3, i1 false
+  br i1 %or.cond8, label %if.then, label %if.end
 
 if.then:                                          ; preds = %entry
-  %mul4 = mul nsw i32 %b, %c
+  %mul4 = mul nsw i32 %c, 700
   %add5 = add nsw i32 %mul4, 1000
   br label %return
 
@@ -1016,15 +1069,15 @@ target triple = "x86_64-unknown-linux-gnu"
 define dso_local noundef i32 @_Z3muliiii(i32 noundef %a, i32 noundef %b, i32 noundef %c, i32 noundef %d) local_unnamed_addr #0 {
 entry:
   %cmp = icmp eq i32 %a, 500
-  %cmp1 = icmp eq i32 %d, 700
+  %cmp1 = icmp eq i32 %b, 700
   %or.cond = and i1 %cmp, %cmp1
   %add = add nsw i32 %a, 5
   %cmp3 = icmp eq i32 %c, %add
-  %or.cond7 = select i1 %or.cond, i1 %cmp3, i1 false
-  br i1 %or.cond7, label %if.then, label %if.end
+  %or.cond8 = select i1 %or.cond, i1 %cmp3, i1 false
+  br i1 %or.cond8, label %if.then, label %if.end
 
 if.then:                                          ; preds = %entry
-  %mul4 = mul nsw i32 %b, %c
+  %mul4 = mul nsw i32 %c, 700
   %add5 = add nsw i32 %mul4, 1000
   br label %return
 
@@ -1055,15 +1108,15 @@ attributes #0 = { mustprogress noinline nounwind uwtable "frame-pointer"="all" "
 define dso_local noundef i32 @_Z3muliiii(i32 noundef %a, i32 noundef %b, i32 noundef %c, i32 noundef %d) local_unnamed_addr #0 {
 entry:
   %cmp = icmp eq i32 %a, 500
-  %cmp1 = icmp eq i32 %d, 700
+  %cmp1 = icmp eq i32 %b, 700
   %or.cond = and i1 %cmp, %cmp1
   %add = add nsw i32 %a, 5
   %cmp3 = icmp eq i32 %c, %add
-  %or.cond7 = select i1 %or.cond, i1 %cmp3, i1 false
-  br i1 %or.cond7, label %if.then, label %if.end
+  %or.cond8 = select i1 %or.cond, i1 %cmp3, i1 false
+  br i1 %or.cond8, label %if.then, label %if.end
 
 if.then:                                          ; preds = %entry
-  %mul4 = mul nsw i32 %b, %c
+  %mul4 = mul nsw i32 %c, 700
   %add5 = add nsw i32 %mul4, 1000
   br label %return
 
@@ -1082,15 +1135,15 @@ return:                                           ; preds = %if.end, %if.then
 define dso_local noundef i32 @_Z3muliiii(i32 noundef %a, i32 noundef %b, i32 noundef %c, i32 noundef %d) local_unnamed_addr #0 {
 entry:
   %cmp = icmp eq i32 %a, 500
-  %cmp1 = icmp eq i32 %d, 700
+  %cmp1 = icmp eq i32 %b, 700
   %or.cond = and i1 %cmp, %cmp1
   %add = add nsw i32 %a, 5
   %cmp3 = icmp eq i32 %c, %add
-  %or.cond7 = select i1 %or.cond, i1 %cmp3, i1 false
-  br i1 %or.cond7, label %if.then, label %if.end
+  %or.cond8 = select i1 %or.cond, i1 %cmp3, i1 false
+  br i1 %or.cond8, label %if.then, label %if.end
 
 if.then:                                          ; preds = %entry
-  %mul4 = mul nsw i32 %b, %c
+  %mul4 = mul nsw i32 %c, 700
   %add5 = add nsw i32 %mul4, 1000
   br label %return
 
@@ -1109,15 +1162,15 @@ return:                                           ; preds = %if.end, %if.then
 define dso_local noundef i32 @_Z3muliiii(i32 noundef %a, i32 noundef %b, i32 noundef %c, i32 noundef %d) local_unnamed_addr #0 {
 entry:
   %cmp = icmp eq i32 %a, 500
-  %cmp1 = icmp eq i32 %d, 700
+  %cmp1 = icmp eq i32 %b, 700
   %or.cond = and i1 %cmp, %cmp1
   %add = add nsw i32 %a, 5
   %cmp3 = icmp eq i32 %c, %add
-  %or.cond7 = select i1 %or.cond, i1 %cmp3, i1 false
-  br i1 %or.cond7, label %if.then, label %if.end
+  %or.cond8 = select i1 %or.cond, i1 %cmp3, i1 false
+  br i1 %or.cond8, label %if.then, label %if.end
 
 if.then:                                          ; preds = %entry
-  %mul4 = mul nsw i32 %b, %c
+  %mul4 = mul nsw i32 %c, 700
   %add5 = add nsw i32 %mul4, 1000
   br label %return
 
@@ -1136,15 +1189,15 @@ return:                                           ; preds = %if.end, %if.then
 define dso_local noundef i32 @_Z3muliiii(i32 noundef %a, i32 noundef %b, i32 noundef %c, i32 noundef %d) local_unnamed_addr #0 {
 entry:
   %cmp = icmp eq i32 %a, 500
-  %cmp1 = icmp eq i32 %d, 700
+  %cmp1 = icmp eq i32 %b, 700
   %or.cond = and i1 %cmp, %cmp1
   %add = add nsw i32 %a, 5
   %cmp3 = icmp eq i32 %c, %add
-  %or.cond7 = select i1 %or.cond, i1 %cmp3, i1 false
-  br i1 %or.cond7, label %if.then, label %if.end
+  %or.cond8 = select i1 %or.cond, i1 %cmp3, i1 false
+  br i1 %or.cond8, label %if.then, label %if.end
 
 if.then:                                          ; preds = %entry
-  %mul4 = mul nsw i32 %b, %c
+  %mul4 = mul nsw i32 %c, 700
   %add5 = add nsw i32 %mul4, 1000
   br label %return
 
@@ -1163,15 +1216,15 @@ return:                                           ; preds = %if.end, %if.then
 define dso_local noundef i32 @_Z3muliiii(i32 noundef %a, i32 noundef %b, i32 noundef %c, i32 noundef %d) local_unnamed_addr #0 {
 entry:
   %cmp = icmp eq i32 %a, 500
-  %cmp1 = icmp eq i32 %d, 700
+  %cmp1 = icmp eq i32 %b, 700
   %or.cond = and i1 %cmp, %cmp1
   %add = add nsw i32 %a, 5
   %cmp3 = icmp eq i32 %c, %add
-  %or.cond7 = select i1 %or.cond, i1 %cmp3, i1 false
-  br i1 %or.cond7, label %if.then, label %if.end
+  %or.cond8 = select i1 %or.cond, i1 %cmp3, i1 false
+  br i1 %or.cond8, label %if.then, label %if.end
 
 if.then:                                          ; preds = %entry
-  %mul4 = mul nsw i32 %b, %c
+  %mul4 = mul nsw i32 %c, 700
   %add5 = add nsw i32 %mul4, 1000
   br label %return
 
@@ -1190,15 +1243,15 @@ return:                                           ; preds = %if.end, %if.then
 define dso_local noundef i32 @_Z3muliiii(i32 noundef %a, i32 noundef %b, i32 noundef %c, i32 noundef %d) local_unnamed_addr #0 {
 entry:
   %cmp = icmp eq i32 %a, 500
-  %cmp1 = icmp eq i32 %d, 700
+  %cmp1 = icmp eq i32 %b, 700
   %or.cond = and i1 %cmp, %cmp1
   %add = add nsw i32 %a, 5
   %cmp3 = icmp eq i32 %c, %add
-  %or.cond7 = select i1 %or.cond, i1 %cmp3, i1 false
-  br i1 %or.cond7, label %if.then, label %if.end
+  %or.cond8 = select i1 %or.cond, i1 %cmp3, i1 false
+  br i1 %or.cond8, label %if.then, label %if.end
 
 if.then:                                          ; preds = %entry
-  %mul4 = mul nsw i32 %b, %c
+  %mul4 = mul nsw i32 %c, 700
   %add5 = add nsw i32 %mul4, 1000
   br label %return
 
@@ -1217,15 +1270,15 @@ return:                                           ; preds = %if.end, %if.then
 define dso_local noundef i32 @_Z3muliiii(i32 noundef %a, i32 noundef %b, i32 noundef %c, i32 noundef %d) local_unnamed_addr #0 {
 entry:
   %cmp = icmp eq i32 %a, 500
-  %cmp1 = icmp eq i32 %d, 700
+  %cmp1 = icmp eq i32 %b, 700
   %or.cond = and i1 %cmp, %cmp1
   %add = add nsw i32 %a, 5
   %cmp3 = icmp eq i32 %c, %add
-  %or.cond7 = select i1 %or.cond, i1 %cmp3, i1 false
-  br i1 %or.cond7, label %if.then, label %if.end
+  %or.cond8 = select i1 %or.cond, i1 %cmp3, i1 false
+  br i1 %or.cond8, label %if.then, label %if.end
 
 if.then:                                          ; preds = %entry
-  %mul4 = mul nsw i32 %b, %c
+  %mul4 = mul nsw i32 %c, 700
   %add5 = add nsw i32 %mul4, 1000
   br label %return
 
@@ -1244,15 +1297,15 @@ return:                                           ; preds = %if.end, %if.then
 define dso_local noundef i32 @_Z3muliiii(i32 noundef %a, i32 noundef %b, i32 noundef %c, i32 noundef %d) local_unnamed_addr #0 {
 entry:
   %cmp = icmp eq i32 %a, 500
-  %cmp1 = icmp eq i32 %d, 700
+  %cmp1 = icmp eq i32 %b, 700
   %or.cond = and i1 %cmp, %cmp1
   %add = add nuw nsw i32 %a, 5
   %cmp3 = icmp eq i32 %c, %add
-  %or.cond7 = select i1 %or.cond, i1 %cmp3, i1 false
-  br i1 %or.cond7, label %if.then, label %if.end
+  %or.cond8 = select i1 %or.cond, i1 %cmp3, i1 false
+  br i1 %or.cond8, label %if.then, label %if.end
 
 if.then:                                          ; preds = %entry
-  %mul4 = mul nsw i32 %b, %c
+  %mul4 = mul nsw i32 %c, 700
   %add5 = add nsw i32 %mul4, 1000
   br label %return
 
@@ -1271,15 +1324,15 @@ return:                                           ; preds = %if.end, %if.then
 define dso_local noundef i32 @_Z3muliiii(i32 noundef %a, i32 noundef %b, i32 noundef %c, i32 noundef %d) local_unnamed_addr #0 {
 entry:
   %cmp = icmp eq i32 %a, 500
-  %cmp1 = icmp eq i32 %d, 700
+  %cmp1 = icmp eq i32 %b, 700
   %or.cond = and i1 %cmp, %cmp1
   %add = add nuw nsw i32 %a, 5
   %cmp3 = icmp eq i32 %c, %add
-  %or.cond7 = select i1 %or.cond, i1 %cmp3, i1 false
-  br i1 %or.cond7, label %if.then, label %if.end
+  %or.cond8 = select i1 %or.cond, i1 %cmp3, i1 false
+  br i1 %or.cond8, label %if.then, label %if.end
 
 if.then:                                          ; preds = %entry
-  %mul4 = mul nsw i32 %b, %c
+  %mul4 = mul nsw i32 %c, 700
   %add5 = add nsw i32 %mul4, 1000
   br label %return
 
@@ -1298,15 +1351,15 @@ return:                                           ; preds = %if.end, %if.then
 define dso_local noundef i32 @_Z3muliiii(i32 noundef %a, i32 noundef %b, i32 noundef %c, i32 noundef %d) local_unnamed_addr #0 {
 entry:
   %cmp = icmp eq i32 %a, 500
-  %cmp1 = icmp eq i32 %d, 700
+  %cmp1 = icmp eq i32 %b, 700
   %or.cond = and i1 %cmp, %cmp1
   %add = add nuw nsw i32 %a, 5
   %cmp3 = icmp eq i32 %c, %add
-  %or.cond7 = select i1 %or.cond, i1 %cmp3, i1 false
-  br i1 %or.cond7, label %if.then, label %if.end
+  %or.cond8 = select i1 %or.cond, i1 %cmp3, i1 false
+  br i1 %or.cond8, label %if.then, label %if.end
 
 if.then:                                          ; preds = %entry
-  %mul4 = mul nsw i32 %b, %c
+  %mul4 = mul nsw i32 %c, 700
   %add5 = add nsw i32 %mul4, 1000
   br label %return
 
@@ -1325,15 +1378,15 @@ return:                                           ; preds = %if.end, %if.then
 define dso_local noundef i32 @_Z3muliiii(i32 noundef %a, i32 noundef %b, i32 noundef %c, i32 noundef %d) local_unnamed_addr #0 {
 entry:
   %cmp = icmp eq i32 %a, 500
-  %cmp1 = icmp eq i32 %d, 700
+  %cmp1 = icmp eq i32 %b, 700
   %or.cond = and i1 %cmp, %cmp1
   %add = add nuw nsw i32 %a, 5
   %cmp3 = icmp eq i32 %c, %add
-  %or.cond7 = select i1 %or.cond, i1 %cmp3, i1 false
-  br i1 %or.cond7, label %if.then, label %if.end
+  %or.cond8 = select i1 %or.cond, i1 %cmp3, i1 false
+  br i1 %or.cond8, label %if.then, label %if.end
 
 if.then:                                          ; preds = %entry
-  %mul4 = mul nsw i32 %b, %c
+  %mul4 = mul nsw i32 %c, 700
   %add5 = add nsw i32 %mul4, 1000
   br label %return
 
@@ -1352,15 +1405,15 @@ return:                                           ; preds = %if.end, %if.then
 define dso_local noundef i32 @_Z3muliiii(i32 noundef %a, i32 noundef %b, i32 noundef %c, i32 noundef %d) local_unnamed_addr #0 {
 entry:
   %cmp = icmp eq i32 %a, 500
-  %cmp1 = icmp eq i32 %d, 700
+  %cmp1 = icmp eq i32 %b, 700
   %or.cond = and i1 %cmp, %cmp1
   %add = add nuw nsw i32 %a, 5
   %cmp3 = icmp eq i32 %c, %add
-  %or.cond7 = select i1 %or.cond, i1 %cmp3, i1 false
-  br i1 %or.cond7, label %if.then, label %if.end
+  %or.cond8 = select i1 %or.cond, i1 %cmp3, i1 false
+  br i1 %or.cond8, label %if.then, label %if.end
 
 if.then:                                          ; preds = %entry
-  %mul4 = mul nsw i32 %b, %c
+  %mul4 = mul nsw i32 %c, 700
   %add5 = add nsw i32 %mul4, 1000
   br label %return
 
@@ -1379,15 +1432,15 @@ return:                                           ; preds = %if.end, %if.then
 define dso_local noundef i32 @_Z3muliiii(i32 noundef %a, i32 noundef %b, i32 noundef %c, i32 noundef %d) local_unnamed_addr #0 {
 entry:
   %cmp = icmp eq i32 %a, 500
-  %cmp1 = icmp eq i32 %d, 700
+  %cmp1 = icmp eq i32 %b, 700
   %or.cond = and i1 %cmp, %cmp1
   %add = add nuw nsw i32 %a, 5
   %cmp3 = icmp eq i32 %c, %add
-  %or.cond7 = select i1 %or.cond, i1 %cmp3, i1 false
-  br i1 %or.cond7, label %if.then, label %if.end
+  %or.cond8 = select i1 %or.cond, i1 %cmp3, i1 false
+  br i1 %or.cond8, label %if.then, label %if.end
 
 if.then:                                          ; preds = %entry
-  %mul4 = mul nsw i32 %b, %c
+  %mul4 = mul nsw i32 %c, 700
   %add5 = add nsw i32 %mul4, 1000
   br label %return
 
@@ -1406,15 +1459,15 @@ return:                                           ; preds = %if.end, %if.then
 define dso_local noundef i32 @_Z3muliiii(i32 noundef %a, i32 noundef %b, i32 noundef %c, i32 noundef %d) local_unnamed_addr #0 {
 entry:
   %cmp = icmp eq i32 %a, 500
-  %cmp1 = icmp eq i32 %d, 700
+  %cmp1 = icmp eq i32 %b, 700
   %or.cond = and i1 %cmp, %cmp1
   %add = add nuw nsw i32 %a, 5
   %cmp3 = icmp eq i32 %c, %add
-  %or.cond7 = select i1 %or.cond, i1 %cmp3, i1 false
-  br i1 %or.cond7, label %if.then, label %if.end
+  %or.cond8 = select i1 %or.cond, i1 %cmp3, i1 false
+  br i1 %or.cond8, label %if.then, label %if.end
 
 if.then:                                          ; preds = %entry
-  %mul4 = mul nsw i32 %b, %c
+  %mul4 = mul nsw i32 %c, 700
   %add5 = add nsw i32 %mul4, 1000
   br label %return
 
@@ -1433,15 +1486,15 @@ return:                                           ; preds = %if.end, %if.then
 define dso_local noundef i32 @_Z3muliiii(i32 noundef %a, i32 noundef %b, i32 noundef %c, i32 noundef %d) local_unnamed_addr #0 {
 entry:
   %cmp = icmp eq i32 %a, 500
-  %cmp1 = icmp eq i32 %d, 700
+  %cmp1 = icmp eq i32 %b, 700
   %or.cond = and i1 %cmp, %cmp1
   %add = add nuw nsw i32 %a, 5
   %cmp3 = icmp eq i32 %c, %add
-  %or.cond7 = select i1 %or.cond, i1 %cmp3, i1 false
-  br i1 %or.cond7, label %if.then, label %if.end
+  %or.cond8 = select i1 %or.cond, i1 %cmp3, i1 false
+  br i1 %or.cond8, label %if.then, label %if.end
 
 if.then:                                          ; preds = %entry
-  %mul4 = mul nsw i32 %c, %b
+  %mul4 = mul nsw i32 %c, 700
   %add5 = add nsw i32 %mul4, 1000
   br label %return
 
@@ -1460,15 +1513,15 @@ return:                                           ; preds = %if.end, %if.then
 define dso_local noundef i32 @_Z3muliiii(i32 noundef %a, i32 noundef %b, i32 noundef %c, i32 noundef %d) local_unnamed_addr #0 {
 entry:
   %cmp = icmp eq i32 %a, 500
-  %cmp1 = icmp eq i32 %d, 700
+  %cmp1 = icmp eq i32 %b, 700
   %or.cond = and i1 %cmp, %cmp1
   %add = add nuw nsw i32 %a, 5
   %cmp3 = icmp eq i32 %c, %add
-  %or.cond7 = select i1 %or.cond, i1 %cmp3, i1 false
-  br i1 %or.cond7, label %if.then, label %if.end
+  %or.cond8 = select i1 %or.cond, i1 %cmp3, i1 false
+  br i1 %or.cond8, label %if.then, label %if.end
 
 if.then:                                          ; preds = %entry
-  %mul4 = mul nsw i32 %c, %b
+  %mul4 = mul nsw i32 %c, 700
   %add5 = add nsw i32 %mul4, 1000
   br label %return
 
@@ -1487,15 +1540,15 @@ return:                                           ; preds = %if.end, %if.then
 define dso_local noundef i32 @_Z3muliiii(i32 noundef %a, i32 noundef %b, i32 noundef %c, i32 noundef %d) local_unnamed_addr #0 {
 entry:
   %cmp = icmp eq i32 %a, 500
-  %cmp1 = icmp eq i32 %d, 700
+  %cmp1 = icmp eq i32 %b, 700
   %or.cond = and i1 %cmp, %cmp1
   %add = add nuw nsw i32 %a, 5
   %cmp3 = icmp eq i32 %c, %add
-  %or.cond7 = select i1 %or.cond, i1 %cmp3, i1 false
-  br i1 %or.cond7, label %if.then, label %if.end
+  %or.cond8 = select i1 %or.cond, i1 %cmp3, i1 false
+  br i1 %or.cond8, label %if.then, label %if.end
 
 if.then:                                          ; preds = %entry
-  %mul4 = mul nsw i32 %c, %b
+  %mul4 = mul nsw i32 %c, 700
   %add5 = add nsw i32 %mul4, 1000
   br label %return
 
@@ -1514,15 +1567,15 @@ return:                                           ; preds = %if.end, %if.then
 define dso_local noundef i32 @_Z3muliiii(i32 noundef %a, i32 noundef %b, i32 noundef %c, i32 noundef %d) local_unnamed_addr #0 {
 entry:
   %cmp = icmp eq i32 %a, 500
-  %cmp1 = icmp eq i32 %d, 700
+  %cmp1 = icmp eq i32 %b, 700
   %or.cond = and i1 %cmp, %cmp1
   %add = add nuw nsw i32 %a, 5
   %cmp3 = icmp eq i32 %c, %add
-  %or.cond7 = select i1 %or.cond, i1 %cmp3, i1 false
-  br i1 %or.cond7, label %if.then, label %if.end
+  %or.cond8 = select i1 %or.cond, i1 %cmp3, i1 false
+  br i1 %or.cond8, label %if.then, label %if.end
 
 if.then:                                          ; preds = %entry
-  %mul4 = mul nsw i32 %c, %b
+  %mul4 = mul nsw i32 %c, 700
   %add5 = add nsw i32 %mul4, 1000
   br label %return
 
@@ -1541,15 +1594,15 @@ return:                                           ; preds = %if.end, %if.then
 define dso_local noundef i32 @_Z3muliiii(i32 noundef %a, i32 noundef %b, i32 noundef %c, i32 noundef %d) local_unnamed_addr #0 {
 entry:
   %cmp = icmp eq i32 %a, 500
-  %cmp1 = icmp eq i32 %d, 700
+  %cmp1 = icmp eq i32 %b, 700
   %or.cond = and i1 %cmp, %cmp1
   %add = add nuw nsw i32 %a, 5
   %cmp3 = icmp eq i32 %c, %add
-  %or.cond7 = select i1 %or.cond, i1 %cmp3, i1 false
-  br i1 %or.cond7, label %if.then, label %if.end
+  %or.cond8 = select i1 %or.cond, i1 %cmp3, i1 false
+  br i1 %or.cond8, label %if.then, label %if.end
 
 if.then:                                          ; preds = %entry
-  %mul4 = mul nsw i32 %c, %b
+  %mul4 = mul nsw i32 %c, 700
   %add5 = add nsw i32 %mul4, 1000
   br label %return
 
@@ -1568,15 +1621,15 @@ return:                                           ; preds = %if.end, %if.then
 define dso_local noundef i32 @_Z3muliiii(i32 noundef %a, i32 noundef %b, i32 noundef %c, i32 noundef %d) local_unnamed_addr #0 {
 entry:
   %cmp = icmp eq i32 %a, 500
-  %cmp1 = icmp eq i32 %d, 700
+  %cmp1 = icmp eq i32 %b, 700
   %or.cond = and i1 %cmp, %cmp1
   %add = add nuw nsw i32 %a, 5
   %cmp3 = icmp eq i32 %c, %add
-  %or.cond7 = select i1 %or.cond, i1 %cmp3, i1 false
-  br i1 %or.cond7, label %if.then, label %if.end
+  %or.cond8 = select i1 %or.cond, i1 %cmp3, i1 false
+  br i1 %or.cond8, label %if.then, label %if.end
 
 if.then:                                          ; preds = %entry
-  %mul4 = mul nsw i32 %c, %b
+  %mul4 = mul nsw i32 %c, 700
   %add5 = add nsw i32 %mul4, 1000
   br label %return
 
@@ -1595,15 +1648,15 @@ return:                                           ; preds = %if.end, %if.then
 define dso_local noundef i32 @_Z3muliiii(i32 noundef %a, i32 noundef %b, i32 noundef %c, i32 noundef %d) local_unnamed_addr #0 {
 entry:
   %cmp = icmp eq i32 %a, 500
-  %cmp1 = icmp eq i32 %d, 700
+  %cmp1 = icmp eq i32 %b, 700
   %or.cond = and i1 %cmp, %cmp1
   %add = add nuw nsw i32 %a, 5
   %cmp3 = icmp eq i32 %c, %add
-  %or.cond7 = select i1 %or.cond, i1 %cmp3, i1 false
-  br i1 %or.cond7, label %if.then, label %if.end
+  %or.cond8 = select i1 %or.cond, i1 %cmp3, i1 false
+  br i1 %or.cond8, label %if.then, label %if.end
 
 if.then:                                          ; preds = %entry
-  %mul4 = mul nsw i32 %c, %b
+  %mul4 = mul nsw i32 %c, 700
   %add5 = add nsw i32 %mul4, 1000
   br label %return
 
@@ -1622,15 +1675,15 @@ return:                                           ; preds = %if.end, %if.then
 define dso_local noundef i32 @_Z3muliiii(i32 noundef %a, i32 noundef %b, i32 noundef %c, i32 noundef %d) local_unnamed_addr #0 {
 entry:
   %cmp = icmp eq i32 %a, 500
-  %cmp1 = icmp eq i32 %d, 700
+  %cmp1 = icmp eq i32 %b, 700
   %or.cond = and i1 %cmp, %cmp1
   %add = add nuw nsw i32 %a, 5
   %cmp3 = icmp eq i32 %c, %add
-  %or.cond7 = select i1 %or.cond, i1 %cmp3, i1 false
-  br i1 %or.cond7, label %if.then, label %if.end
+  %or.cond8 = select i1 %or.cond, i1 %cmp3, i1 false
+  br i1 %or.cond8, label %if.then, label %if.end
 
 if.then:                                          ; preds = %entry
-  %mul4 = mul nsw i32 %c, %b
+  %mul4 = mul nsw i32 %c, 700
   %add5 = add nsw i32 %mul4, 1000
   br label %return
 
@@ -1649,15 +1702,15 @@ return:                                           ; preds = %if.end, %if.then
 define dso_local noundef i32 @_Z3muliiii(i32 noundef %a, i32 noundef %b, i32 noundef %c, i32 noundef %d) local_unnamed_addr #0 {
 entry:
   %cmp = icmp eq i32 %a, 500
-  %cmp1 = icmp eq i32 %d, 700
+  %cmp1 = icmp eq i32 %b, 700
   %or.cond = and i1 %cmp, %cmp1
   %add = add nuw nsw i32 %a, 5
   %cmp3 = icmp eq i32 %c, %add
-  %or.cond7 = select i1 %or.cond, i1 %cmp3, i1 false
-  br i1 %or.cond7, label %if.then, label %if.end
+  %or.cond8 = select i1 %or.cond, i1 %cmp3, i1 false
+  br i1 %or.cond8, label %if.then, label %if.end
 
 if.then:                                          ; preds = %entry
-  %mul4 = mul nsw i32 %c, %b
+  %mul4 = mul nsw i32 %c, 700
   %add5 = add nsw i32 %mul4, 1000
   br label %return
 
@@ -1676,15 +1729,15 @@ return:                                           ; preds = %if.end, %if.then
 define dso_local noundef i32 @_Z3muliiii(i32 noundef %a, i32 noundef %b, i32 noundef %c, i32 noundef %d) local_unnamed_addr #0 {
 entry:
   %cmp = icmp eq i32 %a, 500
-  %cmp1 = icmp eq i32 %d, 700
+  %cmp1 = icmp eq i32 %b, 700
   %or.cond = and i1 %cmp, %cmp1
   %add = add nuw nsw i32 %a, 5
   %cmp3 = icmp eq i32 %c, %add
-  %or.cond7 = select i1 %or.cond, i1 %cmp3, i1 false
-  br i1 %or.cond7, label %if.then, label %if.end
+  %or.cond8 = select i1 %or.cond, i1 %cmp3, i1 false
+  br i1 %or.cond8, label %if.then, label %if.end
 
 if.then:                                          ; preds = %entry
-  %mul4 = mul nsw i32 %c, %b
+  %mul4 = mul nsw i32 %c, 700
   %add5 = add nsw i32 %mul4, 1000
   br label %return
 
@@ -1703,15 +1756,15 @@ return:                                           ; preds = %if.end, %if.then
 define dso_local noundef i32 @_Z3muliiii(i32 noundef %a, i32 noundef %b, i32 noundef %c, i32 noundef %d) local_unnamed_addr #0 {
 entry:
   %cmp = icmp eq i32 %a, 500
-  %cmp1 = icmp eq i32 %d, 700
+  %cmp1 = icmp eq i32 %b, 700
   %or.cond = and i1 %cmp, %cmp1
   %add = add nuw nsw i32 %a, 5
   %cmp3 = icmp eq i32 %c, %add
-  %or.cond7 = select i1 %or.cond, i1 %cmp3, i1 false
-  br i1 %or.cond7, label %if.then, label %if.end
+  %or.cond8 = select i1 %or.cond, i1 %cmp3, i1 false
+  br i1 %or.cond8, label %if.then, label %if.end
 
 if.then:                                          ; preds = %entry
-  %mul4 = mul nsw i32 %c, %b
+  %mul4 = mul nsw i32 %c, 700
   %add5 = add nsw i32 %mul4, 1000
   br label %return
 
@@ -1730,15 +1783,15 @@ return:                                           ; preds = %if.end, %if.then
 define dso_local noundef i32 @_Z3muliiii(i32 noundef %a, i32 noundef %b, i32 noundef %c, i32 noundef %d) local_unnamed_addr #0 {
 entry:
   %cmp = icmp eq i32 %a, 500
-  %cmp1 = icmp eq i32 %d, 700
+  %cmp1 = icmp eq i32 %b, 700
   %or.cond = and i1 %cmp, %cmp1
   %add = add nuw nsw i32 %a, 5
   %cmp3 = icmp eq i32 %c, %add
-  %or.cond7 = select i1 %or.cond, i1 %cmp3, i1 false
-  br i1 %or.cond7, label %if.then, label %if.end
+  %or.cond8 = select i1 %or.cond, i1 %cmp3, i1 false
+  br i1 %or.cond8, label %if.then, label %if.end
 
 if.then:                                          ; preds = %entry
-  %mul4 = mul nsw i32 %c, %b
+  %mul4 = mul nsw i32 %c, 700
   %add5 = add nsw i32 %mul4, 1000
   br label %return
 
@@ -1757,15 +1810,15 @@ return:                                           ; preds = %if.end, %if.then
 define dso_local noundef i32 @_Z3muliiii(i32 noundef %a, i32 noundef %b, i32 noundef %c, i32 noundef %d) local_unnamed_addr #0 {
 entry:
   %cmp = icmp eq i32 %a, 500
-  %cmp1 = icmp eq i32 %d, 700
+  %cmp1 = icmp eq i32 %b, 700
   %or.cond = and i1 %cmp, %cmp1
   %add = add nuw nsw i32 %a, 5
   %cmp3 = icmp eq i32 %c, %add
-  %or.cond7 = select i1 %or.cond, i1 %cmp3, i1 false
-  br i1 %or.cond7, label %if.then, label %if.end
+  %or.cond8 = select i1 %or.cond, i1 %cmp3, i1 false
+  br i1 %or.cond8, label %if.then, label %if.end
 
 if.then:                                          ; preds = %entry
-  %mul4 = mul nsw i32 %c, %b
+  %mul4 = mul nsw i32 %c, 700
   %add5 = add nsw i32 %mul4, 1000
   br label %return
 
@@ -1784,15 +1837,15 @@ return:                                           ; preds = %if.end, %if.then
 define dso_local noundef i32 @_Z3muliiii(i32 noundef %a, i32 noundef %b, i32 noundef %c, i32 noundef %d) local_unnamed_addr #0 {
 entry:
   %cmp = icmp eq i32 %a, 500
-  %cmp1 = icmp eq i32 %d, 700
+  %cmp1 = icmp eq i32 %b, 700
   %or.cond = and i1 %cmp, %cmp1
   %add = add nuw nsw i32 %a, 5
   %cmp3 = icmp eq i32 %c, %add
-  %or.cond7 = select i1 %or.cond, i1 %cmp3, i1 false
-  br i1 %or.cond7, label %if.then, label %if.end
+  %or.cond8 = select i1 %or.cond, i1 %cmp3, i1 false
+  br i1 %or.cond8, label %if.then, label %if.end
 
 if.then:                                          ; preds = %entry
-  %mul4 = mul nsw i32 %c, %b
+  %mul4 = mul nsw i32 %c, 700
   %add5 = add nsw i32 %mul4, 1000
   br label %return
 
@@ -1811,15 +1864,15 @@ return:                                           ; preds = %if.end, %if.then
 define dso_local noundef i32 @_Z3muliiii(i32 noundef %a, i32 noundef %b, i32 noundef %c, i32 noundef %d) local_unnamed_addr #0 {
 entry:
   %cmp = icmp eq i32 %a, 500
-  %cmp1 = icmp eq i32 %d, 700
+  %cmp1 = icmp eq i32 %b, 700
   %or.cond = and i1 %cmp, %cmp1
   %add = add nuw nsw i32 %a, 5
   %cmp3 = icmp eq i32 %c, %add
-  %or.cond7 = select i1 %or.cond, i1 %cmp3, i1 false
-  br i1 %or.cond7, label %if.then, label %if.end
+  %or.cond8 = select i1 %or.cond, i1 %cmp3, i1 false
+  br i1 %or.cond8, label %if.then, label %if.end
 
 if.then:                                          ; preds = %entry
-  %mul4 = mul nsw i32 %c, %b
+  %mul4 = mul nsw i32 %c, 700
   %add5 = add nsw i32 %mul4, 1000
   br label %return
 
@@ -1838,15 +1891,15 @@ return:                                           ; preds = %if.end, %if.then
 define dso_local noundef i32 @_Z3muliiii(i32 noundef %a, i32 noundef %b, i32 noundef %c, i32 noundef %d) local_unnamed_addr #0 {
 entry:
   %cmp = icmp eq i32 %a, 500
-  %cmp1 = icmp eq i32 %d, 700
+  %cmp1 = icmp eq i32 %b, 700
   %or.cond = and i1 %cmp, %cmp1
   %add = add nuw nsw i32 %a, 5
   %cmp3 = icmp eq i32 %c, %add
-  %or.cond7 = select i1 %or.cond, i1 %cmp3, i1 false
-  br i1 %or.cond7, label %if.then, label %if.end
+  %or.cond8 = select i1 %or.cond, i1 %cmp3, i1 false
+  br i1 %or.cond8, label %if.then, label %if.end
 
 if.then:                                          ; preds = %entry
-  %mul4 = mul nsw i32 %c, %b
+  %mul4 = mul nsw i32 %c, 700
   %add5 = add nsw i32 %mul4, 1000
   br label %return
 
@@ -1865,15 +1918,15 @@ return:                                           ; preds = %if.end, %if.then
 define dso_local noundef i32 @_Z3muliiii(i32 noundef %a, i32 noundef %b, i32 noundef %c, i32 noundef %d) local_unnamed_addr #0 {
 entry:
   %cmp = icmp eq i32 %a, 500
-  %cmp1 = icmp eq i32 %d, 700
+  %cmp1 = icmp eq i32 %b, 700
   %or.cond = and i1 %cmp, %cmp1
   %add = add nuw nsw i32 %a, 5
   %cmp3 = icmp eq i32 %c, %add
-  %or.cond7 = select i1 %or.cond, i1 %cmp3, i1 false
-  br i1 %or.cond7, label %if.then, label %if.end
+  %or.cond8 = select i1 %or.cond, i1 %cmp3, i1 false
+  br i1 %or.cond8, label %if.then, label %if.end
 
 if.then:                                          ; preds = %entry
-  %mul4 = mul nsw i32 %c, %b
+  %mul4 = mul nsw i32 %c, 700
   %add5 = add nsw i32 %mul4, 1000
   br label %return
 
@@ -1892,15 +1945,15 @@ return:                                           ; preds = %if.end, %if.then
 define dso_local noundef i32 @_Z3muliiii(i32 noundef %a, i32 noundef %b, i32 noundef %c, i32 noundef %d) local_unnamed_addr #0 {
 entry:
   %cmp = icmp eq i32 %a, 500
-  %cmp1 = icmp eq i32 %d, 700
+  %cmp1 = icmp eq i32 %b, 700
   %or.cond = and i1 %cmp, %cmp1
   %add = add nuw nsw i32 %a, 5
   %cmp3 = icmp eq i32 %c, %add
-  %or.cond7 = select i1 %or.cond, i1 %cmp3, i1 false
-  br i1 %or.cond7, label %if.then, label %if.end
+  %or.cond8 = select i1 %or.cond, i1 %cmp3, i1 false
+  br i1 %or.cond8, label %if.then, label %if.end
 
 if.then:                                          ; preds = %entry
-  %mul4 = mul nsw i32 %c, %b
+  %mul4 = mul nsw i32 %c, 700
   %add5 = add nsw i32 %mul4, 1000
   br label %return
 
@@ -1919,15 +1972,15 @@ return:                                           ; preds = %if.end, %if.then
 define dso_local noundef i32 @_Z3muliiii(i32 noundef %a, i32 noundef %b, i32 noundef %c, i32 noundef %d) local_unnamed_addr #0 {
 entry:
   %cmp = icmp eq i32 %a, 500
-  %cmp1 = icmp eq i32 %d, 700
+  %cmp1 = icmp eq i32 %b, 700
   %or.cond = and i1 %cmp, %cmp1
   %add = add nuw nsw i32 %a, 5
   %cmp3 = icmp eq i32 %c, %add
-  %or.cond7 = select i1 %or.cond, i1 %cmp3, i1 false
-  br i1 %or.cond7, label %if.then, label %if.end
+  %or.cond8 = select i1 %or.cond, i1 %cmp3, i1 false
+  br i1 %or.cond8, label %if.then, label %if.end
 
 if.then:                                          ; preds = %entry
-  %mul4 = mul nsw i32 %c, %b
+  %mul4 = mul nsw i32 %c, 700
   %add5 = add nsw i32 %mul4, 1000
   br label %return
 
@@ -1946,15 +1999,15 @@ return:                                           ; preds = %if.end, %if.then
 define dso_local noundef i32 @_Z3muliiii(i32 noundef %a, i32 noundef %b, i32 noundef %c, i32 noundef %d) local_unnamed_addr #0 {
 entry:
   %cmp = icmp eq i32 %a, 500
-  %cmp1 = icmp eq i32 %d, 700
+  %cmp1 = icmp eq i32 %b, 700
   %or.cond = and i1 %cmp, %cmp1
   %add = add nuw nsw i32 %a, 5
   %cmp3 = icmp eq i32 %c, %add
-  %or.cond7 = select i1 %or.cond, i1 %cmp3, i1 false
-  br i1 %or.cond7, label %if.then, label %if.end
+  %or.cond8 = select i1 %or.cond, i1 %cmp3, i1 false
+  br i1 %or.cond8, label %if.then, label %if.end
 
 if.then:                                          ; preds = %entry
-  %mul4 = mul nsw i32 %c, %b
+  %mul4 = mul nsw i32 %c, 700
   %add5 = add nsw i32 %mul4, 1000
   br label %return
 
@@ -1973,15 +2026,15 @@ return:                                           ; preds = %if.end, %if.then
 define dso_local noundef i32 @_Z3muliiii(i32 noundef %a, i32 noundef %b, i32 noundef %c, i32 noundef %d) local_unnamed_addr #0 {
 entry:
   %cmp = icmp eq i32 %a, 500
-  %cmp1 = icmp eq i32 %d, 700
+  %cmp1 = icmp eq i32 %b, 700
   %or.cond = and i1 %cmp, %cmp1
   %add = add nuw nsw i32 %a, 5
   %cmp3 = icmp eq i32 %c, %add
-  %or.cond7 = select i1 %or.cond, i1 %cmp3, i1 false
-  br i1 %or.cond7, label %if.then, label %if.end
+  %or.cond8 = select i1 %or.cond, i1 %cmp3, i1 false
+  br i1 %or.cond8, label %if.then, label %if.end
 
 if.then:                                          ; preds = %entry
-  %mul4 = mul nsw i32 %c, %b
+  %mul4 = mul nsw i32 %c, 700
   %add5 = add nsw i32 %mul4, 1000
   br label %return
 
@@ -2000,15 +2053,15 @@ return:                                           ; preds = %if.end, %if.then
 define dso_local noundef i32 @_Z3muliiii(i32 noundef %a, i32 noundef %b, i32 noundef %c, i32 noundef %d) local_unnamed_addr #0 {
 entry:
   %cmp = icmp eq i32 %a, 500
-  %cmp1 = icmp eq i32 %d, 700
+  %cmp1 = icmp eq i32 %b, 700
   %or.cond = and i1 %cmp, %cmp1
   %add = add nuw nsw i32 %a, 5
   %cmp3 = icmp eq i32 %c, %add
-  %or.cond7 = select i1 %or.cond, i1 %cmp3, i1 false
-  br i1 %or.cond7, label %if.then, label %if.end
+  %or.cond8 = select i1 %or.cond, i1 %cmp3, i1 false
+  br i1 %or.cond8, label %if.then, label %if.end
 
 if.then:                                          ; preds = %entry
-  %mul4 = mul nsw i32 %c, %b
+  %mul4 = mul nsw i32 %c, 700
   %add5 = add nsw i32 %mul4, 1000
   br label %return
 
@@ -2027,15 +2080,15 @@ return:                                           ; preds = %if.end, %if.then
 define dso_local noundef i32 @_Z3muliiii(i32 noundef %a, i32 noundef %b, i32 noundef %c, i32 noundef %d) local_unnamed_addr #0 {
 entry:
   %cmp = icmp eq i32 %a, 500
-  %cmp1 = icmp eq i32 %d, 700
+  %cmp1 = icmp eq i32 %b, 700
   %or.cond = and i1 %cmp, %cmp1
   %add = add nuw nsw i32 %a, 5
   %cmp3 = icmp eq i32 %c, %add
-  %or.cond7 = select i1 %or.cond, i1 %cmp3, i1 false
-  br i1 %or.cond7, label %if.then, label %if.end
+  %or.cond8 = select i1 %or.cond, i1 %cmp3, i1 false
+  br i1 %or.cond8, label %if.then, label %if.end
 
 if.then:                                          ; preds = %entry
-  %mul4 = mul nsw i32 %c, %b
+  %mul4 = mul nsw i32 %c, 700
   %add5 = add nsw i32 %mul4, 1000
   br label %return
 
@@ -2054,15 +2107,15 @@ return:                                           ; preds = %if.end, %if.then
 define dso_local noundef i32 @_Z3muliiii(i32 noundef %a, i32 noundef %b, i32 noundef %c, i32 noundef %d) local_unnamed_addr #0 {
 entry:
   %cmp = icmp eq i32 %a, 500
-  %cmp1 = icmp eq i32 %d, 700
+  %cmp1 = icmp eq i32 %b, 700
   %or.cond = and i1 %cmp, %cmp1
   %add = add nuw nsw i32 %a, 5
   %cmp3 = icmp eq i32 %c, %add
-  %or.cond7 = select i1 %or.cond, i1 %cmp3, i1 false
-  br i1 %or.cond7, label %if.then, label %if.end
+  %or.cond8 = select i1 %or.cond, i1 %cmp3, i1 false
+  br i1 %or.cond8, label %if.then, label %if.end
 
 if.then:                                          ; preds = %entry
-  %mul4 = mul nsw i32 %c, %b
+  %mul4 = mul nsw i32 %c, 700
   %add5 = add nsw i32 %mul4, 1000
   br label %return
 
@@ -2081,14 +2134,15 @@ return:                                           ; preds = %if.end, %if.then
 define dso_local noundef i32 @_Z3muliiii(i32 noundef %a, i32 noundef %b, i32 noundef %c, i32 noundef %d) local_unnamed_addr #0 {
 entry:
   %cmp = icmp eq i32 %a, 500
-  %cmp1 = icmp eq i32 %d, 700
+  %cmp1 = icmp eq i32 %b, 700
   %or.cond = and i1 %cmp, %cmp1
   %add = add nuw nsw i32 %a, 5
   %cmp3 = icmp eq i32 %c, %add
-  %or.cond7 = select i1 %or.cond, i1 %cmp3, i1 false
+  %or.cond8 = select i1 %or.cond, i1 %cmp3, i1 false
   %mul6 = shl nsw i32 %a, 1
-  %mul6.sink = select i1 %or.cond7, i32 1000, i32 %mul6
-  %mul7 = mul nsw i32 %c, %b
+  %b.sink = select i1 %or.cond8, i32 700, i32 %b
+  %mul6.sink = select i1 %or.cond8, i32 1000, i32 %mul6
+  %mul7 = mul nsw i32 %c, %b.sink
   %add8 = add nsw i32 %mul7, %mul6.sink
   ret i32 %add8
 }
@@ -2097,14 +2151,15 @@ entry:
 define dso_local noundef i32 @_Z3muliiii(i32 noundef %a, i32 noundef %b, i32 noundef %c, i32 noundef %d) local_unnamed_addr #0 {
 entry:
   %cmp = icmp eq i32 %a, 500
-  %cmp1 = icmp eq i32 %d, 700
+  %cmp1 = icmp eq i32 %b, 700
   %or.cond = and i1 %cmp, %cmp1
   %add = add nuw nsw i32 %a, 5
   %cmp3 = icmp eq i32 %c, %add
-  %or.cond7 = select i1 %or.cond, i1 %cmp3, i1 false
+  %or.cond8 = select i1 %or.cond, i1 %cmp3, i1 false
   %mul6 = shl nsw i32 %a, 1
-  %mul6.sink = select i1 %or.cond7, i32 1000, i32 %mul6
-  %mul7 = mul nsw i32 %c, %b
+  %b.sink = select i1 %or.cond8, i32 700, i32 %b
+  %mul6.sink = select i1 %or.cond8, i32 1000, i32 %mul6
+  %mul7 = mul nsw i32 %c, %b.sink
   %add8 = add nsw i32 %mul7, %mul6.sink
   ret i32 %add8
 }
@@ -2113,14 +2168,15 @@ entry:
 define dso_local noundef i32 @_Z3muliiii(i32 noundef %a, i32 noundef %b, i32 noundef %c, i32 noundef %d) local_unnamed_addr #0 {
 entry:
   %cmp = icmp eq i32 %a, 500
-  %cmp1 = icmp eq i32 %d, 700
+  %cmp1 = icmp eq i32 %b, 700
   %or.cond = and i1 %cmp, %cmp1
   %add = add nuw nsw i32 %a, 5
   %cmp3 = icmp eq i32 %c, %add
-  %or.cond7 = select i1 %or.cond, i1 %cmp3, i1 false
+  %or.cond8 = select i1 %or.cond, i1 %cmp3, i1 false
   %mul6 = shl nsw i32 %a, 1
-  %mul6.sink = select i1 %or.cond7, i32 1000, i32 %mul6
-  %mul7 = mul nsw i32 %c, %b
+  %b.sink = select i1 %or.cond8, i32 700, i32 %b
+  %mul6.sink = select i1 %or.cond8, i32 1000, i32 %mul6
+  %mul7 = mul nsw i32 %c, %b.sink
   %add8 = add nsw i32 %mul7, %mul6.sink
   ret i32 %add8
 }
@@ -2129,14 +2185,15 @@ entry:
 define dso_local noundef i32 @_Z3muliiii(i32 noundef %a, i32 noundef %b, i32 noundef %c, i32 noundef %d) local_unnamed_addr #0 {
 entry:
   %cmp = icmp eq i32 %a, 500
-  %cmp1 = icmp eq i32 %d, 700
+  %cmp1 = icmp eq i32 %b, 700
   %or.cond = and i1 %cmp, %cmp1
   %add = add nuw nsw i32 %a, 5
   %cmp3 = icmp eq i32 %c, %add
-  %or.cond7 = select i1 %or.cond, i1 %cmp3, i1 false
+  %or.cond8 = select i1 %or.cond, i1 %cmp3, i1 false
   %mul6 = shl nsw i32 %a, 1
-  %mul6.sink = select i1 %or.cond7, i32 1000, i32 %mul6
-  %mul7 = mul nsw i32 %c, %b
+  %b.sink = select i1 %or.cond8, i32 700, i32 %b
+  %mul6.sink = select i1 %or.cond8, i32 1000, i32 %mul6
+  %mul7 = mul nsw i32 %c, %b.sink
   %add8 = add nsw i32 %mul7, %mul6.sink
   ret i32 %add8
 }
@@ -2145,14 +2202,15 @@ entry:
 define dso_local noundef i32 @_Z3muliiii(i32 noundef %a, i32 noundef %b, i32 noundef %c, i32 noundef %d) local_unnamed_addr #0 {
 entry:
   %cmp = icmp eq i32 %a, 500
-  %cmp1 = icmp eq i32 %d, 700
+  %cmp1 = icmp eq i32 %b, 700
   %or.cond = and i1 %cmp, %cmp1
   %add = add nuw nsw i32 %a, 5
   %cmp3 = icmp eq i32 %c, %add
-  %or.cond7 = select i1 %or.cond, i1 %cmp3, i1 false
+  %or.cond8 = select i1 %or.cond, i1 %cmp3, i1 false
   %mul6 = shl nsw i32 %a, 1
-  %mul6.sink = select i1 %or.cond7, i32 1000, i32 %mul6
-  %mul7 = mul nsw i32 %c, %b
+  %b.sink = select i1 %or.cond8, i32 700, i32 %b
+  %mul6.sink = select i1 %or.cond8, i32 1000, i32 %mul6
+  %mul7 = mul nsw i32 %c, %b.sink
   %add8 = add nsw i32 %mul7, %mul6.sink
   ret i32 %add8
 }
@@ -2161,14 +2219,15 @@ entry:
 define dso_local noundef i32 @_Z3muliiii(i32 noundef %a, i32 noundef %b, i32 noundef %c, i32 noundef %d) local_unnamed_addr #0 {
 entry:
   %cmp = icmp eq i32 %a, 500
-  %cmp1 = icmp eq i32 %d, 700
+  %cmp1 = icmp eq i32 %b, 700
   %or.cond = and i1 %cmp, %cmp1
   %add = add nuw nsw i32 %a, 5
   %cmp3 = icmp eq i32 %c, %add
-  %or.cond7 = select i1 %or.cond, i1 %cmp3, i1 false
+  %or.cond8 = select i1 %or.cond, i1 %cmp3, i1 false
   %mul6 = shl nsw i32 %a, 1
-  %mul6.sink = select i1 %or.cond7, i32 1000, i32 %mul6
-  %mul7 = mul nsw i32 %c, %b
+  %b.sink = select i1 %or.cond8, i32 700, i32 %b
+  %mul6.sink = select i1 %or.cond8, i32 1000, i32 %mul6
+  %mul7 = mul nsw i32 %c, %b.sink
   %add8 = add nsw i32 %mul7, %mul6.sink
   ret i32 %add8
 }
@@ -2177,14 +2236,15 @@ entry:
 define dso_local noundef i32 @_Z3muliiii(i32 noundef %a, i32 noundef %b, i32 noundef %c, i32 noundef %d) local_unnamed_addr #0 {
 entry:
   %cmp = icmp eq i32 %a, 500
-  %cmp1 = icmp eq i32 %d, 700
+  %cmp1 = icmp eq i32 %b, 700
   %or.cond = and i1 %cmp, %cmp1
   %add = add nuw nsw i32 %a, 5
   %cmp3 = icmp eq i32 %c, %add
-  %or.cond7 = select i1 %or.cond, i1 %cmp3, i1 false
+  %or.cond8 = select i1 %or.cond, i1 %cmp3, i1 false
   %mul6 = shl nsw i32 %a, 1
-  %mul6.sink = select i1 %or.cond7, i32 1000, i32 %mul6
-  %mul7 = mul nsw i32 %c, %b
+  %b.sink = select i1 %or.cond8, i32 700, i32 %b
+  %mul6.sink = select i1 %or.cond8, i32 1000, i32 %mul6
+  %mul7 = mul nsw i32 %c, %b.sink
   %add8 = add nsw i32 %mul7, %mul6.sink
   ret i32 %add8
 }
@@ -2198,14 +2258,15 @@ target triple = "x86_64-unknown-linux-gnu"
 define dso_local noundef i32 @_Z3muliiii(i32 noundef %a, i32 noundef %b, i32 noundef %c, i32 noundef %d) local_unnamed_addr #0 {
 entry:
   %cmp = icmp eq i32 %a, 500
-  %cmp1 = icmp eq i32 %d, 700
+  %cmp1 = icmp eq i32 %b, 700
   %or.cond = and i1 %cmp, %cmp1
   %add = add nuw nsw i32 %a, 5
   %cmp3 = icmp eq i32 %c, %add
-  %or.cond7 = select i1 %or.cond, i1 %cmp3, i1 false
+  %or.cond8 = select i1 %or.cond, i1 %cmp3, i1 false
   %mul6 = shl nsw i32 %a, 1
-  %mul6.sink = select i1 %or.cond7, i32 1000, i32 %mul6
-  %mul7 = mul nsw i32 %c, %b
+  %b.sink = select i1 %or.cond8, i32 700, i32 %b
+  %mul6.sink = select i1 %or.cond8, i32 1000, i32 %mul6
+  %mul7 = mul nsw i32 %c, %b.sink
   %add8 = add nsw i32 %mul7, %mul6.sink
   ret i32 %add8
 }
@@ -2231,14 +2292,15 @@ target triple = "x86_64-unknown-linux-gnu"
 define dso_local noundef i32 @_Z3muliiii(i32 noundef %a, i32 noundef %b, i32 noundef %c, i32 noundef %d) local_unnamed_addr #0 {
 entry:
   %cmp = icmp eq i32 %a, 500
-  %cmp1 = icmp eq i32 %d, 700
+  %cmp1 = icmp eq i32 %b, 700
   %or.cond = and i1 %cmp, %cmp1
   %add = add nuw nsw i32 %a, 5
   %cmp3 = icmp eq i32 %c, %add
-  %or.cond7 = select i1 %or.cond, i1 %cmp3, i1 false
+  %or.cond8 = select i1 %or.cond, i1 %cmp3, i1 false
   %mul6 = shl nsw i32 %a, 1
-  %mul6.sink = select i1 %or.cond7, i32 1000, i32 %mul6
-  %mul7 = mul nsw i32 %c, %b
+  %b.sink = select i1 %or.cond8, i32 700, i32 %b
+  %mul6.sink = select i1 %or.cond8, i32 1000, i32 %mul6
+  %mul7 = mul nsw i32 %c, %b.sink
   %add8 = add nsw i32 %mul7, %mul6.sink
   ret i32 %add8
 }
@@ -2264,14 +2326,15 @@ target triple = "x86_64-unknown-linux-gnu"
 define dso_local noundef i32 @_Z3muliiii(i32 noundef %a, i32 noundef %b, i32 noundef %c, i32 noundef %d) local_unnamed_addr #0 {
 entry:
   %cmp = icmp eq i32 %a, 500
-  %cmp1 = icmp eq i32 %d, 700
+  %cmp1 = icmp eq i32 %b, 700
   %or.cond = and i1 %cmp, %cmp1
   %add = add nuw nsw i32 %a, 5
   %cmp3 = icmp eq i32 %c, %add
-  %or.cond7 = select i1 %or.cond, i1 %cmp3, i1 false
+  %or.cond8 = select i1 %or.cond, i1 %cmp3, i1 false
   %mul6 = shl nsw i32 %a, 1
-  %mul6.sink = select i1 %or.cond7, i32 1000, i32 %mul6
-  %mul7 = mul nsw i32 %c, %b
+  %b.sink = select i1 %or.cond8, i32 700, i32 %b
+  %mul6.sink = select i1 %or.cond8, i32 1000, i32 %mul6
+  %mul7 = mul nsw i32 %c, %b.sink
   %add8 = add nsw i32 %mul7, %mul6.sink
   ret i32 %add8
 }
@@ -2297,14 +2360,15 @@ target triple = "x86_64-unknown-linux-gnu"
 define dso_local noundef i32 @_Z3muliiii(i32 noundef %a, i32 noundef %b, i32 noundef %c, i32 noundef %d) local_unnamed_addr #0 {
 entry:
   %cmp = icmp eq i32 %a, 500
-  %cmp1 = icmp eq i32 %d, 700
+  %cmp1 = icmp eq i32 %b, 700
   %or.cond = and i1 %cmp, %cmp1
   %add = add nuw nsw i32 %a, 5
   %cmp3 = icmp eq i32 %c, %add
-  %or.cond7 = select i1 %or.cond, i1 %cmp3, i1 false
+  %or.cond8 = select i1 %or.cond, i1 %cmp3, i1 false
   %mul6 = shl nsw i32 %a, 1
-  %mul6.sink = select i1 %or.cond7, i32 1000, i32 %mul6
-  %mul7 = mul nsw i32 %c, %b
+  %b.sink = select i1 %or.cond8, i32 700, i32 %b
+  %mul6.sink = select i1 %or.cond8, i32 1000, i32 %mul6
+  %mul7 = mul nsw i32 %c, %b.sink
   %add8 = add nsw i32 %mul7, %mul6.sink
   ret i32 %add8
 }
@@ -2330,14 +2394,15 @@ target triple = "x86_64-unknown-linux-gnu"
 define dso_local noundef i32 @_Z3muliiii(i32 noundef %a, i32 noundef %b, i32 noundef %c, i32 noundef %d) local_unnamed_addr #0 {
 entry:
   %cmp = icmp eq i32 %a, 500
-  %cmp1 = icmp eq i32 %d, 700
+  %cmp1 = icmp eq i32 %b, 700
   %or.cond = and i1 %cmp, %cmp1
   %add = add nuw nsw i32 %a, 5
   %cmp3 = icmp eq i32 %c, %add
-  %or.cond7 = select i1 %or.cond, i1 %cmp3, i1 false
+  %or.cond8 = select i1 %or.cond, i1 %cmp3, i1 false
   %mul6 = shl nsw i32 %a, 1
-  %mul6.sink = select i1 %or.cond7, i32 1000, i32 %mul6
-  %mul7 = mul nsw i32 %c, %b
+  %b.sink = select i1 %or.cond8, i32 700, i32 %b
+  %mul6.sink = select i1 %or.cond8, i32 1000, i32 %mul6
+  %mul7 = mul nsw i32 %c, %b.sink
   %add8 = add nsw i32 %mul7, %mul6.sink
   ret i32 %add8
 }
@@ -2363,14 +2428,15 @@ target triple = "x86_64-unknown-linux-gnu"
 define dso_local noundef i32 @_Z3muliiii(i32 noundef %a, i32 noundef %b, i32 noundef %c, i32 noundef %d) local_unnamed_addr #0 {
 entry:
   %cmp = icmp eq i32 %a, 500
-  %cmp1 = icmp eq i32 %d, 700
+  %cmp1 = icmp eq i32 %b, 700
   %or.cond = and i1 %cmp, %cmp1
   %add = add nuw nsw i32 %a, 5
   %cmp3 = icmp eq i32 %c, %add
-  %or.cond7 = select i1 %or.cond, i1 %cmp3, i1 false
+  %or.cond8 = select i1 %or.cond, i1 %cmp3, i1 false
   %mul6 = shl nsw i32 %a, 1
-  %mul6.sink = select i1 %or.cond7, i32 1000, i32 %mul6
-  %mul7 = mul nsw i32 %c, %b
+  %b.sink = select i1 %or.cond8, i32 700, i32 %b
+  %mul6.sink = select i1 %or.cond8, i32 1000, i32 %mul6
+  %mul7 = mul nsw i32 %c, %b.sink
   %add8 = add nsw i32 %mul7, %mul6.sink
   ret i32 %add8
 }
@@ -2396,14 +2462,15 @@ target triple = "x86_64-unknown-linux-gnu"
 define dso_local noundef i32 @_Z3muliiii(i32 noundef %a, i32 noundef %b, i32 noundef %c, i32 noundef %d) local_unnamed_addr #0 {
 entry:
   %cmp = icmp eq i32 %a, 500
-  %cmp1 = icmp eq i32 %d, 700
+  %cmp1 = icmp eq i32 %b, 700
   %or.cond = and i1 %cmp, %cmp1
   %add = add nuw nsw i32 %a, 5
   %cmp3 = icmp eq i32 %c, %add
-  %or.cond7 = select i1 %or.cond, i1 %cmp3, i1 false
+  %or.cond8 = select i1 %or.cond, i1 %cmp3, i1 false
   %mul6 = shl nsw i32 %a, 1
-  %mul6.sink = select i1 %or.cond7, i32 1000, i32 %mul6
-  %mul7 = mul nsw i32 %c, %b
+  %b.sink = select i1 %or.cond8, i32 700, i32 %b
+  %mul6.sink = select i1 %or.cond8, i32 1000, i32 %mul6
+  %mul7 = mul nsw i32 %c, %b.sink
   %add8 = add nsw i32 %mul7, %mul6.sink
   ret i32 %add8
 }
@@ -2424,14 +2491,15 @@ attributes #0 = { mustprogress nofree noinline norecurse nosync nounwind willret
 define dso_local noundef i32 @_Z3muliiii(i32 noundef %a, i32 noundef %b, i32 noundef %c, i32 noundef %d) local_unnamed_addr #0 {
 entry:
   %cmp = icmp eq i32 %a, 500
-  %cmp1 = icmp eq i32 %d, 700
+  %cmp1 = icmp eq i32 %b, 700
   %or.cond = and i1 %cmp, %cmp1
   %add = add nuw nsw i32 %a, 5
   %cmp3 = icmp eq i32 %c, %add
-  %or.cond7 = select i1 %or.cond, i1 %cmp3, i1 false
+  %or.cond8 = select i1 %or.cond, i1 %cmp3, i1 false
   %mul6 = shl nsw i32 %a, 1
-  %mul6.sink = select i1 %or.cond7, i32 1000, i32 %mul6
-  %mul7 = mul nsw i32 %c, %b
+  %b.sink = select i1 %or.cond8, i32 700, i32 %b
+  %mul6.sink = select i1 %or.cond8, i32 1000, i32 %mul6
+  %mul7 = mul nsw i32 %c, %b.sink
   %add8 = add nsw i32 %mul7, %mul6.sink
   ret i32 %add8
 }
@@ -2440,14 +2508,15 @@ entry:
 define dso_local noundef i32 @_Z3muliiii(i32 noundef %a, i32 noundef %b, i32 noundef %c, i32 noundef %d) local_unnamed_addr #0 {
 entry:
   %cmp = icmp eq i32 %a, 500
-  %cmp1 = icmp eq i32 %d, 700
+  %cmp1 = icmp eq i32 %b, 700
   %or.cond = and i1 %cmp, %cmp1
   %add = add nuw nsw i32 %a, 5
   %cmp3 = icmp eq i32 %c, %add
-  %or.cond7 = select i1 %or.cond, i1 %cmp3, i1 false
+  %or.cond8 = select i1 %or.cond, i1 %cmp3, i1 false
   %mul6 = shl nsw i32 %a, 1
-  %mul6.sink = select i1 %or.cond7, i32 1000, i32 %mul6
-  %mul7 = mul nsw i32 %c, %b
+  %b.sink = select i1 %or.cond8, i32 700, i32 %b
+  %mul6.sink = select i1 %or.cond8, i32 1000, i32 %mul6
+  %mul7 = mul nsw i32 %c, %b.sink
   %add8 = add nsw i32 %mul7, %mul6.sink
   ret i32 %add8
 }
@@ -2456,14 +2525,15 @@ entry:
 define dso_local noundef i32 @_Z3muliiii(i32 noundef %a, i32 noundef %b, i32 noundef %c, i32 noundef %d) local_unnamed_addr #0 {
 entry:
   %cmp = icmp eq i32 %a, 500
-  %cmp1 = icmp eq i32 %d, 700
+  %cmp1 = icmp eq i32 %b, 700
   %or.cond = and i1 %cmp, %cmp1
   %add = add nuw nsw i32 %a, 5
   %cmp3 = icmp eq i32 %c, %add
-  %or.cond7 = select i1 %or.cond, i1 %cmp3, i1 false
+  %or.cond8 = select i1 %or.cond, i1 %cmp3, i1 false
   %mul6 = shl nsw i32 %a, 1
-  %mul6.sink = select i1 %or.cond7, i32 1000, i32 %mul6
-  %mul7 = mul nsw i32 %c, %b
+  %b.sink = select i1 %or.cond8, i32 700, i32 %b
+  %mul6.sink = select i1 %or.cond8, i32 1000, i32 %mul6
+  %mul7 = mul nsw i32 %c, %b.sink
   %add8 = add nsw i32 %mul7, %mul6.sink
   ret i32 %add8
 }
@@ -2472,14 +2542,15 @@ entry:
 define dso_local noundef i32 @_Z3muliiii(i32 noundef %a, i32 noundef %b, i32 noundef %c, i32 noundef %d) local_unnamed_addr #0 {
 entry:
   %cmp = icmp eq i32 %a, 500
-  %cmp1 = icmp eq i32 %d, 700
+  %cmp1 = icmp eq i32 %b, 700
   %or.cond = and i1 %cmp, %cmp1
   %add = add nuw nsw i32 %a, 5
   %cmp3 = icmp eq i32 %c, %add
-  %or.cond7 = select i1 %or.cond, i1 %cmp3, i1 false
+  %or.cond8 = select i1 %or.cond, i1 %cmp3, i1 false
   %mul6 = shl nsw i32 %a, 1
-  %mul6.sink = select i1 %or.cond7, i32 1000, i32 %mul6
-  %mul7 = mul nsw i32 %c, %b
+  %b.sink = select i1 %or.cond8, i32 700, i32 %b
+  %mul6.sink = select i1 %or.cond8, i32 1000, i32 %mul6
+  %mul7 = mul nsw i32 %c, %b.sink
   %add8 = add nsw i32 %mul7, %mul6.sink
   ret i32 %add8
 }
@@ -2488,14 +2559,15 @@ entry:
 define dso_local noundef i32 @_Z3muliiii(i32 noundef %a, i32 noundef %b, i32 noundef %c, i32 noundef %d) local_unnamed_addr #0 {
 entry:
   %cmp = icmp eq i32 %a, 500
-  %cmp1 = icmp eq i32 %d, 700
+  %cmp1 = icmp eq i32 %b, 700
   %or.cond = and i1 %cmp, %cmp1
   %add = add nuw nsw i32 %a, 5
   %cmp3 = icmp eq i32 %c, %add
-  %or.cond7 = select i1 %or.cond, i1 %cmp3, i1 false
+  %or.cond8 = select i1 %or.cond, i1 %cmp3, i1 false
   %mul6 = shl nsw i32 %a, 1
-  %mul6.sink = select i1 %or.cond7, i32 1000, i32 %mul6
-  %mul7 = mul nsw i32 %c, %b
+  %b.sink = select i1 %or.cond8, i32 700, i32 %b
+  %mul6.sink = select i1 %or.cond8, i32 1000, i32 %mul6
+  %mul7 = mul nsw i32 %c, %b.sink
   %add8 = add nsw i32 %mul7, %mul6.sink
   ret i32 %add8
 }
@@ -2504,14 +2576,15 @@ entry:
 define dso_local noundef i32 @_Z3muliiii(i32 noundef %a, i32 noundef %b, i32 noundef %c, i32 noundef %d) local_unnamed_addr #0 {
 entry:
   %cmp = icmp eq i32 %a, 500
-  %cmp1 = icmp eq i32 %d, 700
+  %cmp1 = icmp eq i32 %b, 700
   %or.cond = and i1 %cmp, %cmp1
   %add = add nuw nsw i32 %a, 5
   %cmp3 = icmp eq i32 %c, %add
-  %or.cond7 = select i1 %or.cond, i1 %cmp3, i1 false
+  %or.cond8 = select i1 %or.cond, i1 %cmp3, i1 false
   %mul6 = shl nsw i32 %a, 1
-  %mul6.sink = select i1 %or.cond7, i32 1000, i32 %mul6
-  %mul7 = mul nsw i32 %c, %b
+  %b.sink = select i1 %or.cond8, i32 700, i32 %b
+  %mul6.sink = select i1 %or.cond8, i32 1000, i32 %mul6
+  %mul7 = mul nsw i32 %c, %b.sink
   %add8 = add nsw i32 %mul7, %mul6.sink
   ret i32 %add8
 }
@@ -2520,14 +2593,15 @@ entry:
 define dso_local noundef i32 @_Z3muliiii(i32 noundef %a, i32 noundef %b, i32 noundef %c, i32 noundef %d) local_unnamed_addr #0 {
 entry:
   %cmp = icmp eq i32 %a, 500
-  %cmp1 = icmp eq i32 %d, 700
+  %cmp1 = icmp eq i32 %b, 700
   %or.cond = and i1 %cmp, %cmp1
   %add = add nuw nsw i32 %a, 5
   %cmp3 = icmp eq i32 %c, %add
-  %or.cond7 = select i1 %or.cond, i1 %cmp3, i1 false
+  %or.cond8 = select i1 %or.cond, i1 %cmp3, i1 false
   %mul6 = shl nsw i32 %a, 1
-  %mul6.sink = select i1 %or.cond7, i32 1000, i32 %mul6
-  %mul7 = mul nsw i32 %c, %b
+  %b.sink = select i1 %or.cond8, i32 700, i32 %b
+  %mul6.sink = select i1 %or.cond8, i32 1000, i32 %mul6
+  %mul7 = mul nsw i32 %c, %b.sink
   %add8 = add nsw i32 %mul7, %mul6.sink
   ret i32 %add8
 }
@@ -2536,14 +2610,15 @@ entry:
 define dso_local noundef i32 @_Z3muliiii(i32 noundef %a, i32 noundef %b, i32 noundef %c, i32 noundef %d) local_unnamed_addr #0 {
 entry:
   %cmp = icmp eq i32 %a, 500
-  %cmp1 = icmp eq i32 %d, 700
+  %cmp1 = icmp eq i32 %b, 700
   %or.cond = and i1 %cmp, %cmp1
   %add = add nuw nsw i32 %a, 5
   %cmp3 = icmp eq i32 %c, %add
-  %or.cond7 = select i1 %or.cond, i1 %cmp3, i1 false
+  %or.cond8 = select i1 %or.cond, i1 %cmp3, i1 false
   %mul6 = shl nsw i32 %a, 1
-  %mul6.sink = select i1 %or.cond7, i32 1000, i32 %mul6
-  %mul7 = mul nsw i32 %c, %b
+  %b.sink = select i1 %or.cond8, i32 700, i32 %b
+  %mul6.sink = select i1 %or.cond8, i32 1000, i32 %mul6
+  %mul7 = mul nsw i32 %c, %b.sink
   %add8 = add nsw i32 %mul7, %mul6.sink
   ret i32 %add8
 }
@@ -2552,14 +2627,15 @@ entry:
 define dso_local noundef i32 @_Z3muliiii(i32 noundef %a, i32 noundef %b, i32 noundef %c, i32 noundef %d) local_unnamed_addr #0 {
 entry:
   %cmp = icmp eq i32 %a, 500
-  %cmp1 = icmp eq i32 %d, 700
+  %cmp1 = icmp eq i32 %b, 700
   %or.cond = and i1 %cmp, %cmp1
   %add = add nuw nsw i32 %a, 5
   %cmp3 = icmp eq i32 %c, %add
-  %or.cond7 = select i1 %or.cond, i1 %cmp3, i1 false
+  %or.cond8 = select i1 %or.cond, i1 %cmp3, i1 false
   %mul6 = shl nsw i32 %a, 1
-  %mul6.sink = select i1 %or.cond7, i32 1000, i32 %mul6
-  %mul7 = mul nsw i32 %c, %b
+  %b.sink = select i1 %or.cond8, i32 700, i32 %b
+  %mul6.sink = select i1 %or.cond8, i32 1000, i32 %mul6
+  %mul7 = mul nsw i32 %c, %b.sink
   %add8 = add nsw i32 %mul7, %mul6.sink
   ret i32 %add8
 }
@@ -2568,14 +2644,15 @@ entry:
 define dso_local noundef i32 @_Z3muliiii(i32 noundef %a, i32 noundef %b, i32 noundef %c, i32 noundef %d) local_unnamed_addr #0 {
 entry:
   %cmp = icmp eq i32 %a, 500
-  %cmp1 = icmp eq i32 %d, 700
+  %cmp1 = icmp eq i32 %b, 700
   %or.cond = and i1 %cmp, %cmp1
   %add = add nuw nsw i32 %a, 5
   %cmp3 = icmp eq i32 %c, %add
-  %or.cond7 = select i1 %or.cond, i1 %cmp3, i1 false
+  %or.cond8 = select i1 %or.cond, i1 %cmp3, i1 false
   %mul6 = shl nsw i32 %a, 1
-  %mul6.sink = select i1 %or.cond7, i32 1000, i32 %mul6
-  %mul7 = mul nsw i32 %c, %b
+  %b.sink = select i1 %or.cond8, i32 700, i32 %b
+  %mul6.sink = select i1 %or.cond8, i32 1000, i32 %mul6
+  %mul7 = mul nsw i32 %c, %b.sink
   %add8 = add nsw i32 %mul7, %mul6.sink
   ret i32 %add8
 }
@@ -2584,14 +2661,15 @@ entry:
 define dso_local noundef i32 @_Z3muliiii(i32 noundef %a, i32 noundef %b, i32 noundef %c, i32 noundef %d) local_unnamed_addr #0 {
 entry:
   %cmp = icmp eq i32 %a, 500
-  %cmp1 = icmp eq i32 %d, 700
+  %cmp1 = icmp eq i32 %b, 700
   %or.cond = and i1 %cmp, %cmp1
   %add = add nuw nsw i32 %a, 5
   %cmp3 = icmp eq i32 %c, %add
-  %or.cond7 = select i1 %or.cond, i1 %cmp3, i1 false
+  %or.cond8 = select i1 %or.cond, i1 %cmp3, i1 false
   %mul6 = shl nsw i32 %a, 1
-  %mul6.sink = select i1 %or.cond7, i32 1000, i32 %mul6
-  %mul7 = mul nsw i32 %c, %b
+  %b.sink = select i1 %or.cond8, i32 700, i32 %b
+  %mul6.sink = select i1 %or.cond8, i32 1000, i32 %mul6
+  %mul7 = mul nsw i32 %c, %b.sink
   %add8 = add nsw i32 %mul7, %mul6.sink
   ret i32 %add8
 }
@@ -2600,14 +2678,15 @@ entry:
 define dso_local noundef i32 @_Z3muliiii(i32 noundef %a, i32 noundef %b, i32 noundef %c, i32 noundef %d) local_unnamed_addr #0 {
 entry:
   %cmp = icmp eq i32 %a, 500
-  %cmp1 = icmp eq i32 %d, 700
+  %cmp1 = icmp eq i32 %b, 700
   %or.cond = and i1 %cmp, %cmp1
   %add = add nuw nsw i32 %a, 5
   %cmp3 = icmp eq i32 %c, %add
-  %or.cond7 = select i1 %or.cond, i1 %cmp3, i1 false
+  %or.cond8 = select i1 %or.cond, i1 %cmp3, i1 false
   %mul6 = shl nsw i32 %a, 1
-  %mul6.sink = select i1 %or.cond7, i32 1000, i32 %mul6
-  %mul7 = mul nsw i32 %c, %b
+  %b.sink = select i1 %or.cond8, i32 700, i32 %b
+  %mul6.sink = select i1 %or.cond8, i32 1000, i32 %mul6
+  %mul7 = mul nsw i32 %c, %b.sink
   %add8 = add nsw i32 %mul7, %mul6.sink
   ret i32 %add8
 }
@@ -2616,14 +2695,15 @@ entry:
 define dso_local noundef i32 @_Z3muliiii(i32 noundef %a, i32 noundef %b, i32 noundef %c, i32 noundef %d) local_unnamed_addr #0 {
 entry:
   %cmp = icmp eq i32 %a, 500
-  %cmp1 = icmp eq i32 %d, 700
+  %cmp1 = icmp eq i32 %b, 700
   %or.cond = and i1 %cmp, %cmp1
   %add = add nuw nsw i32 %a, 5
   %cmp3 = icmp eq i32 %c, %add
-  %or.cond7 = select i1 %or.cond, i1 %cmp3, i1 false
+  %or.cond8 = select i1 %or.cond, i1 %cmp3, i1 false
   %mul6 = shl nsw i32 %a, 1
-  %mul6.sink = select i1 %or.cond7, i32 1000, i32 %mul6
-  %mul7 = mul nsw i32 %c, %b
+  %b.sink = select i1 %or.cond8, i32 700, i32 %b
+  %mul6.sink = select i1 %or.cond8, i32 1000, i32 %mul6
+  %mul7 = mul nsw i32 %c, %b.sink
   %add8 = add nsw i32 %mul7, %mul6.sink
   ret i32 %add8
 }
@@ -2632,14 +2712,15 @@ entry:
 define dso_local noundef i32 @_Z3muliiii(i32 noundef %a, i32 noundef %b, i32 noundef %c, i32 noundef %d) local_unnamed_addr #0 {
 entry:
   %cmp = icmp eq i32 %a, 500
-  %cmp1 = icmp eq i32 %d, 700
+  %cmp1 = icmp eq i32 %b, 700
   %or.cond = and i1 %cmp, %cmp1
   %add = add nuw nsw i32 %a, 5
   %cmp3 = icmp eq i32 %c, %add
-  %or.cond7 = select i1 %or.cond, i1 %cmp3, i1 false
+  %or.cond8 = select i1 %or.cond, i1 %cmp3, i1 false
   %mul6 = shl nsw i32 %a, 1
-  %mul6.sink = select i1 %or.cond7, i32 1000, i32 %mul6
-  %mul7 = mul nsw i32 %c, %b
+  %b.sink = select i1 %or.cond8, i32 700, i32 %b
+  %mul6.sink = select i1 %or.cond8, i32 1000, i32 %mul6
+  %mul7 = mul nsw i32 %c, %b.sink
   %add8 = add nsw i32 %mul7, %mul6.sink
   ret i32 %add8
 }
@@ -2648,14 +2729,15 @@ entry:
 define dso_local noundef i32 @_Z3muliiii(i32 noundef %a, i32 noundef %b, i32 noundef %c, i32 noundef %d) local_unnamed_addr #0 {
 entry:
   %cmp = icmp eq i32 %a, 500
-  %cmp1 = icmp eq i32 %d, 700
+  %cmp1 = icmp eq i32 %b, 700
   %or.cond = and i1 %cmp, %cmp1
   %add = add nuw nsw i32 %a, 5
   %cmp3 = icmp eq i32 %c, %add
-  %or.cond7 = select i1 %or.cond, i1 %cmp3, i1 false
+  %or.cond8 = select i1 %or.cond, i1 %cmp3, i1 false
   %mul6 = shl nsw i32 %a, 1
-  %mul6.sink = select i1 %or.cond7, i32 1000, i32 %mul6
-  %mul7 = mul nsw i32 %c, %b
+  %b.sink = select i1 %or.cond8, i32 700, i32 %b
+  %mul6.sink = select i1 %or.cond8, i32 1000, i32 %mul6
+  %mul7 = mul nsw i32 %c, %b.sink
   %add8 = add nsw i32 %mul7, %mul6.sink
   ret i32 %add8
 }
@@ -2664,14 +2746,15 @@ entry:
 define dso_local noundef i32 @_Z3muliiii(i32 noundef %a, i32 noundef %b, i32 noundef %c, i32 noundef %d) local_unnamed_addr #0 {
 entry:
   %cmp = icmp eq i32 %a, 500
-  %cmp1 = icmp eq i32 %d, 700
+  %cmp1 = icmp eq i32 %b, 700
   %or.cond = and i1 %cmp, %cmp1
   %add = add nuw nsw i32 %a, 5
   %cmp3 = icmp eq i32 %c, %add
-  %or.cond7 = select i1 %or.cond, i1 %cmp3, i1 false
+  %or.cond8 = select i1 %or.cond, i1 %cmp3, i1 false
   %mul6 = shl nsw i32 %a, 1
-  %mul6.sink = select i1 %or.cond7, i32 1000, i32 %mul6
-  %mul7 = mul nsw i32 %c, %b
+  %b.sink = select i1 %or.cond8, i32 700, i32 %b
+  %mul6.sink = select i1 %or.cond8, i32 1000, i32 %mul6
+  %mul7 = mul nsw i32 %c, %b.sink
   %add8 = add nsw i32 %mul7, %mul6.sink
   ret i32 %add8
 }
@@ -2680,14 +2763,15 @@ entry:
 define dso_local noundef i32 @_Z3muliiii(i32 noundef %a, i32 noundef %b, i32 noundef %c, i32 noundef %d) local_unnamed_addr #0 {
 entry:
   %cmp = icmp eq i32 %a, 500
-  %cmp1 = icmp eq i32 %d, 700
+  %cmp1 = icmp eq i32 %b, 700
   %or.cond = and i1 %cmp, %cmp1
   %add = add nuw nsw i32 %a, 5
   %cmp3 = icmp eq i32 %c, %add
-  %or.cond7 = select i1 %or.cond, i1 %cmp3, i1 false
+  %or.cond8 = select i1 %or.cond, i1 %cmp3, i1 false
   %mul6 = shl nsw i32 %a, 1
-  %mul6.sink = select i1 %or.cond7, i32 1000, i32 %mul6
-  %mul7 = mul nsw i32 %c, %b
+  %b.sink = select i1 %or.cond8, i32 700, i32 %b
+  %mul6.sink = select i1 %or.cond8, i32 1000, i32 %mul6
+  %mul7 = mul nsw i32 %c, %b.sink
   %add8 = add nsw i32 %mul7, %mul6.sink
   ret i32 %add8
 }
@@ -2696,14 +2780,15 @@ entry:
 define dso_local noundef i32 @_Z3muliiii(i32 noundef %a, i32 noundef %b, i32 noundef %c, i32 noundef %d) local_unnamed_addr #0 {
 entry:
   %cmp = icmp eq i32 %a, 500
-  %cmp1 = icmp eq i32 %d, 700
+  %cmp1 = icmp eq i32 %b, 700
   %or.cond = and i1 %cmp, %cmp1
   %add = add nuw nsw i32 %a, 5
   %cmp3 = icmp eq i32 %c, %add
-  %or.cond7 = select i1 %or.cond, i1 %cmp3, i1 false
+  %or.cond8 = select i1 %or.cond, i1 %cmp3, i1 false
   %mul6 = shl nsw i32 %a, 1
-  %mul6.sink = select i1 %or.cond7, i32 1000, i32 %mul6
-  %mul7 = mul nsw i32 %c, %b
+  %b.sink = select i1 %or.cond8, i32 700, i32 %b
+  %mul6.sink = select i1 %or.cond8, i32 1000, i32 %mul6
+  %mul7 = mul nsw i32 %c, %b.sink
   %add8 = add nsw i32 %mul7, %mul6.sink
   ret i32 %add8
 }
@@ -2712,14 +2797,15 @@ entry:
 define dso_local noundef i32 @_Z3muliiii(i32 noundef %a, i32 noundef %b, i32 noundef %c, i32 noundef %d) local_unnamed_addr #0 {
 entry:
   %cmp = icmp eq i32 %a, 500
-  %cmp1 = icmp eq i32 %d, 700
+  %cmp1 = icmp eq i32 %b, 700
   %or.cond = and i1 %cmp, %cmp1
   %add = add nuw nsw i32 %a, 5
   %cmp3 = icmp eq i32 %c, %add
-  %or.cond7 = select i1 %or.cond, i1 %cmp3, i1 false
+  %or.cond8 = select i1 %or.cond, i1 %cmp3, i1 false
   %mul6 = shl nsw i32 %a, 1
-  %mul6.sink = select i1 %or.cond7, i32 1000, i32 %mul6
-  %mul7 = mul nsw i32 %c, %b
+  %b.sink = select i1 %or.cond8, i32 700, i32 %b
+  %mul6.sink = select i1 %or.cond8, i32 1000, i32 %mul6
+  %mul7 = mul nsw i32 %c, %b.sink
   %add8 = add nsw i32 %mul7, %mul6.sink
   ret i32 %add8
 }
@@ -2728,14 +2814,15 @@ entry:
 define dso_local noundef i32 @_Z3muliiii(i32 noundef %a, i32 noundef %b, i32 noundef %c, i32 noundef %d) local_unnamed_addr #0 {
 entry:
   %cmp = icmp eq i32 %a, 500
-  %cmp1 = icmp eq i32 %d, 700
+  %cmp1 = icmp eq i32 %b, 700
   %or.cond = and i1 %cmp, %cmp1
   %add = add nuw nsw i32 %a, 5
   %cmp3 = icmp eq i32 %c, %add
-  %or.cond7 = select i1 %or.cond, i1 %cmp3, i1 false
+  %or.cond8 = select i1 %or.cond, i1 %cmp3, i1 false
   %mul6 = shl nsw i32 %a, 1
-  %mul6.sink = select i1 %or.cond7, i32 1000, i32 %mul6
-  %mul7 = mul nsw i32 %c, %b
+  %b.sink = select i1 %or.cond8, i32 700, i32 %b
+  %mul6.sink = select i1 %or.cond8, i32 1000, i32 %mul6
+  %mul7 = mul nsw i32 %c, %b.sink
   %add8 = add nsw i32 %mul7, %mul6.sink
   ret i32 %add8
 }
@@ -2744,14 +2831,15 @@ entry:
 define dso_local noundef i32 @_Z3muliiii(i32 noundef %a, i32 noundef %b, i32 noundef %c, i32 noundef %d) local_unnamed_addr #0 {
 entry:
   %cmp = icmp eq i32 %a, 500
-  %cmp1 = icmp eq i32 %d, 700
+  %cmp1 = icmp eq i32 %b, 700
   %or.cond = and i1 %cmp, %cmp1
   %add = add nuw nsw i32 %a, 5
   %cmp3 = icmp eq i32 %c, %add
-  %or.cond7 = select i1 %or.cond, i1 %cmp3, i1 false
+  %or.cond8 = select i1 %or.cond, i1 %cmp3, i1 false
   %mul6 = shl nsw i32 %a, 1
-  %mul6.sink = select i1 %or.cond7, i32 1000, i32 %mul6
-  %mul7 = mul nsw i32 %c, %b
+  %b.sink = select i1 %or.cond8, i32 700, i32 %b
+  %mul6.sink = select i1 %or.cond8, i32 1000, i32 %mul6
+  %mul7 = mul nsw i32 %c, %b.sink
   %add8 = add nsw i32 %mul7, %mul6.sink
   ret i32 %add8
 }
@@ -2760,14 +2848,15 @@ entry:
 define dso_local noundef i32 @_Z3muliiii(i32 noundef %a, i32 noundef %b, i32 noundef %c, i32 noundef %d) local_unnamed_addr #0 {
 entry:
   %cmp = icmp eq i32 %a, 500
-  %cmp1 = icmp eq i32 %d, 700
+  %cmp1 = icmp eq i32 %b, 700
   %or.cond = and i1 %cmp, %cmp1
   %add = add nuw nsw i32 %a, 5
   %cmp3 = icmp eq i32 %c, %add
-  %or.cond7 = select i1 %or.cond, i1 %cmp3, i1 false
+  %or.cond8 = select i1 %or.cond, i1 %cmp3, i1 false
   %mul6 = shl nsw i32 %a, 1
-  %mul6.sink = select i1 %or.cond7, i32 1000, i32 %mul6
-  %mul7 = mul nsw i32 %c, %b
+  %b.sink = select i1 %or.cond8, i32 700, i32 %b
+  %mul6.sink = select i1 %or.cond8, i32 1000, i32 %mul6
+  %mul7 = mul nsw i32 %c, %b.sink
   %add8 = add nsw i32 %mul7, %mul6.sink
   ret i32 %add8
 }
@@ -2776,14 +2865,15 @@ entry:
 define dso_local noundef i32 @_Z3muliiii(i32 noundef %a, i32 noundef %b, i32 noundef %c, i32 noundef %d) local_unnamed_addr #0 {
 entry:
   %cmp = icmp eq i32 %a, 500
-  %cmp1 = icmp eq i32 %d, 700
+  %cmp1 = icmp eq i32 %b, 700
   %or.cond = and i1 %cmp, %cmp1
   %add = add nuw nsw i32 %a, 5
   %cmp3 = icmp eq i32 %c, %add
-  %or.cond7 = select i1 %or.cond, i1 %cmp3, i1 false
+  %or.cond8 = select i1 %or.cond, i1 %cmp3, i1 false
   %mul6 = shl nsw i32 %a, 1
-  %mul6.sink = select i1 %or.cond7, i32 1000, i32 %mul6
-  %mul7 = mul nsw i32 %c, %b
+  %b.sink = select i1 %or.cond8, i32 700, i32 %b
+  %mul6.sink = select i1 %or.cond8, i32 1000, i32 %mul6
+  %mul7 = mul nsw i32 %c, %b.sink
   %add8 = add nsw i32 %mul7, %mul6.sink
   ret i32 %add8
 }
@@ -2792,14 +2882,15 @@ entry:
 define dso_local noundef i32 @_Z3muliiii(i32 noundef %a, i32 noundef %b, i32 noundef %c, i32 noundef %d) local_unnamed_addr #0 {
 entry:
   %cmp = icmp eq i32 %a, 500
-  %cmp1 = icmp eq i32 %d, 700
+  %cmp1 = icmp eq i32 %b, 700
   %or.cond = and i1 %cmp, %cmp1
   %add = add nuw nsw i32 %a, 5
   %cmp3 = icmp eq i32 %c, %add
-  %or.cond7 = select i1 %or.cond, i1 %cmp3, i1 false
+  %or.cond8 = select i1 %or.cond, i1 %cmp3, i1 false
   %mul6 = shl nsw i32 %a, 1
-  %mul6.sink = select i1 %or.cond7, i32 1000, i32 %mul6
-  %mul7 = mul nsw i32 %c, %b
+  %b.sink = select i1 %or.cond8, i32 700, i32 %b
+  %mul6.sink = select i1 %or.cond8, i32 1000, i32 %mul6
+  %mul7 = mul nsw i32 %c, %b.sink
   %add8 = add nsw i32 %mul7, %mul6.sink
   ret i32 %add8
 }
@@ -2808,14 +2899,15 @@ entry:
 define dso_local noundef i32 @_Z3muliiii(i32 noundef %a, i32 noundef %b, i32 noundef %c, i32 noundef %d) local_unnamed_addr #0 {
 entry:
   %cmp = icmp eq i32 %a, 500
-  %cmp1 = icmp eq i32 %d, 700
+  %cmp1 = icmp eq i32 %b, 700
   %or.cond = and i1 %cmp, %cmp1
   %add = add nuw nsw i32 %a, 5
   %cmp3 = icmp eq i32 %c, %add
-  %or.cond7 = select i1 %or.cond, i1 %cmp3, i1 false
+  %or.cond8 = select i1 %or.cond, i1 %cmp3, i1 false
   %mul6 = shl nsw i32 %a, 1
-  %mul6.sink = select i1 %or.cond7, i32 1000, i32 %mul6
-  %mul7 = mul nsw i32 %c, %b
+  %b.sink = select i1 %or.cond8, i32 700, i32 %b
+  %mul6.sink = select i1 %or.cond8, i32 1000, i32 %mul6
+  %mul7 = mul nsw i32 %c, %b.sink
   %add8 = add nsw i32 %mul7, %mul6.sink
   ret i32 %add8
 }
@@ -2824,14 +2916,15 @@ entry:
 define dso_local noundef i32 @_Z3muliiii(i32 noundef %a, i32 noundef %b, i32 noundef %c, i32 noundef %d) local_unnamed_addr #0 {
 entry:
   %cmp = icmp eq i32 %a, 500
-  %cmp1 = icmp eq i32 %d, 700
+  %cmp1 = icmp eq i32 %b, 700
   %or.cond = and i1 %cmp, %cmp1
   %add = add nuw nsw i32 %a, 5
   %cmp3 = icmp eq i32 %c, %add
-  %or.cond7 = select i1 %or.cond, i1 %cmp3, i1 false
+  %or.cond8 = select i1 %or.cond, i1 %cmp3, i1 false
   %mul6 = shl nsw i32 %a, 1
-  %mul6.sink = select i1 %or.cond7, i32 1000, i32 %mul6
-  %mul7 = mul nsw i32 %c, %b
+  %b.sink = select i1 %or.cond8, i32 700, i32 %b
+  %mul6.sink = select i1 %or.cond8, i32 1000, i32 %mul6
+  %mul7 = mul nsw i32 %c, %b.sink
   %add8 = add nsw i32 %mul7, %mul6.sink
   ret i32 %add8
 }
@@ -2840,14 +2933,15 @@ entry:
 define dso_local noundef i32 @_Z3muliiii(i32 noundef %a, i32 noundef %b, i32 noundef %c, i32 noundef %d) local_unnamed_addr #0 {
 entry:
   %cmp = icmp eq i32 %a, 500
-  %cmp1 = icmp eq i32 %d, 700
+  %cmp1 = icmp eq i32 %b, 700
   %or.cond = and i1 %cmp, %cmp1
   %add = add nuw nsw i32 %a, 5
   %cmp3 = icmp eq i32 %c, %add
-  %or.cond7 = select i1 %or.cond, i1 %cmp3, i1 false
+  %or.cond8 = select i1 %or.cond, i1 %cmp3, i1 false
   %mul6 = shl nsw i32 %a, 1
-  %mul6.sink = select i1 %or.cond7, i32 1000, i32 %mul6
-  %mul7 = mul nsw i32 %c, %b
+  %b.sink = select i1 %or.cond8, i32 700, i32 %b
+  %mul6.sink = select i1 %or.cond8, i32 1000, i32 %mul6
+  %mul7 = mul nsw i32 %c, %b.sink
   %add8 = add nsw i32 %mul7, %mul6.sink
   ret i32 %add8
 }
@@ -2861,14 +2955,15 @@ target triple = "x86_64-unknown-linux-gnu"
 define dso_local noundef i32 @_Z3muliiii(i32 noundef %a, i32 noundef %b, i32 noundef %c, i32 noundef %d) local_unnamed_addr #0 {
 entry:
   %cmp = icmp eq i32 %a, 500
-  %cmp1 = icmp eq i32 %d, 700
+  %cmp1 = icmp eq i32 %b, 700
   %or.cond = and i1 %cmp, %cmp1
   %add = add nuw nsw i32 %a, 5
   %cmp3 = icmp eq i32 %c, %add
-  %or.cond7 = select i1 %or.cond, i1 %cmp3, i1 false
+  %or.cond8 = select i1 %or.cond, i1 %cmp3, i1 false
   %mul6 = shl nsw i32 %a, 1
-  %mul6.sink = select i1 %or.cond7, i32 1000, i32 %mul6
-  %mul7 = mul nsw i32 %c, %b
+  %b.sink = select i1 %or.cond8, i32 700, i32 %b
+  %mul6.sink = select i1 %or.cond8, i32 1000, i32 %mul6
+  %mul7 = mul nsw i32 %c, %b.sink
   %add8 = add nsw i32 %mul7, %mul6.sink
   ret i32 %add8
 }
@@ -2894,14 +2989,15 @@ target triple = "x86_64-unknown-linux-gnu"
 define dso_local noundef i32 @_Z3muliiii(i32 noundef %a, i32 noundef %b, i32 noundef %c, i32 noundef %d) local_unnamed_addr #0 {
 entry:
   %cmp = icmp eq i32 %a, 500
-  %cmp1 = icmp eq i32 %d, 700
+  %cmp1 = icmp eq i32 %b, 700
   %or.cond = and i1 %cmp, %cmp1
   %add = add nuw nsw i32 %a, 5
   %cmp3 = icmp eq i32 %c, %add
-  %or.cond7 = select i1 %or.cond, i1 %cmp3, i1 false
+  %or.cond8 = select i1 %or.cond, i1 %cmp3, i1 false
   %mul6 = shl nsw i32 %a, 1
-  %mul6.sink = select i1 %or.cond7, i32 1000, i32 %mul6
-  %mul7 = mul nsw i32 %c, %b
+  %b.sink = select i1 %or.cond8, i32 700, i32 %b
+  %mul6.sink = select i1 %or.cond8, i32 1000, i32 %mul6
+  %mul7 = mul nsw i32 %c, %b.sink
   %add8 = add nsw i32 %mul7, %mul6.sink
   ret i32 %add8
 }
@@ -2927,14 +3023,15 @@ target triple = "x86_64-unknown-linux-gnu"
 define dso_local noundef i32 @_Z3muliiii(i32 noundef %a, i32 noundef %b, i32 noundef %c, i32 noundef %d) local_unnamed_addr #0 {
 entry:
   %cmp = icmp eq i32 %a, 500
-  %cmp1 = icmp eq i32 %d, 700
+  %cmp1 = icmp eq i32 %b, 700
   %or.cond = and i1 %cmp, %cmp1
   %add = add nuw nsw i32 %a, 5
   %cmp3 = icmp eq i32 %c, %add
-  %or.cond7 = select i1 %or.cond, i1 %cmp3, i1 false
+  %or.cond8 = select i1 %or.cond, i1 %cmp3, i1 false
   %mul6 = shl nsw i32 %a, 1
-  %mul6.sink = select i1 %or.cond7, i32 1000, i32 %mul6
-  %mul7 = mul nsw i32 %c, %b
+  %b.sink = select i1 %or.cond8, i32 700, i32 %b
+  %mul6.sink = select i1 %or.cond8, i32 1000, i32 %mul6
+  %mul7 = mul nsw i32 %c, %b.sink
   %add8 = add nsw i32 %mul7, %mul6.sink
   ret i32 %add8
 }
@@ -2960,14 +3057,15 @@ target triple = "x86_64-unknown-linux-gnu"
 define dso_local noundef i32 @_Z3muliiii(i32 noundef %a, i32 noundef %b, i32 noundef %c, i32 noundef %d) local_unnamed_addr #0 {
 entry:
   %cmp = icmp eq i32 %a, 500
-  %cmp1 = icmp eq i32 %d, 700
+  %cmp1 = icmp eq i32 %b, 700
   %or.cond = and i1 %cmp, %cmp1
   %add = add nuw nsw i32 %a, 5
   %cmp3 = icmp eq i32 %c, %add
-  %or.cond7 = select i1 %or.cond, i1 %cmp3, i1 false
+  %or.cond8 = select i1 %or.cond, i1 %cmp3, i1 false
   %mul6 = shl nsw i32 %a, 1
-  %mul6.sink = select i1 %or.cond7, i32 1000, i32 %mul6
-  %mul7 = mul nsw i32 %c, %b
+  %b.sink = select i1 %or.cond8, i32 700, i32 %b
+  %mul6.sink = select i1 %or.cond8, i32 1000, i32 %mul6
+  %mul7 = mul nsw i32 %c, %b.sink
   %add8 = add nsw i32 %mul7, %mul6.sink
   ret i32 %add8
 }
@@ -2988,14 +3086,15 @@ attributes #0 = { mustprogress nofree noinline norecurse nosync nounwind willret
 define dso_local noundef i32 @_Z3muliiii(i32 noundef %a, i32 noundef %b, i32 noundef %c, i32 noundef %d) local_unnamed_addr #0 {
 entry:
   %cmp = icmp eq i32 %a, 500
-  %cmp1 = icmp eq i32 %d, 700
+  %cmp1 = icmp eq i32 %b, 700
   %or.cond = and i1 %cmp, %cmp1
   %add = add nuw nsw i32 %a, 5
   %cmp3 = icmp eq i32 %c, %add
-  %or.cond7 = select i1 %or.cond, i1 %cmp3, i1 false
+  %or.cond8 = select i1 %or.cond, i1 %cmp3, i1 false
   %mul6 = shl nsw i32 %a, 1
-  %mul6.sink = select i1 %or.cond7, i32 1000, i32 %mul6
-  %mul7 = mul nsw i32 %c, %b
+  %b.sink = select i1 %or.cond8, i32 700, i32 %b
+  %mul6.sink = select i1 %or.cond8, i32 1000, i32 %mul6
+  %mul7 = mul nsw i32 %c, %b.sink
   %add8 = add nsw i32 %mul7, %mul6.sink
   ret i32 %add8
 }

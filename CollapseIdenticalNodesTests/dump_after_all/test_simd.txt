@@ -560,6 +560,16 @@ attributes #0 = { mustprogress noinline nounwind uwtable "frame-pointer"="all" "
 !3 = !{i32 7, !"uwtable", i32 2}
 !4 = !{i32 7, !"frame-pointer", i32 2}
 !5 = !{!"clang version 22.0.0git (https://github.com/llvm/llvm-project 78636be4d6ff5be00d7ec0a599eb9f5daa391bc9)"}
+Starting CollapseIdenticalNodesPass...
+[4;36mPhiNodeWithConstant[0m
+[1;33mGot instruction   ret i32 100[0m
+[4;36mEND OF FUNC[0m
+; *** IR Dump After CollapseIdenticalNodesPass on _Z19test_vector_compareDv4_ii ***
+; Function Attrs: mustprogress noinline nounwind uwtable
+define dso_local noundef i32 @_Z19test_vector_compareDv4_ii(<4 x i32> noundef %a, i32 noundef %b) #0 {
+entry:
+  ret i32 100
+}
 ; *** IR Dump After CalledValuePropagationPass on [module] ***
 ; ModuleID = './CollapseIdenticalNodesTests/ll/test_simd.ll'
 source_filename = "./CollapseIdenticalNodesTests/cpp/test_simd.cpp"

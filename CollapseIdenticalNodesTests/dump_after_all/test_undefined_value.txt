@@ -498,6 +498,18 @@ attributes #0 = { mustprogress noinline nounwind uwtable "frame-pointer"="all" "
 !3 = !{i32 7, !"uwtable", i32 2}
 !4 = !{i32 7, !"frame-pointer", i32 2}
 !5 = !{!"clang version 22.0.0git (https://github.com/llvm/llvm-project 78636be4d6ff5be00d7ec0a599eb9f5daa391bc9)"}
+Starting CollapseIdenticalNodesPass...
+[4;36mPhiNodeWithConstant[0m
+[1;33mGot instruction   %cmp = icmp eq i32 %a, 5[0m
+[1;33mGot instruction   ret i32 10[0m
+[4;36mEND OF FUNC[0m
+; *** IR Dump After CollapseIdenticalNodesPass on _Z22test_undef_propagationii ***
+; Function Attrs: mustprogress noinline nounwind uwtable
+define dso_local noundef i32 @_Z22test_undef_propagationii(i32 noundef %a, i32 noundef %b) #0 {
+entry:
+  %cmp = icmp eq i32 %a, 5
+  ret i32 10
+}
 ; *** IR Dump After CalledValuePropagationPass on [module] ***
 ; ModuleID = './CollapseIdenticalNodesTests/ll/test_undefined_value.ll'
 source_filename = "./CollapseIdenticalNodesTests/cpp/test_undefined_value.cpp"

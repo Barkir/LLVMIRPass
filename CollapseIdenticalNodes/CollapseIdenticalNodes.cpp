@@ -26,6 +26,7 @@
 #include "llvm/IR/Constants.h"
 #include "llvm/IR/DerivedTypes.h"
 #include "llvm/IR/Type.h"
+#include <stdexcept>
 // #include "llvm/Support/CFG.h"
 
 #include "llvm/Analysis/DominanceFrontier.h"
@@ -139,7 +140,12 @@ int CountValueRecursively(Value *val, valueHashTab& tab) {
 
             case Instruction::SDiv:
                 errs() << YEL "DIV " << *instr << RESET "\n";
+                auto right = CountValueRecursively(instr->getOperand(1), tab);
+                if (right == 0) //FIXME - bad error handling
+                    return retVal;
+
                 retVal = CountValueRecursively(instr->getOperand(0), tab) / CountValueRecursively(instr->getOperand(1), tab);
+
                 break;
         }
     }
@@ -308,15 +314,80 @@ valueHashTab collectICmp(BasicBlock &BB, DominatorTree &DT) {
 
 bool checkLinkThruTerminator(icmpIterator pred, icmpIterator post) {
     errs() << UCYN "checkLinkThruTerminator" RESET << "\n";
-    auto predBBTerminator = (*pred)->getParent()->getTerminator();
-    auto postBB = (*post)->getParent();
+    auto predObj = *pred;
+    if (!predObj)
+        return false;
 
+    auto predParent = predObj->getParent();
+    if (!predParent)
+        return false;
+
+    auto predBBTerminator = predParent->getTerminator();
+
+    auto postObj = *post;
+    if (!postObj)
+        return false;
+
+    auto postBB = postObj->getParent();
+    if (!postBB)
+        return false;
+
+    errs() << "Terminator of predBB: " << *predBBTerminator << "\n";
+    errs() << "Comparing it's operand with postBB" << "\n";
     errs() << *(predBBTerminator->getOperand(2)) << *postBB << "\n";
     if (predBBTerminator->getOperand(2) == postBB) {
         errs() << CYNHB "EQUAL!" << RESET "\n";
         errs() << UCYN "END OF FUNC" RESET << "\n";
         return true;
     }
+    errs() << UCYN "END OF FUNC" RESET << "\n";
+    return false;
+}
+
+bool checkLinkThruAnd(icmpIterator first, icmpIterator second) {
+    errs() << UCYN "checkLinkThruAnd" RESET << "\n";
+
+    auto firstObj = *first;
+    auto secondObj = *second;
+
+    if (!firstObj || !secondObj) {
+        errs() << "One of the instructions is null\n";
+        return false;
+    }
+
+    auto firstBB = firstObj->getParent();
+    auto secondBB = secondObj->getParent();
+
+    if (!firstBB || !secondBB) {
+        errs() << "One of the instructions has no parent block\n";
+        return false;
+    }
+
+    if (firstBB != secondBB) {
+        errs() << "Instructions are in different basic blocks\n";
+        return false;
+    }
+
+    errs() << "Searching for AND instruction in BB: " << firstBB->getName() << "\n";
+
+    for (auto &inst : *firstBB) {
+        if (inst.getOpcode() == Instruction::And) {
+            Value *op0 = inst.getOperand(0);
+            Value *op1 = inst.getOperand(1);
+
+            bool match1 = (op0 == firstObj && op1 == secondObj);
+            bool match2 = (op0 == secondObj && op1 == firstObj);
+
+            if (match1 || match2) {
+                errs() << CYNHB "FOUND AND CONNECTION!" << RESET << "\n";
+                errs() << "AND Instruction: " << inst << "\n";
+                errs() << UCYN "END OF FUNC" RESET << "\n";
+                return true;
+            }
+        }
+    }
+
+    errs() << "No AND instruction connects these two values\n";
     errs() << UCYN "END OF FUNC" RESET << "\n";
     return false;
 }
@@ -346,7 +417,7 @@ bool proofConjuctionLinks() {
     errs() << UCYN "proofConjuctionLinks" RESET << "\n";
     for (auto it = icmpTable.begin(), end = icmpTable.end() - 1; it != end; ++it) {
         errs() << **it << **(it + 1) << "\n";
-        if (!checkLinkThruTerminator(it, it + 1) && !checkLinkThruSelect(it, it+1)) {
+        if (!checkLinkThruTerminator(it, it + 1) && !checkLinkThruSelect(it, it+1) && !checkLinkThruAnd(it, it+1)) {
             return false;
         }
     }
@@ -354,18 +425,46 @@ bool proofConjuctionLinks() {
     errs() << UCYN "END OF FUNC" RESET << "\n";
 }
 
+/*
+incoming block:
+for.body:                                         ; preds = %for.cond
+  %add = add nsw i32 %x.0, %y.0
+  %inc = add nsw i32 %i.0, 1
+  br label %for.cond, !llvm.loop !6
+
+ */
 void DeprecateConstantFromPhiNode(PHINode* phi, BasicBlock *target) {
     errs() << UCYN "DeprecateConstantFromPhiNode" RESET << "\n";
+    errs() << *phi << "\n";
     const int32_t numValues = phi->getNumIncomingValues();
     for (int i = 0; i < numValues; ++i) {
         if (auto *incomingValue = dyn_cast<ConstantInt>(phi->getIncomingValue(i))) {
             BasicBlock *blockToDelete = phi->getIncomingBlock(i);
+            for (BasicBlock *pred : predecessors(blockToDelete)) {
+                for (PHINode &targetPhi : target->phis()) {
+
+                    if (unsigned idx = targetPhi.getBasicBlockIndex(blockToDelete)) {
+                        Value *valFromDeleted = targetPhi.getIncomingValue(idx);
+
+                        targetPhi.addIncoming(valFromDeleted, pred);
+                    }
+                }
+            }
+
             for (pred_iterator PI = pred_begin(blockToDelete); PI != pred_end(blockToDelete); ++PI) {
                 BasicBlock *pred = *PI;
-
                 pred->getTerminator()->replaceSuccessorWith(blockToDelete, target);
             }
+
+
+            for (PHINode &targetPhi : target->phis()) {
+                if (int idx = targetPhi.getBasicBlockIndex(blockToDelete); idx != -1) {
+                    targetPhi.removeIncomingValue(idx);
+                }
+            }
+
             DeleteDeadBlock(blockToDelete);
+
             break;
         }
     }
@@ -390,6 +489,7 @@ PreservedAnalyses CollapseIdenticalNodesPass::run(Function &F, FunctionAnalysisM
                 if (value == GetConstantFromPhiNode(phiNode)) {
                     if (auto *phiToReplaceInstr = dyn_cast<Instruction>(phiToReplace)) {
                         BasicBlock *incomingBlock = phi->getIncomingBlock(1);
+                        errs() << "incoming block: " << *incomingBlock << "\n";
                         DeprecateConstantFromPhiNode(phi, incomingBlock);
                         errs() << F << "\n";
                     }

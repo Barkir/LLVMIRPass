@@ -1,12 +1,24 @@
-; ModuleID = './CollapseIdenticalNodesTests/ll/test_contradictory_path.ll'
-source_filename = "./CollapseIdenticalNodesTests/cpp/test_contradictory_path.cpp"
+; ModuleID = './CollapseIdenticalNodesTests/ll/test_constant_convolution_2.ll'
+source_filename = "./CollapseIdenticalNodesTests/cpp/test_constant_convolution_2.cpp"
 target datalayout = "e-m:e-p270:32:32-p271:32:32-p272:64:64-i64:64-i128:128-f80:128-n8:16:32:64-S128"
 target triple = "x86_64-unknown-linux-gnu"
 
 ; Function Attrs: mustprogress nofree noinline norecurse nosync nounwind willreturn memory(none) uwtable
-define dso_local noundef i32 @_Z30test_contradictory_constraintsi(i32 noundef %a) local_unnamed_addr #0 {
+define dso_local noundef i32 @_Z3fooiiii(i32 noundef %a, i32 noundef %b, i32 noundef %c, i32 noundef %d) local_unnamed_addr #0 {
 entry:
-  ret i32 10
+  %cmp = icmp eq i32 %a, 500
+  %cmp1 = icmp eq i32 %b, 700
+  %or.cond = and i1 %cmp, %cmp1
+  %cmp3 = icmp eq i32 %c, 505
+  %or.cond7 = and i1 %or.cond, %cmp3
+  %cmp5 = icmp eq i32 %d, 5600
+  %or.cond8 = and i1 %or.cond7, %cmp5
+  %mul6 = shl nsw i32 %a, 1
+  %mul7 = mul nsw i32 %b, %b
+  %add8 = add nsw i32 %mul7, %mul6
+  %add9 = add nsw i32 %add8, %d
+  %res.0 = select i1 %or.cond8, i32 496600, i32 %add9
+  ret i32 %res.0
 }
 
 attributes #0 = { mustprogress nofree noinline norecurse nosync nounwind willreturn memory(none) uwtable "frame-pointer"="all" "min-legal-vector-width"="0" "no-trapping-math"="true" "stack-protector-buffer-size"="8" "target-cpu"="x86-64" "target-features"="+cmov,+cx8,+fxsr,+mmx,+sse,+sse2,+x87" "tune-cpu"="generic" }
